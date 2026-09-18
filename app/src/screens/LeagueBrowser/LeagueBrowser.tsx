@@ -59,7 +59,9 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
     { key: 'apy', header: 'APY', numeric: true, render: (r) => formatMoney(r.apy) },
   ]
 
-  const picks = state.picks.filter((p) => p.owner === selectedTeam).sort((a, b) => a.season - b.season || a.round - b.round)
+  const picks = state.picks
+    .filter((p) => p.owner === selectedTeam && p.playerId === null)
+    .sort((a, b) => a.season - b.season || a.round - b.round || (a.pick ?? 0) - (b.pick ?? 0))
 
   return (
     <>
@@ -105,8 +107,8 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
                 <p style={{ margin: 0, color: 'var(--text-2)' }}>No picks owned.</p>
               ) : (
                 <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
-                  {picks.map((p) => (
-                    <li key={`${p.season}-${p.round}-${p.originalTeam}`}>
+                  {picks.map((p, i) => (
+                    <li key={`${p.season}-${p.round}-${p.originalTeam}-${p.pick ?? i}`}>
                       {p.season} round {p.round}
                       {p.originalTeam !== selectedTeam ? ` (via ${data.teams[p.originalTeam]?.abbr ?? p.originalTeam})` : ''}
                     </li>

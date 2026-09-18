@@ -5,6 +5,8 @@ import { HelmetSprite, TeamScope } from '@ui/sprites'
 export interface DashboardProps {
   state: LeagueState
   data: StaticData
+  /** This season's cap in $M (the store knows the post-data growth rule; the raw table does not). */
+  cap: number
   onSimWeek: () => void
   onAdvancePhase: () => void
   simBusy?: boolean
@@ -23,7 +25,19 @@ function formatMoney(m: number): string {
 }
 
 /** Season hub: record, next opponent, horizon meter, cap, alerts, sim controls (docs/DESIGN.md §11). */
-export function Dashboard({ state, data, onSimWeek, onAdvancePhase, simBusy, advanceBusy }: DashboardProps) {
+/** What pressing the phase button does from each stop of the offseason; in season the week sim takes over. */
+const ADVANCE_LABEL: Record<LeagueState['phase'], string> = {
+  PRESEASON: 'Start the season',
+  REGULAR: 'Sim week',
+  PLAYOFFS: 'Sim week',
+  OFFSEASON_RESIGN: 'Close re-signing and go to the draft',
+  DRAFT: 'Leave the draft',
+  UDFA: 'Close UDFA signings',
+  FREE_AGENCY: 'Close free agency',
+  TRAINING_CAMP: 'Break camp',
+}
+
+export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy, advanceBusy }: DashboardProps) {
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
   const record = team?.record ?? { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
@@ -35,9 +49,12 @@ export function Dashboard({ state, data, onSimWeek, onAdvancePhase, simBusy, adv
   const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
   const horizonElapsed = Math.min(horizonTotal, Math.max(0, state.season - state.startSeason))
 
-  const cap = data.cap.bySeason[String(state.season)] ?? 0
   const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
   const capSpace = cap - payroll - (team?.deadMoney ?? 0)
+
+  const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
+  const draftPending = state.phase === 'DRAFT' && state.draftRoom?.status !== 'COMPLETE'
+  const advanceLabel = ADVANCE_LABEL[state.phase]
 
   const injured = (team?.roster ?? []).filter((slot) => slot.injured).length
   const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1).length
@@ -45,6 +62,9 @@ export function Dashboard({ state, data, onSimWeek, onAdvancePhase, simBusy, adv
   if (injured > 0) alerts.push(`${injured} player${injured === 1 ? '' : 's'} injured.`)
   if (expiring > 0) alerts.push(`${expiring} contract${expiring === 1 ? '' : 's'} expiring after this season.`)
   if (capSpace < 0) alerts.push(`Over the cap by ${formatMoney(-capSpace)}. Release or trade a contract to continue.`)
+  const rosterSize = team?.roster.length ?? 0
+  if ((state.phase === 'PRESEASON' || inSeason) && rosterSize > 53) alerts.push(`Roster has ${rosterSize} players. Cut to 53 to continue.`)
+  if ((state.phase === 'PRESEASON' || inSeason) && rosterSize < 46) alerts.push(`Roster has ${rosterSize} players. Sign at least ${46 - rosterSize} more to continue.`)
 
   return (
     <>
@@ -68,13 +88,17 @@ export function Dashboard({ state, data, onSimWeek, onAdvancePhase, simBusy, adv
             </div>
           )}
           <Meter value={horizonTotal === 0 ? 0 : horizonElapsed / horizonTotal} label={`Season ${horizonElapsed + 1} of ${horizonTotal}`} />
-          <div style={{ display: 'flex', gap: 'var(--sp-3)', marginTop: 'var(--sp-4)' }}>
-            <Button type="button" variant="primary" busy={simBusy} busyLabel="Simming…" onClick={onSimWeek}>
-              Sim week
-            </Button>
-            <Button type="button" variant="secondary" busy={advanceBusy} busyLabel="Working…" onClick={onAdvancePhase}>
-              Sim to next event
-            </Button>
+          <div style={{ display: 'flex', gap: 'var(--sp-3)', marginTop: 'var(--sp-4)', alignItems: 'center', flexWrap: 'wrap' }}>
+            {inSeason ? (
+              <Button type="button" variant="primary" busy={simBusy} busyLabel="Simming…" onClick={onSimWeek}>
+                Sim week
+              </Button>
+            ) : (
+              <Button type="button" variant="primary" busy={advanceBusy} busyLabel="Working…" disabled={draftPending} onClick={onAdvancePhase}>
+                {advanceLabel}
+              </Button>
+            )}
+            {draftPending && <span style={{ color: 'var(--text-2)' }}>Finish the draft in the Draft room first.</span>}
           </div>
         </Panel>
       </div>

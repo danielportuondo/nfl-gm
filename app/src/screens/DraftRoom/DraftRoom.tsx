@@ -249,8 +249,8 @@ export function DraftRoom({
             <p style={{ margin: 0, color: 'var(--text-2)' }}>No picks remaining.</p>
           ) : (
             <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
-              {yourPicks.map((p) => (
-                <li key={`${p.season}-${p.round}-${p.originalTeam}`}>
+              {yourPicks.map((p, i) => (
+                <li key={`${p.season}-${p.round}-${p.originalTeam}-${p.pick ?? i}`}>
                   Round {p.round}
                   {p.pick ? ` (pick ${p.pick})` : ''}
                   {p.playerId ? ` — ${state.players[p.playerId]?.name ?? p.playerId}` : ''}

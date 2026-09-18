@@ -27,6 +27,7 @@ const NAV_ITEMS: NavItem[] = [
 ]
 
 function formatPhase(phase: string): string {
+  if (phase === 'UDFA') return 'UDFA'
   const lower = phase.replace(/_/g, ' ').toLowerCase()
   return lower.charAt(0).toUpperCase() + lower.slice(1)
 }
@@ -69,8 +70,8 @@ export function App() {
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
   const record = team?.record ?? { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
-  const cap = data.cap.bySeason[String(state.season)] ?? 0
-  const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
+  const cap = actions.capThisSeason() ?? data.cap.bySeason[String(state.season)] ?? 0
+  const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0) + (team?.deadMoney ?? 0)
   const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
   const horizonElapsed = Math.min(horizonTotal, Math.max(0, state.season - state.startSeason))
 
@@ -104,7 +105,14 @@ export function App() {
       onDismissToast={actions.dismissToast}
     >
       {screen === 'roster' && (
-        <Roster state={state} data={data} onSelectPlayer={actions.selectPlayer} onReorderDepthChart={actions.setDepthChart} />
+        <Roster
+          state={state}
+          data={data}
+          onSelectPlayer={actions.selectPlayer}
+          onReorderDepthChart={actions.setDepthChart}
+          onRelease={actions.release}
+          releaseBusy={busy.fa}
+        />
       )}
       {screen === 'player' && selectedPlayerId && (
         <PlayerCard state={state} data={data} playerId={selectedPlayerId} onBack={() => actions.goTo('roster')} />
@@ -114,6 +122,7 @@ export function App() {
         <Dashboard
           state={state}
           data={data}
+          cap={cap}
           onSimWeek={actions.simWeek}
           onAdvancePhase={actions.advancePhase}
           simBusy={busy.simWeek}
@@ -150,7 +159,7 @@ export function App() {
       {screen === 'free-agency' && (
         <FreeAgency
           state={state}
-          data={data}
+          cap={cap}
           busy={busy.fa}
           onOfferContract={actions.offerContract}
           onResign={actions.resign}

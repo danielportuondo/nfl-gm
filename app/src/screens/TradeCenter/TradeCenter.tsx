@@ -86,10 +86,10 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
       <div>
         <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>Draft picks</h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
-          {picks.map((p) => {
+          {picks.map((p, i) => {
             const key = pickKey(p)
             return (
-              <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+              <label key={`${key}-${p.pick ?? i}`} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
                 <input type="checkbox" checked={selectedPicks.has(key)} onChange={() => onTogglePick(key)} />
                 {p.season} round {p.round}
               </label>

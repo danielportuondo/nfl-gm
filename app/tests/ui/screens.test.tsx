@@ -91,7 +91,7 @@ describe('Dashboard', () => {
   it('renders the team record', () => {
     const state = mockLeague()
     const data = mockStatic()
-    render(<Dashboard state={state} data={data} onSimWeek={vi.fn()} onAdvancePhase={vi.fn()} />)
+    render(<Dashboard state={state} data={data} cap={150} onSimWeek={vi.fn()} onAdvancePhase={vi.fn()} />)
     const record = state.teams[state.userTeam]!.record
     expect(screen.getByText(new RegExp(`${record.wins}-${record.losses}`))).toBeInTheDocument()
   })
@@ -218,11 +218,10 @@ describe('TradeCenter', () => {
 describe('FreeAgency', () => {
   it('renders the free agent pool and cap tiles', () => {
     const state = mockLeague()
-    const data = mockStatic()
     render(
       <FreeAgency
         state={state}
-        data={data}
+        cap={150}
         onOfferContract={vi.fn()}
         onResign={vi.fn()}
         onRelease={vi.fn()}

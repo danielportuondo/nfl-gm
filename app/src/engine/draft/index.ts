@@ -55,6 +55,19 @@ function syncOwners(state: LeagueState, room: DraftRoomState): DraftRoomState {
   return changed ? { ...room, order } : room
 }
 
+/**
+ * Stamp the player onto exactly one entry of state.picks — the slot's own pick number when it has one,
+ * else the first unmade pick of that round/original team (a compensatory pick shares both).
+ */
+function fillPick(picks: readonly DraftPick[], slot: DraftPick, pickNumber: number, playerId: PlayerId): DraftPick[] {
+  const matches = (p: DraftPick): boolean =>
+    p.season === slot.season && p.round === slot.round && p.originalTeam === slot.originalTeam && p.playerId === null
+  let index = picks.findIndex((p) => matches(p) && p.pick === pickNumber)
+  if (index < 0) index = picks.findIndex(matches)
+  if (index < 0) return [...picks]
+  return picks.map((p, i) => (i === index ? { ...p, pick: pickNumber, playerId } : p))
+}
+
 /** Make the pick at `currentPickIndex`: roster, contract, draft origin, log, board, next slot. */
 function applySelection(
   state: LeagueState,
@@ -99,11 +112,7 @@ function applySelection(
       ...state.players,
       [playerId]: { ...player, draft: { season: room.season, round: slot.round, pick: pickNumber, team: slot.owner } },
     },
-    picks: state.picks.map((p) =>
-      p.season === room.season && p.round === slot.round && p.originalTeam === slot.originalTeam && p.playerId === null
-        ? { ...p, playerId }
-        : p,
-    ),
+    picks: fillPick(state.picks, slot, pickNumber, playerId),
     freeAgents: state.freeAgents.filter((id) => id !== playerId),
     draftRoom: nextRoom,
   }

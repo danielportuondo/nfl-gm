@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import type { Contract, LeagueState, PlayerId, Position, StaticData } from '@contracts/index'
+import type { Contract, LeagueState, PlayerId, Position } from '@contracts/index'
 import { Button, Panel, PositionBadge, StatTile, Table, type Column } from '@ui/primitives'
 
 export interface FreeAgencyProps {
   state: LeagueState
-  data: StaticData
+  /** This season's cap in $M, from the store. */
+  cap: number
   busy?: boolean
   onOfferContract: (playerId: PlayerId, contract: Contract) => void
   onResign: (playerId: PlayerId, contract: Contract) => void
@@ -27,9 +28,8 @@ interface PoolRow {
 }
 
 /** Pool table with asks, your offers, re-sign list, UDFA list (docs/DESIGN.md §11). */
-export function FreeAgency({ state, data, busy, onOfferContract, onResign, onRelease, onSignUdfa, onResignAsk }: FreeAgencyProps) {
+export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRelease, onSignUdfa, onResignAsk }: FreeAgencyProps) {
   const team = state.teams[state.userTeam]
-  const cap = data.cap.bySeason[String(state.season)] ?? 0
   const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
   const capSpace = cap - payroll - (team?.deadMoney ?? 0)
   const minApy = Math.max(0.5, Math.round(cap * 0.003 * 10) / 10)
@@ -49,6 +49,7 @@ export function FreeAgency({ state, data, busy, onOfferContract, onResign, onRel
       return { id, name: player.name, pos: player.pos, age: state.season - player.birthYear, ovr: scouting.ovr, pot: scouting.pot }
     })
     .filter((r): r is PoolRow => r !== null)
+    .sort((a, b) => b.ovr - a.ovr || b.pot - a.pot || a.name.localeCompare(b.name))
 
   const columns: Column<PoolRow>[] = [
     {
@@ -212,7 +213,13 @@ export function FreeAgency({ state, data, busy, onOfferContract, onResign, onRel
             <p style={{ margin: 0, color: 'var(--text-2)' }}>Select a player from the pool.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
-              <p style={{ margin: 0 }}>{state.players[selected]?.name}</p>
+              <p style={{ margin: 0 }}>
+                {state.players[selected]?.name}
+                {(() => {
+                  const ask = onResignAsk(selected)
+                  return ask === null ? null : <span style={{ color: 'var(--text-2)' }}> · asking about {formatMoney(ask)}/yr</span>
+                })()}
+              </p>
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
                 Years
                 <input type="number" min={1} max={5} value={offerYears} onChange={(e) => setOfferYears(Number(e.target.value))} />

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { POSITIONS, type LeagueState, type PlayerId, type Position, type RosterSlot, type StaticData } from '@contracts/index'
-import { NamePlate, Panel, PositionBadge, StatusBadge, Table, type Column } from '@ui/primitives'
+import { Button, NamePlate, Panel, PositionBadge, StatusBadge, Table, type Column } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
 
 export interface RosterProps {
@@ -8,6 +8,9 @@ export interface RosterProps {
   data: StaticData
   onSelectPlayer: (id: PlayerId) => void
   onReorderDepthChart: (pos: Position, order: PlayerId[]) => void
+  /** Cut a player (dead money applies); the store gates who can be released. */
+  onRelease?: (id: PlayerId) => void
+  releaseBusy?: boolean
 }
 
 interface Row {
@@ -27,7 +30,7 @@ interface Row {
 const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 
 /** Dense roster table with a position filter, plus a keyboard-reorderable depth chart (docs/DESIGN.md §11). */
-export function Roster({ state, data, onSelectPlayer, onReorderDepthChart }: RosterProps) {
+export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRelease, releaseBusy }: RosterProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
   const team = state.teams[state.userTeam]
 
@@ -83,6 +86,29 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart }: Ros
         </span>
       ),
     },
+    ...(onRelease
+      ? [
+          {
+            key: 'release',
+            header: '',
+            render: (r: Row) => (
+              <Button
+                type="button"
+                variant="ghost"
+                busy={releaseBusy}
+                busyLabel="…"
+                aria-label={`Release ${r.name}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onRelease(r.slot.playerId)
+                }}
+              >
+                Release
+              </Button>
+            ),
+          } satisfies Column<Row>,
+        ]
+      : []),
   ]
 
   const depthPositions: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'CB', 'S']
@@ -110,7 +136,7 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart }: Ros
             columns={columns}
             rows={filtered}
             rowKey={(r) => r.slot.playerId}
-            caption={`${team?.id ?? ''} 53-man roster`}
+            caption={`${team?.id ?? ''} roster · ${rows.length} players`}
             dense
             onRowClick={(r) => onSelectPlayer(r.slot.playerId)}
           />

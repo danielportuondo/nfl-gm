@@ -6,7 +6,8 @@
 import type { AgingCurve, CurvesFile, OutcomeTable, Position } from '@contracts/index'
 import { DEFAULT_AGING_SD, RETIREMENT_PROB_EPSILON, RETIREMENT_VALUE_BASELINE } from './constants'
 
-export const clampRating = (x: number): number => Math.min(99, Math.max(40, x))
+/** Ratings live on the 40–99 scale at one decimal, like the shipped consensus data. */
+export const clampRating = (x: number): number => Math.round(Math.min(99, Math.max(40, x)) * 10) / 10
 
 function agingCurveFor(curves: CurvesFile, pos: Position): AgingCurve | undefined {
   return curves.aging.find((c) => c.pos === pos)

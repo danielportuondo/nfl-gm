@@ -106,6 +106,8 @@ export interface GameStoreState {
     signUdfa: (playerIds: PlayerId[]) => Promise<void>
     /** The expiring player's ask for the re-sign phase. Null when not built yet. */
     resignAsk: (playerId: PlayerId) => number | null
+    /** This season's cap in $M, including the post-data growth rule; null while data is loading. */
+    capThisSeason: () => number | null
 
     // --- Schedule / season -------------------------------------------------------------------
     simToNextEvent: () => Promise<void>

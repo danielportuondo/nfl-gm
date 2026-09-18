@@ -77,7 +77,7 @@ export function createGameStore(config: StoreConfig = {}) {
   if (typeof document !== 'undefined') applyTheme(initialTheme)
   const initialRoute = currentRoute()
 
-  return create<GameStoreState>()((set, get) => {
+  return create<GameStoreState>()((set, get, api) => {
     function addToast(text: string, tone: ToastItem['tone'] = 'info') {
       set((s) => ({ toasts: [...s.toasts, { id: makeToastId(), text, tone }] }))
     }
@@ -112,6 +112,42 @@ export function createGameStore(config: StoreConfig = {}) {
       return { data, trajectories, seasonData, modules }
     }
 
+    /** §6.9: autosave at every phase transition and every 4 weeks. Fire-and-forget; a failure only toasts. */
+    function autosave(league: LeagueState): void {
+      if (mode === 'mock') return
+      persistence.save('default', league).catch((err: unknown) => {
+        addToast(`Autosave failed: ${err instanceof Error ? err.message : String(err)}`, 'error')
+      })
+    }
+
+    // Roster moves between transitions (cuts, signings, picks) would otherwise be lost to a reload;
+    // a short debounce keeps a burst of cuts to one write.
+    let autosaveTimer: ReturnType<typeof setTimeout> | undefined
+    api.subscribe((next, prev) => {
+      if (mode === 'mock' || !next.state || next.state === prev.state) return
+      if (autosaveTimer !== undefined) clearTimeout(autosaveTimer)
+      autosaveTimer = setTimeout(() => autosave(next.state!), 1000)
+    })
+
+    /** Pick the last game back up after a reload; a missing slot just leaves the new-game screen up. */
+    async function restoreSave(): Promise<void> {
+      if (mode === 'mock' || get().state) return
+      let league: LeagueState
+      try {
+        league = await persistence.load('default')
+      } catch {
+        return
+      }
+      try {
+        await ensureLoaded(league.season, league.season + 1 + DRAFTS_AHEAD)
+        if (get().state) return
+        set({ state: league })
+        if (get().screen === 'new-game') get().actions.goTo('dashboard')
+      } catch (err) {
+        reportNotBuilt('Could not restore the saved game.', err)
+      }
+    }
+
     /** Loads trajectories once and every in-history chunk in [from, to] that is not cached yet. */
     async function ensureLoaded(from: Season, to: Season): Promise<void> {
       if (!dataSource) return
@@ -133,7 +169,10 @@ export function createGameStore(config: StoreConfig = {}) {
     if (dataSource) {
       dataSource
         .loadStatic()
-        .then((data) => set({ data, dataStatus: 'ready', dataError: null }))
+        .then((data) => {
+          set({ data, dataStatus: 'ready', dataError: null })
+          return restoreSave()
+        })
         .catch((err: unknown) => {
           const message = err instanceof Error ? err.message : String(err)
           set({ dataStatus: 'error', dataError: message })
@@ -194,6 +233,7 @@ export function createGameStore(config: StoreConfig = {}) {
               ctx,
             )
             set({ state: league })
+            autosave(league)
             get().actions.goTo('dashboard')
           } catch (err) {
             reportNotBuilt('Could not start a new game.', err)
@@ -227,6 +267,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const report = modules.league.simWeek(league, ctx)
             set({ state: report.state })
             routeEvents(report.events, report.state)
+            if (report.state.phase !== league.phase || report.state.week % 4 === 0) autosave(report.state)
           } catch (err) {
             reportNotBuilt('Could not sim the week.', err)
           } finally {
@@ -244,6 +285,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const ctx = buildCtx()
             const next = modules.league.advancePhase(league, ctx)
             set({ state: next })
+            autosave(next)
           } catch (err) {
             reportNotBuilt('Could not advance the phase.', err)
           } finally {
@@ -513,6 +555,16 @@ export function createGameStore(config: StoreConfig = {}) {
           }
         },
 
+        capThisSeason(): number | null {
+          const league = get().state
+          if (!league) return null
+          try {
+            return modules.fa.capFor(league.season, buildCtx())
+          } catch {
+            return null
+          }
+        },
+
         resignAsk(playerId: PlayerId): number | null {
           const league = get().state
           if (!league) return null
@@ -543,6 +595,7 @@ export function createGameStore(config: StoreConfig = {}) {
               if (current.phase !== startPhase) break
               if (report.events.some((e) => eventMentionsUser(e, current))) break
             }
+            if (current !== league) autosave(current)
           } catch (err) {
             reportNotBuilt('Could not sim to the next event.', err)
           } finally {
@@ -565,6 +618,7 @@ export function createGameStore(config: StoreConfig = {}) {
               routeEvents(report.events, current)
               set({ state: current })
             }
+            if (current !== league) autosave(current)
           } catch (err) {
             reportNotBuilt('Could not sim the season.', err)
           } finally {
