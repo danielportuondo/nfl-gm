@@ -810,6 +810,9 @@ export interface FaModule {
    */
   offer(state: LeagueState, teamId: TeamId, playerId: PlayerId, contract: Contract, ctx: EngineContext, rng: Rng): { accepted: boolean; state: LeagueState }
 
+  /** P(accept) the offer would face before any hard gate (cap, roster size); pure, for UI previews. */
+  offerOdds(state: LeagueState, teamId: TeamId, playerId: PlayerId, contract: Contract, ctx: EngineContext): number
+
   /** AI signings: history-anchored (real team for that season) with value/need fallback under cap. */
   runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
 
@@ -843,6 +846,7 @@ export const faStub: FaModule = {
   runAiResign: () => notImplemented('fa.runAiResign'),
   freeAgentPool: () => notImplemented('fa.freeAgentPool'),
   offer: () => notImplemented('fa.offer'),
+  offerOdds: () => notImplemented('fa.offerOdds'),
   runAiFreeAgency: () => notImplemented('fa.runAiFreeAgency'),
   runAiCutdowns: () => notImplemented('fa.runAiCutdowns'),
   release: () => notImplemented('fa.release'),

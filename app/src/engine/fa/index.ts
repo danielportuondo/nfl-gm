@@ -358,6 +358,18 @@ function acceptProbability(ratio: number, quality: number): number {
   return Math.min(1, Math.max(0, 1 / (1 + Math.exp(-x))))
 }
 
+function offerOdds(
+  state: LeagueState,
+  teamId: TeamId,
+  playerId: PlayerId,
+  contract: Contract,
+  ctx: EngineContext,
+): number {
+  const ask = resignAsk(state, playerId, ctx)
+  const ratio = contract.apy / Math.max(0.01, ask)
+  return acceptProbability(ratio, teamQuality(state, teamId))
+}
+
 function offer(
   state: LeagueState,
   teamId: TeamId,
@@ -368,9 +380,7 @@ function offer(
 ): { accepted: boolean; state: LeagueState } {
   const team = state.teams[teamId]
   if (!team) throw new Error(`fa.offer: unknown team "${teamId}"`)
-  const ask = resignAsk(state, playerId, ctx)
-  const ratio = contract.apy / Math.max(0.01, ask)
-  const p = acceptProbability(ratio, teamQuality(state, teamId))
+  const p = offerOdds(state, teamId, playerId, contract, ctx)
   const limits = rosterLimits(state)
   const projectedSize = team.roster.length + 1
   const projectedPayroll = payroll(state, teamId) + contract.apy
@@ -502,6 +512,7 @@ export const fa: FaModule = {
   runAiResign,
   freeAgentPool,
   offer,
+  offerOdds,
   runAiFreeAgency,
   runAiCutdowns,
   release,

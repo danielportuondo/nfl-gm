@@ -139,6 +139,7 @@ export const fakeFa: FaModule = {
   runAiResign: (state) => state,
   freeAgentPool: (state) => state.freeAgents,
   offer: (state) => ({ accepted: true, state }),
+  offerOdds: () => 1,
   runAiFreeAgency: (state) => state,
   runAiCutdowns: (state) => state,
   release: (state) => state,
