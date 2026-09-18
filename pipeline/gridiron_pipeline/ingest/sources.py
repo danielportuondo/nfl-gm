@@ -36,7 +36,10 @@ def combine_url() -> str:
 
 
 def contracts_url() -> str:
-    return f"{RELEASES}/contracts/historical_contracts.csv.gz"
+    # `historical_contracts.csv.gz` is frozen (last updated 2022-05-29 on nflverse-data); the
+    # parquet asset under the same release tag is the one OTC/nflverse keeps current (rebuilt
+    # daily, contracts through the in-progress season) and also carries a direct gsis_id column.
+    return f"{RELEASES}/contracts/historical_contracts.parquet"
 
 
 def players_url() -> str:

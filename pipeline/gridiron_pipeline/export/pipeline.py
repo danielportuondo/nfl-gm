@@ -19,7 +19,7 @@ from gridiron_pipeline.build.rosters import (
 )
 from gridiron_pipeline.build.schedule import build_season_schedule
 from gridiron_pipeline.build.teams import ATTRIBUTION, build_teams
-from gridiron_pipeline.export.writer import write_json
+from gridiron_pipeline.export.writer import gzipped_file_size, write_json
 from gridiron_pipeline.ingest.download import download_all
 from gridiron_pipeline.ingest.load import load_games
 from gridiron_pipeline.ingest.sources import all_urls
@@ -72,6 +72,8 @@ def run(seasons: list[int], allow_placeholder_ratings: bool) -> dict[str, int]:
         if total > 1_000_000:
             log.warning("season %d exceeds 1 MB gzipped budget: %d bytes", season, total)
 
+    add_model_owned_file_sizes(sizes, DATA_OUT_DIR)
+
     manifest = {
         "schemaVersion": SCHEMA_VERSION,
         "generatedAt": _stable_generated_at(sizes, seasons),
@@ -84,6 +86,29 @@ def run(seasons: list[int], allow_placeholder_ratings: bool) -> dict[str, int]:
     # sizesBytes (it would otherwise depend on itself); written last since it summarizes the rest.
     sizes["manifest.json"] = write_json("manifest", manifest, DATA_OUT_DIR / "manifest.json")
     return sizes
+
+
+MODEL_OWNED_FILES = ("curves.json", "trajectories.json")
+
+
+def add_model_owned_file_sizes(sizes: dict[str, int], data_out_dir) -> None:
+    """Mutate `sizes` in place with gzipped sizes for files ratings-model writes directly.
+
+    `curves.json` and `trajectories.json` never pass through `export.writer.write_json` (they are
+    written by `gridiron_pipeline.model.build`), so `manifest.sizesBytes` silently omitted them
+    (docs/DECISIONS.md Phase 4 follow-up). Measure them off disk instead; skip with a warning if
+    `make model` has not produced them yet.
+    """
+    for name in MODEL_OWNED_FILES:
+        path = data_out_dir / name
+        if path.exists():
+            sizes[name] = gzipped_file_size(path)
+        else:
+            log.warning(
+                "%s not found under %s; run `make model` first for a complete manifest",
+                name,
+                data_out_dir,
+            )
 
 
 def _stable_generated_at(sizes: dict[str, int], seasons: list[int]) -> str:

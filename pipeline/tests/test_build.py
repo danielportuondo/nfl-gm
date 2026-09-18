@@ -13,6 +13,9 @@ from gridiron_pipeline.build.players import build_player_master
 from gridiron_pipeline.build.positions import map_position_group
 from gridiron_pipeline.build.ratings import Ratings
 from gridiron_pipeline.build.rosters import (
+    _contract_index,
+    _has_contract,
+    _status_priority,
     build_season_rosters_and_players,
     season_roster_stints,
     season_start_roster,
@@ -131,3 +134,51 @@ def test_opening_day_rosters_are_legal(master, ratings, season):
 
     for pid, player in players_by_id.items():
         assert player["team"] == rostered_team_by_id.get(pid)
+
+
+def test_season_membership_drops_noise_without_stint_draft_or_contract(master, ratings):
+    """A player belongs in season S only with a real roster stint (ACT/RES/INA), a draft slot in
+    S, or a contract covering S. A CUT/DEV-only blip in the roster source with neither is dropped
+    rather than inflating the free-agent pool (docs/DECISIONS.md Phase 4/5 follow-up).
+    """
+    season = 2016
+    start = season_start_roster(season_roster_stints(season))
+    contract_idx = _contract_index(master)
+
+    def drafted_this_season(g: str) -> bool:
+        return (master.draft_by_gsis.get(g) or {}).get("season") == season
+
+    bad_status = start[start["status"].map(_status_priority) == 1]
+    noise = bad_status[
+        ~bad_status["gsis_id"].map(drafted_this_season)
+        & ~bad_status["gsis_id"].map(lambda g: _has_contract(contract_idx, g, season))
+    ]
+    assert len(noise) > 0, "2016 fixture assumption: CUT/DEV-only players w/ no draft/contract tie"
+
+    _, players_obj = build_season_rosters_and_players(season, master, ratings)
+    kept_ids = {p["id"] for p in players_obj["players"]}
+    assert not (set(noise["gsis_id"]) & kept_ids)
+
+
+def test_season_membership_keeps_contracted_or_drafted_despite_bad_status(master, ratings):
+    season = 2016
+    start = season_start_roster(season_roster_stints(season))
+    contract_idx = _contract_index(master)
+
+    def drafted_this_season(g: str) -> bool:
+        return (master.draft_by_gsis.get(g) or {}).get("season") == season
+
+    # Restrict to rows with a resolvable position group: make_player_record independently drops
+    # rows missing name/pos/birthYear (see test_no_headshot_or_logo_columns_leak_into_players'
+    # sibling behaviour), which is orthogonal to the membership rule under test here.
+    has_pos_group = start["position"].map(map_position_group).notna()
+    bad_status = start[(start["status"].map(_status_priority) == 1) & has_pos_group]
+    tied = bad_status[
+        bad_status["gsis_id"].map(drafted_this_season)
+        | bad_status["gsis_id"].map(lambda g: _has_contract(contract_idx, g, season))
+    ]
+    assert len(tied) > 0
+
+    _, players_obj = build_season_rosters_and_players(season, master, ratings)
+    kept_ids = {p["id"] for p in players_obj["players"]}
+    assert set(tied["gsis_id"]).issubset(kept_ids)

@@ -9,7 +9,8 @@ import pytest
 
 from gridiron_pipeline.build.cap import build_cap
 from gridiron_pipeline.build.teams import build_teams
-from gridiron_pipeline.export.writer import gzipped_size, write_json
+from gridiron_pipeline.export.pipeline import add_model_owned_file_sizes
+from gridiron_pipeline.export.writer import gzipped_file_size, gzipped_size, write_json
 
 
 def test_build_teams_has_32_canonical_teams_and_validates():
@@ -59,3 +60,26 @@ def test_write_json_overwrite_is_deterministic(tmp_path):
     write_json("cap", cap, path)
     second = path.read_bytes()
     assert first == second
+
+
+def test_manifest_includes_model_owned_file_sizes(tmp_path):
+    """curves.json and trajectories.json are written by gridiron_pipeline.model, not this
+    exporter's write_json, so manifest.sizesBytes silently omitted them (docs/DECISIONS.md Phase 4
+    follow-up). add_model_owned_file_sizes must fill both in when the files exist on disk.
+    """
+    (tmp_path / "curves.json").write_text('{"a":1}')
+    (tmp_path / "trajectories.json").write_text('{"byPlayer":{}}')
+
+    sizes: dict[str, int] = {"teams.json": 123}
+    add_model_owned_file_sizes(sizes, tmp_path)
+
+    assert sizes["curves.json"] == gzipped_file_size(tmp_path / "curves.json")
+    assert sizes["trajectories.json"] == gzipped_file_size(tmp_path / "trajectories.json")
+    assert sizes["curves.json"] > 0
+    assert sizes["teams.json"] == 123
+
+
+def test_manifest_skips_missing_model_owned_files(tmp_path):
+    sizes: dict[str, int] = {}
+    add_model_owned_file_sizes(sizes, tmp_path)
+    assert sizes == {}

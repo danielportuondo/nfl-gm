@@ -214,16 +214,24 @@ def _select_rosters(
 
 
 def _contract_index(master: PlayerMaster) -> dict[str, list[tuple[int, int, float]]]:
-    """gsis_id -> sorted [(year_signed, years, apy)] contracts, via otc_id crosswalk."""
+    """gsis_id -> sorted [(year_signed, years, apy)] contracts.
+
+    The current contracts release carries a direct `gsis_id` column; fall back to the otc_id
+    crosswalk for older rows (or a release without it) so matching degrades gracefully.
+    """
     try:
         contracts = load_contracts()
     except Exception:  # noqa: BLE001 - contracts are a best-effort enrichment
         log.warning("contracts data unavailable; apy/years hints will be omitted")
         return {}
-    contracts = contracts[contracts["otc_id"].notna() & contracts["year_signed"].notna()]
+    contracts = contracts[contracts["year_signed"].notna()]
+    has_direct_gsis = "gsis_id" in contracts.columns
     idx: dict[str, list[tuple[int, int, float]]] = {}
     for row in contracts.itertuples(index=False):
-        gsis_id = master.otc_to_gsis.get(row.otc_id)
+        gsis_id = getattr(row, "gsis_id", None) if has_direct_gsis else None
+        if gsis_id is None or (isinstance(gsis_id, float) and pd.isna(gsis_id)):
+            otc_id = getattr(row, "otc_id", None)
+            gsis_id = master.otc_to_gsis.get(otc_id) if otc_id is not None else None
         if gsis_id is None or pd.isna(row.apy):
             continue
         years = int(row.years) if not pd.isna(row.years) else 1
@@ -243,20 +251,50 @@ def _contract_hint(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, s
     return hints
 
 
+def _has_contract(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, season: int) -> bool:
+    contracts = idx.get(gsis_id, [])
+    return any(year_signed <= season < year_signed + years for year_signed, years, _ in contracts)
+
+
+def _season_membership_mask(
+    start: pd.DataFrame,
+    season: int,
+    master: PlayerMaster,
+    contract_idx: dict[str, list[tuple[int, int, float]]],
+) -> pd.Series:
+    """A player belongs in season S only with a real roster stint, a draft slot, or a contract in S.
+
+    `start` (season_start_roster) already restricts to players with *some* roster row that season,
+    but nflverse's roster snapshot grew substantially from 2016 (practice-squad/tryout churn is now
+    reported alongside the 53-man roster), so a `CUT`/`DEV`/etc-only appearance with no other tie to
+    the season (not drafted this season, no contract covering it) is noise rather than a real
+    participant — drop it rather than let it inflate the free-agent pool. A `good` status
+    (ACT/RES/INA, see `_status_priority`) always counts as a real stint.
+    """
+    good_status = start["status"].map(_status_priority) == 0
+    drafted_this_season = start["gsis_id"].map(
+        lambda g: (master.draft_by_gsis.get(g) or {}).get("season") == season
+    )
+    contracted = start["gsis_id"].map(lambda g: _has_contract(contract_idx, g, season))
+    return good_status | drafted_this_season | contracted
+
+
 def build_season_rosters_and_players(
     season: int, master: PlayerMaster, ratings
 ) -> tuple[dict, dict]:
     """Build rosters.json and players.json for one season together (they share the roster scan).
 
-    players.json covers every season-start stint; rosters.json is the opening-day 53 per team (see
-    docs/DATA_CONTRACT.md). A player's `team` is set after roster selection: the team whose exported
-    roster contains them, else null (free agent pool).
+    players.json covers every season-start stint that clears `_season_membership_mask`;
+    rosters.json is the opening-day 53 per team (see docs/DATA_CONTRACT.md). A player's `team` is
+    set after roster selection: the team whose exported roster contains them, else null (free
+    agent pool).
     """
     stints = season_roster_stints(season)
     start = season_start_roster(stints)
+    contract_idx = _contract_index(master)
+    start = start[_season_membership_mask(start, season, master, contract_idx)]
     snaps = _snap_score(season, master)
     depth_ranks = compute_depth_ranks(season, start, master, snaps)
-    contract_idx = _contract_index(master)
 
     unmatched_file, unmatched_writer = _unmatched_logger(season)
 

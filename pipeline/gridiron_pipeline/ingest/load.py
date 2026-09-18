@@ -51,7 +51,8 @@ def load_combine() -> pd.DataFrame:
 
 
 def load_contracts() -> pd.DataFrame:
-    return _read_csv(sources.contracts_url(), compression="gzip")
+    path = cached_download(sources.contracts_url())
+    return pd.read_parquet(path)
 
 
 def load_roster(season: int) -> pd.DataFrame:

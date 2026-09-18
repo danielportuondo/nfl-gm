@@ -2,47 +2,6 @@
   "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
   "players": [
     {
-      "birthYear": 1983,
-      "draft": {
-        "pick": 60,
-        "round": 2,
-        "season": 2005,
-        "team": "IND"
-      },
-      "heightIn": 72.0,
-      "id": "00-0023495",
-      "name": "Kelvin Hayden",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2005,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.3,
-        "pot": 71.3
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 195.0
-    },
-    {
-      "birthYear": 1983,
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0023968",
-      "name": "Micheal Spurlock",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2006,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 53.9,
-        "pot": 53.9
-      },
-      "team": null,
-      "trueValue": 56.5,
-      "weightLb": 210.0
-    },
-    {
       "birthYear": 1978,
       "draft": {
         "pick": 13,
@@ -88,24 +47,6 @@
       "team": null,
       "trueValue": 42.1,
       "weightLb": 195.0
-    },
-    {
-      "birthYear": 1988,
-      "draft": null,
-      "heightIn": 69.0,
-      "id": "00-0027338",
-      "name": "Aaron Berry",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.71,
-        "ovr": 58.9,
-        "pot": 58.9
-      },
-      "team": null,
-      "trueValue": 56.1,
-      "weightLb": 190.0
     },
     {
       "birthYear": 1984,
@@ -241,7 +182,7 @@
         "ovr": 54.8,
         "pot": 57.0
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 52.6,
       "weightLb": 260.0
     },
@@ -268,24 +209,6 @@
       "team": "KC",
       "trueValue": 64.5,
       "weightLb": 242.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0029864",
-      "name": "Onterio McCalebb",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 47.5,
-        "pot": 68.1
-      },
-      "team": null,
-      "trueValue": 40.6,
-      "weightLb": 175.0
     },
     {
       "birthYear": 1989,
@@ -422,24 +345,6 @@
       "weightLb": 260.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0028906",
-      "name": "Nathan Palmer",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 44.1,
-        "pot": 45.6
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 198.0
-    },
-    {
       "birthYear": 1985,
       "college": "South Florida",
       "draft": {
@@ -560,25 +465,6 @@
     },
     {
       "birthYear": 1989,
-      "college": "Virginia",
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0028878",
-      "name": "Matt Conrath",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.67,
-        "ovr": 59.5,
-        "pot": 61.3
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 306.0
-    },
-    {
-      "birthYear": 1989,
       "college": "Northern Illinois",
       "draft": null,
       "heightIn": 74.0,
@@ -592,7 +478,7 @@
         "ovr": 41.8,
         "pot": 43.3
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 67.2,
       "weightLb": 193.0
     },
@@ -680,24 +566,6 @@
       "team": "CHI",
       "trueValue": 58.2,
       "weightLb": 267.0
-    },
-    {
-      "birthYear": 1987,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0028401",
-      "name": "Cameron Bradfield",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.79,
-        "ovr": 57.8,
-        "pot": 58.9
-      },
-      "team": null,
-      "trueValue": 52.1,
-      "weightLb": 308.0
     },
     {
       "birthYear": 1988,
@@ -924,29 +792,6 @@
       "weightLb": 209.0
     },
     {
-      "birthYear": 1989,
-      "draft": {
-        "pick": 188,
-        "round": 6,
-        "season": 2010,
-        "team": "PIT"
-      },
-      "heightIn": 71.0,
-      "id": "00-0027786",
-      "name": "Jonathan Dwyer",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.89,
-        "ovr": 61.5,
-        "pot": 61.5
-      },
-      "team": null,
-      "trueValue": 58.0,
-      "weightLb": 229.0
-    },
-    {
       "birthYear": 1990,
       "college": "Georgia",
       "draft": {
@@ -985,7 +830,7 @@
         "ovr": 56.1,
         "pot": 56.1
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 52.4,
       "weightLb": 205.0
     },
@@ -1025,24 +870,6 @@
       "team": null,
       "trueValue": 58.8,
       "weightLb": 260.0
-    },
-    {
-      "birthYear": 1986,
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0026738",
-      "name": "Nate Ness",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 54.6,
-        "pot": 54.6
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 190.0
     },
     {
       "birthYear": 1986,
@@ -1103,65 +930,6 @@
       "team": null,
       "trueValue": 67.9,
       "weightLb": 190.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0028606",
-      "name": "Kerry Taylor",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.76,
-        "ovr": 63.8,
-        "pot": 63.8
-      },
-      "team": null,
-      "trueValue": 40.7,
-      "weightLb": 200.0
-    },
-    {
-      "birthYear": 1987,
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0028211",
-      "name": "Mario Harvey",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.67,
-        "ovr": 56.7,
-        "pot": 58.2
-      },
-      "team": "IND",
-      "trueValue": 53.1,
-      "weightLb": 264.0
-    },
-    {
-      "birthYear": 1985,
-      "draft": {
-        "pick": 176,
-        "round": 6,
-        "season": 2008,
-        "team": "MIA"
-      },
-      "heightIn": 71.0,
-      "id": "00-0026316",
-      "name": "Jalen Parmele",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2008,
-      "scouting": {
-        "confidence": 0.94,
-        "ovr": 63.6,
-        "pot": 63.6
-      },
-      "team": null,
-      "trueValue": 43.0,
-      "weightLb": 225.0
     },
     {
       "birthYear": 1990,
@@ -1364,29 +1132,6 @@
       "weightLb": 245.0
     },
     {
-      "birthYear": 1987,
-      "draft": {
-        "pick": 220,
-        "round": 7,
-        "season": 2009,
-        "team": "BUF"
-      },
-      "heightIn": 69.0,
-      "id": "00-0027144",
-      "name": "Ellis Lankster",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.93,
-        "ovr": 48.6,
-        "pot": 48.6
-      },
-      "team": null,
-      "trueValue": 43.0,
-      "weightLb": 190.0
-    },
-    {
       "birthYear": 1990,
       "college": "Arizona State",
       "draft": {
@@ -1458,29 +1203,6 @@
       "weightLb": 331.0
     },
     {
-      "birthYear": 1986,
-      "draft": {
-        "pick": 128,
-        "round": 4,
-        "season": 2009,
-        "team": "CAR"
-      },
-      "heightIn": 72.0,
-      "id": "00-0027093",
-      "name": "Tony Fiammetta",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.0,
-        "pot": 71.0
-      },
-      "team": "CHI",
-      "trueValue": 55.9,
-      "weightLb": 250.0
-    },
-    {
       "birthYear": 1989,
       "college": "North Carolina State",
       "draft": {
@@ -1523,24 +1245,6 @@
       "weightLb": 313.0
     },
     {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0030822",
-      "name": "Marcel Jensen",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.23,
-        "ovr": 48.0,
-        "pot": 71.0
-      },
-      "team": null,
-      "trueValue": 60.6,
-      "weightLb": 270.0
-    },
-    {
       "birthYear": 1988,
       "college": "Temple",
       "draft": null,
@@ -1558,24 +1262,6 @@
       "team": "LV",
       "trueValue": 65.5,
       "weightLb": 195.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0029401",
-      "name": "Tauren Poole",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 49.6,
-        "pot": 71.0
-      },
-      "team": null,
-      "trueValue": 47.4,
-      "weightLb": 210.0
     },
     {
       "birthYear": 1987,
@@ -1600,24 +1286,6 @@
       "team": null,
       "trueValue": 41.8,
       "weightLb": 208.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0029343",
-      "name": "Laron Byrd",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 54.6,
-        "pot": 56.1
-      },
-      "team": null,
-      "trueValue": 41.2,
-      "weightLb": 220.0
     },
     {
       "birthYear": 1992,
@@ -1713,67 +1381,6 @@
       "weightLb": 218.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0028678",
-      "name": "LeQuan Lewis",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 65.6,
-        "pot": 67.1
-      },
-      "team": null,
-      "trueValue": 43.0,
-      "weightLb": 190.0
-    },
-    {
-      "birthYear": 1986,
-      "college": "Penn State",
-      "draft": {
-        "pick": 214,
-        "round": 7,
-        "season": 2010,
-        "team": "MIN"
-      },
-      "heightIn": 76.0,
-      "id": "00-0027809",
-      "name": "Mickey Shuler",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.61,
-        "ovr": 41.2,
-        "pot": 41.2
-      },
-      "team": "JAX",
-      "trueValue": 55.7,
-      "weightLb": 247.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "USC",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0030713",
-      "name": "Kevin Graf",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.15,
-        "ovr": 44.8,
-        "pot": 44.8
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 309.0
-    },
-    {
       "birthYear": 1988,
       "college": "Nevada-Las Vegas",
       "draft": {
@@ -1821,29 +1428,6 @@
       "weightLb": 223.0
     },
     {
-      "birthYear": 1987,
-      "draft": {
-        "pick": 110,
-        "round": 4,
-        "season": 2009,
-        "team": "DAL"
-      },
-      "heightIn": 74.0,
-      "id": "00-0027079",
-      "name": "Victor Butler",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.86,
-        "ovr": 67.1,
-        "pot": 67.1
-      },
-      "team": null,
-      "trueValue": 52.4,
-      "weightLb": 245.0
-    },
-    {
       "birthYear": 1990,
       "college": "Louisiana State",
       "draft": {
@@ -1868,25 +1452,6 @@
       "weightLb": 192.0
     },
     {
-      "birthYear": 1990,
-      "college": "Arizona State",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0030187",
-      "name": "Rashad Ross",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 50.2,
-        "pot": 51.8
-      },
-      "team": null,
-      "trueValue": 58.6,
-      "weightLb": 167.0
-    },
-    {
       "birthYear": 1984,
       "draft": null,
       "heightIn": 70.0,
@@ -1903,25 +1468,6 @@
       "team": null,
       "trueValue": 46.8,
       "weightLb": 225.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Arkansas",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0031006",
-      "name": "Robert Thomas",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 48.1,
-        "pot": 49.8
-      },
-      "team": "WAS",
-      "trueValue": 42.1,
-      "weightLb": 325.0
     },
     {
       "birthYear": 1988,
@@ -1941,24 +1487,6 @@
       "team": "NE",
       "trueValue": 58.5,
       "weightLb": 195.0
-    },
-    {
-      "birthYear": 1991,
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0030043",
-      "name": "Da'Rick Rogers",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 68.9,
-        "pot": 71.9
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 215.0
     },
     {
       "birthYear": 1990,
@@ -1983,24 +1511,6 @@
       "team": "NYJ",
       "trueValue": 66.9,
       "weightLb": 246.0
-    },
-    {
-      "birthYear": 1991,
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0030912",
-      "name": "Dan Fox",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 48.2,
-        "pot": 59.3
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 233.0
     },
     {
       "birthYear": 1990,
@@ -2043,29 +1553,6 @@
       "team": "GB",
       "trueValue": 56.7,
       "weightLb": 254.0
-    },
-    {
-      "birthYear": 1986,
-      "draft": {
-        "pick": 134,
-        "round": 5,
-        "season": 2010,
-        "team": "PHI"
-      },
-      "heightIn": 76.0,
-      "id": "00-0027734",
-      "name": "Ricky Sapp",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.83,
-        "ovr": 50.9,
-        "pot": 50.9
-      },
-      "team": null,
-      "trueValue": 53.4,
-      "weightLb": 252.0
     },
     {
       "birthYear": 1987,
@@ -2404,24 +1891,6 @@
       "weightLb": 315.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0029367",
-      "name": "Julian Talley",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 49.5,
-        "pot": 51.0
-      },
-      "team": null,
-      "trueValue": 57.0,
-      "weightLb": 192.0
-    },
-    {
       "birthYear": 1992,
       "college": "Tulane",
       "draft": null,
@@ -2439,29 +1908,6 @@
       "team": "MIA",
       "trueValue": 58.2,
       "weightLb": 215.0
-    },
-    {
-      "birthYear": 1983,
-      "draft": {
-        "pick": 68,
-        "round": 3,
-        "season": 2005,
-        "team": "TEN"
-      },
-      "heightIn": 72.0,
-      "id": "00-0023503",
-      "name": "Courtney Roby",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2005,
-      "scouting": {
-        "confidence": 0.93,
-        "ovr": 61.2,
-        "pot": 61.2
-      },
-      "team": "ATL",
-      "trueValue": 56.3,
-      "weightLb": 189.0
     },
     {
       "birthYear": 1989,
@@ -2504,25 +1950,6 @@
       "team": null,
       "trueValue": 41.1,
       "weightLb": 192.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "Humboldt State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0028570",
-      "name": "Taylor Boggs",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 42.1,
-        "pot": 43.2
-      },
-      "team": null,
-      "trueValue": 41.1,
-      "weightLb": 285.0
     },
     {
       "birthYear": 1985,
@@ -2586,7 +2013,7 @@
         "ovr": 57.7,
         "pot": 57.9
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 51.8,
       "weightLb": 248.0
     },
@@ -2729,24 +2156,6 @@
     },
     {
       "birthYear": 1985,
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0025719",
-      "name": "Akeem Jordan",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 69.3,
-        "pot": 69.3
-      },
-      "team": null,
-      "trueValue": 48.1,
-      "weightLb": 255.0
-    },
-    {
-      "birthYear": 1985,
       "college": "California",
       "draft": {
         "pick": 21,
@@ -2841,24 +2250,6 @@
       "weightLb": 184.0
     },
     {
-      "birthYear": 1987,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0026878",
-      "name": "Tom Crabtree",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.94,
-        "ovr": 61.9,
-        "pot": 61.9
-      },
-      "team": "NO",
-      "trueValue": 41.0,
-      "weightLb": 245.0
-    },
-    {
       "birthYear": 1988,
       "college": "Idaho",
       "draft": {
@@ -2878,7 +2269,7 @@
         "ovr": 56.3,
         "pot": 61.0
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 58.6,
       "weightLb": 234.0
     },
@@ -3156,7 +2547,7 @@
         "ovr": 41.7,
         "pot": 43.8
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 57.2,
       "weightLb": 200.0
     },
@@ -3183,24 +2574,6 @@
       "team": null,
       "trueValue": 57.6,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0031229",
-      "name": "Jacobbi McDaniel",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 44.3,
-        "pot": 45.6
-      },
-      "team": null,
-      "trueValue": 61.0,
-      "weightLb": 293.0
     },
     {
       "birthYear": 1987,
@@ -3249,29 +2622,6 @@
       "team": "LV",
       "trueValue": 66.6,
       "weightLb": 265.0
-    },
-    {
-      "birthYear": 1988,
-      "draft": {
-        "pick": 77,
-        "round": 3,
-        "season": 2010,
-        "team": "TEN"
-      },
-      "heightIn": 73.0,
-      "id": "00-0027893",
-      "name": "Damian Williams",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.86,
-        "ovr": 67.1,
-        "pot": 67.2
-      },
-      "team": "MIA",
-      "trueValue": 51.2,
-      "weightLb": 200.0
     },
     {
       "birthYear": 1985,
@@ -3535,7 +2885,7 @@
         "ovr": 64.5,
         "pot": 64.5
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 48.7,
       "weightLb": 215.0
     },
@@ -3601,24 +2951,6 @@
       "weightLb": 238.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0030647",
-      "name": "Jordan Thompson",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 44.3,
-        "pot": 50.4
-      },
-      "team": "DET",
-      "trueValue": 46.7,
-      "weightLb": 248.0
-    },
-    {
       "birthYear": 1988,
       "college": "Houston",
       "draft": null,
@@ -3636,24 +2968,6 @@
       "team": "LAR",
       "trueValue": 66.8,
       "weightLb": 205.0
-    },
-    {
-      "birthYear": 1986,
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0025902",
-      "name": "Elbert Mack",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2008,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 50.2,
-        "pot": 50.2
-      },
-      "team": "HOU",
-      "trueValue": 52.2,
-      "weightLb": 175.0
     },
     {
       "birthYear": 1985,
@@ -3701,43 +3015,6 @@
       "team": "JAX",
       "trueValue": 73.0,
       "weightLb": 197.0
-    },
-    {
-      "birthYear": 1990,
-      "college": "Mississippi State",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0030687",
-      "name": "Deontae Skinner",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 50.3,
-        "pot": 65.3
-      },
-      "team": "NE",
-      "trueValue": 63.5,
-      "weightLb": 250.0
-    },
-    {
-      "birthYear": 1993,
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0031123",
-      "name": "Darrin Reaves",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 47.3,
-        "pot": 68.1
-      },
-      "team": null,
-      "trueValue": 52.7,
-      "weightLb": 220.0
     },
     {
       "birthYear": 1990,
@@ -3871,24 +3148,6 @@
       "weightLb": 230.0
     },
     {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0029389",
-      "name": "Phil Bates",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 50.9,
-        "pot": 50.9
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 220.0
-    },
-    {
       "birthYear": 1987,
       "college": "Wisconsin",
       "draft": null,
@@ -3994,29 +3253,6 @@
       "weightLb": 218.0
     },
     {
-      "birthYear": 1984,
-      "draft": {
-        "pick": 58,
-        "round": 2,
-        "season": 2006,
-        "team": "CAR"
-      },
-      "heightIn": 71.0,
-      "id": "00-0024273",
-      "name": "Richard Marshall",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2006,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 62.8,
-        "pot": 62.8
-      },
-      "team": "LAC",
-      "trueValue": 59.3,
-      "weightLb": 198.0
-    },
-    {
       "birthYear": 1989,
       "college": "Alabama",
       "draft": {
@@ -4064,25 +3300,6 @@
       "weightLb": 166.0
     },
     {
-      "birthYear": 1990,
-      "college": "Nevada",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0029965",
-      "name": "Chris Barker",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 46.5
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 310.0
-    },
-    {
       "birthYear": 1987,
       "draft": {
         "pick": 119,
@@ -4104,30 +3321,6 @@
       "team": null,
       "trueValue": 56.6,
       "weightLb": 256.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "Northwestern",
-      "draft": {
-        "pick": 122,
-        "round": 4,
-        "season": 2010,
-        "team": "PHI"
-      },
-      "heightIn": 75.0,
-      "id": "00-0027722",
-      "name": "Mike Kafka",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.62,
-        "ovr": 51.3,
-        "pot": 51.9
-      },
-      "team": "TB",
-      "trueValue": 40.9,
-      "weightLb": 225.0
     },
     {
       "birthYear": 1991,
@@ -4375,44 +3568,6 @@
       "weightLb": 315.0
     },
     {
-      "birthYear": 1990,
-      "college": "Northern Iowa",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0028932",
-      "name": "L.J. Fort",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.58,
-        "ovr": 67.3,
-        "pot": 69.0
-      },
-      "team": null,
-      "trueValue": 42.5,
-      "weightLb": 230.0
-    },
-    {
-      "birthYear": 1990,
-      "college": "Florida State",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0029328",
-      "name": "Terrance Parks",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 49.3,
-        "pot": 63.4
-      },
-      "team": null,
-      "trueValue": 42.2,
-      "weightLb": 218.0
-    },
-    {
       "birthYear": 1986,
       "college": "South Carolina",
       "draft": {
@@ -4562,47 +3717,6 @@
       "team": "CHI",
       "trueValue": 72.2,
       "weightLb": 300.0
-    },
-    {
-      "birthYear": 1987,
-      "draft": {
-        "pick": 135,
-        "round": 5,
-        "season": 2010,
-        "team": "ATL"
-      },
-      "heightIn": 72.0,
-      "id": "00-0027735",
-      "name": "Dominique Franks",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.82,
-        "ovr": 44.4,
-        "pot": 44.4
-      },
-      "team": "BAL",
-      "trueValue": 65.6,
-      "weightLb": 197.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0028875",
-      "name": "Matthew Masifilo",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.4,
-        "pot": 43.2
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 280.0
     },
     {
       "birthYear": 1990,
@@ -4857,25 +3971,6 @@
       "weightLb": 245.0
     },
     {
-      "birthYear": 1990,
-      "college": "San Jose State",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0028846",
-      "name": "Peyton Thompson",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 46.7,
-        "pot": 47.8
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 180.0
-    },
-    {
       "birthYear": 1986,
       "draft": {
         "pick": 227,
@@ -4897,47 +3992,6 @@
       "team": null,
       "trueValue": 59.0,
       "weightLb": 250.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0028742",
-      "name": "Thomas Keiser",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.78,
-        "ovr": 68.9,
-        "pot": 69.1
-      },
-      "team": null,
-      "trueValue": 63.3,
-      "weightLb": 260.0
-    },
-    {
-      "birthYear": 1985,
-      "draft": {
-        "pick": 218,
-        "round": 7,
-        "season": 2007,
-        "team": "HOU"
-      },
-      "heightIn": 72.0,
-      "id": "00-0025605",
-      "name": "Zach Diles",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 57.4,
-        "pot": 57.4
-      },
-      "team": null,
-      "trueValue": 60.2,
-      "weightLb": 245.0
     },
     {
       "birthYear": 1988,
@@ -5006,7 +4060,7 @@
         "ovr": 43.0,
         "pot": 43.0
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 40.5,
       "weightLb": 234.0
     },
@@ -5306,61 +4360,6 @@
       "weightLb": 190.0
     },
     {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0029830",
-      "name": "Keith Pough",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 47.9,
-        "pot": 66.7
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 225.0
-    },
-    {
-      "birthYear": 1993,
-      "college": "Colorado State",
-      "draft": null,
-      "heightIn": 69.0,
-      "id": "00-0031102",
-      "name": "Kapri Bibbs",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 47.6,
-        "pot": 71.0
-      },
-      "team": null,
-      "trueValue": 42.0,
-      "weightLb": 212.0
-    },
-    {
-      "birthYear": 1991,
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0030954",
-      "name": "Davon Coleman",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.17,
-        "ovr": 50.5,
-        "pot": 50.5
-      },
-      "team": null,
-      "trueValue": 60.9,
-      "weightLb": 300.0
-    },
-    {
       "birthYear": 1983,
       "college": "Virginia Tech",
       "draft": {
@@ -5471,30 +4470,6 @@
       "team": "SF",
       "trueValue": 63.5,
       "weightLb": 305.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "USC",
-      "draft": {
-        "pick": 64,
-        "round": 2,
-        "season": 2010,
-        "team": "NO"
-      },
-      "heightIn": 77.0,
-      "id": "00-0027669",
-      "name": "Charles Brown",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.89,
-        "ovr": 65.6,
-        "pot": 66.9
-      },
-      "team": null,
-      "trueValue": 57.6,
-      "weightLb": 300.0
     },
     {
       "birthYear": 1985,
@@ -5685,29 +4660,6 @@
       "weightLb": 205.0
     },
     {
-      "birthYear": 1984,
-      "draft": {
-        "pick": 52,
-        "round": 2,
-        "season": 2007,
-        "team": "LAR"
-      },
-      "heightIn": 73.0,
-      "id": "00-0025439",
-      "name": "Brian Leonard",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 67.9,
-        "pot": 68.0
-      },
-      "team": null,
-      "trueValue": 55.1,
-      "weightLb": 225.0
-    },
-    {
       "birthYear": 1992,
       "college": "Notre Dame",
       "draft": {
@@ -5770,25 +4722,6 @@
       "weightLb": 242.0
     },
     {
-      "birthYear": 1991,
-      "college": "North Greenville",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0030737",
-      "name": "Freddie Martino",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 44.8,
-        "pot": 68.5
-      },
-      "team": null,
-      "trueValue": 53.7,
-      "weightLb": 195.0
-    },
-    {
       "birthYear": 1986,
       "college": "Oklahoma",
       "draft": {
@@ -5811,43 +4744,6 @@
       "team": "MIN",
       "trueValue": 73.8,
       "weightLb": 343.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Texas",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0031404",
-      "name": "Adrian Phillips",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 47.0,
-        "pot": 67.9
-      },
-      "team": "LAC",
-      "trueValue": 56.2,
-      "weightLb": 210.0
-    },
-    {
-      "birthYear": 1991,
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0030772",
-      "name": "Justin Anderson",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 50.2,
-        "pot": 60.9
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 232.0
     },
     {
       "birthYear": 1985,
@@ -5890,24 +4786,6 @@
       "team": "LV",
       "trueValue": 43.0,
       "weightLb": 250.0
-    },
-    {
-      "birthYear": 1986,
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0028835",
-      "name": "Marshall McFadden",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.64,
-        "ovr": 53.5,
-        "pot": 55.0
-      },
-      "team": "LAR",
-      "trueValue": 54.9,
-      "weightLb": 235.0
     },
     {
       "birthYear": 1981,
@@ -6048,42 +4926,6 @@
       "weightLb": 258.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0029155",
-      "name": "Mike Brown",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.69,
-        "ovr": 68.6,
-        "pot": 70.1
-      },
-      "team": "JAX",
-      "trueValue": 55.9,
-      "weightLb": 200.0
-    },
-    {
-      "birthYear": 1992,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0030775",
-      "name": "Kelcy Quarles",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.16,
-        "ovr": 48.8,
-        "pot": 48.8
-      },
-      "team": "IND",
-      "trueValue": 59.6,
-      "weightLb": 294.0
-    },
-    {
       "birthYear": 1986,
       "college": "Indiana",
       "draft": {
@@ -6103,32 +4945,9 @@
         "ovr": 72.9,
         "pot": 73.0
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 56.7,
       "weightLb": 188.0
-    },
-    {
-      "birthYear": 1984,
-      "draft": {
-        "pick": 134,
-        "round": 4,
-        "season": 2007,
-        "team": "BAL"
-      },
-      "heightIn": 73.0,
-      "id": "00-0025521",
-      "name": "Antwan Barnes",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 66.2,
-        "pot": 66.2
-      },
-      "team": null,
-      "trueValue": 49.6,
-      "weightLb": 251.0
     },
     {
       "birthYear": 1987,
@@ -6153,24 +4972,6 @@
       "team": null,
       "trueValue": 54.7,
       "weightLb": 265.0
-    },
-    {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0029891",
-      "name": "Lowell Rose",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 48.1,
-        "pot": 67.4
-      },
-      "team": null,
-      "trueValue": 54.2,
-      "weightLb": 192.0
     },
     {
       "birthYear": 1986,
@@ -6218,24 +5019,6 @@
       "team": "HOU",
       "trueValue": 62.9,
       "weightLb": 245.0
-    },
-    {
-      "birthYear": 1992,
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0030853",
-      "name": "Loucheiz Purifoy",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.17,
-        "ovr": 48.8,
-        "pot": 48.8
-      },
-      "team": "IND",
-      "trueValue": 54.4,
-      "weightLb": 188.0
     },
     {
       "birthYear": 1984,
@@ -6373,24 +5156,6 @@
       "weightLb": 211.0
     },
     {
-      "birthYear": 1988,
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0030906",
-      "name": "Bryan Johnson",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.16,
-        "ovr": 49.3,
-        "pot": 49.3
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 250.0
-    },
-    {
       "birthYear": 1989,
       "draft": {
         "pick": 30,
@@ -6454,29 +5219,6 @@
       "team": null,
       "trueValue": 62.9,
       "weightLb": 241.0
-    },
-    {
-      "birthYear": 1987,
-      "draft": {
-        "pick": 96,
-        "round": 3,
-        "season": 2010,
-        "team": "CIN"
-      },
-      "heightIn": 72.0,
-      "id": "00-0027697",
-      "name": "Brandon Ghee",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.84,
-        "ovr": 61.6,
-        "pot": 61.7
-      },
-      "team": null,
-      "trueValue": 55.5,
-      "weightLb": 200.0
     },
     {
       "birthYear": 1988,
@@ -6589,25 +5331,6 @@
       "team": null,
       "trueValue": 41.5,
       "weightLb": 320.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Fresno State",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0030671",
-      "name": "Isaiah Burse",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 47.5,
-        "pot": 47.5
-      },
-      "team": "DEN",
-      "trueValue": 55.1,
-      "weightLb": 181.0
     },
     {
       "birthYear": 1990,
@@ -6914,24 +5637,6 @@
       "weightLb": 267.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0028270",
-      "name": "Weslye Saunders",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.75,
-        "ovr": 58.6,
-        "pot": 58.6
-      },
-      "team": "IND",
-      "trueValue": 52.3,
-      "weightLb": 261.0
-    },
-    {
       "birthYear": 1978,
       "draft": {
         "pick": 242,
@@ -7020,7 +5725,7 @@
         "ovr": 43.2,
         "pot": 43.2
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 42.0,
       "weightLb": 245.0
     },
@@ -7089,24 +5794,6 @@
       "team": "GB",
       "trueValue": 50.9,
       "weightLb": 301.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0028970",
-      "name": "Chase Minnifield",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.5,
-        "pot": 43.0
-      },
-      "team": "WAS",
-      "trueValue": 46.2,
-      "weightLb": 185.0
     },
     {
       "birthYear": 1987,
@@ -7197,25 +5884,6 @@
       "weightLb": 197.0
     },
     {
-      "birthYear": 1980,
-      "college": "Drake",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0020972",
-      "name": "Billy Cundiff",
-      "pos": "K",
-      "real": true,
-      "rookieSeason": 2002,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 53.7,
-        "pot": 55.4
-      },
-      "team": "CLE",
-      "trueValue": 57.5,
-      "weightLb": 212.0
-    },
-    {
       "birthYear": 1986,
       "draft": null,
       "heightIn": 75.0,
@@ -7251,29 +5919,6 @@
       "team": "CIN",
       "trueValue": 70.8,
       "weightLb": 248.0
-    },
-    {
-      "birthYear": 1987,
-      "draft": {
-        "pick": 43,
-        "round": 2,
-        "season": 2009,
-        "team": "CAR"
-      },
-      "heightIn": 73.0,
-      "id": "00-0027019",
-      "name": "Everette Brown",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.94,
-        "ovr": 58.9,
-        "pot": 59.1
-      },
-      "team": null,
-      "trueValue": 47.0,
-      "weightLb": 263.0
     },
     {
       "birthYear": 1990,
@@ -7356,7 +6001,7 @@
         "ovr": 74.3,
         "pot": 76.2
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 63.9,
       "weightLb": 267.0
     },
@@ -7448,29 +6093,6 @@
     },
     {
       "birthYear": 1986,
-      "draft": {
-        "pick": 220,
-        "round": 7,
-        "season": 2010,
-        "team": "PHI"
-      },
-      "heightIn": 72.0,
-      "id": "00-0027814",
-      "name": "Jamar Chaney",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 41.9,
-        "pot": 41.9
-      },
-      "team": "LV",
-      "trueValue": 44.0,
-      "weightLb": 242.0
-    },
-    {
-      "birthYear": 1986,
       "college": "Mississippi",
       "draft": {
         "pick": 23,
@@ -7518,24 +6140,6 @@
       "weightLb": 243.0
     },
     {
-      "birthYear": 1988,
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0029030",
-      "name": "Micah Pellerin",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.64,
-        "ovr": 57.7,
-        "pot": 59.2
-      },
-      "team": "DAL",
-      "trueValue": 45.6,
-      "weightLb": 192.0
-    },
-    {
       "birthYear": 1989,
       "college": "Connecticut",
       "draft": {
@@ -7581,24 +6185,6 @@
       },
       "team": "LV",
       "trueValue": 57.4,
-      "weightLb": 210.0
-    },
-    {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0031324",
-      "name": "Horace Miller",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 45.0,
-        "pot": 45.0
-      },
-      "team": null,
-      "trueValue": 41.8,
       "weightLb": 210.0
     },
     {
@@ -7809,25 +6395,6 @@
     },
     {
       "birthYear": 1988,
-      "college": "Walsh",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0028532",
-      "name": "Joe Morgan",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.68,
-        "ovr": 71.2,
-        "pot": 71.2
-      },
-      "team": "NO",
-      "trueValue": 63.0,
-      "weightLb": 184.0
-    },
-    {
-      "birthYear": 1988,
       "draft": {
         "pick": 102,
         "round": 4,
@@ -7943,24 +6510,6 @@
       "team": "BAL",
       "trueValue": 63.4,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0028860",
-      "name": "Micanor Regis",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 49.9,
-        "pot": 49.9
-      },
-      "team": null,
-      "trueValue": 41.2,
-      "weightLb": 305.0
     },
     {
       "birthYear": 1990,
@@ -8268,30 +6817,6 @@
       "weightLb": 242.0
     },
     {
-      "birthYear": 1987,
-      "college": "Clemson",
-      "draft": {
-        "pick": 164,
-        "round": 5,
-        "season": 2010,
-        "team": "PIT"
-      },
-      "heightIn": 73.0,
-      "id": "00-0027763",
-      "name": "Crezdon Butler",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.82,
-        "ovr": 47.1,
-        "pot": 47.1
-      },
-      "team": "TB",
-      "trueValue": 52.4,
-      "weightLb": 191.0
-    },
-    {
       "birthYear": 1991,
       "draft": null,
       "heightIn": 73.0,
@@ -8352,25 +6877,6 @@
     },
     {
       "birthYear": 1990,
-      "college": "Southern University",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0031213",
-      "name": "Rashaun Allen",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 49.5,
-        "pot": 53.3
-      },
-      "team": null,
-      "trueValue": 60.3,
-      "weightLb": 250.0
-    },
-    {
-      "birthYear": 1990,
       "college": "UCLA",
       "draft": null,
       "heightIn": 76.0,
@@ -8387,29 +6893,6 @@
       "team": "BAL",
       "trueValue": 42.4,
       "weightLb": 234.0
-    },
-    {
-      "birthYear": 1985,
-      "draft": {
-        "pick": 169,
-        "round": 5,
-        "season": 2009,
-        "team": "PIT"
-      },
-      "heightIn": 69.0,
-      "id": "00-0026926",
-      "name": "Frank Summers",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.9,
-        "pot": 71.9
-      },
-      "team": "BUF",
-      "trueValue": 61.7,
-      "weightLb": 248.0
     },
     {
       "birthYear": 1992,
@@ -8569,24 +7052,6 @@
       "weightLb": 197.0
     },
     {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0030143",
-      "name": "Jake Knott",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 54.3,
-        "pot": 56.5
-      },
-      "team": null,
-      "trueValue": 41.1,
-      "weightLb": 243.0
-    },
-    {
       "birthYear": 1985,
       "college": "Texas",
       "draft": {
@@ -8682,48 +7147,6 @@
       "weightLb": 299.0
     },
     {
-      "birthYear": 1991,
-      "college": "Nebraska",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0030219",
-      "name": "Eric Martin",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.58,
-        "ovr": 53.3,
-        "pot": 56.5
-      },
-      "team": null,
-      "trueValue": 55.1,
-      "weightLb": 250.0
-    },
-    {
-      "birthYear": 1985,
-      "draft": {
-        "pick": 211,
-        "round": 7,
-        "season": 2008,
-        "team": "NYJ"
-      },
-      "heightIn": 79.0,
-      "id": "00-0026351",
-      "name": "Nate Garner",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2008,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 53.0,
-        "pot": 54.1
-      },
-      "team": null,
-      "trueValue": 46.3,
-      "weightLb": 320.0
-    },
-    {
       "birthYear": 1988,
       "college": "California (PA)",
       "draft": null,
@@ -8738,7 +7161,7 @@
         "ovr": 41.2,
         "pot": 42.7
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 41.4,
       "weightLb": 202.0
     },
@@ -8930,7 +7353,7 @@
         "ovr": 81.7,
         "pot": 81.7
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 81.9,
       "weightLb": 215.0
     },
@@ -9011,24 +7434,6 @@
       "team": "CLE",
       "trueValue": 59.8,
       "weightLb": 330.0
-    },
-    {
-      "birthYear": 1991,
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0030653",
-      "name": "Ray Agnew",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.15,
-        "ovr": 48.1,
-        "pot": 48.1
-      },
-      "team": "CLE",
-      "trueValue": 59.8,
-      "weightLb": 247.0
     },
     {
       "birthYear": 1992,
@@ -12071,7 +10476,7 @@
         "ovr": 65.5,
         "pot": 71.6
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 65.4,
       "weightLb": 252.0
     },
@@ -13224,7 +11629,7 @@
         "ovr": 53.8,
         "pot": 55.8
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 69.5,
       "weightLb": 188.0
     },
@@ -13916,7 +12321,7 @@
         "ovr": 50.3,
         "pot": 52.0
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 55.5,
       "weightLb": 195.0
     },
@@ -14170,7 +12575,7 @@
         "ovr": 66.6,
         "pot": 66.6
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 58.3,
       "weightLb": 244.0
     },
@@ -18961,7 +17366,7 @@
         "ovr": 76.0,
         "pot": 76.0
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 64.2,
       "weightLb": 255.0
     },
@@ -21318,7 +19723,7 @@
         "ovr": 49.2,
         "pot": 49.2
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 61.5,
       "weightLb": 220.0
     },
@@ -22051,7 +20456,7 @@
         "ovr": 48.5,
         "pot": 51.9
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 49.0,
       "weightLb": 258.0
     },
@@ -23237,7 +21642,7 @@
         "ovr": 48.8,
         "pot": 56.6
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 41.0,
       "weightLb": 227.0
     },
@@ -23667,7 +22072,7 @@
         "ovr": 67.2,
         "pot": 68.8
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 59.2,
       "weightLb": 220.0
     },
@@ -23710,7 +22115,7 @@
         "ovr": 45.6,
         "pot": 69.2
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 42.1,
       "weightLb": 200.0
     },
@@ -24142,7 +22547,7 @@
         "ovr": 52.8,
         "pot": 54.6
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 55.6,
       "weightLb": 195.0
     },
@@ -24899,7 +23304,7 @@
         "ovr": 60.1,
         "pot": 62.4
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 41.9,
       "weightLb": 202.0
     },
@@ -25718,7 +24123,7 @@
         "ovr": 47.5,
         "pot": 47.5
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 44.5,
       "weightLb": 269.0
     },
@@ -28990,24 +27395,6 @@
       "weightLb": 210.0
     },
     {
-      "birthYear": 1990,
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0030344",
-      "name": "Darren Keyton",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 49.1,
-        "pot": 69.3
-      },
-      "team": null,
-      "trueValue": 40.3,
-      "weightLb": 305.0
-    },
-    {
       "birthYear": 1989,
       "draft": null,
       "heightIn": 73.0,
@@ -32067,24 +30454,6 @@
       "weightLb": 252.0
     },
     {
-      "birthYear": 1989,
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0030194",
-      "name": "Jakar Hamilton",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 48.1,
-        "pot": 49.6
-      },
-      "team": "DAL",
-      "trueValue": 43.4,
-      "weightLb": 208.0
-    },
-    {
       "birthYear": 1986,
       "college": "Wayne State (Mich.)",
       "draft": null,
@@ -34247,30 +32616,6 @@
       "team": "PIT",
       "trueValue": 48.2,
       "weightLb": 217.0
-    },
-    {
-      "birthYear": 1985,
-      "college": "Michigan State",
-      "draft": {
-        "pick": 158,
-        "round": 5,
-        "season": 2008,
-        "team": "CHI"
-      },
-      "heightIn": 79.0,
-      "id": "00-0026298",
-      "name": "Kellen Davis",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2008,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 58.9,
-        "pot": 58.9
-      },
-      "team": null,
-      "trueValue": 51.8,
-      "weightLb": 265.0
     },
     {
       "birthYear": 1990,
@@ -36916,7 +35261,7 @@
         "ovr": 64.0,
         "pot": 65.5
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 41.5,
       "weightLb": 193.0
     },
@@ -37285,7 +35630,7 @@
         "ovr": 59.1,
         "pot": 60.6
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 58.6,
       "weightLb": 215.0
     },
@@ -37489,25 +35834,6 @@
       "team": "DEN",
       "trueValue": 61.2,
       "weightLb": 198.0
-    },
-    {
-      "birthYear": 1988,
-      "college": "Army",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0029744",
-      "name": "Josh McNary",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 62.5,
-        "pot": 64.0
-      },
-      "team": "IND",
-      "trueValue": 64.9,
-      "weightLb": 251.0
     },
     {
       "birthYear": 1991,
@@ -39229,24 +37555,6 @@
       "team": null,
       "trueValue": 51.1,
       "weightLb": 225.0
-    },
-    {
-      "birthYear": 1988,
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0027567",
-      "name": "Steve Maneri",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.83,
-        "ovr": 44.6,
-        "pot": 44.6
-      },
-      "team": "NE",
-      "trueValue": 60.0,
-      "weightLb": 280.0
     },
     {
       "birthYear": 1992,
@@ -41766,7 +40074,7 @@
         "ovr": 41.6,
         "pot": 44.6
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 41.7,
       "weightLb": 198.0
     },
@@ -41954,7 +40262,7 @@
         "ovr": 52.3,
         "pot": 68.7
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 47.4,
       "weightLb": 242.0
     },
@@ -42637,7 +40945,7 @@
         "ovr": 51.1,
         "pot": 52.6
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 40.8,
       "weightLb": 210.0
     },
@@ -43864,7 +42172,7 @@
         "ovr": 47.7,
         "pot": 47.7
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 77.4,
       "weightLb": 225.0
     },
@@ -44768,7 +43076,7 @@
         "ovr": 49.4,
         "pot": 50.9
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 54.5,
       "weightLb": 210.0
     },

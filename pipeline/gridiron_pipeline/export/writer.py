@@ -19,6 +19,11 @@ def gzipped_size(obj: Any) -> int:
     return len(gzip.compress(payload, compresslevel=9))
 
 
+def gzipped_file_size(path: Path) -> int:
+    """Gzipped size of a file already on disk (ratings-model writes its own JSON directly)."""
+    return len(gzip.compress(path.read_bytes(), compresslevel=9))
+
+
 def write_json(schema_name: str, obj: dict, path: Path) -> int:
     """Validate `obj` against `schema_name`, then write atomically. Returns gzipped byte size."""
     validate(schema_name, obj)
