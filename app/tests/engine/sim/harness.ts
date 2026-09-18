@@ -90,6 +90,8 @@ export interface CalibrationReport {
   gamesPerTeam: number
   /** Pearson r between a team's overall rating and its mean win total. */
   winCorrelation: number
+  /** Pearson r between simulated mean wins and the real win totals (HANDOFF §6.3 target ≥ 0.5); null on mock data. */
+  realWinCorrelation: number | null
   /** Mean over sims of the sd of the 32 win totals. */
   winSd: number
   homeWinPct: number
@@ -133,6 +135,8 @@ export interface CalibrationOptions {
   seed?: string
   state?: LeagueState
   ctx?: EngineContext
+  /** Real regular-season win totals by team, when calibrating against a real season. */
+  realWins?: Record<TeamId, number>
 }
 
 export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
@@ -181,6 +185,7 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
     teams: teamIds.length,
     gamesPerTeam: (regularGames * 2) / teamIds.length,
     winCorrelation: correlation(overall, meanWins),
+    realWinCorrelation: opts.realWins ? correlation(teamIds.map((id) => opts.realWins![id] ?? 0), meanWins) : null,
     winSd: winSds.reduce((a, b) => a + b, 0) / Math.max(1, winSds.length),
     homeWinPct: (100 * (homeWins + ties / 2)) / games,
     meanTotalPoints: points / games,
