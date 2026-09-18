@@ -1,0 +1,26 @@
+# node
+node_modules/
+dist/
+*.tsbuildinfo
+.pnpm-store/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+pipeline/.cache/
+pipeline/notebooks/.ipynb_checkpoints/
+
+# test artifacts
+app/test-results/
+app/playwright-report/
+coverage/
+
+# local
+.env
+.env.*
+*.local
+.DS_Store
+.claude/settings.local.json

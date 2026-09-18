@@ -1,0 +1,39 @@
+[project]
+name = "gridiron-pipeline"
+version = "0.1.0"
+description = "Data pipeline for Gridiron GM: ingest nflverse releases, build ratings/consensus models, export JSON chunks for the app."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+  "pandas>=2.2",
+  "pyarrow>=17",
+  "numpy>=1.26",
+  "scipy>=1.13",
+  "requests>=2.32",
+  "jsonschema>=4.23",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gridiron_pipeline"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
