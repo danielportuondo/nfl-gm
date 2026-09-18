@@ -247,7 +247,17 @@ function realTeamsOf(ctx: EngineContext, season: Season): Map<PlayerId, TeamId |
 // Release / resign
 // -------------------------------------------------------------------------------------------
 
-function release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState {
+/**
+ * Dead money applies to every release; divergence only to the user's (§6.8) — an AI team trimming its
+ * camp roster is still on the historical path, and snapToHistory must stay free to place those players.
+ */
+function releaseFrom(
+  state: LeagueState,
+  teamId: TeamId,
+  playerId: PlayerId,
+  ctx: EngineContext,
+  opts: { diverge: boolean },
+): LeagueState {
   const team = state.teams[teamId]
   if (!team) throw new Error(`fa.release: unknown team "${teamId}"`)
   const slot = team.roster.find((r) => r.playerId === playerId)
@@ -260,8 +270,12 @@ function release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: En
     teams: { ...state.teams, [teamId]: { ...team, roster, deadMoney: round2(team.deadMoney + deadCharge) } },
     freeAgents: [...state.freeAgents, playerId].sort(),
   }
-  s = ctx.modules.history.markDiverged(s, [playerId])
+  if (opts.diverge) s = ctx.modules.history.markDiverged(s, [playerId])
   return s
+}
+
+function release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState {
+  return releaseFrom(state, teamId, playerId, ctx, { diverge: true })
 }
 
 /** Natural contract expiration: no dead money, no divergence — the player simply leaves the roster. */
@@ -437,7 +451,7 @@ function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
       const roster = s.teams[teamId]!.roster
       const cutId = cutOrderBySize(s, roster, keepSet)[0]
       if (cutId === undefined) break
-      s = release(s, teamId, cutId, ctx)
+      s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
     }
 
     guard = 0
@@ -445,7 +459,7 @@ function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
       const roster = s.teams[teamId]!.roster
       const cutId = cutOrderByCap(s, roster, keepSet)[0]
       if (cutId === undefined) break
-      s = release(s, teamId, cutId, ctx)
+      s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
     }
   }
   return s

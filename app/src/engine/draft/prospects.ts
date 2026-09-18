@@ -76,8 +76,9 @@ export function loadClass(state: LeagueState, ctx: EngineContext): LeagueState {
     if (!sd) throw new SeasonNotLoadedError(season)
     return merge(state, sd.draft.prospects, copyRealTruth(sd.draft.prospects, ctx.trajectories, season))
   }
+  // lifecycle stamps ids and rookieSeason with state.season; the class being drafted is season S+1.
   const rng = ctx.modules.rng.fromSeed(state.seed, season, 'draftClass')
-  const generated = ctx.modules.lifecycle.generateDraftClass(state, ctx, rng)
+  const generated = ctx.modules.lifecycle.generateDraftClass({ ...state, season }, ctx, rng)
   return merge(state, generated.prospects, generated.truth)
 }
 

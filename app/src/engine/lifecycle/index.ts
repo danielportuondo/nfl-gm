@@ -59,7 +59,9 @@ function progressSeason(state: LeagueState, ctx: EngineContext, rng: Rng): Leagu
       value = compact ? exactTrajectoryValue(compact, season) : null
     }
     if (value == null) {
-      const prev = lastKnownValue(current.bySeason, season)
+      // A real rookie who never took a snap has no trajectory point for his first season; consensus is
+      // the only baseline there is (a redshirt year is about what the scouts said he was).
+      const prev = lastKnownValue(current.bySeason, season) ?? state.scouting[id]?.ovr
       if (prev == null) continue // no baseline to age from
       const age = season - player.birthYear
       const delta = ageDelta(curves, player.pos, age)
@@ -91,12 +93,16 @@ function retirements(state: LeagueState, ctx: EngineContext, rng: Rng): { state:
     const traj = truth[id]
     if (!player || !traj) continue
 
-    // Hard fact: real players (or already-decided procedural players) retire after this season.
-    // Otherwise, logistic in age and value (HANDOFF §6.7).
+    // Hard facts first: a known retiresAfter decides; a real player without one is still active at the
+    // end of the data, so while the season is in history he never rolls (history.snapToHistory retires
+    // real players who drop out of the data). Otherwise, logistic in age and value (HANDOFF §6.7).
+    const knownActive = player.real && traj.retiresAfter == null && isInHistory(ctx, season)
     const retire =
       traj.retiresAfter != null
         ? season > traj.retiresAfter
-        : rng
+        : knownActive
+          ? false
+          : rng
             .fork(id)
             .chance(
               retireProbability(

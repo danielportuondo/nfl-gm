@@ -46,6 +46,7 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
   const idsToConsider = new Set<PlayerId>()
   for (const [id, p] of Object.entries(state.players)) if (p.real) idsToConsider.add(id)
   for (const sp of sd.players.players) if (!state.players[sp.id]) idsToConsider.add(sp.id)
+  const freeAgentSet = new Set(state.freeAgents)
 
   const placements: Placement[] = []
   const divergedKept: PlayerId[] = []
@@ -59,8 +60,11 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
     const isNewArrival = !state.players[id]
     const sp = seasonPlayerById.get(id)
     if (!sp) {
-      // Known real player absent from every team and every free-agent list this season: retired.
-      placements.push({ id, from: currentTeam, to: null, reason: 'RETIRED', isNewArrival: false })
+      // A known real player absent from this season's data has left the league — retire him if he is
+      // still around; one already gone (retired earlier, or sitting out a year) is left alone so he can
+      // come back when a later season lists him again.
+      const active = currentTeam !== null || freeAgentSet.has(id)
+      if (active) placements.push({ id, from: currentTeam, to: null, reason: 'RETIRED', isNewArrival: false })
       continue
     }
     placements.push({ id, from: currentTeam, to: sp.team, reason: isNewArrival ? 'NEW_ARRIVAL' : 'HISTORY', isNewArrival })
