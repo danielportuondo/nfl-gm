@@ -629,8 +629,11 @@ export interface DraftModule {
    */
   aiPick(state: LeagueState, ctx: EngineContext, rng: Rng): PlayerId
 
-  /** User selection while on the clock. Throws if not the user's pick or player unavailable. */
-  userPick(state: LeagueState, playerId: PlayerId): LeagueState
+  /**
+   * User selection while on the clock. Throws if not the user's pick or player unavailable. Needs ctx for
+   * the rookie contract (fa.rookieContract) and the divergence mark (history.markDiverged).
+   */
+  userPick(state: LeagueState, playerId: PlayerId, ctx: EngineContext): LeagueState
 
   /**
    * Resolve the current pick (AI: aiPick; user: must have picked or auto-picks best available when
