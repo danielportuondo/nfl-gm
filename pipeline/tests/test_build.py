@@ -1,0 +1,108 @@
+"""Build-layer acceptance tests (docs/HANDOFF.md, data-ingest brief).
+
+These read real nflverse data through the same cache the pipeline uses (pipeline/.cache/raw/),
+downloading on first run and then reusing the cache. Scoped to 2014/2015 slices per FIXTURES.
+"""
+
+from __future__ import annotations
+
+import pytest
+
+from gridiron_pipeline.build.draft import build_season_draft
+from gridiron_pipeline.build.players import build_player_master
+from gridiron_pipeline.build.positions import map_position_group
+from gridiron_pipeline.build.ratings import Ratings
+from gridiron_pipeline.build.rosters import (
+    build_season_rosters_and_players,
+    season_roster_stints,
+    season_start_roster,
+)
+from gridiron_pipeline.build.schedule import build_season_schedule
+from gridiron_pipeline.build.teams import canonical_team_id
+from gridiron_pipeline.ingest.load import load_games
+
+
+@pytest.fixture(scope="module")
+def master():
+    return build_player_master()
+
+
+@pytest.fixture(scope="module")
+def ratings():
+    return Ratings(allow_placeholder=True)
+
+
+def test_team_alias_relocations():
+    assert canonical_team_id("STL") == "LAR"
+    assert canonical_team_id("SD") == "LAC"
+    assert canonical_team_id("OAK") == "LV"
+    assert canonical_team_id("WSH") == "WAS"
+    assert canonical_team_id("LAR") == "LAR"
+
+
+def test_position_group_mapping():
+    for code in ("T", "G", "C", "OT", "OG"):
+        assert map_position_group(code) == "OL"
+    for code in ("FS", "SS"):
+        assert map_position_group(code) == "S"
+
+
+def test_2014_draft_order_pick1_and_pick13(master, ratings):
+    start = season_start_roster(season_roster_stints(2014))
+    draft = build_season_draft(2014, master, ratings, start)
+    order = {o["pick"]: o for o in draft["order"]}
+    prospects = {p["id"]: p for p in draft["prospects"]}
+
+    assert order[1]["team"] == "HOU"
+    assert prospects[order[1]["playerId"]]["name"] == "Jadeveon Clowney"
+
+    assert order[13]["team"] == "LAR"  # STL at the time, canonicalized
+    assert prospects[order[13]["playerId"]]["name"] == "Aaron Donald"
+
+
+def test_2014_malcolm_butler_is_udfa(master, ratings):
+    start = season_start_roster(season_roster_stints(2014))
+    draft = build_season_draft(2014, master, ratings, start)
+    prospects = {p["id"]: p for p in draft["prospects"]}
+    butler_ids = [pid for pid, p in prospects.items() if p["name"] == "Malcolm Butler"]
+    assert butler_ids, "Malcolm Butler not found in 2014 prospects"
+    assert butler_ids[0] in draft["udfa"]
+    assert prospects[butler_ids[0]]["draft"] is None
+
+
+def test_schedule_game_counts_by_era():
+    games = load_games()
+    sched_2015 = build_season_schedule(2015, games)
+    reg_2015 = [g for g in sched_2015["games"] if g["type"] == "REG"]
+    assert len(reg_2015) == 256
+    assert sched_2015["weeks"] == 17
+
+    sched_2021 = build_season_schedule(2021, games)
+    reg_2021 = [g for g in sched_2021["games"] if g["type"] == "REG"]
+    assert len(reg_2021) == 272
+    assert sched_2021["weeks"] == 18
+
+
+def test_schedule_includes_playoff_games_with_real_scores():
+    games = load_games()
+    sched = build_season_schedule(2015, games)
+    sb = [g for g in sched["games"] if g["type"] == "SB"]
+    assert len(sb) == 1
+    assert sb[0]["homeScore"] is not None and sb[0]["awayScore"] is not None
+
+
+def test_rosters_reference_only_known_players(master, ratings):
+    rosters_obj, players_obj = build_season_rosters_and_players(2015, master, ratings)
+    known = {p["id"] for p in players_obj["players"]}
+    for team, entries in rosters_obj["rosters"].items():
+        for entry in entries:
+            pid = entry["playerId"]
+            assert pid in known, f"{team} references unknown player {pid}"
+
+
+def test_no_headshot_or_logo_columns_leak_into_players(master, ratings):
+    _, players_obj = build_season_rosters_and_players(2015, master, ratings)
+    dumped = str(players_obj)
+    assert "headshot" not in dumped.lower()
+    assert "logo" not in dumped.lower()
+    assert "wordmark" not in dumped.lower()
