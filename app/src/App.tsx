@@ -20,7 +20,7 @@ function formatPhase(phase: string): string {
 }
 
 export function App() {
-  const { state, data, screen, selectedPlayerId, theme, toasts, actions } = useGameStore()
+  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, actions } = useGameStore()
 
   if (!state || !data) {
     return (
@@ -36,7 +36,19 @@ export function App() {
             </Button>
           </div>
         </div>
-        {screen === 'about' ? <About /> : data ? <NewGame data={data} onStart={actions.newGame} /> : null}
+        {screen === 'about' ? (
+          <About />
+        ) : data ? (
+          <NewGame data={data} onStart={actions.newGame} />
+        ) : dataStatus === 'error' ? (
+          <p className="gg-col-12" role="alert">
+            Could not load league data. {dataError}
+          </p>
+        ) : (
+          <p className="gg-col-12" aria-live="polite">
+            Loading league data…
+          </p>
+        )}
       </div>
     )
   }

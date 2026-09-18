@@ -1,27 +1,7 @@
-import {
-  draftStub,
-  faStub,
-  historyStub,
-  leagueStub,
-  lifecycleStub,
-  persistenceStub,
-  rngStub,
-  simStub,
-  tradeStub,
-  type EngineModules,
-  type PersistenceModule,
-} from '@contracts/index'
+import type { EngineModules, PersistenceModule } from '@contracts/index'
+import { engineModules, persistence } from '@engine/index'
 
-/** Every engine module defaults to its NotImplementedError stub until the real modules land. */
-export const defaultEngineModules: EngineModules = {
-  rng: rngStub,
-  league: leagueStub,
-  sim: simStub,
-  draft: draftStub,
-  trade: tradeStub,
-  fa: faStub,
-  lifecycle: lifecycleStub,
-  history: historyStub,
-}
+/** The real engine (Phase 2 scaffolds stand in for the fan-out #2 modules until they land). */
+export const defaultEngineModules: EngineModules = engineModules
 
-export const defaultPersistence: PersistenceModule = persistenceStub
+export const defaultPersistence: PersistenceModule = persistence
