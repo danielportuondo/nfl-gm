@@ -17,6 +17,7 @@ pipeline/notebooks/.ipynb_checkpoints/
 app/test-results/
 app/playwright-report/
 coverage/
+.playwright-mcp/
 
 # local
 .env
