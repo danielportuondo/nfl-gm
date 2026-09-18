@@ -62,14 +62,9 @@ function payrollDelta(state: LeagueState, incoming: PlayerId[], outgoing: Player
 function capOverageFrom(state: LeagueState, teamId: TeamId, incoming: PlayerId[], outgoing: PlayerId[], ctx: EngineContext): number | null {
   const delta = payrollDelta(state, incoming, outgoing)
   if (delta <= 0) return null
-  let allowance: number
-  try {
-    allowance = Math.max(0, ctx.modules.fa.capSpace(state, teamId, ctx)) +
-      acceptanceConstants.capSlackPct * ctx.modules.fa.capFor(state.season, ctx)
-  } catch {
-    // fa is mid-rewrite: skip the cap gate rather than reject every trade.
-    return null
-  }
+  const allowance =
+    Math.max(0, ctx.modules.fa.capSpace(state, teamId, ctx)) +
+    acceptanceConstants.capSlackPct * ctx.modules.fa.capFor(state.season, ctx)
   return delta > allowance ? delta - allowance : null
 }
 

@@ -74,14 +74,7 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
   }
 
   const involved = [...proposal.offer.players, ...proposal.request.players].sort()
-  if (involved.length > 0) {
-    try {
-      next = ctx.modules.history.markDiverged(next, involved)
-    } catch {
-      // history is mid-rewrite: keep the divergence set correct ourselves.
-      next = { ...next, divergence: new Set([...next.divergence, ...involved]) }
-    }
-  }
+  if (involved.length > 0) next = ctx.modules.history.markDiverged(next, involved)
   return next
 }
 

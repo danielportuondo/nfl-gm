@@ -53,8 +53,6 @@ export const valueConstants = {
   minPlayerValue: 0.25,
   injuryDiscountPerWeek: 0.035,
   injuryDiscountMax: 0.5,
-  fallbackAge: 26,
-  fallbackCap: 200,
 }
 
 /** Anti-exploit: fire sales don't work at last year's price, and the AI doesn't panic-sell either. */

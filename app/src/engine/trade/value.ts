@@ -30,22 +30,11 @@ export function rosterIndex(state: LeagueState): Map<PlayerId, RosterSlot> {
 }
 
 export function capFor(state: LeagueState, ctx: EngineContext): number {
-  try {
-    return ctx.modules.fa.capFor(state.season, ctx)
-  } catch {
-    // fa may still be a stub while 3C rewrites it; the raw table is good enough for valuation.
-    return ctx.data.cap.bySeason[String(state.season)] ?? valueConstants.fallbackCap
-  }
+  return ctx.modules.fa.capFor(state.season, ctx)
 }
 
 export function ageOf(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number {
-  try {
-    return ctx.modules.lifecycle.age(state, playerId)
-  } catch {
-    // Same reason: fall back to the definition lifecycle.age itself uses.
-    const birthYear = state.players[playerId]?.birthYear
-    return birthYear === undefined ? valueConstants.fallbackAge : state.season - birthYear
-  }
+  return ctx.modules.lifecycle.age(state, playerId)
 }
 
 /**
@@ -57,12 +46,8 @@ export function seasonStartOvr(state: LeagueState, ctx: EngineContext): Map<Play
   const cached = startOvrCache.get(state)
   if (cached) return cached
   const map = new Map<PlayerId, number>()
-  try {
-    const chunk = ctx.seasonData(state.season)
-    for (const p of chunk?.players.players ?? []) map.set(p.id, p.scouting.ovr)
-  } catch {
-    // Chunk not loaded: no drop detection this season.
-  }
+  const chunk = ctx.seasonData(state.season)
+  for (const p of chunk?.players.players ?? []) map.set(p.id, p.scouting.ovr)
   startOvrCache.set(state, map)
   return map
 }
@@ -259,7 +244,7 @@ function fallbackNeeds(state: LeagueState, teamId: TeamId): NeedProfile {
   return { byPos, top: [...top], saturated: [...saturated] }
 }
 
-/** draft.teamNeeds when 3A has it, otherwise the same idea computed locally from consensus. */
+/** draft.teamNeeds; a team it reports as perfectly balanced falls back to the local consensus read. */
 export function needsFor(state: LeagueState, teamId: TeamId, ctx: EngineContext): NeedProfile {
   let cache = needsCache.get(state)
   if (!cache) {
@@ -268,14 +253,8 @@ export function needsFor(state: LeagueState, teamId: TeamId, ctx: EngineContext)
   }
   const hit = cache.get(teamId)
   if (hit) return hit
-  let profile: NeedProfile
-  try {
-    profile = ctx.modules.draft.teamNeeds(state, teamId)
-    if (!profile.top.length && !profile.saturated.length) profile = fallbackNeeds(state, teamId)
-  } catch {
-    // draft is still the Phase 2 scaffold; teamNeeds throws until 3A lands.
-    profile = fallbackNeeds(state, teamId)
-  }
+  let profile = ctx.modules.draft.teamNeeds(state, teamId)
+  if (!profile.top.length && !profile.saturated.length) profile = fallbackNeeds(state, teamId)
   cache.set(teamId, profile)
   return profile
 }
