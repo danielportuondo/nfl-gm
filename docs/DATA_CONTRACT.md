@@ -74,12 +74,20 @@ Every player on any roster that season. `Player` fields (`id`, `name`, `pos`, `b
 `rookieSeason`) plus:
 - `scouting` — consensus **at season start**, computed only from information public at that point.
 - `trueValue` — this season's real value. The engine copies it into `state.truth`; the UI never sees it.
-- `team` — team at season start or `null`.
+- `team` — the team whose opening-day roster in `rosters.json` lists the player, or `null`. The engine
+  starts `null` players in the free-agent pool (`LeagueState.freeAgents`).
 
 ### `rosters.json` — schema `seasonRosters`
-`rosters[TeamId][]` of `{playerId, apy?, years?, depth?}`. `apy`/`years` are hints from the contracts
-data when matched (~2011+); the engine synthesizes a contract when absent. `depth` is the depth-chart
-order at the player's position group (1 = starter), from `depth_charts` (all seasons) and snap share (2012+).
+`rosters[TeamId][]` of `{playerId, apy?, years?, depth?}` — the **opening-day roster**: at most 53 players
+per team and every player at most once league-wide, so `league.newGame` starts from a legal roster and
+`history.snapToHistory` can place players without cutting. Candidates are each player's season-start
+stint (nflverse `roster_{season}.csv`, earliest-week row per player); the 53 are filled by position from
+`contracts/teams.ts#ROSTER_TEMPLATE_53` in depth order, then the remaining slots by depth rank, roster
+status (`ACT`/`RES`/`INA` before `CUT`/`DEV`), snap share and experience. A team exports fewer than 53
+only when the source has fewer. Everyone else that season appears in `players.json` with `team: null`.
+`apy`/`years` are hints from the contracts data when matched (~2011+); the engine synthesizes a contract
+when absent. `depth` is the depth-chart order at the player's position group (1 = starter), from
+`depth_charts` (all seasons) and snap share (2012+).
 
 ### `draft.json` — schema `seasonDraft`
 - `order[]`: the real draft order as it happened (`round`, `pick`, `team`, `originalTeam`, `playerId`

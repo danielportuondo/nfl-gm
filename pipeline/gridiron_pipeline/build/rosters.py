@@ -27,6 +27,34 @@ from gridiron_pipeline.schemas import validate
 
 log = logging.getLogger(__name__)
 
+# Mirrors app/src/contracts/teams.ts#ROSTER_TEMPLATE_53 (contract; not owned by this agent, copied
+# exactly). Sums to 53.
+ROSTER_TEMPLATE_53: dict[str, int] = {
+    "QB": 3,
+    "RB": 4,
+    "WR": 6,
+    "TE": 3,
+    "OL": 9,
+    "DL": 9,
+    "LB": 7,
+    "CB": 6,
+    "S": 4,
+    "K": 1,
+    "P": 1,
+}
+assert sum(ROSTER_TEMPLATE_53.values()) == 53
+
+# roster_{season}.csv `status` values, tiebreak priority for the 53-man cut: players plausibly
+# active or on the active-adjacent list (ACT/RES/INA) beat everyone else (CUT/DEV/SUS/RSN/RSR/NWT/
+# RET/TRC/TRD/E14/TRT/...). Never used to drop a player from players.json, only to order fill.
+_STATUS_PRIORITY_GOOD = frozenset({"ACT", "RES", "INA"})
+
+
+def _status_priority(status: object) -> int:
+    if status is None or (isinstance(status, float) and pd.isna(status)):
+        return 1
+    return 0 if str(status).strip().upper() in _STATUS_PRIORITY_GOOD else 1
+
 
 def _unmatched_logger(season: int):
     """Overwrite (not append) each run, so re-running `make data` doesn't accumulate duplicates."""
@@ -88,25 +116,28 @@ def _snap_score(season: int, master: PlayerMaster) -> dict[tuple[str, str], floa
 
 
 def compute_depth_ranks(
-    season: int, stints: pd.DataFrame, master: PlayerMaster
+    season: int, start: pd.DataFrame, master: PlayerMaster, snaps: dict[tuple[str, str], float]
 ) -> dict[tuple[str, str, str], int]:
-    """depth rank (1 = starter) per (team, posGroup, gsis_id), for players in `stints`."""
+    """depth rank (1 = starter) per (team, posGroup, gsis_id), for players in `start`.
+
+    Ranks are computed over the season-start roster (one row per player) so they come out
+    contiguous per (team, posGroup) — a prerequisite for filling the 53-man template in rank order.
+    """
     dc_rank = _depth_from_depth_charts(season)
-    snaps = _snap_score(season, master)
-    stint_keys = list(zip(stints["team_canon"], stints["gsis_id"], strict=True))
-    years_exp = dict(zip(stint_keys, stints["years_exp"].fillna(0), strict=True))
 
     by_group: dict[tuple[str, str], list[tuple]] = {}
-    for row in stints.itertuples(index=False):
+    for row in start.itertuples(index=False):
         pos_group = map_position_group(row.position)
         if pos_group is None:
             continue
         key = (row.team_canon, pos_group)
         dc_key = (row.team_canon, row.gsis_id)
+        raw_exp = row.years_exp
+        years_exp = float(raw_exp) if raw_exp is not None and not pd.isna(raw_exp) else 0.0
         sort_key = (
             dc_rank.get(dc_key, 10**6),
             -snaps.get(dc_key, 0.0),
-            -years_exp.get(dc_key, 0.0),
+            -float(years_exp),
             row.gsis_id,
         )
         by_group.setdefault(key, []).append((sort_key, row.gsis_id))
@@ -117,6 +148,69 @@ def compute_depth_ranks(
         for rank, (_, gsis_id) in enumerate(items, start=1):
             out[(team, pos_group, gsis_id)] = rank
     return out
+
+
+def _select_rosters(
+    start: pd.DataFrame,
+    pos_group_by_id: dict[str, str],
+    depth_ranks: dict[tuple[str, str, str], int],
+    snaps: dict[tuple[str, str], float],
+) -> dict[str, list[str]]:
+    """Opening-day 53 per team: fill ROSTER_TEMPLATE_53 by depth rank, then top up to 53.
+
+    Candidates are each team's rows in `start` (season-start stint), restricted to
+    `pos_group_by_id` (players that made it into players.json). Every player is a candidate for at
+    most one team, since `start` has one row per player league-wide.
+    """
+    by_team: dict[str, list[dict]] = {}
+    for row in start.itertuples(index=False):
+        pos_group = pos_group_by_id.get(row.gsis_id)
+        if pos_group is None:
+            continue
+        key = (row.team_canon, row.gsis_id)
+        raw_exp = row.years_exp
+        years_exp = float(raw_exp) if raw_exp is not None and not pd.isna(raw_exp) else 0.0
+        by_team.setdefault(row.team_canon, []).append(
+            {
+                "gsis_id": row.gsis_id,
+                "pos_group": pos_group,
+                "depth": depth_ranks.get((row.team_canon, pos_group, row.gsis_id), 10**6),
+                "status_priority": _status_priority(row.status),
+                "snap": snaps.get(key, 0.0),
+                "years_exp": float(years_exp),
+            }
+        )
+
+    rosters: dict[str, list[str]] = {}
+    for team, candidates in by_team.items():
+        by_pos: dict[str, list[dict]] = {}
+        for c in candidates:
+            by_pos.setdefault(c["pos_group"], []).append(c)
+
+        selected: list[str] = []
+        selected_ids: set[str] = set()
+        for pos_group, count in ROSTER_TEMPLATE_53.items():
+            pool = sorted(by_pos.get(pos_group, []), key=lambda c: (c["depth"], c["gsis_id"]))
+            for c in pool[:count]:
+                selected.append(c["gsis_id"])
+                selected_ids.add(c["gsis_id"])
+
+        leftover = [c for c in candidates if c["gsis_id"] not in selected_ids]
+        leftover.sort(
+            key=lambda c: (
+                c["depth"],
+                c["status_priority"],
+                -c["snap"],
+                -c["years_exp"],
+                c["gsis_id"],
+            )
+        )
+        slots = max(53 - len(selected), 0)
+        for c in leftover[:slots]:
+            selected.append(c["gsis_id"])
+
+        rosters[team] = selected
+    return rosters
 
 
 def _contract_index(master: PlayerMaster) -> dict[str, list[tuple[int, int, float]]]:
@@ -152,18 +246,22 @@ def _contract_hint(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, s
 def build_season_rosters_and_players(
     season: int, master: PlayerMaster, ratings
 ) -> tuple[dict, dict]:
-    """Build rosters.json and players.json for one season together (they share the roster scan)."""
+    """Build rosters.json and players.json for one season together (they share the roster scan).
+
+    players.json covers every season-start stint; rosters.json is the opening-day 53 per team (see
+    docs/DATA_CONTRACT.md). A player's `team` is set after roster selection: the team whose exported
+    roster contains them, else null (free agent pool).
+    """
     stints = season_roster_stints(season)
     start = season_start_roster(stints)
-    depth_ranks = compute_depth_ranks(season, stints, master)
+    snaps = _snap_score(season, master)
+    depth_ranks = compute_depth_ranks(season, start, master, snaps)
     contract_idx = _contract_index(master)
 
     unmatched_file, unmatched_writer = _unmatched_logger(season)
 
-    # Build players.json first; rosters.json is then restricted to ids that made it in, so a
-    # rostered playerId always resolves in players.json (DATA_CONTRACT acceptance criterion).
     players = []
-    valid_ids: set[str] = set()
+    pos_group_by_id: dict[str, str] = {}
     for row in start.itertuples(index=False):
         pos_group = map_position_group(row.position)
         draft = master.draft_by_gsis.get(row.gsis_id)
@@ -191,27 +289,33 @@ def build_season_rosters_and_players(
         )
         rec["scouting"] = scouting
         rec["trueValue"] = true_value
-        rec["team"] = row.team_canon
         players.append(rec)
-        valid_ids.add(row.gsis_id)
+        pos_group_by_id[row.gsis_id] = rec["pos"]
+
+    team_rosters = _select_rosters(start, pos_group_by_id, depth_ranks, snaps)
+    selected_by_team = {team: set(ids) for team, ids in team_rosters.items()}
 
     rosters: dict[str, list[dict]] = {}
-    for row in stints.itertuples(index=False):
-        if row.gsis_id not in valid_ids:
+    player_team: dict[str, str] = {}
+    for row in start.itertuples(index=False):
+        team = row.team_canon
+        selected = selected_by_team.get(team)
+        if selected is None or row.gsis_id not in selected:
             continue
-        pos_group = map_position_group(row.position)
-        if pos_group is None:
-            unmatched_writer.writerow(["roster", row.gsis_id, f"unmapped position {row.position}"])
-            continue
+        pos_group = pos_group_by_id[row.gsis_id]
         entry: dict = {"playerId": row.gsis_id}
-        depth = depth_ranks.get((row.team_canon, pos_group, row.gsis_id))
+        depth = depth_ranks.get((team, pos_group, row.gsis_id))
         if depth is not None:
             entry["depth"] = depth
         entry.update(_contract_hint(contract_idx, row.gsis_id, season))
-        rosters.setdefault(row.team_canon, []).append(entry)
+        rosters.setdefault(team, []).append(entry)
+        player_team[row.gsis_id] = team
     for team in rosters:
         rosters[team].sort(key=lambda e: (e.get("depth", 999), e["playerId"]))
     unmatched_file.close()
+
+    for rec in players:
+        rec["team"] = player_team.get(rec["id"])
 
     rosters_obj = {"attribution": ATTRIBUTION, "season": season, "rosters": rosters}
     players_obj = {"attribution": ATTRIBUTION, "season": season, "players": players}

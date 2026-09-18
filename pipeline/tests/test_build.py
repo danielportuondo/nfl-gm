@@ -106,3 +106,28 @@ def test_no_headshot_or_logo_columns_leak_into_players(master, ratings):
     assert "headshot" not in dumped.lower()
     assert "logo" not in dumped.lower()
     assert "wordmark" not in dumped.lower()
+
+
+@pytest.mark.parametrize("season", [2015, 2021])
+def test_opening_day_rosters_are_legal(master, ratings, season):
+    """rosters.json is a legal opening-day 53: 46-53 per team, each player at most once
+    league-wide, players.json.team consistent with roster membership. See HANDOFF/DATA_CONTRACT
+    "rosters.json" semantics.
+    """
+    rosters_obj, players_obj = build_season_rosters_and_players(season, master, ratings)
+    rosters = rosters_obj["rosters"]
+    players_by_id = {p["id"]: p for p in players_obj["players"]}
+
+    seen: set[str] = set()
+    rostered_team_by_id: dict[str, str] = {}
+    for team, entries in rosters.items():
+        assert 46 <= len(entries) <= 53, f"{team} has {len(entries)} players"
+        for entry in entries:
+            pid = entry["playerId"]
+            assert pid not in seen, f"{pid} appears on more than one roster"
+            seen.add(pid)
+            assert pid in players_by_id, f"{team} references unknown player {pid}"
+            rostered_team_by_id[pid] = team
+
+    for pid, player in players_by_id.items():
+        assert player["team"] == rostered_team_by_id.get(pid)
