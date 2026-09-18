@@ -38,16 +38,28 @@ function currentSlot(room: DraftRoomState): DraftPick | undefined {
   return room.order[room.currentPickIndex]
 }
 
+/** Procedural seasons are generated with `pick: null`; once the room settles the order, state.picks learns the numbers. */
+function stampPickNumbers(picks: readonly DraftPick[], order: readonly DraftPick[]): DraftPick[] {
+  const season = order[0]?.season
+  if (season === undefined) return [...picks]
+  const numbered = new Map(order.map((slot) => [`${slot.round}:${slot.originalTeam}`, slot.pick]))
+  return picks.map((p) =>
+    p.season === season && p.pick === null ? { ...p, pick: numbered.get(`${p.round}:${p.originalTeam}`) ?? null } : p,
+  )
+}
+
 /** A mid-draft trade changes state.picks; unmade slots must follow the new owner. */
 function syncOwners(state: LeagueState, room: DraftRoomState): DraftRoomState {
+  // Keyed by pick number so a compensatory pick and the team's own pick in that round stay apart.
+  const slotKey = (p: DraftPick): string => (p.pick === null ? `${p.round}:${p.originalTeam}` : `#${p.pick}`)
   const owners = new Map<string, TeamId>()
   for (const p of state.picks) {
-    if (p.season === room.season) owners.set(`${p.round}:${p.originalTeam}`, p.owner)
+    if (p.season === room.season) owners.set(slotKey(p), p.owner)
   }
   let changed = false
   const order = room.order.map((slot) => {
     if (slot.playerId !== null) return slot
-    const owner = owners.get(`${slot.round}:${slot.originalTeam}`)
+    const owner = owners.get(slotKey(slot))
     if (owner === undefined || owner === slot.owner) return slot
     changed = true
     return { ...slot, owner }
@@ -168,6 +180,7 @@ function startDraftImpl(state: LeagueState, ctx: EngineContext): LeagueState {
   let s = loadClass(state, ctx)
   const seasonPicks = s.picks.filter((p) => p.season === season)
   const order = settleOrder(seasonPicks.length > 0 ? seasonPicks : buildOrder(s, season, ctx), s)
+  s = { ...s, picks: stampPickNumbers(s.picks, order) }
   const { available, udfaPool } = splitBoard(s, ctx, season, order.length)
 
   s = withRoom(s, {

@@ -122,3 +122,23 @@ describe('trade.submit', () => {
     expect(Math.abs(accepted / trials - p)).toBeLessThan(0.1)
   })
 })
+
+describe('compensatory picks', () => {
+  it('trading one of two same-round picks from the same original team moves only that pick', () => {
+    const base = scenario()
+    const own = base.state.picks.find((p) => p.round === 3 && p.owner === AI && !p.playerId)!
+    // A compensatory pick: same season, round and original team, its own overall number.
+    const comp = { ...own, pick: 3 * 32 + 40 }
+    const state = { ...base.state, picks: [...base.state.picks, comp] }
+    const compRef = { season: comp.season, round: comp.round, originalTeam: comp.originalTeam, pick: comp.pick }
+    const proposal = userProposal(state, { players: [] }, { picks: [compRef] })
+
+    const after = trade.execute(state, proposal, base.ctx)
+
+    const owners = after.picks
+      .filter((p) => p.season === own.season && p.round === 3 && p.originalTeam === own.originalTeam)
+      .map((p) => [p.pick, p.owner])
+    expect(owners).toContainEqual([comp.pick, state.userTeam])
+    expect(owners).toContainEqual([own.pick, AI])
+  })
+})

@@ -67,7 +67,7 @@ describe('trade.generateAiOffers — draft', () => {
     const flat = all.flat()
     expect(flat.length).toBeGreaterThan(0)
     for (const proposal of flat) {
-      expect(proposal.request.picks).toEqual([{ season: target.season, round: target.round, originalTeam: target.originalTeam }])
+      expect(proposal.request.picks).toEqual([{ season: target.season, round: target.round, originalTeam: target.originalTeam, pick: target.pick }])
       expect(proposal.request.players).toEqual([])
       expect(proposal.offer.picks.length).toBeGreaterThan(0)
       const own = trade.evaluate(state, mirror(proposal), base.ctx)

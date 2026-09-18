@@ -227,6 +227,8 @@ export const PickRefSchema = z.object({
   season: SeasonSchema,
   round: z.number().int().min(1).max(7),
   originalTeam: TeamIdSchema,
+  pick: z.number().int().min(1).max(300).nullable().optional()
+    .describe('Overall pick number when known; needed to tell a compensatory pick from the same team\'s own pick in that round.'),
 }).describe('Identifies a DraftPick regardless of current owner.')
 
 export const TradeSideSchema = z.object({

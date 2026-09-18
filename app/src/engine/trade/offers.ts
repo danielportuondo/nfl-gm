@@ -9,9 +9,8 @@
 import type { EngineContext, LeagueState, PickRef, PlayerId, Rng, TeamId, TradeProposal } from '@contracts/index'
 import { evaluateImpl, mirror } from './evaluate'
 import { offerConstants } from './constants'
-import { incomingValue, needsFor, outgoingValue, pickValueImpl } from './value'
+import { incomingValue, needsFor, outgoingValue, pickValueImpl, refKey, refOf } from './value'
 
-const refKey = (ref: PickRef): string => `${ref.season}-${ref.round}-${ref.originalTeam}`
 
 interface Valued {
   ref: PickRef
@@ -27,7 +26,7 @@ function aiTeams(state: LeagueState): TeamId[] {
 function tradeablePicks(state: LeagueState, teamId: TeamId, exclude: Set<string>, ctx: EngineContext): Valued[] {
   return state.picks
     .filter((p) => p.owner === teamId && !p.playerId)
-    .map((p) => ({ ref: { season: p.season, round: p.round, originalTeam: p.originalTeam }, value: 0 }))
+    .map((p) => ({ ref: refOf(p), value: 0 }))
     .filter((c) => !exclude.has(refKey(c.ref)))
     .map((c) => ({ ref: c.ref, value: pickValueImpl(state, c.ref, ctx) }))
     .sort((a, b) => b.value - a.value || refKey(a.ref).localeCompare(refKey(b.ref)))
@@ -83,7 +82,7 @@ function draftOffers(state: LeagueState, ctx: EngineContext, rng: Rng): TradePro
   const current = room.order[room.currentPickIndex]
   if (!current || current.owner !== state.userTeam || current.playerId) return []
 
-  const targetRef: PickRef = { season: current.season, round: current.round, originalTeam: current.originalTeam }
+  const targetRef: PickRef = refOf(current)
   const targetValue = pickValueImpl(state, targetRef, ctx)
   if (targetValue <= 0) return []
 

@@ -1447,6 +1447,19 @@
                               "minLength": 2,
                               "maxLength": 3,
                               "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                            },
+                            "pick": {
+                              "description": "Overall pick number when known; needed to tell a compensatory pick from the same team's own pick in that round.",
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 300
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
                             }
                           },
                           "required": [
@@ -1505,6 +1518,19 @@
                               "minLength": 2,
                               "maxLength": 3,
                               "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                            },
+                            "pick": {
+                              "description": "Overall pick number when known; needed to tell a compensatory pick from the same team's own pick in that round.",
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 300
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
                             }
                           },
                           "required": [

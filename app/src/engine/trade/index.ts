@@ -11,10 +11,8 @@ import type {
 import { acceptanceConstants, tradeConstants } from './constants'
 import { evaluateImpl, mirror } from './evaluate'
 import { generateAiOffersImpl } from './offers'
-import { outgoingValue, pickValueImpl, playerValueImpl } from './value'
+import { matchesRef, outgoingValue, pickValueImpl, playerValueImpl, refKey, refOf } from './value'
 
-const refKey = (ref: PickRef): string => `${ref.season}-${ref.round}-${ref.originalTeam}`
-const pickKeyOf = (pick: DraftPick): string => `${pick.season}-${pick.round}-${pick.originalTeam}`
 const keyOfExtra = (extra: { player?: PlayerId; pick?: PickRef }): string =>
   extra.player ?? (extra.pick ? refKey(extra.pick) : '')
 
@@ -57,12 +55,9 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
   for (const id of proposal.offer.players) movePlayer(teams, state, id, a, b)
   for (const id of proposal.request.players) movePlayer(teams, state, id, b, a)
 
-  const toB = new Set(proposal.offer.picks.map(refKey))
-  const toA = new Set(proposal.request.picks.map(refKey))
   const reowned = <T extends DraftPick>(pick: T): T => {
-    const key = pickKeyOf(pick)
-    if (toB.has(key) && pick.owner === a) return { ...pick, owner: b }
-    if (toA.has(key) && pick.owner === b) return { ...pick, owner: a }
+    if (pick.owner === a && proposal.offer.picks.some((ref) => matchesRef(ref, pick))) return { ...pick, owner: b }
+    if (pick.owner === b && proposal.request.picks.some((ref) => matchesRef(ref, pick))) return { ...pick, owner: a }
     return pick
   }
 
@@ -99,7 +94,6 @@ function counterFor(state: LeagueState, proposal: TradeProposal, ctx: EngineCont
   const proposer = proposal.offer.teamId
   const ai = proposal.request.teamId
   const alreadyOffered = new Set(proposal.offer.players)
-  const offeredPicks = new Set(proposal.offer.picks.map(refKey))
 
   const candidates: { extra: { player?: PlayerId; pick?: PickRef }; value: number }[] = []
   for (const slot of state.teams[proposer]?.roster ?? []) {
@@ -108,8 +102,8 @@ function counterFor(state: LeagueState, proposal: TradeProposal, ctx: EngineCont
   }
   for (const pick of state.picks) {
     if (pick.owner !== proposer || pick.playerId) continue
-    const ref: PickRef = { season: pick.season, round: pick.round, originalTeam: pick.originalTeam }
-    if (offeredPicks.has(refKey(ref))) continue
+    if (proposal.offer.picks.some((ref) => matchesRef(ref, pick))) continue
+    const ref = refOf(pick)
     candidates.push({ extra: { pick: ref }, value: pickValueImpl(state, ref, ctx) })
   }
 

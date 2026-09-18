@@ -4,13 +4,12 @@
  * `evaluate` always answers from `proposal.request.teamId`'s side — the counterparty, the team being
  * asked to say yes. It RECEIVES `proposal.offer` (valueIn) and GIVES `proposal.request` (valueOut).
  */
-import type { EngineContext, LeagueState, PickRef, PlayerId, TeamId, TradeEvaluation, TradeProposal } from '@contracts/index'
+import type { EngineContext, LeagueState, PlayerId, TeamId, TradeEvaluation, TradeProposal } from '@contracts/index'
 import { acceptanceConstants, needConstants, tradeConstants } from './constants'
-import { findPick, incomingValue, injuryWeeks, needsFor, outgoingValue, pickValueImpl, rosterIndex } from './value'
+import { findPick, incomingValue, injuryWeeks, needsFor, outgoingValue, pickValueImpl, refKey, rosterIndex } from './value'
 
 export const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x))
 
-const pickKey = (ref: PickRef): string => `${ref.season}-${ref.round}-${ref.originalTeam}`
 
 export function isInSeason(state: LeagueState): boolean {
   return (acceptanceConstants.inSeasonPhases as readonly string[]).includes(state.phase)
@@ -38,7 +37,7 @@ function assetErrors(state: LeagueState, side: TradeProposal['offer']): string[]
   }
   const seenPicks = new Set<string>()
   for (const ref of side.picks) {
-    const key = pickKey(ref)
+    const key = refKey(ref)
     if (seenPicks.has(key)) errors.push(`pick ${key} listed twice`)
     seenPicks.add(key)
     const pick = findPick(state, ref)

@@ -137,8 +137,26 @@ export function outgoingValue(state: LeagueState, playerId: PlayerId, ctx: Engin
 
 // --- picks ------------------------------------------------------------------------------------
 
+export function refOf(pick: DraftPick): PickRef {
+  return { season: pick.season, round: pick.round, originalTeam: pick.originalTeam, pick: pick.pick }
+}
+
+export function refKey(ref: PickRef): string {
+  return `${ref.season}-${ref.round}-${ref.originalTeam}-${ref.pick ?? '?'}`
+}
+
+/** Pick numbers only disambiguate when both sides know them (future seasons carry null). */
+export function matchesRef(ref: PickRef, pick: Pick<DraftPick, 'season' | 'round' | 'originalTeam' | 'pick'>): boolean {
+  return (
+    pick.season === ref.season &&
+    pick.round === ref.round &&
+    pick.originalTeam === ref.originalTeam &&
+    (ref.pick == null || pick.pick == null || ref.pick === pick.pick)
+  )
+}
+
 export function findPick(state: LeagueState, ref: PickRef): DraftPick | undefined {
-  return state.picks.find((p) => p.season === ref.season && p.round === ref.round && p.originalTeam === ref.originalTeam)
+  return state.picks.find((p) => matchesRef(ref, p))
 }
 
 /** Rich Hill chart points for an overall pick number, log-linear between anchors. */
