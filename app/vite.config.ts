@@ -26,6 +26,8 @@ export default defineConfig({
     environment: 'node',
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx', 'src/**/*.test.ts', 'src/**/*.test.tsx'],
     exclude: ['tests/e2e/**', 'node_modules/**'],
+    // Real-data tests (60-sim calibration, multi-offseason cap/anchoring runs) take 5–10 s under a parallel run.
+    testTimeout: 30_000,
     // UI tests opt into jsdom with `// @vitest-environment jsdom` at the top of the file.
   },
 })

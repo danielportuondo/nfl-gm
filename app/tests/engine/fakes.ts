@@ -52,7 +52,8 @@ export const fakeDraft: DraftModule = {
   },
   loadProspects: (state) => state,
   startDraft: (state, ctx) => {
-    const season = state.season
+    // Draft-year convention: season S's DRAFT phase drafts the S+1 class (contracts/engine/draft.ts).
+    const season = state.season + 1
     const sd = ctx.seasonData(season)
     const available = sd ? sd.draft.prospects.map((p) => p.id) : []
     return {
