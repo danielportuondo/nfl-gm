@@ -18,3 +18,20 @@ re-opened here; this log records the choices made while building within them.
 - **Subagents do not commit.** The orchestrator commits after each fan-out; concurrent agents committing on one working tree would fight over the index.
 - **1B (ratings-model) does its own ingest** into the shared `pipeline/.cache/` using the same URL table as 1A, rather than waiting on 1A's first commit (HANDOFF §7 Phase 1 note, "prefer the latter").
 - **Fable is available**, so `.claude/settings.json` uses `fable[1m]` as written in §5.1; `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` is set through the settings `env` block.
+
+## 2026-09-17 — Phase 1 (fan-out #1)
+
+- **Real data exported for 2010–2025** (68 files, ~2.4 MB gzipped total; each season chunk ≤ 170 KB gz). `latestRealSeason = 2025`; the in-progress 2026 season is excluded.
+- **Ratings model results**: starter true value vs real point differential correlates 0.83–0.90 per season 2012–2023 (target 0.55). QB value leans 20% on APY-percentile-within-contract-cohort, down-weighted by experience so rookie scale cannot leak draft slot into truth. Career outcome columns (`w_av`, `probowls`, `allpro`) were not needed. Normalization pool = players with ≥ 1 game (nflverse added practice-squad rows in 2016). `classSize.udfa` = 146 (empirical), not the handoff's ~200.
+- **Pipeline placeholder mode**: `make data --allow-placeholder-ratings` exists for running ingest/export without the model; the placeholders set `ovr == trueValue` and must never ship. Phase 1 data was re-exported with the real consensus parquets before commit.
+- **nflverse team codes** are inconsistent across files (ARZ/BLT/CLV/HST/SL, GNB/KAN/LVR/NOR/NWE/SDG/SFO/TAM); `pipeline/.../build/teams.py` carries a superset of the app's `TEAM_ALIASES`. Candidate to fold back into `contracts/teams.ts` in Phase 2.
+- **League loop conventions** (league-engine): `TeamState.record` resets at the TRAINING_CAMP → PRESEASON rollover; `advancePhase` throws during REGULAR/PLAYOFFS (only `simWeek` advances those); the caller (store/headless) runs `draft.startDraft`/`autoDraftToEnd` between `advancePhase(OFFSEASON_RESIGN)` and `advancePhase(DRAFT)`; in-season AI trade offers surface as `WeekReport.events` only — no persisted field for pending in-season offers yet.
+- **Sim constants** on the mock league: `k = 2.5`, `hfa 2.0`, `marginSd 13.5`, `tieP 0.07` conditional on OT (×0.45 pre-2017), injury `rateScale 2.8`. To be re-tuned on real 2015 data in Phase 2.
+- **UI**: theme toggle lives in a trailing slot on the Strip on every in-game screen (to be codified in DESIGN.md §4). Later screens extend `NAV_ITEMS` in `App.tsx`.
+
+### Follow-ups for Phase 2 (integration)
+- Fix `tests/fixtures/mockLeague.ts#roundRobin` home/away imbalance (some teams never host), then re-tune `k`.
+- `injuryModel.permanentLoss.lossRange` exported as `[5, 20]` (placeholder guess) — spec says 1–3 points; fix in `build/injury.py`.
+- Low-priority contract request from sim: `PlayerGameLine` cannot express safeties, two-point conversions, or defensive/return TDs, so reconstructed box points fall 2–8 short of the team score in ~25% of team-games.
+- `originalTeam` in draft order equals `team` (nflverse has no original-team column); combine values are raw numbers, not percentiles.
+- Add the Strip theme-toggle slot to DESIGN.md §4.
