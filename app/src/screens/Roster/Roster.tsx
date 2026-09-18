@@ -1,0 +1,169 @@
+import { useMemo, useState } from 'react'
+import { POSITIONS, type LeagueState, type PlayerId, type Position, type RosterSlot, type StaticData } from '@contracts/index'
+import { NamePlate, Panel, PositionBadge, StatusBadge, Table, type Column } from '@ui/primitives'
+import { BustSprite, TeamScope } from '@ui/sprites'
+
+export interface RosterProps {
+  state: LeagueState
+  data: StaticData
+  onSelectPlayer: (id: PlayerId) => void
+  onReorderDepthChart: (pos: Position, order: PlayerId[]) => void
+}
+
+interface Row {
+  slot: RosterSlot
+  name: string
+  pos: Position
+  age: number
+  ovr: number
+  pot: number
+  years: number
+  apy: number
+  rookie: boolean
+  injured: boolean
+  expiring: boolean
+}
+
+const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
+
+/** Dense roster table with a position filter, plus a keyboard-reorderable depth chart (docs/DESIGN.md §11). */
+export function Roster({ state, data, onSelectPlayer, onReorderDepthChart }: RosterProps) {
+  const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
+  const team = state.teams[state.userTeam]
+
+  const rows: Row[] = useMemo(() => {
+    if (!team) return []
+    return team.roster.map((slot) => {
+      const player = state.players[slot.playerId]!
+      const scouting = state.scouting[slot.playerId]!
+      return {
+        slot,
+        name: player.name,
+        pos: player.pos,
+        age: state.season - player.birthYear,
+        ovr: scouting.ovr,
+        pot: scouting.pot,
+        years: slot.contract.years,
+        apy: slot.contract.apy,
+        rookie: player.rookieSeason === state.season,
+        injured: Boolean(slot.injured),
+        expiring: slot.contract.years <= 1,
+      }
+    })
+  }, [team, state.players, state.scouting, state.season])
+
+  const filtered = filter === 'ALL' ? rows : rows.filter((r) => r.pos === filter)
+
+  const columns: Column<Row>[] = [
+    {
+      key: 'name',
+      header: 'Player',
+      frozen: true,
+      render: (r) => (
+        <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+          <BustSprite pos={r.pos} size={2} status={{ injured: r.injured, rookie: r.rookie }} />
+          {r.name}
+          <PositionBadge pos={r.pos} />
+        </span>
+      ),
+    },
+    { key: 'age', header: 'Age', numeric: true, render: (r) => r.age },
+    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, render: (r) => r.ovr },
+    { key: 'pot', header: 'Pot', numeric: true, rating: true, render: (r) => r.pot },
+    { key: 'years', header: 'Years', numeric: true, render: (r) => r.years },
+    { key: 'apy', header: 'APY', numeric: true, render: (r) => `$${r.apy.toFixed(1)}M` },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (r) => (
+        <span style={{ display: 'flex', gap: 'var(--sp-1)' }}>
+          {r.rookie && <StatusBadge status="rookie" />}
+          {r.injured && <StatusBadge status="injured" />}
+          {r.expiring && <StatusBadge status="expiring" />}
+        </span>
+      ),
+    },
+  ]
+
+  const depthPositions: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'CB', 'S']
+  const teamColors = data.teams[state.userTeam]?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }
+
+  return (
+    <TeamScope colors={teamColors} as="div" style={{ display: 'contents' }}>
+      <div className="gg-col-12">
+        <Panel title="Roster" variant="sunken" revealIndex={0}>
+          <div role="group" aria-label="Filter by position" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)', marginBottom: 'var(--sp-3)' }}>
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                type="button"
+                className="gg-button gg-button--secondary"
+                aria-pressed={filter === f}
+                onClick={() => setFilter(f)}
+                style={filter === f ? { boxShadow: 'var(--shadow-press)' } : undefined}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <Table
+            columns={columns}
+            rows={filtered}
+            rowKey={(r) => r.slot.playerId}
+            caption={`${team?.id ?? ''} 53-man roster`}
+            dense
+            onRowClick={(r) => onSelectPlayer(r.slot.playerId)}
+          />
+        </Panel>
+      </div>
+
+      <div className="gg-col-12">
+        <Panel title="Depth chart" variant="sunken" revealIndex={1}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 'var(--sp-4)' }}>
+            {depthPositions.map((pos) => {
+              const order = team?.depthChart[pos] ?? []
+              return (
+                <div key={pos}>
+                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>{pos}</h4>
+                  <div role="list" aria-label={`${pos} depth chart`} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
+                    {order.map((id, i) => {
+                      const player = state.players[id]
+                      const scouting = state.scouting[id]
+                      if (!player || !scouting) return null
+                      return (
+                        <NamePlate
+                          key={id}
+                          name={player.name}
+                          pos={player.pos}
+                          meta={`${scouting.ovr} ovr`}
+                          onMoveUp={
+                            i > 0
+                              ? () => {
+                                  const next = [...order]
+                                  ;[next[i - 1], next[i]] = [next[i]!, next[i - 1]!]
+                                  onReorderDepthChart(pos, next)
+                                }
+                              : undefined
+                          }
+                          onMoveDown={
+                            i < order.length - 1
+                              ? () => {
+                                  const next = [...order]
+                                  ;[next[i], next[i + 1]] = [next[i + 1]!, next[i]!]
+                                  onReorderDepthChart(pos, next)
+                                }
+                              : undefined
+                          }
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </Panel>
+      </div>
+    </TeamScope>
+  )
+}

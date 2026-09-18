@@ -1,0 +1,409 @@
+/**
+ * Component primitives (docs/DESIGN.md §8). Classes only — every color/size/shadow comes from
+ * app/src/ui/tokens.css custom properties.
+ */
+
+.gg-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* lights-on reveal: panels simply are there one frame later, in DOM order */
+.gg-reveal {
+  opacity: 0;
+  animation: gg-lights-on 1ms steps(1, end) forwards;
+  animation-delay: calc(var(--i, 0) * var(--stagger));
+}
+@keyframes gg-lights-on {
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gg-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Panel ------------------------------------------------------------------------------------- */
+.gg-panel {
+  background: var(--surface-2);
+  border: var(--bw) solid var(--line);
+  border-radius: var(--r-1);
+  box-shadow: var(--shadow-raise);
+  padding: var(--sp-4);
+}
+.gg-panel--sunken {
+  background: var(--surface-1);
+  box-shadow: var(--shadow-none);
+}
+.gg-panel--plate {
+  border-left-width: var(--bw-plate);
+  border-left-color: var(--team-primary);
+}
+.gg-panel--attention {
+  border-color: var(--accent);
+}
+.gg-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+.gg-panel__title {
+  font-family: var(--font-display);
+  font-size: var(--fd-2);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  margin: 0;
+}
+
+/* Button ------------------------------------------------------------------------------------ */
+.gg-button {
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  letter-spacing: var(--ls-display);
+  padding: 10px 14px;
+  min-height: 40px;
+  border: var(--bw) solid var(--line);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-raise);
+  background: var(--surface-3);
+  color: var(--text-1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  transition: transform var(--t-quick) var(--ease-out), box-shadow var(--t-quick) var(--ease-out);
+}
+.gg-button:hover:not(:disabled) {
+  box-shadow: var(--shadow-hover);
+  transform: translate(1px, 1px);
+}
+.gg-button:active:not(:disabled) {
+  box-shadow: var(--shadow-press);
+  transform: translate(2px, 2px);
+}
+.gg-button:disabled {
+  opacity: 0.5;
+  box-shadow: var(--shadow-none);
+  cursor: not-allowed;
+}
+.gg-button--primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.gg-button--secondary {
+  background: var(--surface-3);
+  color: var(--text-1);
+}
+.gg-button--danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+.gg-button--ghost {
+  background: transparent;
+  box-shadow: none;
+}
+.gg-button--ghost:hover:not(:disabled) {
+  box-shadow: none;
+  transform: none;
+  background: var(--surface-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .gg-button {
+    transition: none;
+  }
+}
+
+/* Table ------------------------------------------------------------------------------------- */
+.gg-table-wrap {
+  overflow-x: auto;
+}
+.gg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-1);
+}
+.gg-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-1);
+  color: var(--text-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: var(--bw) solid var(--line);
+  white-space: nowrap;
+}
+.gg-table td {
+  padding: var(--sp-2) var(--sp-3);
+  height: 32px;
+  border-bottom: 1px solid var(--surface-3);
+}
+.gg-table--dense td {
+  height: 28px;
+}
+.gg-table tbody tr:hover {
+  background: var(--surface-3);
+}
+.gg-table tbody tr[aria-selected='true'] {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.gg-table .gg-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.gg-table .gg-rating {
+  font-family: var(--font-display);
+}
+.gg-table .gg-col-frozen {
+  position: sticky;
+  left: 0;
+  background: var(--surface-1);
+}
+
+/* Meter ------------------------------------------------------------------------------------- */
+.gg-meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.gg-meter__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.gg-meter__track {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+  flex: 1;
+}
+.gg-meter__seg {
+  flex: 1;
+  background: var(--surface-1);
+  border-radius: var(--r-0);
+}
+.gg-meter__label {
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  min-width: 3ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Badge ------------------------------------------------------------------------------------- */
+.gg-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--r-1);
+  line-height: 1.4;
+}
+.gg-badge--position {
+  background: var(--line);
+  color: var(--text-inverse);
+}
+.gg-badge--team {
+  background: var(--team-primary);
+  color: var(--on-team-primary);
+  border-bottom: 3px solid var(--team-secondary);
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  padding: 2px 8px;
+  border-radius: var(--r-1);
+}
+.gg-badge--rookie {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+.gg-badge--injured {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+.gg-badge--expiring {
+  background: transparent;
+  color: var(--text-2);
+  border: 2px solid var(--text-2);
+}
+
+/* Modal ------------------------------------------------------------------------------------- */
+.gg-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in oklab, var(--surface-0) 80%, transparent);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+}
+.gg-modal {
+  background: var(--surface-2);
+  border: var(--bw) solid var(--line);
+  border-radius: var(--r-1);
+  box-shadow: var(--shadow-raise);
+  max-width: 560px;
+  width: 100%;
+  padding: var(--sp-5);
+  animation: gg-modal-in 120ms var(--ease-mech);
+}
+@keyframes gg-modal-in {
+  from {
+    transform: scale(0.94);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.gg-modal__title {
+  font-family: var(--font-display);
+  font-size: var(--fd-3);
+  margin: 0 0 var(--sp-4);
+}
+.gg-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+@media (prefers-reduced-motion: reduce) {
+  .gg-modal {
+    animation: none;
+  }
+}
+
+/* Toast ------------------------------------------------------------------------------------- */
+.gg-toast-region {
+  position: fixed;
+  z-index: var(--z-toast);
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--sp-2);
+  max-width: 360px;
+}
+@media (max-width: 720px) {
+  .gg-toast-region {
+    left: var(--sp-4);
+    right: var(--sp-4);
+    top: calc(env(safe-area-inset-top, 0px) + var(--sp-2));
+    bottom: auto;
+    max-width: none;
+  }
+}
+.gg-toast {
+  background: var(--surface-2);
+  border: var(--bw) solid var(--line);
+  border-left-width: var(--bw-plate);
+  border-left-color: var(--text-2);
+  box-shadow: var(--shadow-raise);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-2);
+  animation: gg-modal-in 120ms var(--ease-mech);
+}
+.gg-toast--success {
+  border-left-color: var(--positive);
+}
+.gg-toast--warn {
+  border-left-color: var(--accent);
+}
+.gg-toast--error {
+  border-left-color: var(--danger);
+}
+@media (prefers-reduced-motion: reduce) {
+  .gg-toast {
+    animation: none;
+  }
+}
+
+/* StatTile ---------------------------------------------------------------------------------- */
+.gg-stat-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.gg-stat-tile__value {
+  font-family: var(--font-display);
+  font-size: var(--fd-4);
+  line-height: var(--lh-display);
+  font-variant-numeric: tabular-nums;
+}
+.gg-stat-tile__value--danger {
+  color: var(--danger);
+}
+.gg-stat-tile__value--positive {
+  color: var(--positive);
+}
+.gg-stat-tile__label {
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  color: var(--text-2);
+}
+
+/* NamePlate ----------------------------------------------------------------------------------- */
+.gg-nameplate {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--surface-2);
+  border: var(--bw) solid var(--line);
+  border-left-width: var(--bw-plate);
+  border-left-color: var(--team-primary);
+  border-radius: var(--r-0);
+  padding: var(--sp-2) var(--sp-3);
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+button.gg-nameplate {
+  cursor: pointer;
+}
+button.gg-nameplate:hover {
+  background: var(--surface-3);
+}
+.gg-nameplate[aria-selected='true'] {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.gg-nameplate__name {
+  font-family: var(--font-body);
+  font-size: var(--fs-2);
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gg-nameplate__meta {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  flex-shrink: 0;
+}
+.gg-nameplate__reorder {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

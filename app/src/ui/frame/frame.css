@@ -1,0 +1,183 @@
+/**
+ * App frame: Strip, Rail/Tabs, Board grid (docs/DESIGN.md §4).
+ */
+
+.gg-app {
+  display: flex;
+  min-height: 100%;
+}
+
+.gg-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Strip --------------------------------------------------------------------------------------- */
+.gg-strip {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: var(--z-strip);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  background: var(--surface-2);
+  border-bottom: var(--bw) solid var(--line);
+  padding: 0 var(--sp-4);
+}
+.gg-strip--on-clock {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.gg-strip__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-right: 2px solid var(--line);
+  white-space: nowrap;
+}
+.gg-strip--on-clock .gg-strip__item {
+  border-right-color: var(--on-accent);
+}
+.gg-strip__item:last-child {
+  border-right: none;
+}
+.gg-strip__clock {
+  font-family: var(--font-display);
+  font-size: var(--fd-3);
+  animation: gg-blink 1s steps(2, end) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gg-strip__clock {
+    animation: none;
+  }
+}
+@keyframes gg-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (max-width: 390px) {
+  .gg-strip {
+    flex-wrap: wrap;
+    padding: var(--sp-2) var(--sp-4);
+  }
+  .gg-strip__item {
+    padding: var(--sp-1) var(--sp-2);
+  }
+}
+
+/* Rail (desktop) / Tab bar (<=720px) ------------------------------------------------------------ */
+.gg-rail {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--surface-1);
+  z-index: var(--z-rail);
+  padding: var(--sp-3) 0;
+}
+.gg-rail__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  padding: var(--sp-2) var(--sp-4);
+  background: transparent;
+  border: none;
+  border-left: var(--bw-plate) solid transparent;
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  color: var(--text-1);
+  cursor: pointer;
+}
+.gg-rail__item[aria-current='page'] {
+  background: var(--surface-3);
+  border-left-color: var(--team-primary);
+}
+.gg-rail__item:disabled {
+  color: var(--text-3);
+  cursor: not-allowed;
+}
+
+.gg-tabbar {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .gg-rail {
+    display: none;
+  }
+  .gg-tabbar {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-rail);
+    background: var(--surface-1);
+    border-top: var(--bw) solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .gg-tabbar__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 48px;
+    background: transparent;
+    border: none;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--text-2);
+  }
+  .gg-tabbar__item[aria-current='page'] {
+    color: var(--accent);
+  }
+}
+
+/* Board ----------------------------------------------------------------------------------------- */
+.gg-board {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--sp-5) var(--sp-4);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-4);
+}
+@media (max-width: 720px) {
+  .gg-board {
+    padding-bottom: calc(56px + var(--sp-5));
+  }
+  .gg-col-4,
+  .gg-col-6,
+  .gg-col-8 {
+    grid-column: span 12;
+  }
+}
+.gg-col-4 {
+  grid-column: span 4;
+}
+.gg-col-6 {
+  grid-column: span 6;
+}
+.gg-col-8 {
+  grid-column: span 8;
+}
+.gg-col-12 {
+  grid-column: span 12;
+}
+
+/* Yard-line motif (docs/DESIGN.md §6): Dashboard hero and End Game report card only. */
+.gg-yardlines {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--line) 30%, transparent) 0,
+    color-mix(in oklab, var(--line) 30%, transparent) 2px,
+    transparent 2px,
+    transparent 40px
+  );
+}
