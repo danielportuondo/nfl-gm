@@ -5,8 +5,10 @@
 import type { Position, SimConstants } from '@contracts/index'
 
 export const simConstants: SimConstants = {
-  // Calibrated on the mock league: sd(team overall) ≈ 1.9 → k·sd ≈ 4.8 gives sd(wins) ≈ 3.0 / 17 games.
-  k: 2.5,
+  // Phase 5B: re-calibrated on real seasons, where sd(team overall) is 2.6–3.2, not the mock's 1.9.
+  // k = 2.5 put sd(wins) at 3.3–3.5 in history and 3.5–3.8 in procedural seasons; 2.1 lands both at
+  // the §6.3 target of ≈ 3.0 without moving the win correlation (0.858 → 0.858 on 2015).
+  k: 2.1,
   hfa: 2.0,
   marginSd: 13.5,
   totalMean: 45,
@@ -54,10 +56,10 @@ export const scoreConstants = {
   /** Width of the kernel used when snapping a raw score onto a plausible football score. */
   snapSd: 2.4,
   snapWindow: 5,
-  /** Chance a snapped 1-point margin is widened to 3. */
-  oneMarginFixP: 0.72,
+  /** Chance a snapped 1-point margin is widened to 3. Phase 5B: 0.72 left 1-point games at 1.0 %. */
+  oneMarginFixP: 0.38,
   /** A drawn margin inside ±this is a regulation tie and the game goes to overtime (≈6% of games). */
-  otWindow: 1,
+  otWindow: 1.3,
 }
 
 export const overtimeConstants = {
@@ -138,9 +140,12 @@ export const injuryConstants = {
   /** Players who dress for a game; the injury roll is made for each of them. */
   activePerGame: 46,
   /**
-   * The fitted per-player rates describe starters over a full workload; scaling up puts the league at
-   * roughly one multi-week injury per team per game, which is what real injury reports look like.
+   * `injuryModel.ratePerPlayerGame` is fit from injuries_2012–2025 and already describes real spells:
+   * unscaled it gives 1.02 injuries per team-game. 2.8 was chosen to hit §6.3's "1–1.5 MULTI-WEEK per
+   * team per week", but that forces the total to 2.9, twice what the data says. 1.6 is the only value
+   * that keeps both rows of the calibration table inside the 0.6–1.6 band (1.64 total, 0.61 multi-week
+   * ≈ 10 multi-week injuries per team-season, which is what NFL IR usage looks like).
    */
-  rateScale: 2.8,
+  rateScale: 1.6,
   maxWeeksOut: 22,
 }

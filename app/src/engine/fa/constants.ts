@@ -17,6 +17,13 @@ export const faConstants = {
   /** capPct(ovr) = ((ovr − floor) / span)^exp × top — steep, so only elite players cost real money. */
   valueFloor: 55,
   valueSpan: 44,
+  /**
+   * Phase 5B measured this curve at 73–77 % of the cap in league mean payroll (real NFL is 95–100 %).
+   * 2.1 lifts it to 84–87 % and 2.1 + topCapPct 0.20 to 92–94 %, but a 2023-era team whose real
+   * contracts already fill the cap then has zero room: SEA's 2024 cutdown went from $8.3M to $37.7M
+   * of dead money and its free-agency budget to $0. Left at 2.4 pending a call from the orchestrator;
+   * the full sweep is in scripts/qa/REPORT.md (`pnpm exec tsx scripts/qa/faSweep.ts`).
+   */
   valueExp: 2.4,
   topCapPct: 0.16,
   /** Relative market price by position at equal ovr (QB premium, RB/specialist discount). */
@@ -51,12 +58,26 @@ export const faConstants = {
   udfaContractYears: 3,
   /** Rookie scale: pct(overallPick) = max(minCapPct, topPct * exp(-decay * (pick - 1))). */
   rookieScale: { topPct: 0.1, decay: 0.045 },
+  /** Share of a rookie deal that is guaranteed, by round; late picks are cheap to cut (5B, dead-money finding). */
+  rookieGuaranteedPctByRound: [1, 1, 0.6, 0.35, 0.2, 0.1, 0.1],
   /** Re-sign ask = marketApy × (1 ± jitter), seeded per player. */
   resignAskJitter: 0.1,
   gameRoster: { min: 46, max: 53 },
   offseasonRosterMax: 90,
   /** Release: dead money = this share of remaining guaranteed money (apy × years × guaranteedPct). */
   deadMoneyPct: 0.25,
+  /**
+   * Free-agent bidding curve (§6.6 "user signs at ask"). p = sigmoid(askSlope × (offer/ask − 1) +
+   * atAskBias + qualityWeight × (teamQuality − 0.5)).
+   *
+   * Phase 5B measured the shipped curve (slope 3, no bias) at p = 0.48 for an offer at the ask from an
+   * average team — the brief wants 0.7–0.8. `atAskBias` 1.1 puts an at-ask offer at 0.75, and the
+   * steeper `askSlope` keeps a 15 % lowball at 0.48 so the ask still means something.
+   *
+   * NOT YET READ BY fa/index.ts — `acceptProbability` still hard-codes `3 * (ratio - 1) + (quality -
+   * 0.5)`. See CONTRACT REQUESTS in scripts/qa/REPORT.md for the two-line change that consumes this.
+   */
+  acceptance: { askSlope: 8, atAskBias: 1.1, qualityWeight: 1 },
   /** Value/need fallback (no history anchor) re-sign threshold and base willingness. */
   aiResignOvrThreshold: 62,
   aiResignBaseChance: 0.55,

@@ -75,6 +75,10 @@ function clampYears(years: number, max = faConstants.contractYearsSchemaMax): nu
   return Math.min(max, Math.max(1, Math.round(years)))
 }
 
+function rookieGuaranteedPct(round: number): number {
+  return faConstants.rookieGuaranteedPctByRound[round - 1] ?? faConstants.rookieGuaranteedPctByRound.at(-1) ?? 1
+}
+
 function rookieContract(pick: { round: number; pick: number } | null, season: Season, ctx: EngineContext): Contract {
   const cap = capFor(season, ctx)
   if (!pick) {
@@ -91,7 +95,7 @@ function rookieContract(pick: { round: number; pick: number } | null, season: Se
   return {
     years: faConstants.rookieContractYears,
     apy: round2(pct * cap),
-    guaranteedPct: 1,
+    guaranteedPct: rookieGuaranteedPct(pick.round),
     signedSeason: season,
     rookie: true,
   }
@@ -115,10 +119,12 @@ function synthesizeContract(
   const yearsIn = season - player.rookieSeason
   const rookieDeal = player.draft !== null && yearsIn >= 0 && yearsIn < faConstants.rookieContractYears
   if (rookieDeal) {
+    // Without a recorded salary a rookie is priced off his slot, never the veteran market curve.
+    const slot = { round: player.draft!.round, pick: player.draft!.pick }
     return {
       years: clampYears(faConstants.rookieContractYears - yearsIn),
-      apy: apyHint ?? marketApyVal,
-      guaranteedPct: 1,
+      apy: apyHint ?? rookieContract(slot, player.rookieSeason, ctx).apy,
+      guaranteedPct: rookieGuaranteedPct(player.draft!.round),
       signedSeason: player.rookieSeason,
       rookie: true,
     }
@@ -354,7 +360,8 @@ function teamQuality(state: LeagueState, teamId: TeamId): number {
 }
 
 function acceptProbability(ratio: number, quality: number): number {
-  const x = 3 * (ratio - 1) + (quality - 0.5)
+  const { askSlope, atAskBias, qualityWeight } = faConstants.acceptance
+  const x = askSlope * (ratio - 1) + atAskBias + qualityWeight * (quality - 0.5)
   return Math.min(1, Math.max(0, 1 / (1 + Math.exp(-x))))
 }
 

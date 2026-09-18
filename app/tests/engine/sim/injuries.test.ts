@@ -21,8 +21,9 @@ describe('injury sampling', () => {
     const multiWeekPerTeamGame = totals.multiWeekInjuries / totals.teamGames
     expect(perTeamGame).toBeGreaterThan(0.6)
     expect(perTeamGame).toBeLessThan(1.6)
-    expect(multiWeekPerTeamGame).toBeGreaterThan(0.6)
-    expect(multiWeekPerTeamGame).toBeLessThan(1.6)
+    // The fitted duration mix is ~63 % one-week, so multi-week injuries run at ~0.37 × the total.
+    expect(multiWeekPerTeamGame).toBeGreaterThan(0.35)
+    expect(multiWeekPerTeamGame).toBeLessThan(0.8)
   })
 
   it('durations and kinds come from the fitted model, for players on the right team', () => {

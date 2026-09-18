@@ -58,7 +58,7 @@ function report(r: CalibrationReport, label: string): void {
     ['overtime rate %', (100 * r.overtimeRate).toFixed(2), '~ 6'],
     ['1-point games %', (100 * r.oneMarginRate).toFixed(2), '~ 2'],
     ['injuries / team-game', r.injuriesPerTeamGame.toFixed(2), '0.6 - 1.6'],
-    ['multi-week / team-game', r.multiWeekInjuriesPerTeamGame.toFixed(2), '0.6 - 1.6'],
+    ['multi-week / team-game', r.multiWeekInjuriesPerTeamGame.toFixed(2), '0.35 - 0.8'],
     ['truth fallbacks', String(r.truthFallbacks), '0'],
   ]
   console.log(`\n${label}: ${r.sims} seasons x ${r.teams} teams x ${r.gamesPerTeam} games`)

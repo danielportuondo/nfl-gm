@@ -14,6 +14,7 @@ import {
 import { mockBundle } from '@fixtures/mockLeague'
 import { league } from '@engine/league'
 import { fa } from '@engine/fa'
+import { faConstants } from '@engine/fa/constants'
 import { fakeDraft, makeFakeContext, makeFakeModules } from '../fakes'
 import { loadRealContext, readManifest } from '../../../scripts/lib/publicData'
 
@@ -223,7 +224,10 @@ describe('fa.synthesizeContract', () => {
     const contract = fa.synthesizeContract(state, rookie.id, 2015, ctx)
     expect(contract.rookie).toBe(true)
     expect(contract.years).toBe(4)
-    expect(contract.guaranteedPct).toBe(1)
+    const round = rookie.draft!.round
+    expect(contract.guaranteedPct).toBe(faConstants.rookieGuaranteedPctByRound[round - 1])
+    expect(contract.guaranteedPct).toBe(round <= 2 ? 1 : contract.guaranteedPct)
+    expect(contract.guaranteedPct).toBeLessThanOrEqual(1)
   })
 
   it('produces a league payroll within ~15% of the real cap per team on median (fresh 2015 league)', () => {

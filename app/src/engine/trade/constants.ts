@@ -12,7 +12,13 @@ import type { Position, TradeConstants } from '@contracts/index'
 export const tradeConstants: TradeConstants = {
   marginByStrictness: { lenient: -0.03, balanced: 0.05, strict: 0.15, ruthless: 0.3 },
   scale: 12,
-  futurePickDiscount: 0.85,
+  /**
+   * Phase 5B: a discount below 1 is free money for a patient user — scripts/qa/draftExploit.ts turned
+   * seven of IND's 2016 picks into 2017 picks at p = 0.50 each and banked 157 chart points (half a
+   * first) the moment the discount unwound. 0.92 halves that to 77 and still prices "next year" below
+   * "this year"; 1.0 would close it completely at the cost of the flavour.
+   */
+  futurePickDiscount: 0.92,
   maxFirstsPerDeal: 2,
   annoyancePerLowball: 1,
   annoyanceMarginPerPoint: 0.02,
