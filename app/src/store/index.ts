@@ -12,11 +12,18 @@ import { create } from 'zustand'
 import {
   NotImplementedError,
   SeasonNotLoadedError,
+  type Contract,
   type EngineContext,
+  type LeagueState,
+  type NeedProfile,
   type PlayerId,
   type Position,
   type Season,
   type SeasonData,
+  type StandingRow,
+  type TeamId,
+  type TradeEvaluation,
+  type TradeProposal,
   type TrajectoryTable,
 } from '@contracts/index'
 import { HttpDataSource } from '@data/index'
@@ -41,6 +48,21 @@ function makeSeed(startSeason: number, userTeam: string): string {
   return `${startSeason}-${userTeam}-${Math.random().toString(36).slice(2, 10)}`
 }
 
+/**
+ * Docs/HANDOFF.md Phase 3E follow-up: WeekReport events are free-text, so this is a best-effort
+ * heuristic (team id or a user-roster player's name appears in the text) — good enough to keep the
+ * toast stream to "your team" while everything still lands in `alerts` for the Dashboard's log.
+ */
+function eventMentionsUser(event: string, state: LeagueState): boolean {
+  if (event.includes(state.userTeam)) return true
+  const team = state.teams[state.userTeam]
+  if (!team) return false
+  return team.roster.some((slot) => {
+    const name = state.players[slot.playerId]?.name
+    return name ? event.includes(name) : false
+  })
+}
+
 /** Creates an isolated store instance (the app uses the `useGameStore` singleton below; tests may want their own). */
 export function createGameStore(config: StoreConfig = {}) {
   const mode = config.mode ?? 'mock'
@@ -63,6 +85,15 @@ export function createGameStore(config: StoreConfig = {}) {
     function reportNotBuilt(fallback: string, err: unknown) {
       if (err instanceof NotImplementedError) addToast('Not built yet', 'warn')
       else addToast(err instanceof Error && err.message ? `${fallback} ${err.message}` : fallback, 'error')
+    }
+
+    /** Toasts events touching the user's team; everything else goes to `alerts` (Phase 3E follow-up). */
+    function routeEvents(events: string[], resultState: LeagueState) {
+      const toastEvents: string[] = []
+      const otherEvents: string[] = []
+      for (const e of events) (eventMentionsUser(e, resultState) ? toastEvents : otherEvents).push(e)
+      if (otherEvents.length > 0) set((s) => ({ alerts: [...s.alerts, ...otherEvents] }))
+      for (const e of toastEvents) addToast(e, 'info')
     }
 
     const seasonData: EngineContext['seasonData'] =
@@ -127,7 +158,19 @@ export function createGameStore(config: StoreConfig = {}) {
       selectedPlayerId: initialRoute.playerId,
       theme: initialTheme,
       toasts: [],
-      busy: { newGame: false, simWeek: false, advancePhase: false, save: false },
+      alerts: [],
+      tradeOffers: [],
+      busy: {
+        newGame: false,
+        simWeek: false,
+        advancePhase: false,
+        save: false,
+        draft: false,
+        trade: false,
+        fa: false,
+        simToNextEvent: false,
+        simSeason: false,
+      },
       actions: {
         async newGame(opts: NewGameInput) {
           if (mode === 'mock') {
@@ -183,7 +226,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const ctx = buildCtx()
             const report = modules.league.simWeek(league, ctx)
             set({ state: report.state })
-            for (const event of report.events) addToast(event, 'info')
+            routeEvents(report.events, report.state)
           } catch (err) {
             reportNotBuilt('Could not sim the week.', err)
           } finally {
@@ -240,6 +283,305 @@ export function createGameStore(config: StoreConfig = {}) {
 
         dismissToast(id: string) {
           set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
+        },
+
+        // --- Draft Room --------------------------------------------------------------------------
+        async startDraft() {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, draft: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.draft.startDraft(league, ctx)
+            set({ state: next })
+          } catch (err) {
+            reportNotBuilt('Could not start the draft.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, draft: false } }))
+          }
+        },
+
+        async makePick(playerId: PlayerId) {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, draft: true } }))
+          try {
+            const ctx = buildCtx()
+            const picked = modules.draft.userPick(league, playerId, ctx)
+            const next = modules.draft.advance(picked, ctx)
+            set({ state: next })
+          } catch (err) {
+            reportNotBuilt('Could not make the pick.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, draft: false } }))
+          }
+        },
+
+        async autoPick() {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, draft: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.draft.advance(league, ctx, { auto: true })
+            set({ state: next })
+          } catch (err) {
+            reportNotBuilt('Could not auto-pick.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, draft: false } }))
+          }
+        },
+
+        async simToMyPick() {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, draft: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.draft.advance(league, ctx)
+            set({ state: next })
+          } catch (err) {
+            reportNotBuilt('Could not sim to your pick.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, draft: false } }))
+          }
+        },
+
+        async finishDraft() {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, draft: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.draft.autoDraftToEnd(league, ctx)
+            set({ state: next })
+          } catch (err) {
+            reportNotBuilt('Could not finish the draft.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, draft: false } }))
+          }
+        },
+
+        teamNeeds(teamId: TeamId): NeedProfile | null {
+          const league = get().state
+          if (!league) return null
+          try {
+            return modules.draft.teamNeeds(league, teamId)
+          } catch {
+            return null
+          }
+        },
+
+        // --- Trade Center --------------------------------------------------------------------------
+        evaluateTrade(proposal: TradeProposal): TradeEvaluation {
+          const fallback: TradeEvaluation = { valueIn: 0, valueOut: 0, needAdj: 0, margin: 0, p: 0, valid: false, reasons: [] }
+          const league = get().state
+          if (!league) return fallback
+          try {
+            const ctx = buildCtx()
+            return modules.trade.evaluate(league, proposal, ctx)
+          } catch (err) {
+            const reason = err instanceof NotImplementedError ? 'Not built yet' : err instanceof Error ? err.message : 'Could not evaluate.'
+            return { ...fallback, reasons: [reason] }
+          }
+        },
+
+        async proposeTrade(proposal: TradeProposal) {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, trade: true } }))
+          try {
+            const ctx = buildCtx()
+            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'userTrade', proposal.id)
+            const outcome = modules.trade.submit(league, proposal, ctx, rng)
+            set({ state: outcome.state })
+            addToast(outcome.accepted ? 'Trade accepted' : 'They passed on that trade', outcome.accepted ? 'success' : 'warn')
+          } catch (err) {
+            reportNotBuilt('Could not offer the trade.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, trade: false } }))
+          }
+        },
+
+        async respondToOffer(proposal: TradeProposal, accept: boolean) {
+          const league = get().state
+          if (!league) return
+          if (!accept) {
+            set((s) => ({
+              state:
+                s.state && s.state.draftRoom
+                  ? { ...s.state, draftRoom: { ...s.state.draftRoom, pendingOffers: s.state.draftRoom.pendingOffers.filter((o) => o.id !== proposal.id) } }
+                  : s.state,
+              tradeOffers: s.tradeOffers.filter((o) => o.id !== proposal.id),
+            }))
+            addToast('Declined', 'info')
+            return
+          }
+          set((s) => ({ busy: { ...s.busy, trade: true } }))
+          try {
+            const ctx = buildCtx()
+            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'userTrade', proposal.id)
+            const outcome = modules.trade.submit(league, proposal, ctx, rng)
+            const resultState = outcome.state.draftRoom
+              ? { ...outcome.state, draftRoom: { ...outcome.state.draftRoom, pendingOffers: outcome.state.draftRoom.pendingOffers.filter((o) => o.id !== proposal.id) } }
+              : outcome.state
+            set((s) => ({ state: resultState, tradeOffers: s.tradeOffers.filter((o) => o.id !== proposal.id) }))
+            addToast(outcome.accepted ? 'Trade accepted' : 'Trade fell through', outcome.accepted ? 'success' : 'warn')
+          } catch (err) {
+            reportNotBuilt('Could not respond to the offer.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, trade: false } }))
+          }
+        },
+
+        async refreshTradeOffers() {
+          const league = get().state
+          if (!league) return
+          try {
+            const ctx = buildCtx()
+            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'aiOffers')
+            const offers = modules.trade.generateAiOffers(league, ctx, rng, 'season')
+            set({ tradeOffers: offers })
+          } catch (err) {
+            reportNotBuilt('Could not check for offers.', err)
+          }
+        },
+
+        // --- Free Agency ---------------------------------------------------------------------------
+        async offerContract(playerId: PlayerId, contract: Contract) {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, fa: true } }))
+          try {
+            const ctx = buildCtx()
+            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'userFaOffer', playerId)
+            const result = modules.fa.offer(league, league.userTeam, playerId, contract, ctx, rng)
+            set({ state: result.state })
+            addToast(result.accepted ? 'Signed' : 'The player passed on the offer', result.accepted ? 'success' : 'warn')
+          } catch (err) {
+            reportNotBuilt('Could not make the offer.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, fa: false } }))
+          }
+        },
+
+        async resign(playerId: PlayerId, contract: Contract) {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, fa: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.fa.resign(league, playerId, contract, ctx)
+            set({ state: next })
+            addToast('Re-signed', 'success')
+          } catch (err) {
+            reportNotBuilt('Could not re-sign.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, fa: false } }))
+          }
+        },
+
+        async release(playerId: PlayerId) {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, fa: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.fa.release(league, league.userTeam, playerId, ctx)
+            set({ state: next })
+            addToast('Released', 'info')
+          } catch (err) {
+            reportNotBuilt('Could not release the player.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, fa: false } }))
+          }
+        },
+
+        async signUdfa(playerIds: PlayerId[]) {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, fa: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.draft.runUdfa(league, ctx, playerIds)
+            set({ state: next })
+            addToast(playerIds.length > 0 ? 'UDFA signings complete' : 'No UDFA signings made', 'success')
+          } catch (err) {
+            reportNotBuilt('Could not sign UDFA players.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, fa: false } }))
+          }
+        },
+
+        resignAsk(playerId: PlayerId): number | null {
+          const league = get().state
+          if (!league) return null
+          try {
+            const ctx = buildCtx()
+            return modules.fa.resignAsk(league, playerId, ctx)
+          } catch {
+            return null
+          }
+        },
+
+        // --- Schedule / season loop ------------------------------------------------------------------
+        async simToNextEvent() {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, simToNextEvent: true } }))
+          try {
+            let current = league
+            const startPhase = current.phase
+            const MAX_WEEKS = 30
+            for (let i = 0; i < MAX_WEEKS; i++) {
+              if (current.phase !== 'REGULAR' && current.phase !== 'PLAYOFFS') break
+              const ctx = buildCtx()
+              const report = modules.league.simWeek(current, ctx)
+              current = report.state
+              routeEvents(report.events, current)
+              set({ state: current })
+              if (current.phase !== startPhase) break
+              if (report.events.some((e) => eventMentionsUser(e, current))) break
+            }
+          } catch (err) {
+            reportNotBuilt('Could not sim to the next event.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, simToNextEvent: false } }))
+          }
+        },
+
+        async simSeason() {
+          const league = get().state
+          if (!league) return
+          set((s) => ({ busy: { ...s.busy, simSeason: true } }))
+          try {
+            let current = league
+            const MAX_WEEKS = 40
+            for (let i = 0; i < MAX_WEEKS; i++) {
+              if (current.phase !== 'REGULAR' && current.phase !== 'PLAYOFFS') break
+              const ctx = buildCtx()
+              const report = modules.league.simWeek(current, ctx)
+              current = report.state
+              routeEvents(report.events, current)
+              set({ state: current })
+            }
+          } catch (err) {
+            reportNotBuilt('Could not sim the season.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, simSeason: false } }))
+          }
+        },
+
+        // --- Standings -----------------------------------------------------------------------------
+        standings(): StandingRow[] {
+          const league = get().state
+          if (!league) return []
+          try {
+            const ctx = buildCtx()
+            return modules.league.standings(league, ctx)
+          } catch {
+            return []
+          }
         },
       },
     }

@@ -4,13 +4,25 @@ import { AppFrame } from '@ui/frame'
 import { Button } from '@ui/primitives'
 import { About } from '@screens/About'
 import { Dashboard } from '@screens/Dashboard'
+import { DraftRoom } from '@screens/DraftRoom'
+import { FreeAgency } from '@screens/FreeAgency'
+import { LeagueBrowser } from '@screens/LeagueBrowser'
 import { NewGame } from '@screens/NewGame'
 import { PlayerCard } from '@screens/PlayerCard'
 import { Roster } from '@screens/Roster'
+import { Schedule } from '@screens/Schedule'
+import { Standings } from '@screens/Standings'
+import { TradeCenter } from '@screens/TradeCenter'
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'roster', label: 'Roster' },
+  { id: 'schedule', label: 'Schedule' },
+  { id: 'standings', label: 'Standings' },
+  { id: 'draft', label: 'Draft' },
+  { id: 'trade', label: 'Trades' },
+  { id: 'free-agency', label: 'Free agency' },
+  { id: 'league', label: 'League' },
   { id: 'about', label: 'About' },
 ]
 
@@ -20,7 +32,8 @@ function formatPhase(phase: string): string {
 }
 
 export function App() {
-  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, actions } = useGameStore()
+  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, alerts, tradeOffers, busy, actions } = useGameStore()
+  void alerts // surfaced by a future Dashboard pass; kept in the store per docs/HANDOFF.md Phase 3E follow-up.
 
   if (!state || !data) {
     return (
@@ -61,6 +74,11 @@ export function App() {
   const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
   const horizonElapsed = Math.min(horizonTotal, Math.max(0, state.season - state.startSeason))
 
+  const room = state.draftRoom
+  const onClock = Boolean(
+    state.phase === 'DRAFT' && room?.status === 'ON_CLOCK' && room.order[room.currentPickIndex]?.owner === state.userTeam,
+  )
+
   return (
     <AppFrame
       strip={{
@@ -72,6 +90,7 @@ export function App() {
         record: record.ties > 0 ? `${record.wins}-${record.losses}-${record.ties}` : `${record.wins}-${record.losses}`,
         capSpaceText: `$${(cap - payroll).toFixed(1)}M free`,
         horizonText: `${horizonElapsed + 1}/${horizonTotal} seasons`,
+        onClock,
         end: (
           <Button type="button" variant="ghost" onClick={() => actions.setTheme(theme === 'light' ? 'dark' : 'light')}>
             {theme === 'light' ? 'Dark theme' : 'Light theme'}
@@ -80,7 +99,7 @@ export function App() {
       }}
       navItems={NAV_ITEMS}
       currentScreen={screen === 'player' ? 'roster' : screen === 'new-game' ? 'dashboard' : screen}
-      onSelectScreen={(id) => actions.goTo(id as 'dashboard' | 'roster' | 'about')}
+      onSelectScreen={(id) => actions.goTo(id as Parameters<typeof actions.goTo>[0])}
       toasts={toasts}
       onDismissToast={actions.dismissToast}
     >
@@ -92,8 +111,66 @@ export function App() {
       )}
       {screen === 'about' && <About />}
       {(screen === 'dashboard' || screen === 'new-game') && (
-        <Dashboard state={state} data={data} onSimWeek={actions.simWeek} onAdvancePhase={actions.advancePhase} />
+        <Dashboard
+          state={state}
+          data={data}
+          onSimWeek={actions.simWeek}
+          onAdvancePhase={actions.advancePhase}
+          simBusy={busy.simWeek}
+          advanceBusy={busy.advancePhase}
+        />
       )}
+      {screen === 'draft' && (
+        <DraftRoom
+          state={state}
+          data={data}
+          busy={busy.draft}
+          onStartDraft={actions.startDraft}
+          onMakePick={actions.makePick}
+          onAutoPick={actions.autoPick}
+          onSimToMyPick={actions.simToMyPick}
+          onFinishDraft={actions.finishDraft}
+          onRespondToOffer={actions.respondToOffer}
+          onEvaluate={actions.evaluateTrade}
+          onTeamNeeds={actions.teamNeeds}
+        />
+      )}
+      {screen === 'trade' && (
+        <TradeCenter
+          state={state}
+          data={data}
+          tradeOffers={tradeOffers}
+          busy={busy.trade}
+          onEvaluate={actions.evaluateTrade}
+          onProposeTrade={actions.proposeTrade}
+          onRespondToOffer={actions.respondToOffer}
+          onRefreshOffers={actions.refreshTradeOffers}
+        />
+      )}
+      {screen === 'free-agency' && (
+        <FreeAgency
+          state={state}
+          data={data}
+          busy={busy.fa}
+          onOfferContract={actions.offerContract}
+          onResign={actions.resign}
+          onRelease={actions.release}
+          onSignUdfa={actions.signUdfa}
+          onResignAsk={actions.resignAsk}
+        />
+      )}
+      {screen === 'schedule' && (
+        <Schedule
+          state={state}
+          data={data}
+          busy={{ simWeek: busy.simWeek, simToNextEvent: busy.simToNextEvent, simSeason: busy.simSeason }}
+          onSimWeek={actions.simWeek}
+          onSimToNextEvent={actions.simToNextEvent}
+          onSimSeason={actions.simSeason}
+        />
+      )}
+      {screen === 'standings' && <Standings data={data} rows={actions.standings()} />}
+      {screen === 'league' && <LeagueBrowser state={state} data={data} onSelectPlayer={actions.selectPlayer} />}
     </AppFrame>
   )
 }

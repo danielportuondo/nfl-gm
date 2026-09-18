@@ -1,15 +1,39 @@
 /**
  * Hand-rolled hash router (no react-router: not installed, none added). Routes: #/new-game,
- * #/dashboard, #/roster, #/player/<id>, #/about.
+ * #/dashboard, #/roster, #/player/<id>, #/draft, #/trade, #/free-agency, #/schedule, #/standings,
+ * #/league, #/about.
  */
-export type ScreenId = 'new-game' | 'dashboard' | 'roster' | 'player' | 'about'
+export type ScreenId =
+  | 'new-game'
+  | 'dashboard'
+  | 'roster'
+  | 'player'
+  | 'draft'
+  | 'trade'
+  | 'free-agency'
+  | 'schedule'
+  | 'standings'
+  | 'league'
+  | 'about'
 
 export interface Route {
   screen: ScreenId
   playerId: string | null
 }
 
-const SCREENS: ScreenId[] = ['new-game', 'dashboard', 'roster', 'player', 'about']
+const SCREENS: ScreenId[] = [
+  'new-game',
+  'dashboard',
+  'roster',
+  'player',
+  'draft',
+  'trade',
+  'free-agency',
+  'schedule',
+  'standings',
+  'league',
+  'about',
+]
 
 export function parseHash(hash: string): Route {
   const clean = hash.replace(/^#\/?/, '')

@@ -204,6 +204,35 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* AcceptanceBar band label ---------------------------------------------------------------- */
+.gg-acceptance-band {
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  color: var(--text-2);
+}
+
+/* On-the-clock plate pulse (docs/DESIGN.md §5.3): the one bold moment, once per pick. -------- */
+@keyframes gg-clock-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.gg-clock-pulse {
+  display: inline-block;
+  animation: gg-clock-pulse var(--t-quick) var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .gg-clock-pulse {
+    animation: none;
+  }
+}
+
 /* Badge ------------------------------------------------------------------------------------- */
 .gg-badge {
   display: inline-flex;
@@ -241,6 +270,16 @@
   background: transparent;
   color: var(--text-2);
   border: 2px solid var(--text-2);
+}
+.gg-badge--clinch-div,
+.gg-badge--clinch-bye {
+  background: var(--positive);
+  color: var(--on-positive);
+}
+.gg-badge--clinch-wc {
+  background: transparent;
+  color: var(--positive);
+  border: 2px solid var(--positive);
 }
 
 /* Modal ------------------------------------------------------------------------------------- */

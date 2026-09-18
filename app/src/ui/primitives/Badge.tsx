@@ -18,13 +18,16 @@ export function TeamBadge({ abbr }: TeamBadgeProps) {
 }
 
 interface StatusBadgeProps {
-  status: 'rookie' | 'injured' | 'expiring'
+  status: 'rookie' | 'injured' | 'expiring' | 'clinch-div' | 'clinch-wc' | 'clinch-bye'
 }
 
 const STATUS_LABEL: Record<StatusBadgeProps['status'], string> = {
   rookie: 'Rookie',
   injured: 'Injured',
   expiring: 'Expiring',
+  'clinch-div': 'Clinched division',
+  'clinch-wc': 'Clinched wild card',
+  'clinch-bye': 'Clinched bye',
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {

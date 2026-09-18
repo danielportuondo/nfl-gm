@@ -1,4 +1,20 @@
-import type { DataSource, EngineContext, EngineModules, GameSettings, LeagueState, PersistenceModule, PlayerId, Position, StaticData, TeamId } from '@contracts/index'
+import type {
+  Contract,
+  DataSource,
+  EngineContext,
+  EngineModules,
+  GameSettings,
+  LeagueState,
+  NeedProfile,
+  PersistenceModule,
+  PlayerId,
+  Position,
+  StandingRow,
+  StaticData,
+  TeamId,
+  TradeEvaluation,
+  TradeProposal,
+} from '@contracts/index'
 import type { Theme } from '../ui/frame'
 import type { ToastItem } from '../ui/primitives'
 import type { ScreenId } from './router'
@@ -34,7 +50,24 @@ export interface GameStoreState {
   selectedPlayerId: PlayerId | null
   theme: Theme
   toasts: ToastItem[]
-  busy: { newGame: boolean; simWeek: boolean; advancePhase: boolean; save: boolean }
+  /**
+   * Non-user-team WeekReport events (docs/HANDOFF.md Phase 3E follow-up): the Dashboard can read this
+   * later for a full log. Only events involving the user's team become toasts.
+   */
+  alerts: string[]
+  /** Ephemeral AI-initiated season trade offers fetched by the Trade Center; not part of LeagueState. */
+  tradeOffers: TradeProposal[]
+  busy: {
+    newGame: boolean
+    simWeek: boolean
+    advancePhase: boolean
+    save: boolean
+    draft: boolean
+    trade: boolean
+    fa: boolean
+    simToNextEvent: boolean
+    simSeason: boolean
+  }
   actions: {
     /** Engine mode loads the start season's chunks (and the next two drafts') before building the league. */
     newGame: (opts: NewGameInput) => Promise<void>
@@ -47,5 +80,39 @@ export interface GameStoreState {
     advancePhase: () => Promise<void>
     save: () => Promise<void>
     dismissToast: (id: string) => void
+
+    // --- Draft Room ------------------------------------------------------------------------
+    startDraft: () => Promise<void>
+    makePick: (playerId: PlayerId) => Promise<void>
+    autoPick: () => Promise<void>
+    simToMyPick: () => Promise<void>
+    finishDraft: () => Promise<void>
+    /** Consensus-only positional need, for the board's need badges. Null when not built yet. */
+    teamNeeds: (teamId: TeamId) => NeedProfile | null
+
+    // --- Trade Center ------------------------------------------------------------------------
+    /** Pure evaluation for the live acceptance bar; never mutates state, never toasts. */
+    evaluateTrade: (proposal: TradeProposal) => TradeEvaluation
+    proposeTrade: (proposal: TradeProposal) => Promise<void>
+    /** Accept/decline an AI-initiated offer (draftRoom.pendingOffers or a fetched season offer). */
+    respondToOffer: (proposal: TradeProposal, accept: boolean) => Promise<void>
+    /** Fetches AI-initiated season trade offers into `tradeOffers`. */
+    refreshTradeOffers: () => Promise<void>
+
+    // --- Free Agency ------------------------------------------------------------------------
+    offerContract: (playerId: PlayerId, contract: Contract) => Promise<void>
+    resign: (playerId: PlayerId, contract: Contract) => Promise<void>
+    release: (playerId: PlayerId) => Promise<void>
+    signUdfa: (playerIds: PlayerId[]) => Promise<void>
+    /** The expiring player's ask for the re-sign phase. Null when not built yet. */
+    resignAsk: (playerId: PlayerId) => number | null
+
+    // --- Schedule / season -------------------------------------------------------------------
+    simToNextEvent: () => Promise<void>
+    simSeason: () => Promise<void>
+
+    // --- Standings ---------------------------------------------------------------------------
+    /** Current standings with ranks and clinch flags. Empty array when not built yet. */
+    standings: () => StandingRow[]
   }
 }
