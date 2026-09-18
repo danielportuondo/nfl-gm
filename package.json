@@ -15,10 +15,5 @@
     "gen:contracts": "pnpm --filter app gen:contracts",
     "pytest": "cd pipeline && uv run pytest -q",
     "check": "pnpm -r typecheck && pnpm -r test && cd pipeline && uv run pytest -q"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }
