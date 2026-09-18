@@ -2,10 +2,12 @@
   "name": "gridiron-gm",
   "private": true,
   "version": "0.1.0",
-  "description": "Gridiron GM — a browser-based NFL general-manager simulation built on nflverse data. Unofficial fan-made project.",
+  "description": "Gridiron GM \u2014 a browser-based NFL general-manager simulation built on nflverse data. Unofficial fan-made project.",
   "license": "MIT",
   "packageManager": "pnpm@12.4.2",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
@@ -13,5 +15,10 @@
     "gen:contracts": "pnpm --filter app gen:contracts",
     "pytest": "cd pipeline && uv run pytest -q",
     "check": "pnpm -r typecheck && pnpm -r test && cd pipeline && uv run pytest -q"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
