@@ -585,7 +585,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
     }
 
     case 'PRESEASON': {
-      let s = state
+      let s = ctx.modules.fa.runAiCutdowns(state, ctx)
       const updatedTeams: Record<TeamId, TeamState> = { ...s.teams }
       for (const teamId of Object.keys(updatedTeams)) {
         if (teamId === s.userTeam) continue
@@ -659,9 +659,11 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
   }
   draft = { ...draft, teams }
 
+  // The startSeason draft already happened (its rookies are on the rosters); the next two drafts are
+  // the S+1 and S+2 classes (draft-year convention in contracts/engine/draft.ts).
   const picks = [
-    ...ctx.modules.draft.buildDraftOrder(draft, opts.startSeason, ctx),
     ...ctx.modules.draft.buildDraftOrder(draft, opts.startSeason + 1, ctx),
+    ...ctx.modules.draft.buildDraftOrder(draft, opts.startSeason + 2, ctx),
   ]
   draft = { ...draft, picks }
 

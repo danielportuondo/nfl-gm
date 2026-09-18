@@ -139,6 +139,7 @@ export const fakeFa: FaModule = {
   freeAgentPool: (state) => state.freeAgents,
   offer: (state) => ({ accepted: true, state }),
   runAiFreeAgency: (state) => state,
+  runAiCutdowns: (state) => state,
   release: (state) => state,
   validateRoster: (state, teamId) => ({
     ok: true,

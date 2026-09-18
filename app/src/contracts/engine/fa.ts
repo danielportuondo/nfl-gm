@@ -44,6 +44,14 @@ export interface FaModule {
   /** AI signings: history-anchored (real team for that season) with value/need fallback under cap. */
   runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
 
+  /**
+   * PRESEASON → REGULAR: every AI team over 53 releases down to 53 (release() dead-money rules), keeping
+   * STARTER_TEMPLATE minimums; in history prefer the players on the real opening-day roster
+   * (seasonData(season).rosters), otherwise cut lowest consensus value first. The user's team is left
+   * alone — league.advancePhase throws if it is still over 53. Called by league before validateRoster.
+   */
+  runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState
+
   /** Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged. */
   release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState
 
@@ -67,6 +75,7 @@ export const faStub: FaModule = {
   freeAgentPool: () => notImplemented('fa.freeAgentPool'),
   offer: () => notImplemented('fa.offer'),
   runAiFreeAgency: () => notImplemented('fa.runAiFreeAgency'),
+  runAiCutdowns: () => notImplemented('fa.runAiCutdowns'),
   release: () => notImplemented('fa.release'),
   validateRoster: () => notImplemented('fa.validateRoster'),
   rolloverContracts: () => notImplemented('fa.rolloverContracts'),

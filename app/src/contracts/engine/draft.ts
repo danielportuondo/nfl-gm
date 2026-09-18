@@ -2,6 +2,10 @@
  * engine/draft — draft order, AI picking, draft-room state machine, UDFA (§6.4). Owned by draft-ai (3A).
  *
  * The AI NEVER reads `state.truth`. It ranks by `state.scouting[id].pot` and need. Enforced by lint.
+ *
+ * Draft-year convention: the draft held in season S's DRAFT phase (before TRAINING_CAMP increments the
+ * season) is the S+1 class. `DraftPick.season`, `draftRoom.season` and the chunk read by loadProspects /
+ * buildDraftOrder are all S+1; `league.newGame(S)` owns picks for S+1 and S+2 (the next two drafts).
  */
 import type { DraftPick, DraftRoomState, LeagueState, NeedProfile, PlayerId, Season, TeamId, TradeProposal } from '../types'
 import type { EngineContext } from './context'

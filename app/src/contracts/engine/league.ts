@@ -32,9 +32,10 @@ export interface WeekReport {
 export interface LeagueModule {
   /**
    * Build the initial LeagueState for `startSeason`: players + consensus + truth from the season
-   * chunk and trajectories, real rosters with synthesized contracts (via fa), real pick ownership for
-   * the next 2 drafts (via draft.buildDraftOrder for owned future picks), real schedule, phase PRESEASON.
-   * Requires ctx.seasonData(startSeason) to be loaded.
+   * chunk and trajectories, real opening-day rosters with synthesized contracts (via fa), real pick
+   * ownership for the next 2 drafts (draft.buildDraftOrder for startSeason+1 and +2 — see the draft-year
+   * convention in engine/draft.ts), real schedule, phase PRESEASON. Players with no opening-day team
+   * start in freeAgents. Requires ctx.seasonData for startSeason and for +1/+2 while in history.
    */
   newGame(opts: NewGameOptions, ctx: EngineContext): LeagueState
 
@@ -53,8 +54,8 @@ export interface LeagueModule {
    *  UDFA → draft.runUdfa for AI teams; FREE_AGENCY → fa.runAiFreeAgency;
    *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements + refreshScouting,
    *  history.snapToHistory (if in history), schedule for the new season, phase PRESEASON;
-   *  PRESEASON → auto depth charts for AI teams, validate rosters (fa.validateRoster for all 32),
-   *  phase REGULAR week 1.
+   *  PRESEASON → fa.runAiCutdowns, auto depth charts for AI teams, validate rosters
+   *  (fa.validateRoster for all 32), phase REGULAR week 1.
    * Throws if the user's roster/cap is invalid for the transition (message lists the problems).
    */
   advancePhase(state: LeagueState, ctx: EngineContext): LeagueState

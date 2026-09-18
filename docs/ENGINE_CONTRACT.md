@@ -214,13 +214,27 @@ export const TEAM_IDS = [
 
 export type CanonicalTeamId = (typeof TEAM_IDS)[number]
 
-/** Historical nflverse codes → canonical id. Codes not listed map to themselves. */
+/**
+ * Historical nflverse codes → canonical id. Codes not listed map to themselves. nflverse spells teams
+ * three ways across its own releases (relocation codes, alternate roster codes such as ARZ/BLT/CLV/HST,
+ * and PFR-style codes in draft_picks such as GNB/KAN/NWE); pipeline/.../build/teams.py mirrors this table.
+ */
 export const TEAM_ALIASES: Record<string, CanonicalTeamId> = {
-  STL: 'LAR', LA: 'LAR', LAR: 'LAR',
-  SD: 'LAC', LAC: 'LAC',
-  OAK: 'LV', LV: 'LV',
+  STL: 'LAR', LA: 'LAR', LAR: 'LAR', SL: 'LAR', RAM: 'LAR',
+  SD: 'LAC', LAC: 'LAC', SDG: 'LAC',
+  OAK: 'LV', LV: 'LV', LVR: 'LV', RAI: 'LV',
   WSH: 'WAS', WAS: 'WAS',
   JAC: 'JAX', JAX: 'JAX',
+  ARZ: 'ARI', PHO: 'ARI',
+  BLT: 'BAL',
+  CLV: 'CLE',
+  HST: 'HOU',
+  GNB: 'GB',
+  KAN: 'KC',
+  NOR: 'NO',
+  NWE: 'NE',
+  SFO: 'SF',
+  TAM: 'TB',
 }
 
 export function canonicalTeamId(code: string): CanonicalTeamId {
@@ -435,9 +449,10 @@ export interface WeekReport {
 export interface LeagueModule {
   /**
    * Build the initial LeagueState for `startSeason`: players + consensus + truth from the season
-   * chunk and trajectories, real rosters with synthesized contracts (via fa), real pick ownership for
-   * the next 2 drafts (via draft.buildDraftOrder for owned future picks), real schedule, phase PRESEASON.
-   * Requires ctx.seasonData(startSeason) to be loaded.
+   * chunk and trajectories, real opening-day rosters with synthesized contracts (via fa), real pick
+   * ownership for the next 2 drafts (draft.buildDraftOrder for startSeason+1 and +2 — see the draft-year
+   * convention in engine/draft.ts), real schedule, phase PRESEASON. Players with no opening-day team
+   * start in freeAgents. Requires ctx.seasonData for startSeason and for +1/+2 while in history.
    */
   newGame(opts: NewGameOptions, ctx: EngineContext): LeagueState
 
@@ -456,8 +471,8 @@ export interface LeagueModule {
    *  UDFA → draft.runUdfa for AI teams; FREE_AGENCY → fa.runAiFreeAgency;
    *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements + refreshScouting,
    *  history.snapToHistory (if in history), schedule for the new season, phase PRESEASON;
-   *  PRESEASON → auto depth charts for AI teams, validate rosters (fa.validateRoster for all 32),
-   *  phase REGULAR week 1.
+   *  PRESEASON → fa.runAiCutdowns, auto depth charts for AI teams, validate rosters
+   *  (fa.validateRoster for all 32), phase REGULAR week 1.
    * Throws if the user's roster/cap is invalid for the transition (message lists the problems).
    */
   advancePhase(state: LeagueState, ctx: EngineContext): LeagueState
@@ -579,6 +594,10 @@ export const simStub: SimModule = {
  * engine/draft — draft order, AI picking, draft-room state machine, UDFA (§6.4). Owned by draft-ai (3A).
  *
  * The AI NEVER reads `state.truth`. It ranks by `state.scouting[id].pot` and need. Enforced by lint.
+ *
+ * Draft-year convention: the draft held in season S's DRAFT phase (before TRAINING_CAMP increments the
+ * season) is the S+1 class. `DraftPick.season`, `draftRoom.season` and the chunk read by loadProspects /
+ * buildDraftOrder are all S+1; `league.newGame(S)` owns picks for S+1 and S+2 (the next two drafts).
  */
 import type { DraftPick, DraftRoomState, LeagueState, NeedProfile, PlayerId, Season, TeamId, TradeProposal } from '../types'
 import type { EngineContext } from './context'
@@ -791,6 +810,14 @@ export interface FaModule {
   /** AI signings: history-anchored (real team for that season) with value/need fallback under cap. */
   runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
 
+  /**
+   * PRESEASON → REGULAR: every AI team over 53 releases down to 53 (release() dead-money rules), keeping
+   * STARTER_TEMPLATE minimums; in history prefer the players on the real opening-day roster
+   * (seasonData(season).rosters), otherwise cut lowest consensus value first. The user's team is left
+   * alone — league.advancePhase throws if it is still over 53. Called by league before validateRoster.
+   */
+  runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState
+
   /** Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged. */
   release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState
 
@@ -814,6 +841,7 @@ export const faStub: FaModule = {
   freeAgentPool: () => notImplemented('fa.freeAgentPool'),
   offer: () => notImplemented('fa.offer'),
   runAiFreeAgency: () => notImplemented('fa.runAiFreeAgency'),
+  runAiCutdowns: () => notImplemented('fa.runAiCutdowns'),
   release: () => notImplemented('fa.release'),
   validateRoster: () => notImplemented('fa.validateRoster'),
   rolloverContracts: () => notImplemented('fa.rolloverContracts'),

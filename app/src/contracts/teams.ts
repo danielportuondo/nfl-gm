@@ -15,13 +15,27 @@ export const TEAM_IDS = [
 
 export type CanonicalTeamId = (typeof TEAM_IDS)[number]
 
-/** Historical nflverse codes → canonical id. Codes not listed map to themselves. */
+/**
+ * Historical nflverse codes → canonical id. Codes not listed map to themselves. nflverse spells teams
+ * three ways across its own releases (relocation codes, alternate roster codes such as ARZ/BLT/CLV/HST,
+ * and PFR-style codes in draft_picks such as GNB/KAN/NWE); pipeline/.../build/teams.py mirrors this table.
+ */
 export const TEAM_ALIASES: Record<string, CanonicalTeamId> = {
-  STL: 'LAR', LA: 'LAR', LAR: 'LAR',
-  SD: 'LAC', LAC: 'LAC',
-  OAK: 'LV', LV: 'LV',
+  STL: 'LAR', LA: 'LAR', LAR: 'LAR', SL: 'LAR', RAM: 'LAR',
+  SD: 'LAC', LAC: 'LAC', SDG: 'LAC',
+  OAK: 'LV', LV: 'LV', LVR: 'LV', RAI: 'LV',
   WSH: 'WAS', WAS: 'WAS',
   JAC: 'JAX', JAX: 'JAX',
+  ARZ: 'ARI', PHO: 'ARI',
+  BLT: 'BAL',
+  CLV: 'CLE',
+  HST: 'HOU',
+  GNB: 'GB',
+  KAN: 'KC',
+  NOR: 'NO',
+  NWE: 'NE',
+  SFO: 'SF',
+  TAM: 'TB',
 }
 
 export function canonicalTeamId(code: string): CanonicalTeamId {

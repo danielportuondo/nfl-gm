@@ -772,6 +772,30 @@
                       "type": "integer",
                       "minimum": -9007199254740991,
                       "maximum": 9007199254740991
+                    },
+                    "twoPt": {
+                      "description": "Two-point conversions scored by this player.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "defTd": {
+                      "description": "Interception/fumble-return touchdowns.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "retTd": {
+                      "description": "Kick/punt-return touchdowns.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "safeties": {
+                      "description": "Safeties credited to this defender.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
                     }
                   },
                   "required": [
@@ -906,6 +930,30 @@
                       "maximum": 9007199254740991
                     },
                     "puntYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "twoPt": {
+                      "description": "Two-point conversions scored by this player.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "defTd": {
+                      "description": "Interception/fumble-return touchdowns.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "retTd": {
+                      "description": "Kick/punt-return touchdowns.",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "safeties": {
+                      "description": "Safeties credited to this defender.",
                       "type": "integer",
                       "minimum": -9007199254740991,
                       "maximum": 9007199254740991

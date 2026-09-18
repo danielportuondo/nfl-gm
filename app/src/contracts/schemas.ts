@@ -139,6 +139,10 @@ export const PlayerGameLineSchema = z.object({
   forcedFumbles: z.number().int().optional(), passesDefended: z.number().int().optional(),
   fgm: z.number().int().optional(), fga: z.number().int().optional(), xpm: z.number().int().optional(), xpa: z.number().int().optional(),
   punts: z.number().int().optional(), puntYds: z.number().int().optional(),
+  twoPt: z.number().int().optional().describe('Two-point conversions scored by this player.'),
+  defTd: z.number().int().optional().describe('Interception/fumble-return touchdowns.'),
+  retTd: z.number().int().optional().describe('Kick/punt-return touchdowns.'),
+  safeties: z.number().int().optional().describe('Safeties credited to this defender.'),
 })
 
 export const BoxScoreSchema = z.object({
