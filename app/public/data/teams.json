@@ -1,0 +1,590 @@
+{
+  "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
+  "teams": [
+    {
+      "abbr": "ARI",
+      "aliases": [
+        "ARI"
+      ],
+      "city": "Arizona",
+      "colors": {
+        "primary": "#97233f",
+        "secondary": "#000000",
+        "tertiary": "#ffb612"
+      },
+      "conf": "NFC",
+      "div": "West",
+      "id": "ARI",
+      "name": "Cardinals"
+    },
+    {
+      "abbr": "ATL",
+      "aliases": [
+        "ATL"
+      ],
+      "city": "Atlanta",
+      "colors": {
+        "primary": "#a71930",
+        "secondary": "#000000",
+        "tertiary": "#a5acaf"
+      },
+      "conf": "NFC",
+      "div": "South",
+      "id": "ATL",
+      "name": "Falcons"
+    },
+    {
+      "abbr": "BAL",
+      "aliases": [
+        "BAL"
+      ],
+      "city": "Baltimore",
+      "colors": {
+        "primary": "#241773",
+        "secondary": "#9e7c0c",
+        "tertiary": "#9e7c0c"
+      },
+      "conf": "AFC",
+      "div": "North",
+      "id": "BAL",
+      "name": "Ravens"
+    },
+    {
+      "abbr": "BUF",
+      "aliases": [
+        "BUF"
+      ],
+      "city": "Buffalo",
+      "colors": {
+        "primary": "#00338d",
+        "secondary": "#c60c30",
+        "tertiary": "#0c2e82"
+      },
+      "conf": "AFC",
+      "div": "East",
+      "id": "BUF",
+      "name": "Bills"
+    },
+    {
+      "abbr": "CAR",
+      "aliases": [
+        "CAR"
+      ],
+      "city": "Carolina",
+      "colors": {
+        "primary": "#0085ca",
+        "secondary": "#000000",
+        "tertiary": "#bfc0bf"
+      },
+      "conf": "NFC",
+      "div": "South",
+      "id": "CAR",
+      "name": "Panthers"
+    },
+    {
+      "abbr": "CHI",
+      "aliases": [
+        "CHI"
+      ],
+      "city": "Chicago",
+      "colors": {
+        "primary": "#0b162a",
+        "secondary": "#e64100",
+        "tertiary": "#0b162a"
+      },
+      "conf": "NFC",
+      "div": "North",
+      "id": "CHI",
+      "name": "Bears"
+    },
+    {
+      "abbr": "CIN",
+      "aliases": [
+        "CIN"
+      ],
+      "city": "Cincinnati",
+      "colors": {
+        "primary": "#fb4f14",
+        "secondary": "#000000",
+        "tertiary": "#000000"
+      },
+      "conf": "AFC",
+      "div": "North",
+      "id": "CIN",
+      "name": "Bengals"
+    },
+    {
+      "abbr": "CLE",
+      "aliases": [
+        "CLE"
+      ],
+      "city": "Cleveland",
+      "colors": {
+        "primary": "#ff3c00",
+        "secondary": "#311d00",
+        "tertiary": "#a5acaf"
+      },
+      "conf": "AFC",
+      "div": "North",
+      "id": "CLE",
+      "name": "Browns"
+    },
+    {
+      "abbr": "DAL",
+      "aliases": [
+        "DAL"
+      ],
+      "city": "Dallas",
+      "colors": {
+        "primary": "#002244",
+        "secondary": "#b0b7bc",
+        "tertiary": "#acc0c6"
+      },
+      "conf": "NFC",
+      "div": "East",
+      "id": "DAL",
+      "name": "Cowboys"
+    },
+    {
+      "abbr": "DEN",
+      "aliases": [
+        "DEN"
+      ],
+      "city": "Denver",
+      "colors": {
+        "primary": "#002244",
+        "secondary": "#fb4f14",
+        "tertiary": "#00234c"
+      },
+      "conf": "AFC",
+      "div": "West",
+      "id": "DEN",
+      "name": "Broncos"
+    },
+    {
+      "abbr": "DET",
+      "aliases": [
+        "DET"
+      ],
+      "city": "Detroit",
+      "colors": {
+        "primary": "#0076b6",
+        "secondary": "#b0b7bc",
+        "tertiary": "#000000"
+      },
+      "conf": "NFC",
+      "div": "North",
+      "id": "DET",
+      "name": "Lions"
+    },
+    {
+      "abbr": "GB",
+      "aliases": [
+        "GB"
+      ],
+      "city": "Green Bay",
+      "colors": {
+        "primary": "#203731",
+        "secondary": "#ffb612",
+        "tertiary": "#1c2d25"
+      },
+      "conf": "NFC",
+      "div": "North",
+      "id": "GB",
+      "name": "Packers"
+    },
+    {
+      "abbr": "HOU",
+      "aliases": [
+        "HOU"
+      ],
+      "city": "Houston",
+      "colors": {
+        "primary": "#03202f",
+        "secondary": "#a71930",
+        "tertiary": "#00071c"
+      },
+      "conf": "AFC",
+      "div": "South",
+      "id": "HOU",
+      "name": "Texans"
+    },
+    {
+      "abbr": "IND",
+      "aliases": [
+        "IND"
+      ],
+      "city": "Indianapolis",
+      "colors": {
+        "primary": "#002c5f",
+        "secondary": "#a5acaf",
+        "tertiary": "#013369"
+      },
+      "conf": "AFC",
+      "div": "South",
+      "id": "IND",
+      "name": "Colts"
+    },
+    {
+      "abbr": "JAX",
+      "aliases": [
+        "JAX"
+      ],
+      "city": "Jacksonville",
+      "colors": {
+        "primary": "#006778",
+        "secondary": "#000000",
+        "tertiary": "#9f792c"
+      },
+      "conf": "AFC",
+      "div": "South",
+      "id": "JAX",
+      "name": "Jaguars"
+    },
+    {
+      "abbr": "KC",
+      "aliases": [
+        "KC"
+      ],
+      "city": "Kansas City",
+      "colors": {
+        "primary": "#e31837",
+        "secondary": "#ffb612",
+        "tertiary": "#000000"
+      },
+      "conf": "AFC",
+      "div": "West",
+      "id": "KC",
+      "name": "Chiefs"
+    },
+    {
+      "abbr": "LAR",
+      "aliases": [
+        "LA",
+        "LAR",
+        "STL"
+      ],
+      "city": "Los Angeles",
+      "colors": {
+        "primary": "#003594",
+        "secondary": "#ffd100",
+        "tertiary": "#001532"
+      },
+      "conf": "NFC",
+      "div": "West",
+      "eras": [
+        {
+          "abbr": "STL",
+          "city": "St. Louis",
+          "from": 1920,
+          "name": "Rams",
+          "to": 2015
+        },
+        {
+          "abbr": "LAR",
+          "city": "Los Angeles",
+          "from": 2016,
+          "name": "Rams",
+          "to": null
+        }
+      ],
+      "id": "LAR",
+      "name": "Rams"
+    },
+    {
+      "abbr": "LAC",
+      "aliases": [
+        "LAC",
+        "SD"
+      ],
+      "city": "Los Angeles",
+      "colors": {
+        "primary": "#007bc7",
+        "secondary": "#ffc20e",
+        "tertiary": "#ffb612"
+      },
+      "conf": "AFC",
+      "div": "West",
+      "eras": [
+        {
+          "abbr": "SD",
+          "city": "San Diego",
+          "from": 1920,
+          "name": "Chargers",
+          "to": 2016
+        },
+        {
+          "abbr": "LAC",
+          "city": "Los Angeles",
+          "from": 2017,
+          "name": "Chargers",
+          "to": null
+        }
+      ],
+      "id": "LAC",
+      "name": "Chargers"
+    },
+    {
+      "abbr": "LV",
+      "aliases": [
+        "LV",
+        "OAK"
+      ],
+      "city": "Las Vegas",
+      "colors": {
+        "primary": "#000000",
+        "secondary": "#a5acaf",
+        "tertiary": "#a6aeb0"
+      },
+      "conf": "AFC",
+      "div": "West",
+      "eras": [
+        {
+          "abbr": "OAK",
+          "city": "Oakland",
+          "from": 1920,
+          "name": "Raiders",
+          "to": 2019
+        },
+        {
+          "abbr": "LV",
+          "city": "Las Vegas",
+          "from": 2020,
+          "name": "Raiders",
+          "to": null
+        }
+      ],
+      "id": "LV",
+      "name": "Raiders"
+    },
+    {
+      "abbr": "MIA",
+      "aliases": [
+        "MIA"
+      ],
+      "city": "Miami",
+      "colors": {
+        "primary": "#008e97",
+        "secondary": "#f58220",
+        "tertiary": "#005778"
+      },
+      "conf": "AFC",
+      "div": "East",
+      "id": "MIA",
+      "name": "Dolphins"
+    },
+    {
+      "abbr": "MIN",
+      "aliases": [
+        "MIN"
+      ],
+      "city": "Minnesota",
+      "colors": {
+        "primary": "#4f2683",
+        "secondary": "#ffc62f",
+        "tertiary": "#e9bf9b"
+      },
+      "conf": "NFC",
+      "div": "North",
+      "id": "MIN",
+      "name": "Vikings"
+    },
+    {
+      "abbr": "NE",
+      "aliases": [
+        "NE"
+      ],
+      "city": "New England",
+      "colors": {
+        "primary": "#002244",
+        "secondary": "#c60c30",
+        "tertiary": "#b0b7bc"
+      },
+      "conf": "AFC",
+      "div": "East",
+      "id": "NE",
+      "name": "Patriots"
+    },
+    {
+      "abbr": "NO",
+      "aliases": [
+        "NO"
+      ],
+      "city": "New Orleans",
+      "colors": {
+        "primary": "#d3bc8d",
+        "secondary": "#000000",
+        "tertiary": "#9f8958"
+      },
+      "conf": "NFC",
+      "div": "South",
+      "id": "NO",
+      "name": "Saints"
+    },
+    {
+      "abbr": "NYG",
+      "aliases": [
+        "NYG"
+      ],
+      "city": "New York",
+      "colors": {
+        "primary": "#0b2265",
+        "secondary": "#a71930",
+        "tertiary": "#a5acaf"
+      },
+      "conf": "NFC",
+      "div": "East",
+      "id": "NYG",
+      "name": "Giants"
+    },
+    {
+      "abbr": "NYJ",
+      "aliases": [
+        "NYJ"
+      ],
+      "city": "New York",
+      "colors": {
+        "primary": "#003f2d",
+        "secondary": "#000000"
+      },
+      "conf": "AFC",
+      "div": "East",
+      "id": "NYJ",
+      "name": "Jets"
+    },
+    {
+      "abbr": "PHI",
+      "aliases": [
+        "PHI"
+      ],
+      "city": "Philadelphia",
+      "colors": {
+        "primary": "#004c54",
+        "secondary": "#a5acaf",
+        "tertiary": "#acc0c6"
+      },
+      "conf": "NFC",
+      "div": "East",
+      "id": "PHI",
+      "name": "Eagles"
+    },
+    {
+      "abbr": "PIT",
+      "aliases": [
+        "PIT"
+      ],
+      "city": "Pittsburgh",
+      "colors": {
+        "primary": "#000000",
+        "secondary": "#ffb612",
+        "tertiary": "#c60c30"
+      },
+      "conf": "AFC",
+      "div": "North",
+      "id": "PIT",
+      "name": "Steelers"
+    },
+    {
+      "abbr": "SEA",
+      "aliases": [
+        "SEA"
+      ],
+      "city": "Seattle",
+      "colors": {
+        "primary": "#002244",
+        "secondary": "#69be28",
+        "tertiary": "#a5acaf"
+      },
+      "conf": "NFC",
+      "div": "West",
+      "id": "SEA",
+      "name": "Seahawks"
+    },
+    {
+      "abbr": "SF",
+      "aliases": [
+        "SF"
+      ],
+      "city": "San Francisco",
+      "colors": {
+        "primary": "#aa0000",
+        "secondary": "#b3995d",
+        "tertiary": "#000000"
+      },
+      "conf": "NFC",
+      "div": "West",
+      "id": "SF",
+      "name": "49ers"
+    },
+    {
+      "abbr": "TB",
+      "aliases": [
+        "TB"
+      ],
+      "city": "Tampa Bay",
+      "colors": {
+        "primary": "#a71930",
+        "secondary": "#322f2b",
+        "tertiary": "#000000"
+      },
+      "conf": "NFC",
+      "div": "South",
+      "id": "TB",
+      "name": "Buccaneers"
+    },
+    {
+      "abbr": "TEN",
+      "aliases": [
+        "TEN"
+      ],
+      "city": "Tennessee",
+      "colors": {
+        "primary": "#4495d2",
+        "secondary": "#d50a0a"
+      },
+      "conf": "AFC",
+      "div": "South",
+      "id": "TEN",
+      "name": "Titans"
+    },
+    {
+      "abbr": "WAS",
+      "aliases": [
+        "WAS"
+      ],
+      "city": "Washington",
+      "colors": {
+        "primary": "#5a1414",
+        "secondary": "#ffb612",
+        "tertiary": "#000000"
+      },
+      "conf": "NFC",
+      "div": "East",
+      "eras": [
+        {
+          "abbr": "WAS",
+          "city": "Washington",
+          "from": 1920,
+          "name": "Redskins",
+          "to": 2019
+        },
+        {
+          "abbr": "WAS",
+          "city": "Washington",
+          "from": 2020,
+          "name": "Football Team",
+          "to": 2021
+        },
+        {
+          "abbr": "WAS",
+          "city": "Washington",
+          "from": 2022,
+          "name": "Commanders",
+          "to": null
+        }
+      ],
+      "id": "WAS",
+      "name": "Commanders"
+    }
+  ]
+}

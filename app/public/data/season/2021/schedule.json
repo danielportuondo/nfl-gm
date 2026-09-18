@@ -1,0 +1,2862 @@
+{
+  "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
+  "games": [
+    {
+      "away": "DAL",
+      "awayScore": 29,
+      "home": "TB",
+      "homeScore": 31,
+      "id": "2021-REG-1-DAL@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "PHI",
+      "awayScore": 32,
+      "home": "ATL",
+      "homeScore": 6,
+      "id": "2021-REG-1-PHI@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "PIT",
+      "awayScore": 23,
+      "home": "BUF",
+      "homeScore": 16,
+      "id": "2021-REG-1-PIT@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 14,
+      "home": "CAR",
+      "homeScore": 19,
+      "id": "2021-REG-1-NYJ@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIN",
+      "awayScore": 24,
+      "home": "CIN",
+      "homeScore": 27,
+      "id": "2021-REG-1-MIN@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "SF",
+      "awayScore": 41,
+      "home": "DET",
+      "homeScore": 33,
+      "id": "2021-REG-1-SF@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "JAX",
+      "awayScore": 21,
+      "home": "HOU",
+      "homeScore": 37,
+      "id": "2021-REG-1-JAX@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "SEA",
+      "awayScore": 28,
+      "home": "IND",
+      "homeScore": 16,
+      "id": "2021-REG-1-SEA@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "ARI",
+      "awayScore": 38,
+      "home": "TEN",
+      "homeScore": 13,
+      "id": "2021-REG-1-ARI@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "LAC",
+      "awayScore": 20,
+      "home": "WAS",
+      "homeScore": 16,
+      "id": "2021-REG-1-LAC@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CLE",
+      "awayScore": 29,
+      "home": "KC",
+      "homeScore": 33,
+      "id": "2021-REG-1-CLE@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "NE",
+      "homeScore": 16,
+      "id": "2021-REG-1-MIA@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "GB",
+      "awayScore": 3,
+      "home": "NO",
+      "homeScore": 38,
+      "id": "2021-REG-1-GB@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "DEN",
+      "awayScore": 27,
+      "home": "NYG",
+      "homeScore": 13,
+      "id": "2021-REG-1-DEN@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CHI",
+      "awayScore": 14,
+      "home": "LAR",
+      "homeScore": 34,
+      "id": "2021-REG-1-CHI@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "BAL",
+      "awayScore": 27,
+      "home": "LV",
+      "homeScore": 33,
+      "id": "2021-REG-1-BAL@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NYG",
+      "awayScore": 29,
+      "home": "WAS",
+      "homeScore": 30,
+      "id": "2021-REG-2-NYG@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NO",
+      "awayScore": 7,
+      "home": "CAR",
+      "homeScore": 26,
+      "id": "2021-REG-2-NO@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "CIN",
+      "awayScore": 17,
+      "home": "CHI",
+      "homeScore": 20,
+      "id": "2021-REG-2-CIN@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "HOU",
+      "awayScore": 21,
+      "home": "CLE",
+      "homeScore": 31,
+      "id": "2021-REG-2-HOU@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LAR",
+      "awayScore": 27,
+      "home": "IND",
+      "homeScore": 24,
+      "id": "2021-REG-2-LAR@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DEN",
+      "awayScore": 23,
+      "home": "JAX",
+      "homeScore": 13,
+      "id": "2021-REG-2-DEN@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "BUF",
+      "awayScore": 35,
+      "home": "MIA",
+      "homeScore": 0,
+      "id": "2021-REG-2-BUF@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NE",
+      "awayScore": 25,
+      "home": "NYJ",
+      "homeScore": 6,
+      "id": "2021-REG-2-NE@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "PHI",
+      "homeScore": 11,
+      "id": "2021-REG-2-SF@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LV",
+      "awayScore": 26,
+      "home": "PIT",
+      "homeScore": 17,
+      "id": "2021-REG-2-LV@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "MIN",
+      "awayScore": 33,
+      "home": "ARI",
+      "homeScore": 34,
+      "id": "2021-REG-2-MIN@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "ATL",
+      "awayScore": 25,
+      "home": "TB",
+      "homeScore": 48,
+      "id": "2021-REG-2-ATL@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "LAC",
+      "homeScore": 17,
+      "id": "2021-REG-2-DAL@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "TEN",
+      "awayScore": 33,
+      "home": "SEA",
+      "homeScore": 30,
+      "id": "2021-REG-2-TEN@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "KC",
+      "awayScore": 35,
+      "home": "BAL",
+      "homeScore": 36,
+      "id": "2021-REG-2-KC@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DET",
+      "awayScore": 17,
+      "home": "GB",
+      "homeScore": 35,
+      "id": "2021-REG-2-DET@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "CAR",
+      "awayScore": 24,
+      "home": "HOU",
+      "homeScore": 9,
+      "id": "2021-REG-3-CAR@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "WAS",
+      "awayScore": 21,
+      "home": "BUF",
+      "homeScore": 43,
+      "id": "2021-REG-3-WAS@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CHI",
+      "awayScore": 6,
+      "home": "CLE",
+      "homeScore": 26,
+      "id": "2021-REG-3-CHI@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "BAL",
+      "awayScore": 19,
+      "home": "DET",
+      "homeScore": 17,
+      "id": "2021-REG-3-BAL@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "ARI",
+      "awayScore": 31,
+      "home": "JAX",
+      "homeScore": 19,
+      "id": "2021-REG-3-ARI@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LAC",
+      "awayScore": 30,
+      "home": "KC",
+      "homeScore": 24,
+      "id": "2021-REG-3-LAC@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "NO",
+      "awayScore": 28,
+      "home": "NE",
+      "homeScore": 13,
+      "id": "2021-REG-3-NO@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "ATL",
+      "awayScore": 17,
+      "home": "NYG",
+      "homeScore": 14,
+      "id": "2021-REG-3-ATL@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CIN",
+      "awayScore": 24,
+      "home": "PIT",
+      "homeScore": 10,
+      "id": "2021-REG-3-CIN@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "IND",
+      "awayScore": 16,
+      "home": "TEN",
+      "homeScore": 25,
+      "id": "2021-REG-3-IND@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 0,
+      "home": "DEN",
+      "homeScore": 26,
+      "id": "2021-REG-3-NYJ@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "MIA",
+      "awayScore": 28,
+      "home": "LV",
+      "homeScore": 31,
+      "id": "2021-REG-3-MIA@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "TB",
+      "awayScore": 24,
+      "home": "LAR",
+      "homeScore": 34,
+      "id": "2021-REG-3-TB@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "SEA",
+      "awayScore": 17,
+      "home": "MIN",
+      "homeScore": 30,
+      "id": "2021-REG-3-SEA@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "GB",
+      "awayScore": 30,
+      "home": "SF",
+      "homeScore": 28,
+      "id": "2021-REG-3-GB@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "PHI",
+      "awayScore": 21,
+      "home": "DAL",
+      "homeScore": 41,
+      "id": "2021-REG-3-PHI@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "JAX",
+      "awayScore": 21,
+      "home": "CIN",
+      "homeScore": 24,
+      "id": "2021-REG-4-JAX@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "WAS",
+      "awayScore": 34,
+      "home": "ATL",
+      "homeScore": 30,
+      "id": "2021-REG-4-WAS@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "HOU",
+      "awayScore": 0,
+      "home": "BUF",
+      "homeScore": 40,
+      "id": "2021-REG-4-HOU@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "DET",
+      "awayScore": 14,
+      "home": "CHI",
+      "homeScore": 24,
+      "id": "2021-REG-4-DET@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CAR",
+      "awayScore": 28,
+      "home": "DAL",
+      "homeScore": 36,
+      "id": "2021-REG-4-CAR@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "IND",
+      "awayScore": 27,
+      "home": "MIA",
+      "homeScore": 17,
+      "id": "2021-REG-4-IND@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CLE",
+      "awayScore": 14,
+      "home": "MIN",
+      "homeScore": 7,
+      "id": "2021-REG-4-CLE@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NYG",
+      "awayScore": 27,
+      "home": "NO",
+      "homeScore": 21,
+      "id": "2021-REG-4-NYG@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "TEN",
+      "awayScore": 24,
+      "home": "NYJ",
+      "homeScore": 27,
+      "id": "2021-REG-4-TEN@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "KC",
+      "awayScore": 42,
+      "home": "PHI",
+      "homeScore": 30,
+      "id": "2021-REG-4-KC@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "ARI",
+      "awayScore": 37,
+      "home": "LAR",
+      "homeScore": 20,
+      "id": "2021-REG-4-ARI@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "SEA",
+      "awayScore": 28,
+      "home": "SF",
+      "homeScore": 21,
+      "id": "2021-REG-4-SEA@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "BAL",
+      "awayScore": 23,
+      "home": "DEN",
+      "homeScore": 7,
+      "id": "2021-REG-4-BAL@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "PIT",
+      "awayScore": 17,
+      "home": "GB",
+      "homeScore": 27,
+      "id": "2021-REG-4-PIT@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "TB",
+      "awayScore": 19,
+      "home": "NE",
+      "homeScore": 17,
+      "id": "2021-REG-4-TB@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "LV",
+      "awayScore": 14,
+      "home": "LAC",
+      "homeScore": 28,
+      "id": "2021-REG-4-LV@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "LAR",
+      "awayScore": 26,
+      "home": "SEA",
+      "homeScore": 17,
+      "id": "2021-REG-5-LAR@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 20,
+      "home": "ATL",
+      "homeScore": 27,
+      "id": "2021-REG-5-NYJ@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "PHI",
+      "awayScore": 21,
+      "home": "CAR",
+      "homeScore": 18,
+      "id": "2021-REG-5-PHI@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "GB",
+      "awayScore": 25,
+      "home": "CIN",
+      "homeScore": 22,
+      "id": "2021-REG-5-GB@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NE",
+      "awayScore": 25,
+      "home": "HOU",
+      "homeScore": 22,
+      "id": "2021-REG-5-NE@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "TEN",
+      "awayScore": 37,
+      "home": "JAX",
+      "homeScore": 19,
+      "id": "2021-REG-5-TEN@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DET",
+      "awayScore": 17,
+      "home": "MIN",
+      "homeScore": 19,
+      "id": "2021-REG-5-DET@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DEN",
+      "awayScore": 19,
+      "home": "PIT",
+      "homeScore": 27,
+      "id": "2021-REG-5-DEN@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "TB",
+      "homeScore": 45,
+      "id": "2021-REG-5-MIA@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NO",
+      "awayScore": 33,
+      "home": "WAS",
+      "homeScore": 22,
+      "id": "2021-REG-5-NO@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CLE",
+      "awayScore": 42,
+      "home": "LAC",
+      "homeScore": 47,
+      "id": "2021-REG-5-CLE@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CHI",
+      "awayScore": 20,
+      "home": "LV",
+      "homeScore": 9,
+      "id": "2021-REG-5-CHI@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "SF",
+      "awayScore": 10,
+      "home": "ARI",
+      "homeScore": 17,
+      "id": "2021-REG-5-SF@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NYG",
+      "awayScore": 20,
+      "home": "DAL",
+      "homeScore": 44,
+      "id": "2021-REG-5-NYG@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "BUF",
+      "awayScore": 38,
+      "home": "KC",
+      "homeScore": 20,
+      "id": "2021-REG-5-BUF@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "IND",
+      "awayScore": 25,
+      "home": "BAL",
+      "homeScore": 31,
+      "id": "2021-REG-5-IND@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "TB",
+      "awayScore": 28,
+      "home": "PHI",
+      "homeScore": 22,
+      "id": "2021-REG-6-TB@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "MIA",
+      "awayScore": 20,
+      "home": "JAX",
+      "homeScore": 23,
+      "id": "2021-REG-6-MIA@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "LAC",
+      "awayScore": 6,
+      "home": "BAL",
+      "homeScore": 34,
+      "id": "2021-REG-6-LAC@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "MIN",
+      "awayScore": 34,
+      "home": "CAR",
+      "homeScore": 28,
+      "id": "2021-REG-6-MIN@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "GB",
+      "awayScore": 24,
+      "home": "CHI",
+      "homeScore": 14,
+      "id": "2021-REG-6-GB@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CIN",
+      "awayScore": 34,
+      "home": "DET",
+      "homeScore": 11,
+      "id": "2021-REG-6-CIN@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "HOU",
+      "awayScore": 3,
+      "home": "IND",
+      "homeScore": 31,
+      "id": "2021-REG-6-HOU@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "LAR",
+      "awayScore": 38,
+      "home": "NYG",
+      "homeScore": 11,
+      "id": "2021-REG-6-LAR@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "KC",
+      "awayScore": 31,
+      "home": "WAS",
+      "homeScore": 13,
+      "id": "2021-REG-6-KC@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "ARI",
+      "awayScore": 37,
+      "home": "CLE",
+      "homeScore": 14,
+      "id": "2021-REG-6-ARI@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "LV",
+      "awayScore": 34,
+      "home": "DEN",
+      "homeScore": 24,
+      "id": "2021-REG-6-LV@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "DAL",
+      "awayScore": 35,
+      "home": "NE",
+      "homeScore": 29,
+      "id": "2021-REG-6-DAL@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "SEA",
+      "awayScore": 20,
+      "home": "PIT",
+      "homeScore": 23,
+      "id": "2021-REG-6-SEA@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "BUF",
+      "awayScore": 31,
+      "home": "TEN",
+      "homeScore": 34,
+      "id": "2021-REG-6-BUF@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "DEN",
+      "awayScore": 14,
+      "home": "CLE",
+      "homeScore": 17,
+      "id": "2021-REG-7-DEN@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CIN",
+      "awayScore": 41,
+      "home": "BAL",
+      "homeScore": 17,
+      "id": "2021-REG-7-CIN@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "WAS",
+      "awayScore": 10,
+      "home": "GB",
+      "homeScore": 24,
+      "id": "2021-REG-7-WAS@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "ATL",
+      "awayScore": 30,
+      "home": "MIA",
+      "homeScore": 28,
+      "id": "2021-REG-7-ATL@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 13,
+      "home": "NE",
+      "homeScore": 54,
+      "id": "2021-REG-7-NYJ@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CAR",
+      "awayScore": 3,
+      "home": "NYG",
+      "homeScore": 25,
+      "id": "2021-REG-7-CAR@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "KC",
+      "awayScore": 3,
+      "home": "TEN",
+      "homeScore": 27,
+      "id": "2021-REG-7-KC@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "DET",
+      "awayScore": 19,
+      "home": "LAR",
+      "homeScore": 28,
+      "id": "2021-REG-7-DET@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "PHI",
+      "awayScore": 22,
+      "home": "LV",
+      "homeScore": 33,
+      "id": "2021-REG-7-PHI@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "HOU",
+      "awayScore": 5,
+      "home": "ARI",
+      "homeScore": 31,
+      "id": "2021-REG-7-HOU@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CHI",
+      "awayScore": 3,
+      "home": "TB",
+      "homeScore": 38,
+      "id": "2021-REG-7-CHI@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "IND",
+      "awayScore": 30,
+      "home": "SF",
+      "homeScore": 18,
+      "id": "2021-REG-7-IND@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "NO",
+      "awayScore": 13,
+      "home": "SEA",
+      "homeScore": 10,
+      "id": "2021-REG-7-NO@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "GB",
+      "awayScore": 24,
+      "home": "ARI",
+      "homeScore": 21,
+      "id": "2021-REG-8-GB@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CAR",
+      "awayScore": 19,
+      "home": "ATL",
+      "homeScore": 13,
+      "id": "2021-REG-8-CAR@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "MIA",
+      "awayScore": 11,
+      "home": "BUF",
+      "homeScore": 26,
+      "id": "2021-REG-8-MIA@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "SF",
+      "awayScore": 33,
+      "home": "CHI",
+      "homeScore": 22,
+      "id": "2021-REG-8-SF@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "PIT",
+      "awayScore": 15,
+      "home": "CLE",
+      "homeScore": 10,
+      "id": "2021-REG-8-PIT@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "PHI",
+      "awayScore": 44,
+      "home": "DET",
+      "homeScore": 6,
+      "id": "2021-REG-8-PHI@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "LAR",
+      "awayScore": 38,
+      "home": "HOU",
+      "homeScore": 22,
+      "id": "2021-REG-8-LAR@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "TEN",
+      "awayScore": 34,
+      "home": "IND",
+      "homeScore": 31,
+      "id": "2021-REG-8-TEN@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CIN",
+      "awayScore": 31,
+      "home": "NYJ",
+      "homeScore": 34,
+      "id": "2021-REG-8-CIN@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NE",
+      "awayScore": 27,
+      "home": "LAC",
+      "homeScore": 24,
+      "id": "2021-REG-8-NE@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "JAX",
+      "awayScore": 7,
+      "home": "SEA",
+      "homeScore": 31,
+      "id": "2021-REG-8-JAX@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "WAS",
+      "awayScore": 10,
+      "home": "DEN",
+      "homeScore": 17,
+      "id": "2021-REG-8-WAS@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "TB",
+      "awayScore": 27,
+      "home": "NO",
+      "homeScore": 36,
+      "id": "2021-REG-8-TB@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "MIN",
+      "homeScore": 16,
+      "id": "2021-REG-8-DAL@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYG",
+      "awayScore": 17,
+      "home": "KC",
+      "homeScore": 20,
+      "id": "2021-REG-8-NYG@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 30,
+      "home": "IND",
+      "homeScore": 45,
+      "id": "2021-REG-9-NYJ@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "MIN",
+      "awayScore": 31,
+      "home": "BAL",
+      "homeScore": 34,
+      "id": "2021-REG-9-MIN@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "NE",
+      "awayScore": 24,
+      "home": "CAR",
+      "homeScore": 6,
+      "id": "2021-REG-9-NE@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "CLE",
+      "awayScore": 41,
+      "home": "CIN",
+      "homeScore": 16,
+      "id": "2021-REG-9-CLE@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "DEN",
+      "awayScore": 30,
+      "home": "DAL",
+      "homeScore": 16,
+      "id": "2021-REG-9-DEN@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "BUF",
+      "awayScore": 6,
+      "home": "JAX",
+      "homeScore": 9,
+      "id": "2021-REG-9-BUF@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "HOU",
+      "awayScore": 9,
+      "home": "MIA",
+      "homeScore": 17,
+      "id": "2021-REG-9-HOU@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "ATL",
+      "awayScore": 27,
+      "home": "NO",
+      "homeScore": 25,
+      "id": "2021-REG-9-ATL@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LV",
+      "awayScore": 16,
+      "home": "NYG",
+      "homeScore": 23,
+      "id": "2021-REG-9-LV@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LAC",
+      "awayScore": 27,
+      "home": "PHI",
+      "homeScore": 24,
+      "id": "2021-REG-9-LAC@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "GB",
+      "awayScore": 7,
+      "home": "KC",
+      "homeScore": 13,
+      "id": "2021-REG-9-GB@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "ARI",
+      "awayScore": 31,
+      "home": "SF",
+      "homeScore": 17,
+      "id": "2021-REG-9-ARI@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "TEN",
+      "awayScore": 28,
+      "home": "LAR",
+      "homeScore": 16,
+      "id": "2021-REG-9-TEN@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "CHI",
+      "awayScore": 27,
+      "home": "PIT",
+      "homeScore": 29,
+      "id": "2021-REG-9-CHI@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "BAL",
+      "awayScore": 10,
+      "home": "MIA",
+      "homeScore": 22,
+      "id": "2021-REG-10-BAL@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "ATL",
+      "awayScore": 3,
+      "home": "DAL",
+      "homeScore": 43,
+      "id": "2021-REG-10-ATL@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "JAX",
+      "awayScore": 17,
+      "home": "IND",
+      "homeScore": 23,
+      "id": "2021-REG-10-JAX@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CLE",
+      "awayScore": 7,
+      "home": "NE",
+      "homeScore": 45,
+      "id": "2021-REG-10-CLE@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "BUF",
+      "awayScore": 45,
+      "home": "NYJ",
+      "homeScore": 17,
+      "id": "2021-REG-10-BUF@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DET",
+      "awayScore": 16,
+      "home": "PIT",
+      "homeScore": 16,
+      "id": "2021-REG-10-DET@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NO",
+      "awayScore": 21,
+      "home": "TEN",
+      "homeScore": 23,
+      "id": "2021-REG-10-NO@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "TB",
+      "awayScore": 19,
+      "home": "WAS",
+      "homeScore": 29,
+      "id": "2021-REG-10-TB@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CAR",
+      "awayScore": 34,
+      "home": "ARI",
+      "homeScore": 10,
+      "id": "2021-REG-10-CAR@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "MIN",
+      "awayScore": 27,
+      "home": "LAC",
+      "homeScore": 20,
+      "id": "2021-REG-10-MIN@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "PHI",
+      "awayScore": 30,
+      "home": "DEN",
+      "homeScore": 13,
+      "id": "2021-REG-10-PHI@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "SEA",
+      "awayScore": 0,
+      "home": "GB",
+      "homeScore": 17,
+      "id": "2021-REG-10-SEA@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "KC",
+      "awayScore": 41,
+      "home": "LV",
+      "homeScore": 14,
+      "id": "2021-REG-10-KC@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "LAR",
+      "awayScore": 10,
+      "home": "SF",
+      "homeScore": 31,
+      "id": "2021-REG-10-LAR@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NE",
+      "awayScore": 25,
+      "home": "ATL",
+      "homeScore": 0,
+      "id": "2021-REG-11-NE@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "IND",
+      "awayScore": 41,
+      "home": "BUF",
+      "homeScore": 15,
+      "id": "2021-REG-11-IND@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "WAS",
+      "awayScore": 27,
+      "home": "CAR",
+      "homeScore": 21,
+      "id": "2021-REG-11-WAS@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "BAL",
+      "awayScore": 16,
+      "home": "CHI",
+      "homeScore": 13,
+      "id": "2021-REG-11-BAL@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "DET",
+      "awayScore": 10,
+      "home": "CLE",
+      "homeScore": 13,
+      "id": "2021-REG-11-DET@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "SF",
+      "awayScore": 30,
+      "home": "JAX",
+      "homeScore": 10,
+      "id": "2021-REG-11-SF@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "GB",
+      "awayScore": 31,
+      "home": "MIN",
+      "homeScore": 34,
+      "id": "2021-REG-11-GB@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "MIA",
+      "awayScore": 24,
+      "home": "NYJ",
+      "homeScore": 17,
+      "id": "2021-REG-11-MIA@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NO",
+      "awayScore": 29,
+      "home": "PHI",
+      "homeScore": 40,
+      "id": "2021-REG-11-NO@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "HOU",
+      "awayScore": 22,
+      "home": "TEN",
+      "homeScore": 13,
+      "id": "2021-REG-11-HOU@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "CIN",
+      "awayScore": 32,
+      "home": "LV",
+      "homeScore": 13,
+      "id": "2021-REG-11-CIN@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "DAL",
+      "awayScore": 9,
+      "home": "KC",
+      "homeScore": 19,
+      "id": "2021-REG-11-DAL@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "ARI",
+      "awayScore": 23,
+      "home": "SEA",
+      "homeScore": 13,
+      "id": "2021-REG-11-ARI@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "PIT",
+      "awayScore": 37,
+      "home": "LAC",
+      "homeScore": 41,
+      "id": "2021-REG-11-PIT@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NYG",
+      "awayScore": 10,
+      "home": "TB",
+      "homeScore": 30,
+      "id": "2021-REG-11-NYG@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "CHI",
+      "awayScore": 16,
+      "home": "DET",
+      "homeScore": 14,
+      "id": "2021-REG-12-CHI@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LV",
+      "awayScore": 36,
+      "home": "DAL",
+      "homeScore": 33,
+      "id": "2021-REG-12-LV@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "BUF",
+      "awayScore": 31,
+      "home": "NO",
+      "homeScore": 6,
+      "id": "2021-REG-12-BUF@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "PIT",
+      "awayScore": 10,
+      "home": "CIN",
+      "homeScore": 41,
+      "id": "2021-REG-12-PIT@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 21,
+      "home": "HOU",
+      "homeScore": 14,
+      "id": "2021-REG-12-NYJ@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "TB",
+      "awayScore": 38,
+      "home": "IND",
+      "homeScore": 31,
+      "id": "2021-REG-12-TB@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "ATL",
+      "awayScore": 21,
+      "home": "JAX",
+      "homeScore": 14,
+      "id": "2021-REG-12-ATL@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CAR",
+      "awayScore": 10,
+      "home": "MIA",
+      "homeScore": 33,
+      "id": "2021-REG-12-CAR@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "TEN",
+      "awayScore": 13,
+      "home": "NE",
+      "homeScore": 36,
+      "id": "2021-REG-12-TEN@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "PHI",
+      "awayScore": 7,
+      "home": "NYG",
+      "homeScore": 13,
+      "id": "2021-REG-12-PHI@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LAC",
+      "awayScore": 13,
+      "home": "DEN",
+      "homeScore": 28,
+      "id": "2021-REG-12-LAC@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LAR",
+      "awayScore": 28,
+      "home": "GB",
+      "homeScore": 36,
+      "id": "2021-REG-12-LAR@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "MIN",
+      "awayScore": 26,
+      "home": "SF",
+      "homeScore": 34,
+      "id": "2021-REG-12-MIN@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CLE",
+      "awayScore": 10,
+      "home": "BAL",
+      "homeScore": 16,
+      "id": "2021-REG-12-CLE@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "SEA",
+      "awayScore": 15,
+      "home": "WAS",
+      "homeScore": 17,
+      "id": "2021-REG-12-SEA@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "DAL",
+      "awayScore": 27,
+      "home": "NO",
+      "homeScore": 17,
+      "id": "2021-REG-13-DAL@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "TB",
+      "awayScore": 30,
+      "home": "ATL",
+      "homeScore": 17,
+      "id": "2021-REG-13-TB@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ARI",
+      "awayScore": 33,
+      "home": "CHI",
+      "homeScore": 22,
+      "id": "2021-REG-13-ARI@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "LAC",
+      "awayScore": 41,
+      "home": "CIN",
+      "homeScore": 22,
+      "id": "2021-REG-13-LAC@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "MIN",
+      "awayScore": 27,
+      "home": "DET",
+      "homeScore": 29,
+      "id": "2021-REG-13-MIN@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "IND",
+      "awayScore": 31,
+      "home": "HOU",
+      "homeScore": 0,
+      "id": "2021-REG-13-IND@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NYG",
+      "awayScore": 9,
+      "home": "MIA",
+      "homeScore": 20,
+      "id": "2021-REG-13-NYG@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "PHI",
+      "awayScore": 33,
+      "home": "NYJ",
+      "homeScore": 18,
+      "id": "2021-REG-13-PHI@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "JAX",
+      "awayScore": 7,
+      "home": "LAR",
+      "homeScore": 37,
+      "id": "2021-REG-13-JAX@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "WAS",
+      "awayScore": 17,
+      "home": "LV",
+      "homeScore": 15,
+      "id": "2021-REG-13-WAS@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "BAL",
+      "awayScore": 19,
+      "home": "PIT",
+      "homeScore": 20,
+      "id": "2021-REG-13-BAL@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "SF",
+      "awayScore": 23,
+      "home": "SEA",
+      "homeScore": 30,
+      "id": "2021-REG-13-SF@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "DEN",
+      "awayScore": 9,
+      "home": "KC",
+      "homeScore": 22,
+      "id": "2021-REG-13-DEN@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NE",
+      "awayScore": 14,
+      "home": "BUF",
+      "homeScore": 10,
+      "id": "2021-REG-13-NE@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "PIT",
+      "awayScore": 28,
+      "home": "MIN",
+      "homeScore": 36,
+      "id": "2021-REG-14-PIT@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "ATL",
+      "awayScore": 29,
+      "home": "CAR",
+      "homeScore": 21,
+      "id": "2021-REG-14-ATL@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "BAL",
+      "awayScore": 22,
+      "home": "CLE",
+      "homeScore": 24,
+      "id": "2021-REG-14-BAL@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "SEA",
+      "awayScore": 33,
+      "home": "HOU",
+      "homeScore": 13,
+      "id": "2021-REG-14-SEA@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LV",
+      "awayScore": 9,
+      "home": "KC",
+      "homeScore": 48,
+      "id": "2021-REG-14-LV@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "NO",
+      "awayScore": 30,
+      "home": "NYJ",
+      "homeScore": 9,
+      "id": "2021-REG-14-NO@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "JAX",
+      "awayScore": 0,
+      "home": "TEN",
+      "homeScore": 20,
+      "id": "2021-REG-14-JAX@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DAL",
+      "awayScore": 27,
+      "home": "WAS",
+      "homeScore": 20,
+      "id": "2021-REG-14-DAL@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DET",
+      "awayScore": 10,
+      "home": "DEN",
+      "homeScore": 38,
+      "id": "2021-REG-14-DET@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "NYG",
+      "awayScore": 21,
+      "home": "LAC",
+      "homeScore": 37,
+      "id": "2021-REG-14-NYG@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "SF",
+      "awayScore": 26,
+      "home": "CIN",
+      "homeScore": 23,
+      "id": "2021-REG-14-SF@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "BUF",
+      "awayScore": 27,
+      "home": "TB",
+      "homeScore": 33,
+      "id": "2021-REG-14-BUF@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "CHI",
+      "awayScore": 30,
+      "home": "GB",
+      "homeScore": 45,
+      "id": "2021-REG-14-CHI@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LAR",
+      "awayScore": 30,
+      "home": "ARI",
+      "homeScore": 23,
+      "id": "2021-REG-14-LAR@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "KC",
+      "awayScore": 34,
+      "home": "LAC",
+      "homeScore": 28,
+      "id": "2021-REG-15-KC@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NE",
+      "awayScore": 17,
+      "home": "IND",
+      "homeScore": 27,
+      "id": "2021-REG-15-NE@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CAR",
+      "awayScore": 14,
+      "home": "BUF",
+      "homeScore": 31,
+      "id": "2021-REG-15-CAR@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "ARI",
+      "awayScore": 12,
+      "home": "DET",
+      "homeScore": 30,
+      "id": "2021-REG-15-ARI@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "HOU",
+      "awayScore": 30,
+      "home": "JAX",
+      "homeScore": 16,
+      "id": "2021-REG-15-HOU@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 24,
+      "home": "MIA",
+      "homeScore": 31,
+      "id": "2021-REG-15-NYJ@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "DAL",
+      "awayScore": 21,
+      "home": "NYG",
+      "homeScore": 6,
+      "id": "2021-REG-15-DAL@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "TEN",
+      "awayScore": 13,
+      "home": "PIT",
+      "homeScore": 19,
+      "id": "2021-REG-15-TEN@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CIN",
+      "awayScore": 15,
+      "home": "DEN",
+      "homeScore": 10,
+      "id": "2021-REG-15-CIN@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "ATL",
+      "awayScore": 13,
+      "home": "SF",
+      "homeScore": 31,
+      "id": "2021-REG-15-ATL@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "GB",
+      "awayScore": 31,
+      "home": "BAL",
+      "homeScore": 30,
+      "id": "2021-REG-15-GB@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NO",
+      "awayScore": 9,
+      "home": "TB",
+      "homeScore": 0,
+      "id": "2021-REG-15-NO@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "LV",
+      "awayScore": 16,
+      "home": "CLE",
+      "homeScore": 14,
+      "id": "2021-REG-15-LV@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "MIN",
+      "awayScore": 17,
+      "home": "CHI",
+      "homeScore": 9,
+      "id": "2021-REG-15-MIN@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "SEA",
+      "awayScore": 10,
+      "home": "LAR",
+      "homeScore": 20,
+      "id": "2021-REG-15-SEA@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "WAS",
+      "awayScore": 17,
+      "home": "PHI",
+      "homeScore": 27,
+      "id": "2021-REG-15-WAS@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "TEN",
+      "homeScore": 20,
+      "id": "2021-REG-16-SF@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CLE",
+      "awayScore": 22,
+      "home": "GB",
+      "homeScore": 24,
+      "id": "2021-REG-16-CLE@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "IND",
+      "awayScore": 22,
+      "home": "ARI",
+      "homeScore": 16,
+      "id": "2021-REG-16-IND@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DET",
+      "awayScore": 16,
+      "home": "ATL",
+      "homeScore": 20,
+      "id": "2021-REG-16-DET@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "TB",
+      "awayScore": 32,
+      "home": "CAR",
+      "homeScore": 6,
+      "id": "2021-REG-16-TB@CAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "BAL",
+      "awayScore": 21,
+      "home": "CIN",
+      "homeScore": 41,
+      "id": "2021-REG-16-BAL@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "LAC",
+      "awayScore": 29,
+      "home": "HOU",
+      "homeScore": 41,
+      "id": "2021-REG-16-LAC@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "LAR",
+      "awayScore": 30,
+      "home": "MIN",
+      "homeScore": 23,
+      "id": "2021-REG-16-LAR@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "BUF",
+      "awayScore": 33,
+      "home": "NE",
+      "homeScore": 21,
+      "id": "2021-REG-16-BUF@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "JAX",
+      "awayScore": 21,
+      "home": "NYJ",
+      "homeScore": 26,
+      "id": "2021-REG-16-JAX@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NYG",
+      "awayScore": 10,
+      "home": "PHI",
+      "homeScore": 34,
+      "id": "2021-REG-16-NYG@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CHI",
+      "awayScore": 25,
+      "home": "SEA",
+      "homeScore": 24,
+      "id": "2021-REG-16-CHI@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "PIT",
+      "awayScore": 10,
+      "home": "KC",
+      "homeScore": 36,
+      "id": "2021-REG-16-PIT@KC",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DEN",
+      "awayScore": 13,
+      "home": "LV",
+      "homeScore": 17,
+      "id": "2021-REG-16-DEN@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "WAS",
+      "awayScore": 14,
+      "home": "DAL",
+      "homeScore": 56,
+      "id": "2021-REG-16-WAS@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "MIA",
+      "awayScore": 20,
+      "home": "NO",
+      "homeScore": 3,
+      "id": "2021-REG-16-MIA@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "LAR",
+      "awayScore": 20,
+      "home": "BAL",
+      "homeScore": 19,
+      "id": "2021-REG-17-LAR@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "ATL",
+      "awayScore": 15,
+      "home": "BUF",
+      "homeScore": 29,
+      "id": "2021-REG-17-ATL@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "NYG",
+      "awayScore": 3,
+      "home": "CHI",
+      "homeScore": 29,
+      "id": "2021-REG-17-NYG@CHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "KC",
+      "awayScore": 31,
+      "home": "CIN",
+      "homeScore": 34,
+      "id": "2021-REG-17-KC@CIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LV",
+      "awayScore": 23,
+      "home": "IND",
+      "homeScore": 20,
+      "id": "2021-REG-17-LV@IND",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "JAX",
+      "awayScore": 10,
+      "home": "NE",
+      "homeScore": 50,
+      "id": "2021-REG-17-JAX@NE",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "TB",
+      "awayScore": 28,
+      "home": "NYJ",
+      "homeScore": 24,
+      "id": "2021-REG-17-TB@NYJ",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "MIA",
+      "awayScore": 3,
+      "home": "TEN",
+      "homeScore": 34,
+      "id": "2021-REG-17-MIA@TEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "PHI",
+      "awayScore": 20,
+      "home": "WAS",
+      "homeScore": 16,
+      "id": "2021-REG-17-PHI@WAS",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "DEN",
+      "awayScore": 13,
+      "home": "LAC",
+      "homeScore": 34,
+      "id": "2021-REG-17-DEN@LAC",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "HOU",
+      "awayScore": 7,
+      "home": "SF",
+      "homeScore": 23,
+      "id": "2021-REG-17-HOU@SF",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "ARI",
+      "awayScore": 25,
+      "home": "DAL",
+      "homeScore": 22,
+      "id": "2021-REG-17-ARI@DAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "CAR",
+      "awayScore": 10,
+      "home": "NO",
+      "homeScore": 18,
+      "id": "2021-REG-17-CAR@NO",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "DET",
+      "awayScore": 29,
+      "home": "SEA",
+      "homeScore": 51,
+      "id": "2021-REG-17-DET@SEA",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "MIN",
+      "awayScore": 10,
+      "home": "GB",
+      "homeScore": 37,
+      "id": "2021-REG-17-MIN@GB",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "CLE",
+      "awayScore": 14,
+      "home": "PIT",
+      "homeScore": 26,
+      "id": "2021-REG-17-CLE@PIT",
+      "season": 2021,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "KC",
+      "awayScore": 28,
+      "home": "DEN",
+      "homeScore": 24,
+      "id": "2021-REG-18-KC@DEN",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "DAL",
+      "awayScore": 51,
+      "home": "PHI",
+      "homeScore": 26,
+      "id": "2021-REG-18-DAL@PHI",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "PIT",
+      "awayScore": 16,
+      "home": "BAL",
+      "homeScore": 13,
+      "id": "2021-REG-18-PIT@BAL",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "CIN",
+      "awayScore": 16,
+      "home": "CLE",
+      "homeScore": 21,
+      "id": "2021-REG-18-CIN@CLE",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "GB",
+      "awayScore": 30,
+      "home": "DET",
+      "homeScore": 37,
+      "id": "2021-REG-18-GB@DET",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "TEN",
+      "awayScore": 28,
+      "home": "HOU",
+      "homeScore": 25,
+      "id": "2021-REG-18-TEN@HOU",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "IND",
+      "awayScore": 11,
+      "home": "JAX",
+      "homeScore": 26,
+      "id": "2021-REG-18-IND@JAX",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "CHI",
+      "awayScore": 17,
+      "home": "MIN",
+      "homeScore": 31,
+      "id": "2021-REG-18-CHI@MIN",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "WAS",
+      "awayScore": 22,
+      "home": "NYG",
+      "homeScore": 7,
+      "id": "2021-REG-18-WAS@NYG",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "SEA",
+      "awayScore": 38,
+      "home": "ARI",
+      "homeScore": 30,
+      "id": "2021-REG-18-SEA@ARI",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "NO",
+      "awayScore": 30,
+      "home": "ATL",
+      "homeScore": 20,
+      "id": "2021-REG-18-NO@ATL",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 10,
+      "home": "BUF",
+      "homeScore": 27,
+      "id": "2021-REG-18-NYJ@BUF",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "SF",
+      "awayScore": 27,
+      "home": "LAR",
+      "homeScore": 24,
+      "id": "2021-REG-18-SF@LAR",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "NE",
+      "awayScore": 24,
+      "home": "MIA",
+      "homeScore": 33,
+      "id": "2021-REG-18-NE@MIA",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "CAR",
+      "awayScore": 17,
+      "home": "TB",
+      "homeScore": 41,
+      "id": "2021-REG-18-CAR@TB",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "LAC",
+      "awayScore": 32,
+      "home": "LV",
+      "homeScore": 35,
+      "id": "2021-REG-18-LAC@LV",
+      "season": 2021,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "LV",
+      "awayScore": 19,
+      "home": "CIN",
+      "homeScore": 26,
+      "id": "2021-WC-19-LV@CIN",
+      "season": 2021,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "NE",
+      "awayScore": 17,
+      "home": "BUF",
+      "homeScore": 47,
+      "id": "2021-WC-19-NE@BUF",
+      "season": 2021,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "PHI",
+      "awayScore": 15,
+      "home": "TB",
+      "homeScore": 31,
+      "id": "2021-WC-19-PHI@TB",
+      "season": 2021,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "SF",
+      "awayScore": 23,
+      "home": "DAL",
+      "homeScore": 17,
+      "id": "2021-WC-19-SF@DAL",
+      "season": 2021,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "PIT",
+      "awayScore": 21,
+      "home": "KC",
+      "homeScore": 42,
+      "id": "2021-WC-19-PIT@KC",
+      "season": 2021,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "ARI",
+      "awayScore": 11,
+      "home": "LAR",
+      "homeScore": 34,
+      "id": "2021-WC-19-ARI@LAR",
+      "season": 2021,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "CIN",
+      "awayScore": 19,
+      "home": "TEN",
+      "homeScore": 16,
+      "id": "2021-DIV-20-CIN@TEN",
+      "season": 2021,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "SF",
+      "awayScore": 13,
+      "home": "GB",
+      "homeScore": 10,
+      "id": "2021-DIV-20-SF@GB",
+      "season": 2021,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "LAR",
+      "awayScore": 30,
+      "home": "TB",
+      "homeScore": 27,
+      "id": "2021-DIV-20-LAR@TB",
+      "season": 2021,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "BUF",
+      "awayScore": 36,
+      "home": "KC",
+      "homeScore": 42,
+      "id": "2021-DIV-20-BUF@KC",
+      "season": 2021,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "CIN",
+      "awayScore": 27,
+      "home": "KC",
+      "homeScore": 24,
+      "id": "2021-CONF-21-CIN@KC",
+      "season": 2021,
+      "type": "CONF",
+      "week": 21
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "LAR",
+      "homeScore": 20,
+      "id": "2021-CONF-21-SF@LAR",
+      "season": 2021,
+      "type": "CONF",
+      "week": 21
+    },
+    {
+      "away": "LAR",
+      "awayScore": 23,
+      "home": "CIN",
+      "homeScore": 20,
+      "id": "2021-SB-22-LAR@CIN",
+      "season": 2021,
+      "type": "SB",
+      "week": 22
+    }
+  ],
+  "playoffFormat": {
+    "byesPerConf": 1,
+    "regularSeasonGames": 17,
+    "teams": 14
+  },
+  "season": 2021,
+  "weeks": 18
+}

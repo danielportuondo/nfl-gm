@@ -1,0 +1,2682 @@
+{
+  "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
+  "games": [
+    {
+      "away": "PIT",
+      "awayScore": 21,
+      "home": "NE",
+      "homeScore": 28,
+      "id": "2015-REG-1-PIT@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "IND",
+      "awayScore": 14,
+      "home": "BUF",
+      "homeScore": 27,
+      "id": "2015-REG-1-IND@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "GB",
+      "awayScore": 31,
+      "home": "CHI",
+      "homeScore": 23,
+      "id": "2015-REG-1-GB@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "KC",
+      "awayScore": 27,
+      "home": "HOU",
+      "homeScore": 20,
+      "id": "2015-REG-1-KC@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CAR",
+      "awayScore": 20,
+      "home": "JAX",
+      "homeScore": 9,
+      "id": "2015-REG-1-CAR@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CLE",
+      "awayScore": 10,
+      "home": "NYJ",
+      "homeScore": 31,
+      "id": "2015-REG-1-CLE@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "SEA",
+      "awayScore": 31,
+      "home": "LAR",
+      "homeScore": 34,
+      "id": "2015-REG-1-SEA@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "WAS",
+      "homeScore": 10,
+      "id": "2015-REG-1-MIA@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NO",
+      "awayScore": 19,
+      "home": "ARI",
+      "homeScore": 31,
+      "id": "2015-REG-1-NO@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "DET",
+      "awayScore": 28,
+      "home": "LAC",
+      "homeScore": 33,
+      "id": "2015-REG-1-DET@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "BAL",
+      "awayScore": 13,
+      "home": "DEN",
+      "homeScore": 19,
+      "id": "2015-REG-1-BAL@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CIN",
+      "awayScore": 33,
+      "home": "LV",
+      "homeScore": 13,
+      "id": "2015-REG-1-CIN@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "TEN",
+      "awayScore": 42,
+      "home": "TB",
+      "homeScore": 14,
+      "id": "2015-REG-1-TEN@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NYG",
+      "awayScore": 26,
+      "home": "DAL",
+      "homeScore": 27,
+      "id": "2015-REG-1-NYG@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "PHI",
+      "awayScore": 24,
+      "home": "ATL",
+      "homeScore": 26,
+      "id": "2015-REG-1-PHI@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIN",
+      "awayScore": 3,
+      "home": "SF",
+      "homeScore": 20,
+      "id": "2015-REG-1-MIN@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "DEN",
+      "awayScore": 31,
+      "home": "KC",
+      "homeScore": 24,
+      "id": "2015-REG-2-DEN@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NE",
+      "awayScore": 40,
+      "home": "BUF",
+      "homeScore": 32,
+      "id": "2015-REG-2-NE@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "HOU",
+      "awayScore": 17,
+      "home": "CAR",
+      "homeScore": 24,
+      "id": "2015-REG-2-HOU@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "ARI",
+      "awayScore": 48,
+      "home": "CHI",
+      "homeScore": 23,
+      "id": "2015-REG-2-ARI@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LAC",
+      "awayScore": 19,
+      "home": "CIN",
+      "homeScore": 24,
+      "id": "2015-REG-2-LAC@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "TEN",
+      "awayScore": 14,
+      "home": "CLE",
+      "homeScore": 28,
+      "id": "2015-REG-2-TEN@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DET",
+      "awayScore": 16,
+      "home": "MIN",
+      "homeScore": 26,
+      "id": "2015-REG-2-DET@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "TB",
+      "awayScore": 26,
+      "home": "NO",
+      "homeScore": 19,
+      "id": "2015-REG-2-TB@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "ATL",
+      "awayScore": 24,
+      "home": "NYG",
+      "homeScore": 20,
+      "id": "2015-REG-2-ATL@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "SF",
+      "awayScore": 18,
+      "home": "PIT",
+      "homeScore": 43,
+      "id": "2015-REG-2-SF@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LAR",
+      "awayScore": 10,
+      "home": "WAS",
+      "homeScore": 24,
+      "id": "2015-REG-2-LAR@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "MIA",
+      "awayScore": 20,
+      "home": "JAX",
+      "homeScore": 23,
+      "id": "2015-REG-2-MIA@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "BAL",
+      "awayScore": 33,
+      "home": "LV",
+      "homeScore": 37,
+      "id": "2015-REG-2-BAL@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "PHI",
+      "homeScore": 10,
+      "id": "2015-REG-2-DAL@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "SEA",
+      "awayScore": 17,
+      "home": "GB",
+      "homeScore": 27,
+      "id": "2015-REG-2-SEA@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 20,
+      "home": "IND",
+      "homeScore": 7,
+      "id": "2015-REG-2-NYJ@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "WAS",
+      "awayScore": 21,
+      "home": "NYG",
+      "homeScore": 32,
+      "id": "2015-REG-3-WAS@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CIN",
+      "awayScore": 28,
+      "home": "BAL",
+      "homeScore": 24,
+      "id": "2015-REG-3-CIN@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "NO",
+      "awayScore": 22,
+      "home": "CAR",
+      "homeScore": 27,
+      "id": "2015-REG-3-NO@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LV",
+      "awayScore": 27,
+      "home": "CLE",
+      "homeScore": 20,
+      "id": "2015-REG-3-LV@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "ATL",
+      "awayScore": 39,
+      "home": "DAL",
+      "homeScore": 28,
+      "id": "2015-REG-3-ATL@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "TB",
+      "awayScore": 9,
+      "home": "HOU",
+      "homeScore": 19,
+      "id": "2015-REG-3-TB@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LAC",
+      "awayScore": 14,
+      "home": "MIN",
+      "homeScore": 31,
+      "id": "2015-REG-3-LAC@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "JAX",
+      "awayScore": 17,
+      "home": "NE",
+      "homeScore": 51,
+      "id": "2015-REG-3-JAX@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "PHI",
+      "awayScore": 24,
+      "home": "NYJ",
+      "homeScore": 17,
+      "id": "2015-REG-3-PHI@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "PIT",
+      "awayScore": 12,
+      "home": "LAR",
+      "homeScore": 6,
+      "id": "2015-REG-3-PIT@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "IND",
+      "awayScore": 35,
+      "home": "TEN",
+      "homeScore": 33,
+      "id": "2015-REG-3-IND@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "SF",
+      "awayScore": 7,
+      "home": "ARI",
+      "homeScore": 47,
+      "id": "2015-REG-3-SF@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "BUF",
+      "awayScore": 41,
+      "home": "MIA",
+      "homeScore": 14,
+      "id": "2015-REG-3-BUF@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CHI",
+      "awayScore": 0,
+      "home": "SEA",
+      "homeScore": 26,
+      "id": "2015-REG-3-CHI@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "DEN",
+      "awayScore": 24,
+      "home": "DET",
+      "homeScore": 12,
+      "id": "2015-REG-3-DEN@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "KC",
+      "awayScore": 28,
+      "home": "GB",
+      "homeScore": 38,
+      "id": "2015-REG-3-KC@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "BAL",
+      "awayScore": 23,
+      "home": "PIT",
+      "homeScore": 20,
+      "id": "2015-REG-4-BAL@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 27,
+      "home": "MIA",
+      "homeScore": 14,
+      "id": "2015-REG-4-NYJ@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "HOU",
+      "awayScore": 21,
+      "home": "ATL",
+      "homeScore": 48,
+      "id": "2015-REG-4-HOU@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NYG",
+      "awayScore": 24,
+      "home": "BUF",
+      "homeScore": 10,
+      "id": "2015-REG-4-NYG@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "LV",
+      "awayScore": 20,
+      "home": "CHI",
+      "homeScore": 22,
+      "id": "2015-REG-4-LV@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "KC",
+      "awayScore": 21,
+      "home": "CIN",
+      "homeScore": 36,
+      "id": "2015-REG-4-KC@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "JAX",
+      "awayScore": 13,
+      "home": "IND",
+      "homeScore": 16,
+      "id": "2015-REG-4-JAX@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CAR",
+      "awayScore": 37,
+      "home": "TB",
+      "homeScore": 23,
+      "id": "2015-REG-4-CAR@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "PHI",
+      "awayScore": 20,
+      "home": "WAS",
+      "homeScore": 23,
+      "id": "2015-REG-4-PHI@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CLE",
+      "awayScore": 27,
+      "home": "LAC",
+      "homeScore": 30,
+      "id": "2015-REG-4-CLE@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "LAR",
+      "awayScore": 24,
+      "home": "ARI",
+      "homeScore": 22,
+      "id": "2015-REG-4-LAR@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "DEN",
+      "homeScore": 23,
+      "id": "2015-REG-4-MIN@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "GB",
+      "awayScore": 17,
+      "home": "SF",
+      "homeScore": 3,
+      "id": "2015-REG-4-GB@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "NO",
+      "homeScore": 26,
+      "id": "2015-REG-4-DAL@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "DET",
+      "awayScore": 10,
+      "home": "SEA",
+      "homeScore": 13,
+      "id": "2015-REG-4-DET@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "IND",
+      "awayScore": 27,
+      "home": "HOU",
+      "homeScore": 20,
+      "id": "2015-REG-5-IND@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "WAS",
+      "awayScore": 19,
+      "home": "ATL",
+      "homeScore": 25,
+      "id": "2015-REG-5-WAS@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CLE",
+      "awayScore": 33,
+      "home": "BAL",
+      "homeScore": 30,
+      "id": "2015-REG-5-CLE@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "SEA",
+      "awayScore": 24,
+      "home": "CIN",
+      "homeScore": 27,
+      "id": "2015-REG-5-SEA@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "LAR",
+      "awayScore": 10,
+      "home": "GB",
+      "homeScore": 24,
+      "id": "2015-REG-5-LAR@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CHI",
+      "awayScore": 18,
+      "home": "KC",
+      "homeScore": 17,
+      "id": "2015-REG-5-CHI@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NO",
+      "awayScore": 17,
+      "home": "PHI",
+      "homeScore": 39,
+      "id": "2015-REG-5-NO@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "JAX",
+      "awayScore": 31,
+      "home": "TB",
+      "homeScore": 38,
+      "id": "2015-REG-5-JAX@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "BUF",
+      "awayScore": 14,
+      "home": "TEN",
+      "homeScore": 13,
+      "id": "2015-REG-5-BUF@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "ARI",
+      "awayScore": 42,
+      "home": "DET",
+      "homeScore": 17,
+      "id": "2015-REG-5-ARI@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NE",
+      "awayScore": 30,
+      "home": "DAL",
+      "homeScore": 6,
+      "id": "2015-REG-5-NE@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DEN",
+      "awayScore": 16,
+      "home": "LV",
+      "homeScore": 10,
+      "id": "2015-REG-5-DEN@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "SF",
+      "awayScore": 27,
+      "home": "NYG",
+      "homeScore": 30,
+      "id": "2015-REG-5-SF@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "PIT",
+      "awayScore": 24,
+      "home": "LAC",
+      "homeScore": 20,
+      "id": "2015-REG-5-PIT@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "ATL",
+      "awayScore": 21,
+      "home": "NO",
+      "homeScore": 31,
+      "id": "2015-REG-6-ATL@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CIN",
+      "awayScore": 34,
+      "home": "BUF",
+      "homeScore": 21,
+      "id": "2015-REG-6-CIN@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "DEN",
+      "awayScore": 26,
+      "home": "CLE",
+      "homeScore": 23,
+      "id": "2015-REG-6-DEN@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CHI",
+      "awayScore": 34,
+      "home": "DET",
+      "homeScore": 37,
+      "id": "2015-REG-6-CHI@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "HOU",
+      "awayScore": 31,
+      "home": "JAX",
+      "homeScore": 20,
+      "id": "2015-REG-6-HOU@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "KC",
+      "awayScore": 10,
+      "home": "MIN",
+      "homeScore": 16,
+      "id": "2015-REG-6-KC@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "WAS",
+      "awayScore": 20,
+      "home": "NYJ",
+      "homeScore": 34,
+      "id": "2015-REG-6-WAS@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "ARI",
+      "awayScore": 13,
+      "home": "PIT",
+      "homeScore": 25,
+      "id": "2015-REG-6-ARI@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "MIA",
+      "awayScore": 38,
+      "home": "TEN",
+      "homeScore": 10,
+      "id": "2015-REG-6-MIA@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CAR",
+      "awayScore": 27,
+      "home": "SEA",
+      "homeScore": 23,
+      "id": "2015-REG-6-CAR@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "LAC",
+      "awayScore": 20,
+      "home": "GB",
+      "homeScore": 27,
+      "id": "2015-REG-6-LAC@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "BAL",
+      "awayScore": 20,
+      "home": "SF",
+      "homeScore": 25,
+      "id": "2015-REG-6-BAL@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "NE",
+      "awayScore": 34,
+      "home": "IND",
+      "homeScore": 27,
+      "id": "2015-REG-6-NE@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "NYG",
+      "awayScore": 7,
+      "home": "PHI",
+      "homeScore": 27,
+      "id": "2015-REG-6-NYG@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "SEA",
+      "awayScore": 20,
+      "home": "SF",
+      "homeScore": 3,
+      "id": "2015-REG-7-SEA@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "BUF",
+      "awayScore": 31,
+      "home": "JAX",
+      "homeScore": 34,
+      "id": "2015-REG-7-BUF@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "MIN",
+      "awayScore": 28,
+      "home": "DET",
+      "homeScore": 19,
+      "id": "2015-REG-7-MIN@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "NO",
+      "awayScore": 27,
+      "home": "IND",
+      "homeScore": 21,
+      "id": "2015-REG-7-NO@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "PIT",
+      "awayScore": 13,
+      "home": "KC",
+      "homeScore": 23,
+      "id": "2015-REG-7-PIT@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "HOU",
+      "awayScore": 26,
+      "home": "MIA",
+      "homeScore": 44,
+      "id": "2015-REG-7-HOU@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 23,
+      "home": "NE",
+      "homeScore": 30,
+      "id": "2015-REG-7-NYJ@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CLE",
+      "awayScore": 6,
+      "home": "LAR",
+      "homeScore": 24,
+      "id": "2015-REG-7-CLE@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "ATL",
+      "awayScore": 10,
+      "home": "TEN",
+      "homeScore": 7,
+      "id": "2015-REG-7-ATL@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "TB",
+      "awayScore": 30,
+      "home": "WAS",
+      "homeScore": 31,
+      "id": "2015-REG-7-TB@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "LV",
+      "awayScore": 37,
+      "home": "LAC",
+      "homeScore": 29,
+      "id": "2015-REG-7-LV@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "NYG",
+      "homeScore": 27,
+      "id": "2015-REG-7-DAL@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "PHI",
+      "awayScore": 16,
+      "home": "CAR",
+      "homeScore": 27,
+      "id": "2015-REG-7-PHI@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "BAL",
+      "awayScore": 18,
+      "home": "ARI",
+      "homeScore": 26,
+      "id": "2015-REG-7-BAL@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "MIA",
+      "awayScore": 7,
+      "home": "NE",
+      "homeScore": 36,
+      "id": "2015-REG-8-MIA@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "DET",
+      "awayScore": 10,
+      "home": "KC",
+      "homeScore": 45,
+      "id": "2015-REG-8-DET@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "TB",
+      "awayScore": 23,
+      "home": "ATL",
+      "homeScore": 20,
+      "id": "2015-REG-8-TB@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "LAC",
+      "awayScore": 26,
+      "home": "BAL",
+      "homeScore": 29,
+      "id": "2015-REG-8-LAC@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "MIN",
+      "awayScore": 23,
+      "home": "CHI",
+      "homeScore": 20,
+      "id": "2015-REG-8-MIN@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "ARI",
+      "awayScore": 34,
+      "home": "CLE",
+      "homeScore": 20,
+      "id": "2015-REG-8-ARI@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "TEN",
+      "awayScore": 6,
+      "home": "HOU",
+      "homeScore": 20,
+      "id": "2015-REG-8-TEN@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYG",
+      "awayScore": 49,
+      "home": "NO",
+      "homeScore": 52,
+      "id": "2015-REG-8-NYG@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CIN",
+      "awayScore": 16,
+      "home": "PIT",
+      "homeScore": 10,
+      "id": "2015-REG-8-CIN@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "SF",
+      "awayScore": 6,
+      "home": "LAR",
+      "homeScore": 27,
+      "id": "2015-REG-8-SF@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 20,
+      "home": "LV",
+      "homeScore": 34,
+      "id": "2015-REG-8-NYJ@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "SEA",
+      "awayScore": 13,
+      "home": "DAL",
+      "homeScore": 12,
+      "id": "2015-REG-8-SEA@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "GB",
+      "awayScore": 10,
+      "home": "DEN",
+      "homeScore": 29,
+      "id": "2015-REG-8-GB@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "IND",
+      "awayScore": 26,
+      "home": "CAR",
+      "homeScore": 29,
+      "id": "2015-REG-8-IND@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CLE",
+      "awayScore": 10,
+      "home": "CIN",
+      "homeScore": 31,
+      "id": "2015-REG-9-CLE@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "BUF",
+      "homeScore": 33,
+      "id": "2015-REG-9-MIA@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "GB",
+      "awayScore": 29,
+      "home": "CAR",
+      "homeScore": 37,
+      "id": "2015-REG-9-GB@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LAR",
+      "awayScore": 18,
+      "home": "MIN",
+      "homeScore": 21,
+      "id": "2015-REG-9-LAR@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "WAS",
+      "awayScore": 10,
+      "home": "NE",
+      "homeScore": 27,
+      "id": "2015-REG-9-WAS@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "TEN",
+      "awayScore": 34,
+      "home": "NO",
+      "homeScore": 28,
+      "id": "2015-REG-9-TEN@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "JAX",
+      "awayScore": 23,
+      "home": "NYJ",
+      "homeScore": 28,
+      "id": "2015-REG-9-JAX@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LV",
+      "awayScore": 35,
+      "home": "PIT",
+      "homeScore": 38,
+      "id": "2015-REG-9-LV@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "ATL",
+      "awayScore": 16,
+      "home": "SF",
+      "homeScore": 17,
+      "id": "2015-REG-9-ATL@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "NYG",
+      "awayScore": 32,
+      "home": "TB",
+      "homeScore": 18,
+      "id": "2015-REG-9-NYG@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "DEN",
+      "awayScore": 24,
+      "home": "IND",
+      "homeScore": 27,
+      "id": "2015-REG-9-DEN@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "PHI",
+      "awayScore": 33,
+      "home": "DAL",
+      "homeScore": 27,
+      "id": "2015-REG-9-PHI@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "CHI",
+      "awayScore": 22,
+      "home": "LAC",
+      "homeScore": 19,
+      "id": "2015-REG-9-CHI@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "BUF",
+      "awayScore": 22,
+      "home": "NYJ",
+      "homeScore": 17,
+      "id": "2015-REG-10-BUF@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "JAX",
+      "awayScore": 22,
+      "home": "BAL",
+      "homeScore": 20,
+      "id": "2015-REG-10-JAX@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DET",
+      "awayScore": 18,
+      "home": "GB",
+      "homeScore": 16,
+      "id": "2015-REG-10-DET@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "MIA",
+      "awayScore": 20,
+      "home": "PHI",
+      "homeScore": 19,
+      "id": "2015-REG-10-MIA@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CLE",
+      "awayScore": 9,
+      "home": "PIT",
+      "homeScore": 30,
+      "id": "2015-REG-10-CLE@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CHI",
+      "awayScore": 37,
+      "home": "LAR",
+      "homeScore": 13,
+      "id": "2015-REG-10-CHI@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DAL",
+      "awayScore": 6,
+      "home": "TB",
+      "homeScore": 10,
+      "id": "2015-REG-10-DAL@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CAR",
+      "awayScore": 27,
+      "home": "TEN",
+      "homeScore": 10,
+      "id": "2015-REG-10-CAR@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NO",
+      "awayScore": 14,
+      "home": "WAS",
+      "homeScore": 47,
+      "id": "2015-REG-10-NO@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "MIN",
+      "awayScore": 30,
+      "home": "LV",
+      "homeScore": 14,
+      "id": "2015-REG-10-MIN@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "KC",
+      "awayScore": 29,
+      "home": "DEN",
+      "homeScore": 13,
+      "id": "2015-REG-10-KC@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NE",
+      "awayScore": 27,
+      "home": "NYG",
+      "homeScore": 26,
+      "id": "2015-REG-10-NE@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "ARI",
+      "awayScore": 39,
+      "home": "SEA",
+      "homeScore": 32,
+      "id": "2015-REG-10-ARI@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "HOU",
+      "awayScore": 10,
+      "home": "CIN",
+      "homeScore": 6,
+      "id": "2015-REG-10-HOU@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "TEN",
+      "awayScore": 13,
+      "home": "JAX",
+      "homeScore": 19,
+      "id": "2015-REG-11-TEN@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "IND",
+      "awayScore": 24,
+      "home": "ATL",
+      "homeScore": 21,
+      "id": "2015-REG-11-IND@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "LAR",
+      "awayScore": 13,
+      "home": "BAL",
+      "homeScore": 16,
+      "id": "2015-REG-11-LAR@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "WAS",
+      "awayScore": 16,
+      "home": "CAR",
+      "homeScore": 44,
+      "id": "2015-REG-11-WAS@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "DEN",
+      "awayScore": 17,
+      "home": "CHI",
+      "homeScore": 15,
+      "id": "2015-REG-11-DEN@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "LV",
+      "awayScore": 13,
+      "home": "DET",
+      "homeScore": 18,
+      "id": "2015-REG-11-LV@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 17,
+      "home": "HOU",
+      "homeScore": 24,
+      "id": "2015-REG-11-NYJ@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "DAL",
+      "awayScore": 24,
+      "home": "MIA",
+      "homeScore": 14,
+      "id": "2015-REG-11-DAL@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "TB",
+      "awayScore": 45,
+      "home": "PHI",
+      "homeScore": 17,
+      "id": "2015-REG-11-TB@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "KC",
+      "awayScore": 33,
+      "home": "LAC",
+      "homeScore": 3,
+      "id": "2015-REG-11-KC@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "GB",
+      "awayScore": 30,
+      "home": "MIN",
+      "homeScore": 13,
+      "id": "2015-REG-11-GB@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "SF",
+      "awayScore": 13,
+      "home": "SEA",
+      "homeScore": 29,
+      "id": "2015-REG-11-SF@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "CIN",
+      "awayScore": 31,
+      "home": "ARI",
+      "homeScore": 34,
+      "id": "2015-REG-11-CIN@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "BUF",
+      "awayScore": 13,
+      "home": "NE",
+      "homeScore": 20,
+      "id": "2015-REG-11-BUF@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "PHI",
+      "awayScore": 14,
+      "home": "DET",
+      "homeScore": 45,
+      "id": "2015-REG-12-PHI@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CAR",
+      "awayScore": 33,
+      "home": "DAL",
+      "homeScore": 14,
+      "id": "2015-REG-12-CAR@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CHI",
+      "awayScore": 17,
+      "home": "GB",
+      "homeScore": 13,
+      "id": "2015-REG-12-CHI@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "ATL",
+      "homeScore": 10,
+      "id": "2015-REG-12-MIN@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LAR",
+      "awayScore": 7,
+      "home": "CIN",
+      "homeScore": 31,
+      "id": "2015-REG-12-LAR@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NO",
+      "awayScore": 6,
+      "home": "HOU",
+      "homeScore": 24,
+      "id": "2015-REG-12-NO@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "TB",
+      "awayScore": 12,
+      "home": "IND",
+      "homeScore": 25,
+      "id": "2015-REG-12-TB@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LAC",
+      "awayScore": 31,
+      "home": "JAX",
+      "homeScore": 25,
+      "id": "2015-REG-12-LAC@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "BUF",
+      "awayScore": 22,
+      "home": "KC",
+      "homeScore": 30,
+      "id": "2015-REG-12-BUF@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "MIA",
+      "awayScore": 20,
+      "home": "NYJ",
+      "homeScore": 38,
+      "id": "2015-REG-12-MIA@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LV",
+      "awayScore": 24,
+      "home": "TEN",
+      "homeScore": 21,
+      "id": "2015-REG-12-LV@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NYG",
+      "awayScore": 14,
+      "home": "WAS",
+      "homeScore": 20,
+      "id": "2015-REG-12-NYG@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "ARI",
+      "awayScore": 19,
+      "home": "SF",
+      "homeScore": 13,
+      "id": "2015-REG-12-ARI@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "PIT",
+      "awayScore": 30,
+      "home": "SEA",
+      "homeScore": 39,
+      "id": "2015-REG-12-PIT@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NE",
+      "awayScore": 24,
+      "home": "DEN",
+      "homeScore": 30,
+      "id": "2015-REG-12-NE@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "BAL",
+      "awayScore": 33,
+      "home": "CLE",
+      "homeScore": 27,
+      "id": "2015-REG-12-BAL@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "GB",
+      "awayScore": 27,
+      "home": "DET",
+      "homeScore": 23,
+      "id": "2015-REG-13-GB@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "HOU",
+      "awayScore": 21,
+      "home": "BUF",
+      "homeScore": 30,
+      "id": "2015-REG-13-HOU@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "SF",
+      "awayScore": 26,
+      "home": "CHI",
+      "homeScore": 20,
+      "id": "2015-REG-13-SF@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CIN",
+      "awayScore": 37,
+      "home": "CLE",
+      "homeScore": 3,
+      "id": "2015-REG-13-CIN@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "BAL",
+      "awayScore": 13,
+      "home": "MIA",
+      "homeScore": 15,
+      "id": "2015-REG-13-BAL@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "SEA",
+      "awayScore": 38,
+      "home": "MIN",
+      "homeScore": 7,
+      "id": "2015-REG-13-SEA@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 23,
+      "home": "NYG",
+      "homeScore": 20,
+      "id": "2015-REG-13-NYJ@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ARI",
+      "awayScore": 27,
+      "home": "LAR",
+      "homeScore": 3,
+      "id": "2015-REG-13-ARI@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ATL",
+      "awayScore": 19,
+      "home": "TB",
+      "homeScore": 23,
+      "id": "2015-REG-13-ATL@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "JAX",
+      "awayScore": 39,
+      "home": "TEN",
+      "homeScore": 42,
+      "id": "2015-REG-13-JAX@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "KC",
+      "awayScore": 34,
+      "home": "LV",
+      "homeScore": 20,
+      "id": "2015-REG-13-KC@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "DEN",
+      "awayScore": 17,
+      "home": "LAC",
+      "homeScore": 3,
+      "id": "2015-REG-13-DEN@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "PHI",
+      "awayScore": 35,
+      "home": "NE",
+      "homeScore": 28,
+      "id": "2015-REG-13-PHI@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CAR",
+      "awayScore": 41,
+      "home": "NO",
+      "homeScore": 38,
+      "id": "2015-REG-13-CAR@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "IND",
+      "awayScore": 10,
+      "home": "PIT",
+      "homeScore": 45,
+      "id": "2015-REG-13-IND@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "DAL",
+      "awayScore": 19,
+      "home": "WAS",
+      "homeScore": 16,
+      "id": "2015-REG-13-DAL@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "ARI",
+      "homeScore": 23,
+      "id": "2015-REG-14-MIN@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "SEA",
+      "awayScore": 35,
+      "home": "BAL",
+      "homeScore": 6,
+      "id": "2015-REG-14-SEA@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "ATL",
+      "awayScore": 0,
+      "home": "CAR",
+      "homeScore": 38,
+      "id": "2015-REG-14-ATL@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "WAS",
+      "awayScore": 24,
+      "home": "CHI",
+      "homeScore": 21,
+      "id": "2015-REG-14-WAS@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "PIT",
+      "awayScore": 33,
+      "home": "CIN",
+      "homeScore": 20,
+      "id": "2015-REG-14-PIT@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "SF",
+      "awayScore": 10,
+      "home": "CLE",
+      "homeScore": 24,
+      "id": "2015-REG-14-SF@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "IND",
+      "awayScore": 16,
+      "home": "JAX",
+      "homeScore": 51,
+      "id": "2015-REG-14-IND@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LAC",
+      "awayScore": 3,
+      "home": "KC",
+      "homeScore": 10,
+      "id": "2015-REG-14-LAC@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "TEN",
+      "awayScore": 8,
+      "home": "NYJ",
+      "homeScore": 30,
+      "id": "2015-REG-14-TEN@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "BUF",
+      "awayScore": 20,
+      "home": "PHI",
+      "homeScore": 23,
+      "id": "2015-REG-14-BUF@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DET",
+      "awayScore": 14,
+      "home": "LAR",
+      "homeScore": 21,
+      "id": "2015-REG-14-DET@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "NO",
+      "awayScore": 24,
+      "home": "TB",
+      "homeScore": 17,
+      "id": "2015-REG-14-NO@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LV",
+      "awayScore": 15,
+      "home": "DEN",
+      "homeScore": 12,
+      "id": "2015-REG-14-LV@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DAL",
+      "awayScore": 7,
+      "home": "GB",
+      "homeScore": 28,
+      "id": "2015-REG-14-DAL@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "NE",
+      "awayScore": 27,
+      "home": "HOU",
+      "homeScore": 6,
+      "id": "2015-REG-14-NE@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "NYG",
+      "awayScore": 31,
+      "home": "MIA",
+      "homeScore": 24,
+      "id": "2015-REG-14-NYG@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "TB",
+      "awayScore": 23,
+      "home": "LAR",
+      "homeScore": 31,
+      "id": "2015-REG-15-TB@LAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 19,
+      "home": "DAL",
+      "homeScore": 16,
+      "id": "2015-REG-15-NYJ@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "KC",
+      "awayScore": 34,
+      "home": "BAL",
+      "homeScore": 14,
+      "id": "2015-REG-15-KC@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "HOU",
+      "awayScore": 16,
+      "home": "IND",
+      "homeScore": 10,
+      "id": "2015-REG-15-HOU@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "ATL",
+      "awayScore": 23,
+      "home": "JAX",
+      "homeScore": 17,
+      "id": "2015-REG-15-ATL@JAX",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CHI",
+      "awayScore": 17,
+      "home": "MIN",
+      "homeScore": 38,
+      "id": "2015-REG-15-CHI@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "TEN",
+      "awayScore": 16,
+      "home": "NE",
+      "homeScore": 33,
+      "id": "2015-REG-15-TEN@NE",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CAR",
+      "awayScore": 38,
+      "home": "NYG",
+      "homeScore": 35,
+      "id": "2015-REG-15-CAR@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "BUF",
+      "awayScore": 25,
+      "home": "WAS",
+      "homeScore": 35,
+      "id": "2015-REG-15-BUF@WAS",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "GB",
+      "awayScore": 30,
+      "home": "LV",
+      "homeScore": 20,
+      "id": "2015-REG-15-GB@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CLE",
+      "awayScore": 13,
+      "home": "SEA",
+      "homeScore": 30,
+      "id": "2015-REG-15-CLE@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "DEN",
+      "awayScore": 27,
+      "home": "PIT",
+      "homeScore": 34,
+      "id": "2015-REG-15-DEN@PIT",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "MIA",
+      "awayScore": 14,
+      "home": "LAC",
+      "homeScore": 30,
+      "id": "2015-REG-15-MIA@LAC",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CIN",
+      "awayScore": 24,
+      "home": "SF",
+      "homeScore": 14,
+      "id": "2015-REG-15-CIN@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "ARI",
+      "awayScore": 40,
+      "home": "PHI",
+      "homeScore": 17,
+      "id": "2015-REG-15-ARI@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "DET",
+      "awayScore": 35,
+      "home": "NO",
+      "homeScore": 27,
+      "id": "2015-REG-15-DET@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "LAC",
+      "awayScore": 20,
+      "home": "LV",
+      "homeScore": 23,
+      "id": "2015-REG-16-LAC@LV",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "WAS",
+      "awayScore": 38,
+      "home": "PHI",
+      "homeScore": 24,
+      "id": "2015-REG-16-WAS@PHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CAR",
+      "awayScore": 13,
+      "home": "ATL",
+      "homeScore": 20,
+      "id": "2015-REG-16-CAR@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "PIT",
+      "awayScore": 17,
+      "home": "BAL",
+      "homeScore": 20,
+      "id": "2015-REG-16-PIT@BAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DAL",
+      "awayScore": 6,
+      "home": "BUF",
+      "homeScore": 16,
+      "id": "2015-REG-16-DAL@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "DET",
+      "homeScore": 32,
+      "id": "2015-REG-16-SF@DET",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CLE",
+      "awayScore": 13,
+      "home": "KC",
+      "homeScore": 17,
+      "id": "2015-REG-16-CLE@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "IND",
+      "awayScore": 18,
+      "home": "MIA",
+      "homeScore": 12,
+      "id": "2015-REG-16-IND@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NE",
+      "awayScore": 20,
+      "home": "NYJ",
+      "homeScore": 26,
+      "id": "2015-REG-16-NE@NYJ",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CHI",
+      "awayScore": 26,
+      "home": "TB",
+      "homeScore": 21,
+      "id": "2015-REG-16-CHI@TB",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "HOU",
+      "awayScore": 34,
+      "home": "TEN",
+      "homeScore": 6,
+      "id": "2015-REG-16-HOU@TEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "JAX",
+      "awayScore": 27,
+      "home": "NO",
+      "homeScore": 38,
+      "id": "2015-REG-16-JAX@NO",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "GB",
+      "awayScore": 8,
+      "home": "ARI",
+      "homeScore": 38,
+      "id": "2015-REG-16-GB@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "LAR",
+      "awayScore": 23,
+      "home": "SEA",
+      "homeScore": 17,
+      "id": "2015-REG-16-LAR@SEA",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NYG",
+      "awayScore": 17,
+      "home": "MIN",
+      "homeScore": 49,
+      "id": "2015-REG-16-NYG@MIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CIN",
+      "awayScore": 17,
+      "home": "DEN",
+      "homeScore": 20,
+      "id": "2015-REG-16-CIN@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NO",
+      "awayScore": 20,
+      "home": "ATL",
+      "homeScore": 17,
+      "id": "2015-REG-17-NO@ATL",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 17,
+      "home": "BUF",
+      "homeScore": 22,
+      "id": "2015-REG-17-NYJ@BUF",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "DET",
+      "awayScore": 24,
+      "home": "CHI",
+      "homeScore": 20,
+      "id": "2015-REG-17-DET@CHI",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "BAL",
+      "awayScore": 16,
+      "home": "CIN",
+      "homeScore": 24,
+      "id": "2015-REG-17-BAL@CIN",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "PIT",
+      "awayScore": 28,
+      "home": "CLE",
+      "homeScore": 12,
+      "id": "2015-REG-17-PIT@CLE",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "WAS",
+      "awayScore": 34,
+      "home": "DAL",
+      "homeScore": 23,
+      "id": "2015-REG-17-WAS@DAL",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "JAX",
+      "awayScore": 6,
+      "home": "HOU",
+      "homeScore": 30,
+      "id": "2015-REG-17-JAX@HOU",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "TEN",
+      "awayScore": 24,
+      "home": "IND",
+      "homeScore": 30,
+      "id": "2015-REG-17-TEN@IND",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "NE",
+      "awayScore": 10,
+      "home": "MIA",
+      "homeScore": 20,
+      "id": "2015-REG-17-NE@MIA",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "PHI",
+      "awayScore": 35,
+      "home": "NYG",
+      "homeScore": 30,
+      "id": "2015-REG-17-PHI@NYG",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "SEA",
+      "awayScore": 36,
+      "home": "ARI",
+      "homeScore": 6,
+      "id": "2015-REG-17-SEA@ARI",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "TB",
+      "awayScore": 10,
+      "home": "CAR",
+      "homeScore": 38,
+      "id": "2015-REG-17-TB@CAR",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LAC",
+      "awayScore": 20,
+      "home": "DEN",
+      "homeScore": 27,
+      "id": "2015-REG-17-LAC@DEN",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LV",
+      "awayScore": 17,
+      "home": "KC",
+      "homeScore": 23,
+      "id": "2015-REG-17-LV@KC",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LAR",
+      "awayScore": 16,
+      "home": "SF",
+      "homeScore": 19,
+      "id": "2015-REG-17-LAR@SF",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "GB",
+      "homeScore": 13,
+      "id": "2015-REG-17-MIN@GB",
+      "season": 2015,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "KC",
+      "awayScore": 30,
+      "home": "HOU",
+      "homeScore": 0,
+      "id": "2015-WC-18-KC@HOU",
+      "season": 2015,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "PIT",
+      "awayScore": 18,
+      "home": "CIN",
+      "homeScore": 16,
+      "id": "2015-WC-18-PIT@CIN",
+      "season": 2015,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "SEA",
+      "awayScore": 10,
+      "home": "MIN",
+      "homeScore": 9,
+      "id": "2015-WC-18-SEA@MIN",
+      "season": 2015,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "GB",
+      "awayScore": 35,
+      "home": "WAS",
+      "homeScore": 18,
+      "id": "2015-WC-18-GB@WAS",
+      "season": 2015,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "KC",
+      "awayScore": 20,
+      "home": "NE",
+      "homeScore": 27,
+      "id": "2015-DIV-19-KC@NE",
+      "season": 2015,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "GB",
+      "awayScore": 20,
+      "home": "ARI",
+      "homeScore": 26,
+      "id": "2015-DIV-19-GB@ARI",
+      "season": 2015,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "SEA",
+      "awayScore": 24,
+      "home": "CAR",
+      "homeScore": 31,
+      "id": "2015-DIV-19-SEA@CAR",
+      "season": 2015,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "PIT",
+      "awayScore": 16,
+      "home": "DEN",
+      "homeScore": 23,
+      "id": "2015-DIV-19-PIT@DEN",
+      "season": 2015,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "NE",
+      "awayScore": 18,
+      "home": "DEN",
+      "homeScore": 20,
+      "id": "2015-CONF-20-NE@DEN",
+      "season": 2015,
+      "type": "CONF",
+      "week": 20
+    },
+    {
+      "away": "ARI",
+      "awayScore": 15,
+      "home": "CAR",
+      "homeScore": 49,
+      "id": "2015-CONF-20-ARI@CAR",
+      "season": 2015,
+      "type": "CONF",
+      "week": 20
+    },
+    {
+      "away": "CAR",
+      "awayScore": 10,
+      "home": "DEN",
+      "homeScore": 24,
+      "id": "2015-SB-21-CAR@DEN",
+      "season": 2015,
+      "type": "SB",
+      "week": 21
+    }
+  ],
+  "playoffFormat": {
+    "byesPerConf": 2,
+    "regularSeasonGames": 16,
+    "teams": 12
+  },
+  "season": 2015,
+  "weeks": 17
+}

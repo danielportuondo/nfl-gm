@@ -1,0 +1,2862 @@
+{
+  "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
+  "games": [
+    {
+      "away": "DET",
+      "awayScore": 21,
+      "home": "KC",
+      "homeScore": 20,
+      "id": "2023-REG-1-DET@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CAR",
+      "awayScore": 10,
+      "home": "ATL",
+      "homeScore": 24,
+      "id": "2023-REG-1-CAR@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "HOU",
+      "awayScore": 9,
+      "home": "BAL",
+      "homeScore": 25,
+      "id": "2023-REG-1-HOU@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CIN",
+      "awayScore": 3,
+      "home": "CLE",
+      "homeScore": 24,
+      "id": "2023-REG-1-CIN@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "JAX",
+      "awayScore": 31,
+      "home": "IND",
+      "homeScore": 21,
+      "id": "2023-REG-1-JAX@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "TB",
+      "awayScore": 20,
+      "home": "MIN",
+      "homeScore": 17,
+      "id": "2023-REG-1-TB@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "TEN",
+      "awayScore": 15,
+      "home": "NO",
+      "homeScore": 16,
+      "id": "2023-REG-1-TEN@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "SF",
+      "awayScore": 30,
+      "home": "PIT",
+      "homeScore": 7,
+      "id": "2023-REG-1-SF@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "ARI",
+      "awayScore": 16,
+      "home": "WAS",
+      "homeScore": 20,
+      "id": "2023-REG-1-ARI@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "GB",
+      "awayScore": 38,
+      "home": "CHI",
+      "homeScore": 20,
+      "id": "2023-REG-1-GB@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "LV",
+      "awayScore": 17,
+      "home": "DEN",
+      "homeScore": 16,
+      "id": "2023-REG-1-LV@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIA",
+      "awayScore": 36,
+      "home": "LAC",
+      "homeScore": 34,
+      "id": "2023-REG-1-MIA@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "PHI",
+      "awayScore": 25,
+      "home": "NE",
+      "homeScore": 20,
+      "id": "2023-REG-1-PHI@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "LAR",
+      "awayScore": 30,
+      "home": "SEA",
+      "homeScore": 13,
+      "id": "2023-REG-1-LAR@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "DAL",
+      "awayScore": 40,
+      "home": "NYG",
+      "homeScore": 0,
+      "id": "2023-REG-1-DAL@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "BUF",
+      "awayScore": 16,
+      "home": "NYJ",
+      "homeScore": 22,
+      "id": "2023-REG-1-BUF@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIN",
+      "awayScore": 28,
+      "home": "PHI",
+      "homeScore": 34,
+      "id": "2023-REG-2-MIN@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "GB",
+      "awayScore": 24,
+      "home": "ATL",
+      "homeScore": 25,
+      "id": "2023-REG-2-GB@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LV",
+      "awayScore": 10,
+      "home": "BUF",
+      "homeScore": 38,
+      "id": "2023-REG-2-LV@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "BAL",
+      "awayScore": 27,
+      "home": "CIN",
+      "homeScore": 24,
+      "id": "2023-REG-2-BAL@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "SEA",
+      "awayScore": 37,
+      "home": "DET",
+      "homeScore": 31,
+      "id": "2023-REG-2-SEA@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "IND",
+      "awayScore": 31,
+      "home": "HOU",
+      "homeScore": 20,
+      "id": "2023-REG-2-IND@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "KC",
+      "awayScore": 17,
+      "home": "JAX",
+      "homeScore": 9,
+      "id": "2023-REG-2-KC@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "CHI",
+      "awayScore": 17,
+      "home": "TB",
+      "homeScore": 27,
+      "id": "2023-REG-2-CHI@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LAC",
+      "awayScore": 24,
+      "home": "TEN",
+      "homeScore": 27,
+      "id": "2023-REG-2-LAC@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NYG",
+      "awayScore": 31,
+      "home": "ARI",
+      "homeScore": 28,
+      "id": "2023-REG-2-NYG@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "SF",
+      "awayScore": 30,
+      "home": "LAR",
+      "homeScore": 23,
+      "id": "2023-REG-2-SF@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 10,
+      "home": "DAL",
+      "homeScore": 30,
+      "id": "2023-REG-2-NYJ@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "WAS",
+      "awayScore": 35,
+      "home": "DEN",
+      "homeScore": 33,
+      "id": "2023-REG-2-WAS@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "MIA",
+      "awayScore": 24,
+      "home": "NE",
+      "homeScore": 17,
+      "id": "2023-REG-2-MIA@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NO",
+      "awayScore": 20,
+      "home": "CAR",
+      "homeScore": 17,
+      "id": "2023-REG-2-NO@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "CLE",
+      "awayScore": 22,
+      "home": "PIT",
+      "homeScore": 26,
+      "id": "2023-REG-2-CLE@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NYG",
+      "awayScore": 12,
+      "home": "SF",
+      "homeScore": 30,
+      "id": "2023-REG-3-NYG@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "IND",
+      "awayScore": 22,
+      "home": "BAL",
+      "homeScore": 19,
+      "id": "2023-REG-3-IND@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "TEN",
+      "awayScore": 3,
+      "home": "CLE",
+      "homeScore": 27,
+      "id": "2023-REG-3-TEN@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "ATL",
+      "awayScore": 6,
+      "home": "DET",
+      "homeScore": 20,
+      "id": "2023-REG-3-ATL@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "NO",
+      "awayScore": 17,
+      "home": "GB",
+      "homeScore": 18,
+      "id": "2023-REG-3-NO@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "HOU",
+      "awayScore": 37,
+      "home": "JAX",
+      "homeScore": 17,
+      "id": "2023-REG-3-HOU@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "DEN",
+      "awayScore": 20,
+      "home": "MIA",
+      "homeScore": 70,
+      "id": "2023-REG-3-DEN@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LAC",
+      "awayScore": 28,
+      "home": "MIN",
+      "homeScore": 24,
+      "id": "2023-REG-3-LAC@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "NE",
+      "awayScore": 15,
+      "home": "NYJ",
+      "homeScore": 10,
+      "id": "2023-REG-3-NE@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "BUF",
+      "awayScore": 37,
+      "home": "WAS",
+      "homeScore": 3,
+      "id": "2023-REG-3-BUF@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CAR",
+      "awayScore": 27,
+      "home": "SEA",
+      "homeScore": 37,
+      "id": "2023-REG-3-CAR@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "DAL",
+      "awayScore": 16,
+      "home": "ARI",
+      "homeScore": 28,
+      "id": "2023-REG-3-DAL@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CHI",
+      "awayScore": 10,
+      "home": "KC",
+      "homeScore": 41,
+      "id": "2023-REG-3-CHI@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "PIT",
+      "awayScore": 23,
+      "home": "LV",
+      "homeScore": 18,
+      "id": "2023-REG-3-PIT@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "PHI",
+      "awayScore": 25,
+      "home": "TB",
+      "homeScore": 11,
+      "id": "2023-REG-3-PHI@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LAR",
+      "awayScore": 16,
+      "home": "CIN",
+      "homeScore": 19,
+      "id": "2023-REG-3-LAR@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "DET",
+      "awayScore": 34,
+      "home": "GB",
+      "homeScore": 20,
+      "id": "2023-REG-4-DET@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "ATL",
+      "awayScore": 7,
+      "home": "JAX",
+      "homeScore": 23,
+      "id": "2023-REG-4-ATL@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "MIA",
+      "awayScore": 20,
+      "home": "BUF",
+      "homeScore": 48,
+      "id": "2023-REG-4-MIA@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "MIN",
+      "awayScore": 21,
+      "home": "CAR",
+      "homeScore": 13,
+      "id": "2023-REG-4-MIN@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "DEN",
+      "awayScore": 31,
+      "home": "CHI",
+      "homeScore": 28,
+      "id": "2023-REG-4-DEN@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "BAL",
+      "awayScore": 28,
+      "home": "CLE",
+      "homeScore": 3,
+      "id": "2023-REG-4-BAL@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "PIT",
+      "awayScore": 6,
+      "home": "HOU",
+      "homeScore": 30,
+      "id": "2023-REG-4-PIT@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "LAR",
+      "awayScore": 29,
+      "home": "IND",
+      "homeScore": 23,
+      "id": "2023-REG-4-LAR@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "TB",
+      "awayScore": 26,
+      "home": "NO",
+      "homeScore": 9,
+      "id": "2023-REG-4-TB@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "WAS",
+      "awayScore": 31,
+      "home": "PHI",
+      "homeScore": 34,
+      "id": "2023-REG-4-WAS@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CIN",
+      "awayScore": 3,
+      "home": "TEN",
+      "homeScore": 27,
+      "id": "2023-REG-4-CIN@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "LV",
+      "awayScore": 17,
+      "home": "LAC",
+      "homeScore": 24,
+      "id": "2023-REG-4-LV@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NE",
+      "awayScore": 3,
+      "home": "DAL",
+      "homeScore": 38,
+      "id": "2023-REG-4-NE@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "ARI",
+      "awayScore": 16,
+      "home": "SF",
+      "homeScore": 35,
+      "id": "2023-REG-4-ARI@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "KC",
+      "awayScore": 23,
+      "home": "NYJ",
+      "homeScore": 20,
+      "id": "2023-REG-4-KC@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "SEA",
+      "awayScore": 24,
+      "home": "NYG",
+      "homeScore": 3,
+      "id": "2023-REG-4-SEA@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CHI",
+      "awayScore": 40,
+      "home": "WAS",
+      "homeScore": 20,
+      "id": "2023-REG-5-CHI@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "JAX",
+      "awayScore": 25,
+      "home": "BUF",
+      "homeScore": 20,
+      "id": "2023-REG-5-JAX@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "HOU",
+      "awayScore": 19,
+      "home": "ATL",
+      "homeScore": 21,
+      "id": "2023-REG-5-HOU@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CAR",
+      "awayScore": 24,
+      "home": "DET",
+      "homeScore": 42,
+      "id": "2023-REG-5-CAR@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "TEN",
+      "awayScore": 16,
+      "home": "IND",
+      "homeScore": 23,
+      "id": "2023-REG-5-TEN@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NYG",
+      "awayScore": 16,
+      "home": "MIA",
+      "homeScore": 31,
+      "id": "2023-REG-5-NYG@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NO",
+      "awayScore": 34,
+      "home": "NE",
+      "homeScore": 0,
+      "id": "2023-REG-5-NO@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "BAL",
+      "awayScore": 10,
+      "home": "PIT",
+      "homeScore": 17,
+      "id": "2023-REG-5-BAL@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CIN",
+      "awayScore": 34,
+      "home": "ARI",
+      "homeScore": 20,
+      "id": "2023-REG-5-CIN@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "PHI",
+      "awayScore": 23,
+      "home": "LAR",
+      "homeScore": 14,
+      "id": "2023-REG-5-PHI@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 31,
+      "home": "DEN",
+      "homeScore": 21,
+      "id": "2023-REG-5-NYJ@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "KC",
+      "awayScore": 27,
+      "home": "MIN",
+      "homeScore": 20,
+      "id": "2023-REG-5-KC@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DAL",
+      "awayScore": 10,
+      "home": "SF",
+      "homeScore": 42,
+      "id": "2023-REG-5-DAL@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "GB",
+      "awayScore": 13,
+      "home": "LV",
+      "homeScore": 17,
+      "id": "2023-REG-5-GB@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DEN",
+      "awayScore": 8,
+      "home": "KC",
+      "homeScore": 19,
+      "id": "2023-REG-6-DEN@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "BAL",
+      "awayScore": 24,
+      "home": "TEN",
+      "homeScore": 16,
+      "id": "2023-REG-6-BAL@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "WAS",
+      "awayScore": 24,
+      "home": "ATL",
+      "homeScore": 16,
+      "id": "2023-REG-6-WAS@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "MIN",
+      "awayScore": 19,
+      "home": "CHI",
+      "homeScore": 13,
+      "id": "2023-REG-6-MIN@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "SEA",
+      "awayScore": 13,
+      "home": "CIN",
+      "homeScore": 17,
+      "id": "2023-REG-6-SEA@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "CLE",
+      "homeScore": 19,
+      "id": "2023-REG-6-SF@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "NO",
+      "awayScore": 13,
+      "home": "HOU",
+      "homeScore": 20,
+      "id": "2023-REG-6-NO@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "IND",
+      "awayScore": 20,
+      "home": "JAX",
+      "homeScore": 37,
+      "id": "2023-REG-6-IND@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CAR",
+      "awayScore": 21,
+      "home": "MIA",
+      "homeScore": 42,
+      "id": "2023-REG-6-CAR@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "NE",
+      "awayScore": 17,
+      "home": "LV",
+      "homeScore": 21,
+      "id": "2023-REG-6-NE@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "ARI",
+      "awayScore": 9,
+      "home": "LAR",
+      "homeScore": 26,
+      "id": "2023-REG-6-ARI@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "PHI",
+      "awayScore": 14,
+      "home": "NYJ",
+      "homeScore": 20,
+      "id": "2023-REG-6-PHI@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "DET",
+      "awayScore": 20,
+      "home": "TB",
+      "homeScore": 6,
+      "id": "2023-REG-6-DET@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "NYG",
+      "awayScore": 9,
+      "home": "BUF",
+      "homeScore": 14,
+      "id": "2023-REG-6-NYG@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "LAC",
+      "homeScore": 17,
+      "id": "2023-REG-6-DAL@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "JAX",
+      "awayScore": 31,
+      "home": "NO",
+      "homeScore": 24,
+      "id": "2023-REG-7-JAX@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "DET",
+      "awayScore": 6,
+      "home": "BAL",
+      "homeScore": 38,
+      "id": "2023-REG-7-DET@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "LV",
+      "awayScore": 12,
+      "home": "CHI",
+      "homeScore": 30,
+      "id": "2023-REG-7-LV@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CLE",
+      "awayScore": 39,
+      "home": "IND",
+      "homeScore": 38,
+      "id": "2023-REG-7-CLE@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "BUF",
+      "awayScore": 25,
+      "home": "NE",
+      "homeScore": 29,
+      "id": "2023-REG-7-BUF@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "WAS",
+      "awayScore": 7,
+      "home": "NYG",
+      "homeScore": 14,
+      "id": "2023-REG-7-WAS@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "ATL",
+      "awayScore": 16,
+      "home": "TB",
+      "homeScore": 13,
+      "id": "2023-REG-7-ATL@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "PIT",
+      "awayScore": 24,
+      "home": "LAR",
+      "homeScore": 17,
+      "id": "2023-REG-7-PIT@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "ARI",
+      "awayScore": 10,
+      "home": "SEA",
+      "homeScore": 20,
+      "id": "2023-REG-7-ARI@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "GB",
+      "awayScore": 17,
+      "home": "DEN",
+      "homeScore": 19,
+      "id": "2023-REG-7-GB@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "LAC",
+      "awayScore": 17,
+      "home": "KC",
+      "homeScore": 31,
+      "id": "2023-REG-7-LAC@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "PHI",
+      "homeScore": 31,
+      "id": "2023-REG-7-MIA@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "MIN",
+      "homeScore": 22,
+      "id": "2023-REG-7-SF@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "TB",
+      "awayScore": 18,
+      "home": "BUF",
+      "homeScore": 24,
+      "id": "2023-REG-8-TB@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "HOU",
+      "awayScore": 13,
+      "home": "CAR",
+      "homeScore": 15,
+      "id": "2023-REG-8-HOU@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "LAR",
+      "awayScore": 20,
+      "home": "DAL",
+      "homeScore": 43,
+      "id": "2023-REG-8-LAR@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "MIN",
+      "awayScore": 24,
+      "home": "GB",
+      "homeScore": 10,
+      "id": "2023-REG-8-MIN@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NO",
+      "awayScore": 38,
+      "home": "IND",
+      "homeScore": 27,
+      "id": "2023-REG-8-NO@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NE",
+      "awayScore": 17,
+      "home": "MIA",
+      "homeScore": 31,
+      "id": "2023-REG-8-NE@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 13,
+      "home": "NYG",
+      "homeScore": 10,
+      "id": "2023-REG-8-NYJ@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "JAX",
+      "awayScore": 20,
+      "home": "PIT",
+      "homeScore": 10,
+      "id": "2023-REG-8-JAX@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "ATL",
+      "awayScore": 23,
+      "home": "TEN",
+      "homeScore": 28,
+      "id": "2023-REG-8-ATL@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "PHI",
+      "awayScore": 38,
+      "home": "WAS",
+      "homeScore": 31,
+      "id": "2023-REG-8-PHI@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CLE",
+      "awayScore": 20,
+      "home": "SEA",
+      "homeScore": 24,
+      "id": "2023-REG-8-CLE@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "BAL",
+      "awayScore": 31,
+      "home": "ARI",
+      "homeScore": 24,
+      "id": "2023-REG-8-BAL@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "KC",
+      "awayScore": 9,
+      "home": "DEN",
+      "homeScore": 24,
+      "id": "2023-REG-8-KC@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CIN",
+      "awayScore": 31,
+      "home": "SF",
+      "homeScore": 17,
+      "id": "2023-REG-8-CIN@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CHI",
+      "awayScore": 13,
+      "home": "LAC",
+      "homeScore": 30,
+      "id": "2023-REG-8-CHI@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "LV",
+      "awayScore": 14,
+      "home": "DET",
+      "homeScore": 26,
+      "id": "2023-REG-8-LV@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "TEN",
+      "awayScore": 16,
+      "home": "PIT",
+      "homeScore": 20,
+      "id": "2023-REG-9-TEN@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "MIA",
+      "awayScore": 14,
+      "home": "KC",
+      "homeScore": 21,
+      "id": "2023-REG-9-MIA@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "MIN",
+      "awayScore": 31,
+      "home": "ATL",
+      "homeScore": 28,
+      "id": "2023-REG-9-MIN@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "SEA",
+      "awayScore": 3,
+      "home": "BAL",
+      "homeScore": 37,
+      "id": "2023-REG-9-SEA@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "ARI",
+      "awayScore": 0,
+      "home": "CLE",
+      "homeScore": 27,
+      "id": "2023-REG-9-ARI@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LAR",
+      "awayScore": 3,
+      "home": "GB",
+      "homeScore": 20,
+      "id": "2023-REG-9-LAR@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "TB",
+      "awayScore": 37,
+      "home": "HOU",
+      "homeScore": 39,
+      "id": "2023-REG-9-TB@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "WAS",
+      "awayScore": 20,
+      "home": "NE",
+      "homeScore": 17,
+      "id": "2023-REG-9-WAS@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "CHI",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 24,
+      "id": "2023-REG-9-CHI@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "IND",
+      "awayScore": 27,
+      "home": "CAR",
+      "homeScore": 13,
+      "id": "2023-REG-9-IND@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "NYG",
+      "awayScore": 6,
+      "home": "LV",
+      "homeScore": 30,
+      "id": "2023-REG-9-NYG@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "DAL",
+      "awayScore": 23,
+      "home": "PHI",
+      "homeScore": 28,
+      "id": "2023-REG-9-DAL@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "BUF",
+      "awayScore": 18,
+      "home": "CIN",
+      "homeScore": 24,
+      "id": "2023-REG-9-BUF@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LAC",
+      "awayScore": 27,
+      "home": "NYJ",
+      "homeScore": 6,
+      "id": "2023-REG-9-LAC@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "CAR",
+      "awayScore": 13,
+      "home": "CHI",
+      "homeScore": 16,
+      "id": "2023-REG-10-CAR@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "IND",
+      "awayScore": 10,
+      "home": "NE",
+      "homeScore": 6,
+      "id": "2023-REG-10-IND@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CLE",
+      "awayScore": 33,
+      "home": "BAL",
+      "homeScore": 31,
+      "id": "2023-REG-10-CLE@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "HOU",
+      "awayScore": 30,
+      "home": "CIN",
+      "homeScore": 27,
+      "id": "2023-REG-10-HOU@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "SF",
+      "awayScore": 34,
+      "home": "JAX",
+      "homeScore": 3,
+      "id": "2023-REG-10-SF@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NO",
+      "awayScore": 19,
+      "home": "MIN",
+      "homeScore": 27,
+      "id": "2023-REG-10-NO@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "GB",
+      "awayScore": 19,
+      "home": "PIT",
+      "homeScore": 23,
+      "id": "2023-REG-10-GB@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "TEN",
+      "awayScore": 6,
+      "home": "TB",
+      "homeScore": 20,
+      "id": "2023-REG-10-TEN@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "ATL",
+      "awayScore": 23,
+      "home": "ARI",
+      "homeScore": 25,
+      "id": "2023-REG-10-ATL@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DET",
+      "awayScore": 41,
+      "home": "LAC",
+      "homeScore": 38,
+      "id": "2023-REG-10-DET@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NYG",
+      "awayScore": 17,
+      "home": "DAL",
+      "homeScore": 49,
+      "id": "2023-REG-10-NYG@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "WAS",
+      "awayScore": 26,
+      "home": "SEA",
+      "homeScore": 29,
+      "id": "2023-REG-10-WAS@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 12,
+      "home": "LV",
+      "homeScore": 16,
+      "id": "2023-REG-10-NYJ@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DEN",
+      "awayScore": 24,
+      "home": "BUF",
+      "homeScore": 22,
+      "id": "2023-REG-10-DEN@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CIN",
+      "awayScore": 20,
+      "home": "BAL",
+      "homeScore": 34,
+      "id": "2023-REG-11-CIN@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "DAL",
+      "awayScore": 33,
+      "home": "CAR",
+      "homeScore": 10,
+      "id": "2023-REG-11-DAL@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "PIT",
+      "awayScore": 10,
+      "home": "CLE",
+      "homeScore": 13,
+      "id": "2023-REG-11-PIT@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "CHI",
+      "awayScore": 26,
+      "home": "DET",
+      "homeScore": 31,
+      "id": "2023-REG-11-CHI@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "LAC",
+      "awayScore": 20,
+      "home": "GB",
+      "homeScore": 23,
+      "id": "2023-REG-11-LAC@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "ARI",
+      "awayScore": 16,
+      "home": "HOU",
+      "homeScore": 21,
+      "id": "2023-REG-11-ARI@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "TEN",
+      "awayScore": 14,
+      "home": "JAX",
+      "homeScore": 34,
+      "id": "2023-REG-11-TEN@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "LV",
+      "awayScore": 13,
+      "home": "MIA",
+      "homeScore": 20,
+      "id": "2023-REG-11-LV@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NYG",
+      "awayScore": 31,
+      "home": "WAS",
+      "homeScore": 19,
+      "id": "2023-REG-11-NYG@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "TB",
+      "awayScore": 14,
+      "home": "SF",
+      "homeScore": 27,
+      "id": "2023-REG-11-TB@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 6,
+      "home": "BUF",
+      "homeScore": 32,
+      "id": "2023-REG-11-NYJ@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "SEA",
+      "awayScore": 16,
+      "home": "LAR",
+      "homeScore": 17,
+      "id": "2023-REG-11-SEA@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "DEN",
+      "homeScore": 21,
+      "id": "2023-REG-11-MIN@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "PHI",
+      "awayScore": 21,
+      "home": "KC",
+      "homeScore": 17,
+      "id": "2023-REG-11-PHI@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "GB",
+      "awayScore": 29,
+      "home": "DET",
+      "homeScore": 22,
+      "id": "2023-REG-12-GB@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "WAS",
+      "awayScore": 10,
+      "home": "DAL",
+      "homeScore": 45,
+      "id": "2023-REG-12-WAS@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "SF",
+      "awayScore": 31,
+      "home": "SEA",
+      "homeScore": 13,
+      "id": "2023-REG-12-SF@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "MIA",
+      "awayScore": 34,
+      "home": "NYJ",
+      "homeScore": 13,
+      "id": "2023-REG-12-MIA@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NO",
+      "awayScore": 15,
+      "home": "ATL",
+      "homeScore": 24,
+      "id": "2023-REG-12-NO@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "PIT",
+      "awayScore": 16,
+      "home": "CIN",
+      "homeScore": 10,
+      "id": "2023-REG-12-PIT@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "JAX",
+      "awayScore": 24,
+      "home": "HOU",
+      "homeScore": 21,
+      "id": "2023-REG-12-JAX@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "TB",
+      "awayScore": 20,
+      "home": "IND",
+      "homeScore": 27,
+      "id": "2023-REG-12-TB@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NE",
+      "awayScore": 7,
+      "home": "NYG",
+      "homeScore": 10,
+      "id": "2023-REG-12-NE@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CAR",
+      "awayScore": 10,
+      "home": "TEN",
+      "homeScore": 17,
+      "id": "2023-REG-12-CAR@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LAR",
+      "awayScore": 37,
+      "home": "ARI",
+      "homeScore": 14,
+      "id": "2023-REG-12-LAR@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CLE",
+      "awayScore": 12,
+      "home": "DEN",
+      "homeScore": 29,
+      "id": "2023-REG-12-CLE@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "KC",
+      "awayScore": 31,
+      "home": "LV",
+      "homeScore": 17,
+      "id": "2023-REG-12-KC@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "BUF",
+      "awayScore": 34,
+      "home": "PHI",
+      "homeScore": 37,
+      "id": "2023-REG-12-BUF@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "BAL",
+      "awayScore": 20,
+      "home": "LAC",
+      "homeScore": 10,
+      "id": "2023-REG-12-BAL@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CHI",
+      "awayScore": 12,
+      "home": "MIN",
+      "homeScore": 10,
+      "id": "2023-REG-12-CHI@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "SEA",
+      "awayScore": 35,
+      "home": "DAL",
+      "homeScore": 41,
+      "id": "2023-REG-13-SEA@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "DEN",
+      "awayScore": 17,
+      "home": "HOU",
+      "homeScore": 22,
+      "id": "2023-REG-13-DEN@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "LAC",
+      "awayScore": 6,
+      "home": "NE",
+      "homeScore": 0,
+      "id": "2023-REG-13-LAC@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "DET",
+      "awayScore": 33,
+      "home": "NO",
+      "homeScore": 28,
+      "id": "2023-REG-13-DET@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ATL",
+      "awayScore": 13,
+      "home": "NYJ",
+      "homeScore": 8,
+      "id": "2023-REG-13-ATL@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ARI",
+      "awayScore": 24,
+      "home": "PIT",
+      "homeScore": 10,
+      "id": "2023-REG-13-ARI@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "IND",
+      "awayScore": 31,
+      "home": "TEN",
+      "homeScore": 28,
+      "id": "2023-REG-13-IND@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "MIA",
+      "awayScore": 45,
+      "home": "WAS",
+      "homeScore": 15,
+      "id": "2023-REG-13-MIA@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CAR",
+      "awayScore": 18,
+      "home": "TB",
+      "homeScore": 21,
+      "id": "2023-REG-13-CAR@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CLE",
+      "awayScore": 19,
+      "home": "LAR",
+      "homeScore": 36,
+      "id": "2023-REG-13-CLE@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "SF",
+      "awayScore": 42,
+      "home": "PHI",
+      "homeScore": 19,
+      "id": "2023-REG-13-SF@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "KC",
+      "awayScore": 19,
+      "home": "GB",
+      "homeScore": 27,
+      "id": "2023-REG-13-KC@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CIN",
+      "awayScore": 34,
+      "home": "JAX",
+      "homeScore": 31,
+      "id": "2023-REG-13-CIN@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NE",
+      "awayScore": 21,
+      "home": "PIT",
+      "homeScore": 18,
+      "id": "2023-REG-14-NE@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "TB",
+      "awayScore": 29,
+      "home": "ATL",
+      "homeScore": 25,
+      "id": "2023-REG-14-TB@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LAR",
+      "awayScore": 31,
+      "home": "BAL",
+      "homeScore": 37,
+      "id": "2023-REG-14-LAR@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DET",
+      "awayScore": 13,
+      "home": "CHI",
+      "homeScore": 28,
+      "id": "2023-REG-14-DET@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "IND",
+      "awayScore": 14,
+      "home": "CIN",
+      "homeScore": 34,
+      "id": "2023-REG-14-IND@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "JAX",
+      "awayScore": 27,
+      "home": "CLE",
+      "homeScore": 31,
+      "id": "2023-REG-14-JAX@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "CAR",
+      "awayScore": 6,
+      "home": "NO",
+      "homeScore": 28,
+      "id": "2023-REG-14-CAR@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "HOU",
+      "awayScore": 6,
+      "home": "NYJ",
+      "homeScore": 30,
+      "id": "2023-REG-14-HOU@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "MIN",
+      "awayScore": 3,
+      "home": "LV",
+      "homeScore": 0,
+      "id": "2023-REG-14-MIN@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "SEA",
+      "awayScore": 16,
+      "home": "SF",
+      "homeScore": 28,
+      "id": "2023-REG-14-SEA@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "BUF",
+      "awayScore": 20,
+      "home": "KC",
+      "homeScore": 17,
+      "id": "2023-REG-14-BUF@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DEN",
+      "awayScore": 24,
+      "home": "LAC",
+      "homeScore": 7,
+      "id": "2023-REG-14-DEN@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "PHI",
+      "awayScore": 13,
+      "home": "DAL",
+      "homeScore": 33,
+      "id": "2023-REG-14-PHI@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "TEN",
+      "awayScore": 28,
+      "home": "MIA",
+      "homeScore": 27,
+      "id": "2023-REG-14-TEN@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "GB",
+      "awayScore": 22,
+      "home": "NYG",
+      "homeScore": 24,
+      "id": "2023-REG-14-GB@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LAC",
+      "awayScore": 21,
+      "home": "LV",
+      "homeScore": 63,
+      "id": "2023-REG-15-LAC@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "MIN",
+      "awayScore": 24,
+      "home": "CIN",
+      "homeScore": 27,
+      "id": "2023-REG-15-MIN@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "PIT",
+      "awayScore": 13,
+      "home": "IND",
+      "homeScore": 30,
+      "id": "2023-REG-15-PIT@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "DEN",
+      "awayScore": 17,
+      "home": "DET",
+      "homeScore": 42,
+      "id": "2023-REG-15-DEN@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "ATL",
+      "awayScore": 7,
+      "home": "CAR",
+      "homeScore": 9,
+      "id": "2023-REG-15-ATL@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CHI",
+      "awayScore": 17,
+      "home": "CLE",
+      "homeScore": 20,
+      "id": "2023-REG-15-CHI@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "TB",
+      "awayScore": 34,
+      "home": "GB",
+      "homeScore": 20,
+      "id": "2023-REG-15-TB@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 0,
+      "home": "MIA",
+      "homeScore": 30,
+      "id": "2023-REG-15-NYJ@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "KC",
+      "awayScore": 27,
+      "home": "NE",
+      "homeScore": 17,
+      "id": "2023-REG-15-KC@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NYG",
+      "awayScore": 6,
+      "home": "NO",
+      "homeScore": 24,
+      "id": "2023-REG-15-NYG@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "HOU",
+      "awayScore": 19,
+      "home": "TEN",
+      "homeScore": 16,
+      "id": "2023-REG-15-HOU@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "SF",
+      "awayScore": 45,
+      "home": "ARI",
+      "homeScore": 29,
+      "id": "2023-REG-15-SF@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "WAS",
+      "awayScore": 20,
+      "home": "LAR",
+      "homeScore": 28,
+      "id": "2023-REG-15-WAS@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "DAL",
+      "awayScore": 10,
+      "home": "BUF",
+      "homeScore": 31,
+      "id": "2023-REG-15-DAL@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "BAL",
+      "awayScore": 23,
+      "home": "JAX",
+      "homeScore": 7,
+      "id": "2023-REG-15-BAL@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "PHI",
+      "awayScore": 17,
+      "home": "SEA",
+      "homeScore": 20,
+      "id": "2023-REG-15-PHI@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NO",
+      "awayScore": 22,
+      "home": "LAR",
+      "homeScore": 30,
+      "id": "2023-REG-16-NO@LAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CIN",
+      "awayScore": 11,
+      "home": "PIT",
+      "homeScore": 34,
+      "id": "2023-REG-16-CIN@PIT",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "BUF",
+      "awayScore": 24,
+      "home": "LAC",
+      "homeScore": 22,
+      "id": "2023-REG-16-BUF@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "IND",
+      "awayScore": 10,
+      "home": "ATL",
+      "homeScore": 29,
+      "id": "2023-REG-16-IND@ATL",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "GB",
+      "awayScore": 33,
+      "home": "CAR",
+      "homeScore": 30,
+      "id": "2023-REG-16-GB@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CLE",
+      "awayScore": 36,
+      "home": "HOU",
+      "homeScore": 22,
+      "id": "2023-REG-16-CLE@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DET",
+      "awayScore": 30,
+      "home": "MIN",
+      "homeScore": 24,
+      "id": "2023-REG-16-DET@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "WAS",
+      "awayScore": 28,
+      "home": "NYJ",
+      "homeScore": 30,
+      "id": "2023-REG-16-WAS@NYJ",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "SEA",
+      "awayScore": 20,
+      "home": "TEN",
+      "homeScore": 17,
+      "id": "2023-REG-16-SEA@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "JAX",
+      "awayScore": 12,
+      "home": "TB",
+      "homeScore": 30,
+      "id": "2023-REG-16-JAX@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "ARI",
+      "awayScore": 16,
+      "home": "CHI",
+      "homeScore": 27,
+      "id": "2023-REG-16-ARI@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DAL",
+      "awayScore": 20,
+      "home": "MIA",
+      "homeScore": 22,
+      "id": "2023-REG-16-DAL@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NE",
+      "awayScore": 26,
+      "home": "DEN",
+      "homeScore": 23,
+      "id": "2023-REG-16-NE@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "LV",
+      "awayScore": 20,
+      "home": "KC",
+      "homeScore": 14,
+      "id": "2023-REG-16-LV@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NYG",
+      "awayScore": 25,
+      "home": "PHI",
+      "homeScore": 33,
+      "id": "2023-REG-16-NYG@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "BAL",
+      "awayScore": 33,
+      "home": "SF",
+      "homeScore": 19,
+      "id": "2023-REG-16-BAL@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 20,
+      "home": "CLE",
+      "homeScore": 37,
+      "id": "2023-REG-17-NYJ@CLE",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "DET",
+      "awayScore": 19,
+      "home": "DAL",
+      "homeScore": 20,
+      "id": "2023-REG-17-DET@DAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "MIA",
+      "awayScore": 19,
+      "home": "BAL",
+      "homeScore": 56,
+      "id": "2023-REG-17-MIA@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "NE",
+      "awayScore": 21,
+      "home": "BUF",
+      "homeScore": 27,
+      "id": "2023-REG-17-NE@BUF",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "ATL",
+      "awayScore": 17,
+      "home": "CHI",
+      "homeScore": 37,
+      "id": "2023-REG-17-ATL@CHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "TEN",
+      "awayScore": 3,
+      "home": "HOU",
+      "homeScore": 26,
+      "id": "2023-REG-17-TEN@HOU",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LV",
+      "awayScore": 20,
+      "home": "IND",
+      "homeScore": 23,
+      "id": "2023-REG-17-LV@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "CAR",
+      "awayScore": 0,
+      "home": "JAX",
+      "homeScore": 26,
+      "id": "2023-REG-17-CAR@JAX",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LAR",
+      "awayScore": 26,
+      "home": "NYG",
+      "homeScore": 25,
+      "id": "2023-REG-17-LAR@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "ARI",
+      "awayScore": 35,
+      "home": "PHI",
+      "homeScore": 31,
+      "id": "2023-REG-17-ARI@PHI",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "NO",
+      "awayScore": 23,
+      "home": "TB",
+      "homeScore": 13,
+      "id": "2023-REG-17-NO@TB",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "SF",
+      "awayScore": 27,
+      "home": "WAS",
+      "homeScore": 10,
+      "id": "2023-REG-17-SF@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "PIT",
+      "awayScore": 30,
+      "home": "SEA",
+      "homeScore": 23,
+      "id": "2023-REG-17-PIT@SEA",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LAC",
+      "awayScore": 9,
+      "home": "DEN",
+      "homeScore": 16,
+      "id": "2023-REG-17-LAC@DEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "CIN",
+      "awayScore": 17,
+      "home": "KC",
+      "homeScore": 25,
+      "id": "2023-REG-17-CIN@KC",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "GB",
+      "awayScore": 33,
+      "home": "MIN",
+      "homeScore": 10,
+      "id": "2023-REG-17-GB@MIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "PIT",
+      "awayScore": 17,
+      "home": "BAL",
+      "homeScore": 10,
+      "id": "2023-REG-18-PIT@BAL",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "HOU",
+      "awayScore": 23,
+      "home": "IND",
+      "homeScore": 19,
+      "id": "2023-REG-18-HOU@IND",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "TB",
+      "awayScore": 9,
+      "home": "CAR",
+      "homeScore": 0,
+      "id": "2023-REG-18-TB@CAR",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "CLE",
+      "awayScore": 14,
+      "home": "CIN",
+      "homeScore": 31,
+      "id": "2023-REG-18-CLE@CIN",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "DET",
+      "homeScore": 30,
+      "id": "2023-REG-18-MIN@DET",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 17,
+      "home": "NE",
+      "homeScore": 3,
+      "id": "2023-REG-18-NYJ@NE",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "ATL",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 48,
+      "id": "2023-REG-18-ATL@NO",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "JAX",
+      "awayScore": 20,
+      "home": "TEN",
+      "homeScore": 28,
+      "id": "2023-REG-18-JAX@TEN",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "SEA",
+      "awayScore": 21,
+      "home": "ARI",
+      "homeScore": 20,
+      "id": "2023-REG-18-SEA@ARI",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "CHI",
+      "awayScore": 9,
+      "home": "GB",
+      "homeScore": 17,
+      "id": "2023-REG-18-CHI@GB",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "KC",
+      "awayScore": 13,
+      "home": "LAC",
+      "homeScore": 12,
+      "id": "2023-REG-18-KC@LAC",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "DEN",
+      "awayScore": 14,
+      "home": "LV",
+      "homeScore": 27,
+      "id": "2023-REG-18-DEN@LV",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "PHI",
+      "awayScore": 10,
+      "home": "NYG",
+      "homeScore": 27,
+      "id": "2023-REG-18-PHI@NYG",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "LAR",
+      "awayScore": 21,
+      "home": "SF",
+      "homeScore": 20,
+      "id": "2023-REG-18-LAR@SF",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "DAL",
+      "awayScore": 38,
+      "home": "WAS",
+      "homeScore": 10,
+      "id": "2023-REG-18-DAL@WAS",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "BUF",
+      "awayScore": 21,
+      "home": "MIA",
+      "homeScore": 14,
+      "id": "2023-REG-18-BUF@MIA",
+      "season": 2023,
+      "type": "REG",
+      "week": 18
+    },
+    {
+      "away": "CLE",
+      "awayScore": 14,
+      "home": "HOU",
+      "homeScore": 45,
+      "id": "2023-WC-19-CLE@HOU",
+      "season": 2023,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "MIA",
+      "awayScore": 7,
+      "home": "KC",
+      "homeScore": 26,
+      "id": "2023-WC-19-MIA@KC",
+      "season": 2023,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "GB",
+      "awayScore": 48,
+      "home": "DAL",
+      "homeScore": 32,
+      "id": "2023-WC-19-GB@DAL",
+      "season": 2023,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "LAR",
+      "awayScore": 23,
+      "home": "DET",
+      "homeScore": 24,
+      "id": "2023-WC-19-LAR@DET",
+      "season": 2023,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "PIT",
+      "awayScore": 17,
+      "home": "BUF",
+      "homeScore": 31,
+      "id": "2023-WC-19-PIT@BUF",
+      "season": 2023,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "PHI",
+      "awayScore": 9,
+      "home": "TB",
+      "homeScore": 32,
+      "id": "2023-WC-19-PHI@TB",
+      "season": 2023,
+      "type": "WC",
+      "week": 19
+    },
+    {
+      "away": "HOU",
+      "awayScore": 10,
+      "home": "BAL",
+      "homeScore": 34,
+      "id": "2023-DIV-20-HOU@BAL",
+      "season": 2023,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "GB",
+      "awayScore": 21,
+      "home": "SF",
+      "homeScore": 24,
+      "id": "2023-DIV-20-GB@SF",
+      "season": 2023,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "TB",
+      "awayScore": 23,
+      "home": "DET",
+      "homeScore": 31,
+      "id": "2023-DIV-20-TB@DET",
+      "season": 2023,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "KC",
+      "awayScore": 27,
+      "home": "BUF",
+      "homeScore": 24,
+      "id": "2023-DIV-20-KC@BUF",
+      "season": 2023,
+      "type": "DIV",
+      "week": 20
+    },
+    {
+      "away": "KC",
+      "awayScore": 17,
+      "home": "BAL",
+      "homeScore": 10,
+      "id": "2023-CONF-21-KC@BAL",
+      "season": 2023,
+      "type": "CONF",
+      "week": 21
+    },
+    {
+      "away": "DET",
+      "awayScore": 31,
+      "home": "SF",
+      "homeScore": 34,
+      "id": "2023-CONF-21-DET@SF",
+      "season": 2023,
+      "type": "CONF",
+      "week": 21
+    },
+    {
+      "away": "SF",
+      "awayScore": 22,
+      "home": "KC",
+      "homeScore": 25,
+      "id": "2023-SB-22-SF@KC",
+      "season": 2023,
+      "type": "SB",
+      "week": 22
+    }
+  ],
+  "playoffFormat": {
+    "byesPerConf": 1,
+    "regularSeasonGames": 17,
+    "teams": 14
+  },
+  "season": 2023,
+  "weeks": 18
+}

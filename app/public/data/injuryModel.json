@@ -1,0 +1,124 @@
+{
+  "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
+  "duration": [
+    {
+      "p": 0.6276,
+      "weeks": 1
+    },
+    {
+      "p": 0.2262,
+      "weeks": 2
+    },
+    {
+      "p": 0.0909,
+      "weeks": 3
+    },
+    {
+      "p": 0.0326,
+      "weeks": 4
+    },
+    {
+      "p": 0.0138,
+      "weeks": 5
+    },
+    {
+      "p": 0.0047,
+      "weeks": 6
+    },
+    {
+      "p": 0.0018,
+      "weeks": 7
+    },
+    {
+      "p": 0.0025,
+      "weeks": 8
+    }
+  ],
+  "fitSeasons": [
+    2012,
+    2025
+  ],
+  "kinds": [
+    {
+      "kind": "Knee",
+      "p": 0.1765
+    },
+    {
+      "kind": "Ankle",
+      "p": 0.1429
+    },
+    {
+      "kind": "Hamstring",
+      "p": 0.125
+    },
+    {
+      "kind": "Concussion",
+      "p": 0.1221
+    },
+    {
+      "kind": "Shoulder",
+      "p": 0.0525
+    },
+    {
+      "kind": "Foot",
+      "p": 0.045
+    },
+    {
+      "kind": "Groin",
+      "p": 0.0384
+    },
+    {
+      "kind": "Calf",
+      "p": 0.0366
+    },
+    {
+      "kind": "Back",
+      "p": 0.0261
+    },
+    {
+      "kind": "Neck",
+      "p": 0.0229
+    },
+    {
+      "kind": "Hip",
+      "p": 0.0192
+    },
+    {
+      "kind": "Quadricep",
+      "p": 0.0182
+    },
+    {
+      "kind": "Illness",
+      "p": 0.0166
+    },
+    {
+      "kind": "Toe",
+      "p": 0.0137
+    },
+    {
+      "kind": "Hand",
+      "p": 0.0122
+    }
+  ],
+  "permanentLoss": {
+    "lossRange": [
+      5.0,
+      20.0
+    ],
+    "minWeeks": 8,
+    "p": 0.0025
+  },
+  "ratePerPlayerGame": {
+    "CB": 0.0274,
+    "DL": 0.0174,
+    "K": 0.007,
+    "LB": 0.0243,
+    "OL": 0.0215,
+    "P": 0.0029,
+    "QB": 0.0112,
+    "RB": 0.0252,
+    "S": 0.0261,
+    "TE": 0.0272,
+    "WR": 0.0249
+  }
+}

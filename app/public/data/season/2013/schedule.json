@@ -1,0 +1,2682 @@
+{
+  "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
+  "games": [
+    {
+      "away": "BAL",
+      "awayScore": 27,
+      "home": "DEN",
+      "homeScore": 49,
+      "id": "2013-REG-1-BAL@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NE",
+      "awayScore": 23,
+      "home": "BUF",
+      "homeScore": 21,
+      "id": "2013-REG-1-NE@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "SEA",
+      "awayScore": 12,
+      "home": "CAR",
+      "homeScore": 7,
+      "id": "2013-REG-1-SEA@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "CIN",
+      "awayScore": 21,
+      "home": "CHI",
+      "homeScore": 24,
+      "id": "2013-REG-1-CIN@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIA",
+      "awayScore": 23,
+      "home": "CLE",
+      "homeScore": 10,
+      "id": "2013-REG-1-MIA@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "MIN",
+      "awayScore": 24,
+      "home": "DET",
+      "homeScore": 34,
+      "id": "2013-REG-1-MIN@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "LV",
+      "awayScore": 17,
+      "home": "IND",
+      "homeScore": 21,
+      "id": "2013-REG-1-LV@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "KC",
+      "awayScore": 28,
+      "home": "JAX",
+      "homeScore": 2,
+      "id": "2013-REG-1-KC@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "ATL",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 23,
+      "id": "2013-REG-1-ATL@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "TB",
+      "awayScore": 17,
+      "home": "NYJ",
+      "homeScore": 18,
+      "id": "2013-REG-1-TB@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "TEN",
+      "awayScore": 16,
+      "home": "PIT",
+      "homeScore": 9,
+      "id": "2013-REG-1-TEN@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "GB",
+      "awayScore": 28,
+      "home": "SF",
+      "homeScore": 34,
+      "id": "2013-REG-1-GB@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "ARI",
+      "awayScore": 24,
+      "home": "LAR",
+      "homeScore": 27,
+      "id": "2013-REG-1-ARI@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NYG",
+      "awayScore": 31,
+      "home": "DAL",
+      "homeScore": 36,
+      "id": "2013-REG-1-NYG@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "PHI",
+      "awayScore": 33,
+      "home": "WAS",
+      "homeScore": 27,
+      "id": "2013-REG-1-PHI@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "HOU",
+      "awayScore": 31,
+      "home": "LAC",
+      "homeScore": 28,
+      "id": "2013-REG-1-HOU@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 1
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 10,
+      "home": "NE",
+      "homeScore": 13,
+      "id": "2013-REG-2-NYJ@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LAR",
+      "awayScore": 24,
+      "home": "ATL",
+      "homeScore": 31,
+      "id": "2013-REG-2-LAR@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "CLE",
+      "awayScore": 6,
+      "home": "BAL",
+      "homeScore": 14,
+      "id": "2013-REG-2-CLE@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "CAR",
+      "awayScore": 23,
+      "home": "BUF",
+      "homeScore": 24,
+      "id": "2013-REG-2-CAR@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "MIN",
+      "awayScore": 30,
+      "home": "CHI",
+      "homeScore": 31,
+      "id": "2013-REG-2-MIN@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "WAS",
+      "awayScore": 20,
+      "home": "GB",
+      "homeScore": 38,
+      "id": "2013-REG-2-WAS@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "TEN",
+      "awayScore": 24,
+      "home": "HOU",
+      "homeScore": 30,
+      "id": "2013-REG-2-TEN@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "MIA",
+      "awayScore": 24,
+      "home": "IND",
+      "homeScore": 20,
+      "id": "2013-REG-2-MIA@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DAL",
+      "awayScore": 16,
+      "home": "KC",
+      "homeScore": 17,
+      "id": "2013-REG-2-DAL@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "LAC",
+      "awayScore": 33,
+      "home": "PHI",
+      "homeScore": 30,
+      "id": "2013-REG-2-LAC@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DET",
+      "awayScore": 21,
+      "home": "ARI",
+      "homeScore": 25,
+      "id": "2013-REG-2-DET@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "NO",
+      "awayScore": 16,
+      "home": "TB",
+      "homeScore": 14,
+      "id": "2013-REG-2-NO@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "DEN",
+      "awayScore": 41,
+      "home": "NYG",
+      "homeScore": 23,
+      "id": "2013-REG-2-DEN@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "JAX",
+      "awayScore": 9,
+      "home": "LV",
+      "homeScore": 19,
+      "id": "2013-REG-2-JAX@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "SF",
+      "awayScore": 3,
+      "home": "SEA",
+      "homeScore": 29,
+      "id": "2013-REG-2-SF@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "PIT",
+      "awayScore": 10,
+      "home": "CIN",
+      "homeScore": 20,
+      "id": "2013-REG-2-PIT@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 2
+    },
+    {
+      "away": "KC",
+      "awayScore": 26,
+      "home": "PHI",
+      "homeScore": 16,
+      "id": "2013-REG-3-KC@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "HOU",
+      "awayScore": 9,
+      "home": "BAL",
+      "homeScore": 30,
+      "id": "2013-REG-3-HOU@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "NYG",
+      "awayScore": 0,
+      "home": "CAR",
+      "homeScore": 38,
+      "id": "2013-REG-3-NYG@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "GB",
+      "awayScore": 30,
+      "home": "CIN",
+      "homeScore": 34,
+      "id": "2013-REG-3-GB@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LAR",
+      "awayScore": 7,
+      "home": "DAL",
+      "homeScore": 31,
+      "id": "2013-REG-3-LAR@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CLE",
+      "awayScore": 31,
+      "home": "MIN",
+      "homeScore": 27,
+      "id": "2013-REG-3-CLE@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "TB",
+      "awayScore": 3,
+      "home": "NE",
+      "homeScore": 23,
+      "id": "2013-REG-3-TB@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "ARI",
+      "awayScore": 7,
+      "home": "NO",
+      "homeScore": 31,
+      "id": "2013-REG-3-ARI@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LAC",
+      "awayScore": 17,
+      "home": "TEN",
+      "homeScore": 20,
+      "id": "2013-REG-3-LAC@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "DET",
+      "awayScore": 27,
+      "home": "WAS",
+      "homeScore": 20,
+      "id": "2013-REG-3-DET@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "ATL",
+      "awayScore": 23,
+      "home": "MIA",
+      "homeScore": 27,
+      "id": "2013-REG-3-ATL@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "BUF",
+      "awayScore": 20,
+      "home": "NYJ",
+      "homeScore": 27,
+      "id": "2013-REG-3-BUF@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "JAX",
+      "awayScore": 17,
+      "home": "SEA",
+      "homeScore": 45,
+      "id": "2013-REG-3-JAX@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "IND",
+      "awayScore": 27,
+      "home": "SF",
+      "homeScore": 7,
+      "id": "2013-REG-3-IND@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "CHI",
+      "awayScore": 40,
+      "home": "PIT",
+      "homeScore": 23,
+      "id": "2013-REG-3-CHI@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "LV",
+      "awayScore": 21,
+      "home": "DEN",
+      "homeScore": 37,
+      "id": "2013-REG-3-LV@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 3
+    },
+    {
+      "away": "SF",
+      "awayScore": 35,
+      "home": "LAR",
+      "homeScore": 11,
+      "id": "2013-REG-4-SF@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "BAL",
+      "awayScore": 20,
+      "home": "BUF",
+      "homeScore": 23,
+      "id": "2013-REG-4-BAL@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CIN",
+      "awayScore": 6,
+      "home": "CLE",
+      "homeScore": 17,
+      "id": "2013-REG-4-CIN@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "CHI",
+      "awayScore": 32,
+      "home": "DET",
+      "homeScore": 40,
+      "id": "2013-REG-4-CHI@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "SEA",
+      "awayScore": 23,
+      "home": "HOU",
+      "homeScore": 20,
+      "id": "2013-REG-4-SEA@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "IND",
+      "awayScore": 37,
+      "home": "JAX",
+      "homeScore": 3,
+      "id": "2013-REG-4-IND@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NYG",
+      "awayScore": 7,
+      "home": "KC",
+      "homeScore": 31,
+      "id": "2013-REG-4-NYG@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "PIT",
+      "awayScore": 27,
+      "home": "MIN",
+      "homeScore": 34,
+      "id": "2013-REG-4-PIT@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "ARI",
+      "awayScore": 13,
+      "home": "TB",
+      "homeScore": 10,
+      "id": "2013-REG-4-ARI@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 13,
+      "home": "TEN",
+      "homeScore": 38,
+      "id": "2013-REG-4-NYJ@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "PHI",
+      "awayScore": 20,
+      "home": "DEN",
+      "homeScore": 52,
+      "id": "2013-REG-4-PHI@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "WAS",
+      "awayScore": 24,
+      "home": "LV",
+      "homeScore": 14,
+      "id": "2013-REG-4-WAS@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "DAL",
+      "awayScore": 21,
+      "home": "LAC",
+      "homeScore": 30,
+      "id": "2013-REG-4-DAL@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "NE",
+      "awayScore": 30,
+      "home": "ATL",
+      "homeScore": 23,
+      "id": "2013-REG-4-NE@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 38,
+      "id": "2013-REG-4-MIA@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 4
+    },
+    {
+      "away": "BUF",
+      "awayScore": 24,
+      "home": "CLE",
+      "homeScore": 37,
+      "id": "2013-REG-5-BUF@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NO",
+      "awayScore": 26,
+      "home": "CHI",
+      "homeScore": 18,
+      "id": "2013-REG-5-NO@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NE",
+      "awayScore": 6,
+      "home": "CIN",
+      "homeScore": 13,
+      "id": "2013-REG-5-NE@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DET",
+      "awayScore": 9,
+      "home": "GB",
+      "homeScore": 22,
+      "id": "2013-REG-5-DET@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "SEA",
+      "awayScore": 28,
+      "home": "IND",
+      "homeScore": 34,
+      "id": "2013-REG-5-SEA@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "BAL",
+      "awayScore": 26,
+      "home": "MIA",
+      "homeScore": 23,
+      "id": "2013-REG-5-BAL@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "PHI",
+      "awayScore": 36,
+      "home": "NYG",
+      "homeScore": 21,
+      "id": "2013-REG-5-PHI@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "JAX",
+      "awayScore": 20,
+      "home": "LAR",
+      "homeScore": 34,
+      "id": "2013-REG-5-JAX@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "KC",
+      "awayScore": 26,
+      "home": "TEN",
+      "homeScore": 17,
+      "id": "2013-REG-5-KC@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "CAR",
+      "awayScore": 6,
+      "home": "ARI",
+      "homeScore": 22,
+      "id": "2013-REG-5-CAR@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "DEN",
+      "awayScore": 51,
+      "home": "DAL",
+      "homeScore": 48,
+      "id": "2013-REG-5-DEN@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "HOU",
+      "awayScore": 3,
+      "home": "SF",
+      "homeScore": 34,
+      "id": "2013-REG-5-HOU@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "LAC",
+      "awayScore": 17,
+      "home": "LV",
+      "homeScore": 27,
+      "id": "2013-REG-5-LAC@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 30,
+      "home": "ATL",
+      "homeScore": 28,
+      "id": "2013-REG-5-NYJ@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 5
+    },
+    {
+      "away": "NYG",
+      "awayScore": 21,
+      "home": "CHI",
+      "homeScore": 27,
+      "id": "2013-REG-6-NYG@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "GB",
+      "awayScore": 19,
+      "home": "BAL",
+      "homeScore": 17,
+      "id": "2013-REG-6-GB@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CIN",
+      "awayScore": 27,
+      "home": "BUF",
+      "homeScore": 24,
+      "id": "2013-REG-6-CIN@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "DET",
+      "awayScore": 31,
+      "home": "CLE",
+      "homeScore": 17,
+      "id": "2013-REG-6-DET@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "LAR",
+      "awayScore": 38,
+      "home": "HOU",
+      "homeScore": 13,
+      "id": "2013-REG-6-LAR@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "LV",
+      "awayScore": 7,
+      "home": "KC",
+      "homeScore": 24,
+      "id": "2013-REG-6-LV@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "CAR",
+      "awayScore": 35,
+      "home": "MIN",
+      "homeScore": 10,
+      "id": "2013-REG-6-CAR@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "PIT",
+      "awayScore": 19,
+      "home": "NYJ",
+      "homeScore": 6,
+      "id": "2013-REG-6-PIT@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "PHI",
+      "awayScore": 31,
+      "home": "TB",
+      "homeScore": 20,
+      "id": "2013-REG-6-PHI@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "JAX",
+      "awayScore": 19,
+      "home": "DEN",
+      "homeScore": 35,
+      "id": "2013-REG-6-JAX@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "TEN",
+      "awayScore": 13,
+      "home": "SEA",
+      "homeScore": 20,
+      "id": "2013-REG-6-TEN@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "NO",
+      "awayScore": 27,
+      "home": "NE",
+      "homeScore": 30,
+      "id": "2013-REG-6-NO@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "ARI",
+      "awayScore": 20,
+      "home": "SF",
+      "homeScore": 32,
+      "id": "2013-REG-6-ARI@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "WAS",
+      "awayScore": 16,
+      "home": "DAL",
+      "homeScore": 31,
+      "id": "2013-REG-6-WAS@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "IND",
+      "awayScore": 9,
+      "home": "LAC",
+      "homeScore": 19,
+      "id": "2013-REG-6-IND@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 6
+    },
+    {
+      "away": "SEA",
+      "awayScore": 34,
+      "home": "ARI",
+      "homeScore": 22,
+      "id": "2013-REG-7-SEA@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "TB",
+      "awayScore": 23,
+      "home": "ATL",
+      "homeScore": 31,
+      "id": "2013-REG-7-TB@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "LAR",
+      "awayScore": 15,
+      "home": "CAR",
+      "homeScore": 30,
+      "id": "2013-REG-7-LAR@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CIN",
+      "awayScore": 27,
+      "home": "DET",
+      "homeScore": 24,
+      "id": "2013-REG-7-CIN@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "LAC",
+      "awayScore": 24,
+      "home": "JAX",
+      "homeScore": 6,
+      "id": "2013-REG-7-LAC@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "BUF",
+      "awayScore": 23,
+      "home": "MIA",
+      "homeScore": 21,
+      "id": "2013-REG-7-BUF@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "NE",
+      "awayScore": 27,
+      "home": "NYJ",
+      "homeScore": 30,
+      "id": "2013-REG-7-NE@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "DAL",
+      "awayScore": 17,
+      "home": "PHI",
+      "homeScore": 3,
+      "id": "2013-REG-7-DAL@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CHI",
+      "awayScore": 41,
+      "home": "WAS",
+      "homeScore": 45,
+      "id": "2013-REG-7-CHI@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "SF",
+      "awayScore": 31,
+      "home": "TEN",
+      "homeScore": 17,
+      "id": "2013-REG-7-SF@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CLE",
+      "awayScore": 13,
+      "home": "GB",
+      "homeScore": 31,
+      "id": "2013-REG-7-CLE@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "HOU",
+      "awayScore": 16,
+      "home": "KC",
+      "homeScore": 17,
+      "id": "2013-REG-7-HOU@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "BAL",
+      "awayScore": 16,
+      "home": "PIT",
+      "homeScore": 19,
+      "id": "2013-REG-7-BAL@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "DEN",
+      "awayScore": 33,
+      "home": "IND",
+      "homeScore": 39,
+      "id": "2013-REG-7-DEN@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "MIN",
+      "awayScore": 7,
+      "home": "NYG",
+      "homeScore": 23,
+      "id": "2013-REG-7-MIN@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 7
+    },
+    {
+      "away": "CAR",
+      "awayScore": 31,
+      "home": "TB",
+      "homeScore": 13,
+      "id": "2013-REG-8-CAR@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "DAL",
+      "awayScore": 30,
+      "home": "DET",
+      "homeScore": 31,
+      "id": "2013-REG-8-DAL@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "SF",
+      "awayScore": 42,
+      "home": "JAX",
+      "homeScore": 10,
+      "id": "2013-REG-8-SF@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CLE",
+      "awayScore": 17,
+      "home": "KC",
+      "homeScore": 23,
+      "id": "2013-REG-8-CLE@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "MIA",
+      "awayScore": 17,
+      "home": "NE",
+      "homeScore": 27,
+      "id": "2013-REG-8-MIA@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "BUF",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 35,
+      "id": "2013-REG-8-BUF@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYG",
+      "awayScore": 15,
+      "home": "PHI",
+      "homeScore": 7,
+      "id": "2013-REG-8-NYG@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 9,
+      "home": "CIN",
+      "homeScore": 49,
+      "id": "2013-REG-8-NYJ@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "PIT",
+      "awayScore": 18,
+      "home": "LV",
+      "homeScore": 21,
+      "id": "2013-REG-8-PIT@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "ATL",
+      "awayScore": 13,
+      "home": "ARI",
+      "homeScore": 27,
+      "id": "2013-REG-8-ATL@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "WAS",
+      "awayScore": 21,
+      "home": "DEN",
+      "homeScore": 45,
+      "id": "2013-REG-8-WAS@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "GB",
+      "awayScore": 44,
+      "home": "MIN",
+      "homeScore": 31,
+      "id": "2013-REG-8-GB@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "SEA",
+      "awayScore": 14,
+      "home": "LAR",
+      "homeScore": 9,
+      "id": "2013-REG-8-SEA@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 8
+    },
+    {
+      "away": "CIN",
+      "awayScore": 20,
+      "home": "MIA",
+      "homeScore": 22,
+      "id": "2013-REG-9-CIN@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "KC",
+      "awayScore": 23,
+      "home": "BUF",
+      "homeScore": 13,
+      "id": "2013-REG-9-KC@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "ATL",
+      "awayScore": 10,
+      "home": "CAR",
+      "homeScore": 34,
+      "id": "2013-REG-9-ATL@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "MIN",
+      "awayScore": 23,
+      "home": "DAL",
+      "homeScore": 27,
+      "id": "2013-REG-9-MIN@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "NO",
+      "awayScore": 20,
+      "home": "NYJ",
+      "homeScore": 26,
+      "id": "2013-REG-9-NO@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "TEN",
+      "awayScore": 28,
+      "home": "LAR",
+      "homeScore": 21,
+      "id": "2013-REG-9-TEN@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "LAC",
+      "awayScore": 24,
+      "home": "WAS",
+      "homeScore": 30,
+      "id": "2013-REG-9-LAC@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "PHI",
+      "awayScore": 49,
+      "home": "LV",
+      "homeScore": 20,
+      "id": "2013-REG-9-PHI@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "TB",
+      "awayScore": 24,
+      "home": "SEA",
+      "homeScore": 27,
+      "id": "2013-REG-9-TB@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "BAL",
+      "awayScore": 18,
+      "home": "CLE",
+      "homeScore": 24,
+      "id": "2013-REG-9-BAL@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "PIT",
+      "awayScore": 31,
+      "home": "NE",
+      "homeScore": 55,
+      "id": "2013-REG-9-PIT@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "IND",
+      "awayScore": 27,
+      "home": "HOU",
+      "homeScore": 24,
+      "id": "2013-REG-9-IND@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "CHI",
+      "awayScore": 27,
+      "home": "GB",
+      "homeScore": 20,
+      "id": "2013-REG-9-CHI@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 9
+    },
+    {
+      "away": "WAS",
+      "awayScore": 27,
+      "home": "MIN",
+      "homeScore": 34,
+      "id": "2013-REG-10-WAS@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "SEA",
+      "awayScore": 33,
+      "home": "ATL",
+      "homeScore": 10,
+      "id": "2013-REG-10-SEA@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CIN",
+      "awayScore": 17,
+      "home": "BAL",
+      "homeScore": 20,
+      "id": "2013-REG-10-CIN@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DET",
+      "awayScore": 21,
+      "home": "CHI",
+      "homeScore": 19,
+      "id": "2013-REG-10-DET@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "PHI",
+      "awayScore": 27,
+      "home": "GB",
+      "homeScore": 13,
+      "id": "2013-REG-10-PHI@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "LAR",
+      "awayScore": 38,
+      "home": "IND",
+      "homeScore": 8,
+      "id": "2013-REG-10-LAR@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "LV",
+      "awayScore": 20,
+      "home": "NYG",
+      "homeScore": 24,
+      "id": "2013-REG-10-LV@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "BUF",
+      "awayScore": 10,
+      "home": "PIT",
+      "homeScore": 23,
+      "id": "2013-REG-10-BUF@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "JAX",
+      "awayScore": 29,
+      "home": "TEN",
+      "homeScore": 27,
+      "id": "2013-REG-10-JAX@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "CAR",
+      "awayScore": 10,
+      "home": "SF",
+      "homeScore": 9,
+      "id": "2013-REG-10-CAR@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "HOU",
+      "awayScore": 24,
+      "home": "ARI",
+      "homeScore": 27,
+      "id": "2013-REG-10-HOU@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DEN",
+      "awayScore": 28,
+      "home": "LAC",
+      "homeScore": 20,
+      "id": "2013-REG-10-DEN@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "DAL",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 49,
+      "id": "2013-REG-10-DAL@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "MIA",
+      "awayScore": 19,
+      "home": "TB",
+      "homeScore": 22,
+      "id": "2013-REG-10-MIA@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 10
+    },
+    {
+      "away": "IND",
+      "awayScore": 30,
+      "home": "TEN",
+      "homeScore": 27,
+      "id": "2013-REG-11-IND@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 14,
+      "home": "BUF",
+      "homeScore": 37,
+      "id": "2013-REG-11-NYJ@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "BAL",
+      "awayScore": 20,
+      "home": "CHI",
+      "homeScore": 23,
+      "id": "2013-REG-11-BAL@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "CLE",
+      "awayScore": 20,
+      "home": "CIN",
+      "homeScore": 41,
+      "id": "2013-REG-11-CLE@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "LV",
+      "awayScore": 28,
+      "home": "HOU",
+      "homeScore": 23,
+      "id": "2013-REG-11-LV@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "ARI",
+      "awayScore": 27,
+      "home": "JAX",
+      "homeScore": 14,
+      "id": "2013-REG-11-ARI@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "WAS",
+      "awayScore": 16,
+      "home": "PHI",
+      "homeScore": 24,
+      "id": "2013-REG-11-WAS@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "DET",
+      "awayScore": 27,
+      "home": "PIT",
+      "homeScore": 37,
+      "id": "2013-REG-11-DET@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "ATL",
+      "awayScore": 28,
+      "home": "TB",
+      "homeScore": 41,
+      "id": "2013-REG-11-ATL@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "LAC",
+      "awayScore": 16,
+      "home": "MIA",
+      "homeScore": 20,
+      "id": "2013-REG-11-LAC@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "SF",
+      "awayScore": 20,
+      "home": "NO",
+      "homeScore": 23,
+      "id": "2013-REG-11-SF@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "GB",
+      "awayScore": 13,
+      "home": "NYG",
+      "homeScore": 27,
+      "id": "2013-REG-11-GB@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "MIN",
+      "awayScore": 20,
+      "home": "SEA",
+      "homeScore": 41,
+      "id": "2013-REG-11-MIN@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "KC",
+      "awayScore": 17,
+      "home": "DEN",
+      "homeScore": 27,
+      "id": "2013-REG-11-KC@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NE",
+      "awayScore": 20,
+      "home": "CAR",
+      "homeScore": 24,
+      "id": "2013-REG-11-NE@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 11
+    },
+    {
+      "away": "NO",
+      "awayScore": 17,
+      "home": "ATL",
+      "homeScore": 13,
+      "id": "2013-REG-12-NO@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 3,
+      "home": "BAL",
+      "homeScore": 19,
+      "id": "2013-REG-12-NYJ@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "PIT",
+      "awayScore": 27,
+      "home": "CLE",
+      "homeScore": 11,
+      "id": "2013-REG-12-PIT@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "TB",
+      "awayScore": 24,
+      "home": "DET",
+      "homeScore": 21,
+      "id": "2013-REG-12-TB@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "MIN",
+      "awayScore": 26,
+      "home": "GB",
+      "homeScore": 26,
+      "id": "2013-REG-12-MIN@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "JAX",
+      "awayScore": 13,
+      "home": "HOU",
+      "homeScore": 6,
+      "id": "2013-REG-12-JAX@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "LAC",
+      "awayScore": 41,
+      "home": "KC",
+      "homeScore": 38,
+      "id": "2013-REG-12-LAC@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CAR",
+      "awayScore": 20,
+      "home": "MIA",
+      "homeScore": 16,
+      "id": "2013-REG-12-CAR@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "CHI",
+      "awayScore": 21,
+      "home": "LAR",
+      "homeScore": 42,
+      "id": "2013-REG-12-CHI@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "IND",
+      "awayScore": 11,
+      "home": "ARI",
+      "homeScore": 40,
+      "id": "2013-REG-12-IND@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "TEN",
+      "awayScore": 23,
+      "home": "LV",
+      "homeScore": 19,
+      "id": "2013-REG-12-TEN@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "DAL",
+      "awayScore": 24,
+      "home": "NYG",
+      "homeScore": 21,
+      "id": "2013-REG-12-DAL@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "DEN",
+      "awayScore": 31,
+      "home": "NE",
+      "homeScore": 34,
+      "id": "2013-REG-12-DEN@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "SF",
+      "awayScore": 27,
+      "home": "WAS",
+      "homeScore": 6,
+      "id": "2013-REG-12-SF@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 12
+    },
+    {
+      "away": "GB",
+      "awayScore": 10,
+      "home": "DET",
+      "homeScore": 40,
+      "id": "2013-REG-13-GB@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "LV",
+      "awayScore": 24,
+      "home": "DAL",
+      "homeScore": 31,
+      "id": "2013-REG-13-LV@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "PIT",
+      "awayScore": 20,
+      "home": "BAL",
+      "homeScore": 22,
+      "id": "2013-REG-13-PIT@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "TB",
+      "awayScore": 6,
+      "home": "CAR",
+      "homeScore": 27,
+      "id": "2013-REG-13-TB@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "JAX",
+      "awayScore": 32,
+      "home": "CLE",
+      "homeScore": 28,
+      "id": "2013-REG-13-JAX@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NE",
+      "awayScore": 34,
+      "home": "HOU",
+      "homeScore": 31,
+      "id": "2013-REG-13-NE@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "TEN",
+      "awayScore": 14,
+      "home": "IND",
+      "homeScore": 22,
+      "id": "2013-REG-13-TEN@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CHI",
+      "awayScore": 20,
+      "home": "MIN",
+      "homeScore": 23,
+      "id": "2013-REG-13-CHI@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "MIA",
+      "awayScore": 23,
+      "home": "NYJ",
+      "homeScore": 3,
+      "id": "2013-REG-13-MIA@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ARI",
+      "awayScore": 21,
+      "home": "PHI",
+      "homeScore": 24,
+      "id": "2013-REG-13-ARI@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "ATL",
+      "awayScore": 34,
+      "home": "BUF",
+      "homeScore": 31,
+      "id": "2013-REG-13-ATL@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "LAR",
+      "awayScore": 13,
+      "home": "SF",
+      "homeScore": 23,
+      "id": "2013-REG-13-LAR@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "DEN",
+      "awayScore": 35,
+      "home": "KC",
+      "homeScore": 28,
+      "id": "2013-REG-13-DEN@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "CIN",
+      "awayScore": 17,
+      "home": "LAC",
+      "homeScore": 10,
+      "id": "2013-REG-13-CIN@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NYG",
+      "awayScore": 24,
+      "home": "WAS",
+      "homeScore": 17,
+      "id": "2013-REG-13-NYG@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "NO",
+      "awayScore": 7,
+      "home": "SEA",
+      "homeScore": 34,
+      "id": "2013-REG-13-NO@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 13
+    },
+    {
+      "away": "HOU",
+      "awayScore": 20,
+      "home": "JAX",
+      "homeScore": 27,
+      "id": "2013-REG-14-HOU@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "MIN",
+      "awayScore": 26,
+      "home": "BAL",
+      "homeScore": 29,
+      "id": "2013-REG-14-MIN@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "IND",
+      "awayScore": 28,
+      "home": "CIN",
+      "homeScore": 42,
+      "id": "2013-REG-14-IND@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "ATL",
+      "awayScore": 21,
+      "home": "GB",
+      "homeScore": 22,
+      "id": "2013-REG-14-ATL@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "CLE",
+      "awayScore": 26,
+      "home": "NE",
+      "homeScore": 27,
+      "id": "2013-REG-14-CLE@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LV",
+      "awayScore": 27,
+      "home": "NYJ",
+      "homeScore": 37,
+      "id": "2013-REG-14-LV@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DET",
+      "awayScore": 20,
+      "home": "PHI",
+      "homeScore": 34,
+      "id": "2013-REG-14-DET@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "MIA",
+      "awayScore": 34,
+      "home": "PIT",
+      "homeScore": 28,
+      "id": "2013-REG-14-MIA@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "BUF",
+      "awayScore": 6,
+      "home": "TB",
+      "homeScore": 27,
+      "id": "2013-REG-14-BUF@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "KC",
+      "awayScore": 45,
+      "home": "WAS",
+      "homeScore": 10,
+      "id": "2013-REG-14-KC@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "TEN",
+      "awayScore": 28,
+      "home": "DEN",
+      "homeScore": 51,
+      "id": "2013-REG-14-TEN@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LAR",
+      "awayScore": 10,
+      "home": "ARI",
+      "homeScore": 30,
+      "id": "2013-REG-14-LAR@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "NYG",
+      "awayScore": 14,
+      "home": "LAC",
+      "homeScore": 37,
+      "id": "2013-REG-14-NYG@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "SEA",
+      "awayScore": 17,
+      "home": "SF",
+      "homeScore": 19,
+      "id": "2013-REG-14-SEA@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "CAR",
+      "awayScore": 13,
+      "home": "NO",
+      "homeScore": 31,
+      "id": "2013-REG-14-CAR@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "DAL",
+      "awayScore": 28,
+      "home": "CHI",
+      "homeScore": 45,
+      "id": "2013-REG-14-DAL@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 14
+    },
+    {
+      "away": "LAC",
+      "awayScore": 27,
+      "home": "DEN",
+      "homeScore": 20,
+      "id": "2013-REG-15-LAC@DEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "WAS",
+      "awayScore": 26,
+      "home": "ATL",
+      "homeScore": 27,
+      "id": "2013-REG-15-WAS@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CHI",
+      "awayScore": 38,
+      "home": "CLE",
+      "homeScore": 31,
+      "id": "2013-REG-15-CHI@CLE",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "HOU",
+      "awayScore": 3,
+      "home": "IND",
+      "homeScore": 25,
+      "id": "2013-REG-15-HOU@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "BUF",
+      "awayScore": 27,
+      "home": "JAX",
+      "homeScore": 20,
+      "id": "2013-REG-15-BUF@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NE",
+      "awayScore": 20,
+      "home": "MIA",
+      "homeScore": 24,
+      "id": "2013-REG-15-NE@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "PHI",
+      "awayScore": 30,
+      "home": "MIN",
+      "homeScore": 48,
+      "id": "2013-REG-15-PHI@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "SEA",
+      "awayScore": 23,
+      "home": "NYG",
+      "homeScore": 0,
+      "id": "2013-REG-15-SEA@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "SF",
+      "awayScore": 33,
+      "home": "TB",
+      "homeScore": 14,
+      "id": "2013-REG-15-SF@TB",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 20,
+      "home": "CAR",
+      "homeScore": 30,
+      "id": "2013-REG-15-NYJ@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "KC",
+      "awayScore": 56,
+      "home": "LV",
+      "homeScore": 31,
+      "id": "2013-REG-15-KC@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "GB",
+      "awayScore": 37,
+      "home": "DAL",
+      "homeScore": 36,
+      "id": "2013-REG-15-GB@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "NO",
+      "awayScore": 16,
+      "home": "LAR",
+      "homeScore": 27,
+      "id": "2013-REG-15-NO@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "ARI",
+      "awayScore": 37,
+      "home": "TEN",
+      "homeScore": 34,
+      "id": "2013-REG-15-ARI@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "CIN",
+      "awayScore": 20,
+      "home": "PIT",
+      "homeScore": 30,
+      "id": "2013-REG-15-CIN@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "BAL",
+      "awayScore": 18,
+      "home": "DET",
+      "homeScore": 16,
+      "id": "2013-REG-15-BAL@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 15
+    },
+    {
+      "away": "MIA",
+      "awayScore": 0,
+      "home": "BUF",
+      "homeScore": 19,
+      "id": "2013-REG-16-MIA@BUF",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NO",
+      "awayScore": 13,
+      "home": "CAR",
+      "homeScore": 17,
+      "id": "2013-REG-16-NO@CAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "MIN",
+      "awayScore": 14,
+      "home": "CIN",
+      "homeScore": 42,
+      "id": "2013-REG-16-MIN@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DEN",
+      "awayScore": 37,
+      "home": "HOU",
+      "homeScore": 13,
+      "id": "2013-REG-16-DEN@HOU",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "TEN",
+      "awayScore": 20,
+      "home": "JAX",
+      "homeScore": 16,
+      "id": "2013-REG-16-TEN@JAX",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "IND",
+      "awayScore": 23,
+      "home": "KC",
+      "homeScore": 7,
+      "id": "2013-REG-16-IND@KC",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CLE",
+      "awayScore": 13,
+      "home": "NYJ",
+      "homeScore": 24,
+      "id": "2013-REG-16-CLE@NYJ",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "TB",
+      "awayScore": 13,
+      "home": "LAR",
+      "homeScore": 23,
+      "id": "2013-REG-16-TB@LAR",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "DAL",
+      "awayScore": 24,
+      "home": "WAS",
+      "homeScore": 23,
+      "id": "2013-REG-16-DAL@WAS",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NYG",
+      "awayScore": 23,
+      "home": "DET",
+      "homeScore": 20,
+      "id": "2013-REG-16-NYG@DET",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "ARI",
+      "awayScore": 17,
+      "home": "SEA",
+      "homeScore": 10,
+      "id": "2013-REG-16-ARI@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "NE",
+      "awayScore": 41,
+      "home": "BAL",
+      "homeScore": 7,
+      "id": "2013-REG-16-NE@BAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "PIT",
+      "awayScore": 38,
+      "home": "GB",
+      "homeScore": 31,
+      "id": "2013-REG-16-PIT@GB",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "LV",
+      "awayScore": 13,
+      "home": "LAC",
+      "homeScore": 26,
+      "id": "2013-REG-16-LV@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CHI",
+      "awayScore": 11,
+      "home": "PHI",
+      "homeScore": 54,
+      "id": "2013-REG-16-CHI@PHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "ATL",
+      "awayScore": 24,
+      "home": "SF",
+      "homeScore": 34,
+      "id": "2013-REG-16-ATL@SF",
+      "season": 2013,
+      "type": "REG",
+      "week": 16
+    },
+    {
+      "away": "CAR",
+      "awayScore": 21,
+      "home": "ATL",
+      "homeScore": 20,
+      "id": "2013-REG-17-CAR@ATL",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "BAL",
+      "awayScore": 17,
+      "home": "CIN",
+      "homeScore": 34,
+      "id": "2013-REG-17-BAL@CIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "JAX",
+      "awayScore": 10,
+      "home": "IND",
+      "homeScore": 30,
+      "id": "2013-REG-17-JAX@IND",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "NYJ",
+      "awayScore": 20,
+      "home": "MIA",
+      "homeScore": 7,
+      "id": "2013-REG-17-NYJ@MIA",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "DET",
+      "awayScore": 13,
+      "home": "MIN",
+      "homeScore": 14,
+      "id": "2013-REG-17-DET@MIN",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "WAS",
+      "awayScore": 6,
+      "home": "NYG",
+      "homeScore": 20,
+      "id": "2013-REG-17-WAS@NYG",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "CLE",
+      "awayScore": 7,
+      "home": "PIT",
+      "homeScore": 20,
+      "id": "2013-REG-17-CLE@PIT",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "HOU",
+      "awayScore": 10,
+      "home": "TEN",
+      "homeScore": 16,
+      "id": "2013-REG-17-HOU@TEN",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "SF",
+      "awayScore": 23,
+      "home": "ARI",
+      "homeScore": 20,
+      "id": "2013-REG-17-SF@ARI",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "GB",
+      "awayScore": 33,
+      "home": "CHI",
+      "homeScore": 28,
+      "id": "2013-REG-17-GB@CHI",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "BUF",
+      "awayScore": 20,
+      "home": "NE",
+      "homeScore": 34,
+      "id": "2013-REG-17-BUF@NE",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "TB",
+      "awayScore": 17,
+      "home": "NO",
+      "homeScore": 42,
+      "id": "2013-REG-17-TB@NO",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "DEN",
+      "awayScore": 34,
+      "home": "LV",
+      "homeScore": 14,
+      "id": "2013-REG-17-DEN@LV",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "KC",
+      "awayScore": 24,
+      "home": "LAC",
+      "homeScore": 27,
+      "id": "2013-REG-17-KC@LAC",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "LAR",
+      "awayScore": 9,
+      "home": "SEA",
+      "homeScore": 27,
+      "id": "2013-REG-17-LAR@SEA",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "PHI",
+      "awayScore": 24,
+      "home": "DAL",
+      "homeScore": 22,
+      "id": "2013-REG-17-PHI@DAL",
+      "season": 2013,
+      "type": "REG",
+      "week": 17
+    },
+    {
+      "away": "KC",
+      "awayScore": 44,
+      "home": "IND",
+      "homeScore": 45,
+      "id": "2013-WC-18-KC@IND",
+      "season": 2013,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "NO",
+      "awayScore": 26,
+      "home": "PHI",
+      "homeScore": 24,
+      "id": "2013-WC-18-NO@PHI",
+      "season": 2013,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "LAC",
+      "awayScore": 27,
+      "home": "CIN",
+      "homeScore": 10,
+      "id": "2013-WC-18-LAC@CIN",
+      "season": 2013,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "SF",
+      "awayScore": 23,
+      "home": "GB",
+      "homeScore": 20,
+      "id": "2013-WC-18-SF@GB",
+      "season": 2013,
+      "type": "WC",
+      "week": 18
+    },
+    {
+      "away": "NO",
+      "awayScore": 15,
+      "home": "SEA",
+      "homeScore": 23,
+      "id": "2013-DIV-19-NO@SEA",
+      "season": 2013,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "IND",
+      "awayScore": 22,
+      "home": "NE",
+      "homeScore": 43,
+      "id": "2013-DIV-19-IND@NE",
+      "season": 2013,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "SF",
+      "awayScore": 23,
+      "home": "CAR",
+      "homeScore": 10,
+      "id": "2013-DIV-19-SF@CAR",
+      "season": 2013,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "LAC",
+      "awayScore": 17,
+      "home": "DEN",
+      "homeScore": 24,
+      "id": "2013-DIV-19-LAC@DEN",
+      "season": 2013,
+      "type": "DIV",
+      "week": 19
+    },
+    {
+      "away": "NE",
+      "awayScore": 16,
+      "home": "DEN",
+      "homeScore": 26,
+      "id": "2013-CONF-20-NE@DEN",
+      "season": 2013,
+      "type": "CONF",
+      "week": 20
+    },
+    {
+      "away": "SF",
+      "awayScore": 17,
+      "home": "SEA",
+      "homeScore": 23,
+      "id": "2013-CONF-20-SF@SEA",
+      "season": 2013,
+      "type": "CONF",
+      "week": 20
+    },
+    {
+      "away": "SEA",
+      "awayScore": 43,
+      "home": "DEN",
+      "homeScore": 8,
+      "id": "2013-SB-21-SEA@DEN",
+      "season": 2013,
+      "type": "SB",
+      "week": 21
+    }
+  ],
+  "playoffFormat": {
+    "byesPerConf": 2,
+    "regularSeasonGames": 16,
+    "teams": 12
+  },
+  "season": 2013,
+  "weeks": 17
+}
