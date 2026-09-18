@@ -5,7 +5,7 @@
  * never snaps rosters (history) — all of that goes through ctx.modules.
  */
 import {
-  DIVISIONS, PHASES, POSITIONS, SAVE_SCHEMA_VERSION, TEAM_IDS, canonicalTeamId,
+  DIVISIONS, PHASES, POSITIONS, SAVE_SCHEMA_VERSION, STARTER_TEMPLATE, TEAM_IDS, canonicalTeamId,
   leagueFormat, isInHistory, SeasonNotLoadedError,
   type CanonicalTeamId, type CompactTrajectory, type Conference, type DepthChart, type EngineContext,
   type Game, type GameResult, type GameSettings, type GameType, type InjuryEvent, type LeagueModule,
@@ -90,6 +90,85 @@ function autoDepthChartImpl(state: LeagueState, teamId: TeamId): DepthChart {
     chart[pos] = ids
   }
   return chart
+}
+
+// -------------------------------------------------------------------------------------------
+// Cap fit
+// -------------------------------------------------------------------------------------------
+
+const CAP_FIT_TARGET = 0.97
+
+/**
+ * Real APY totals run past the cap in some seasons (proration, void years, 2021's COVID cap dip), and the
+ * game charges apy as the cap hit. A roster that arrives from real data over the cap gets its veteran
+ * deals scaled down together so payroll lands at 97% of the cap; rookie deals keep their slot value.
+ * v1 simplification (HANDOFF §8): no restructures, so this stands in for them.
+ */
+function fitPayrollToCap(state: LeagueState, teamId: TeamId, ctx: EngineContext): LeagueState {
+  const team = state.teams[teamId]
+  if (!team) return state
+  const cap = ctx.modules.fa.capFor(state.season, ctx)
+  const payroll = ctx.modules.fa.payroll(state, teamId)
+  if (payroll <= cap) return state
+  const veteranSum = team.roster.reduce((sum, slot) => sum + (slot.contract.rookie ? 0 : slot.contract.apy), 0)
+  if (veteranSum <= 0) return state
+  const fixed = payroll - veteranSum
+  const factor = Math.max(0, (cap * CAP_FIT_TARGET - fixed) / veteranSum)
+  if (factor >= 1) return state
+  const roster = team.roster.map((slot) =>
+    slot.contract.rookie
+      ? slot
+      : { ...slot, contract: { ...slot.contract, apy: Math.round(slot.contract.apy * factor * 100) / 100 } },
+  )
+  return { ...state, teams: { ...state.teams, [teamId]: { ...team, roster } } }
+}
+
+const AI_CAMP_ROSTER = 53
+
+/**
+ * An AI team that comes out of the offseason short (its expiring deals walked, it had no cap room in
+ * free agency, and there is no real roster to snap to past the data) fills out with the best unsigned
+ * players it can afford, starters-template positions first. Runs after cutdowns, before validation.
+ */
+function fillAiRosters(state: LeagueState, ctx: EngineContext): LeagueState {
+  const { fa } = ctx.modules
+  const short = TEAM_IDS.filter((id) => {
+    const t = state.teams[id]
+    return t !== undefined && !t.userControlled && t.roster.length < AI_CAMP_ROSTER
+  })
+  if (short.length === 0) return state
+
+  let s = state
+  const cap = fa.capFor(s.season, ctx)
+  const minApy = fa.rookieContract(null, s.season, ctx).apy
+  const pool = fa.freeAgentPool(s).filter((id) => s.players[id] !== undefined) // best consensus first
+  const taken = new Set<PlayerId>()
+  for (const teamId of short) {
+    const team = s.teams[teamId]!
+    const counts: Record<string, number> = {}
+    for (const slot of team.roster) {
+      const pos = s.players[slot.playerId]?.pos
+      if (pos) counts[pos] = (counts[pos] ?? 0) + 1
+    }
+    const needs = (pos: string): boolean => (counts[pos] ?? 0) < (STARTER_TEMPLATE[pos] ?? 0)
+    const open = pool.filter((id) => !taken.has(id))
+    const candidates = [...open.filter((id) => needs(s.players[id]!.pos)), ...open.filter((id) => !needs(s.players[id]!.pos))]
+
+    let roster = team.roster
+    let payroll = fa.payroll(s, teamId)
+    for (const id of candidates) {
+      if (roster.length >= AI_CAMP_ROSTER || payroll + minApy > cap) break
+      const contract = fa.synthesizeContract(s, id, s.season, ctx)
+      if (payroll + contract.apy > cap) continue
+      roster = [...roster, { playerId: id, teamId, contract }]
+      payroll += contract.apy
+      counts[s.players[id]!.pos] = (counts[s.players[id]!.pos] ?? 0) + 1
+      taken.add(id)
+    }
+    if (roster.length !== team.roster.length) s = { ...s, teams: { ...s.teams, [teamId]: { ...team, roster } } }
+  }
+  if (taken.size === 0) return s
+  return { ...s, freeAgents: s.freeAgents.filter((id) => !taken.has(id)) }
 }
 
 // -------------------------------------------------------------------------------------------
@@ -532,8 +611,39 @@ function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
 // advancePhase
 // -------------------------------------------------------------------------------------------
 
-function resetRecords(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
-  return Object.fromEntries(Object.entries(teams).map(([id, t]) => [id, { ...t, record: { ...ZERO_RECORD } }]))
+/** Records and trade annoyance (§6.5: "for the rest of the season") both start fresh each season. */
+function resetSeasonCounters(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
+  return Object.fromEntries(
+    Object.entries(teams).map(([id, t]) => [id, { ...t, record: { ...ZERO_RECORD }, tradeAnnoyance: 0 }]),
+  )
+}
+
+/**
+ * The user's expiring players who were not re-signed during OFFSEASON_RESIGN hit the market with
+ * everyone else's, so the AI can sign them in FREE_AGENCY. A contract signed this offseason (fa.resign
+ * stamps signedSeason = season) is the re-signing itself and stays. No dead money, no divergence: this
+ * is the natural end of a deal, same as fa.runAiResign's expireToFreeAgent for AI teams.
+ */
+function expireUserContracts(state: LeagueState): LeagueState {
+  const team = state.teams[state.userTeam]
+  if (!team) return state
+  const expiring = team.roster
+    .filter((slot) => slot.contract.years === 1 && slot.contract.signedSeason !== state.season)
+    .map((slot) => slot.playerId)
+  if (expiring.length === 0) return state
+  const gone = new Set(expiring)
+  return {
+    ...state,
+    teams: { ...state.teams, [state.userTeam]: { ...team, roster: team.roster.filter((r) => !gone.has(r.playerId)) } },
+    freeAgents: [...new Set([...state.freeAgents, ...expiring])].sort(),
+  }
+}
+
+/** Keep two drafts ahead in state.picks so trades can always deal next year's and the year after's picks. */
+function ensureFuturePicks(state: LeagueState, ctx: EngineContext): LeagueState {
+  const season = state.season + 2
+  if (state.picks.some((p) => p.season === season)) return state
+  return { ...state, picks: [...state.picks, ...ctx.modules.draft.buildDraftOrder(state, season, ctx)] }
 }
 
 function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
@@ -544,7 +654,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
 
     case 'OFFSEASON_RESIGN': {
       const rng = ctx.modules.rng.fromSeed(state.seed, state.season, 'resign')
-      const s = ctx.modules.fa.runAiResign(state, ctx, rng)
+      const s = expireUserContracts(ctx.modules.fa.runAiResign(state, ctx, rng))
       return { ...s, phase: 'DRAFT' }
     }
 
@@ -577,15 +687,19 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       const retired = ctx.modules.lifecycle.retirements(s, ctx, retireRng)
       s = retired.state
       s = ctx.modules.lifecycle.refreshScouting(s, ctx)
-      if (isInHistory(ctx, newSeason)) s = ctx.modules.history.snapToHistory(s, ctx)
-      s = { ...s, teams: resetRecords(s.teams) }
+      if (isInHistory(ctx, newSeason)) {
+        s = ctx.modules.history.snapToHistory(s, ctx)
+        for (const teamId of TEAM_IDS) if (teamId !== s.userTeam) s = fitPayrollToCap(s, teamId, ctx)
+      }
+      s = { ...s, teams: resetSeasonCounters(s.teams) }
+      s = ensureFuturePicks(s, ctx)
       const newGames = buildScheduleImpl(s, ctx)
       s = { ...s, schedule: [...s.schedule, ...newGames], phase: 'PRESEASON' }
       return s
     }
 
     case 'PRESEASON': {
-      let s = ctx.modules.fa.runAiCutdowns(state, ctx)
+      let s = fillAiRosters(ctx.modules.fa.runAiCutdowns(state, ctx), ctx)
       const updatedTeams: Record<TeamId, TeamState> = { ...s.teams }
       for (const teamId of Object.keys(updatedTeams)) {
         if (teamId === s.userTeam) continue
@@ -658,6 +772,7 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
     }
   }
   draft = { ...draft, teams }
+  for (const teamId of TEAM_IDS) draft = fitPayrollToCap(draft, teamId, ctx)
 
   // The startSeason draft already happened (its rookies are on the rosters); the next two drafts are
   // the S+1 and S+2 classes (draft-year convention in contracts/engine/draft.ts).
