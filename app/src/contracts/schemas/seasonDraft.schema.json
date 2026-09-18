@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/seasonDraft.schema.json",
+  "title": "seasonDraft",
+  "description": "Gridiron GM data contract for season/{yyyy}/draft.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "season": {
+      "type": "integer",
+      "minimum": 1920,
+      "maximum": 2200,
+      "description": "NFL season year, e.g. 2015."
+    },
+    "order": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "pick": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 300
+          },
+          "team": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Team that actually made the pick (after real trades/comp picks)."
+          },
+          "originalTeam": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Team the pick originally belonged to (best effort; = team when unknown)."
+          },
+          "playerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Real selection; null if unmatched to a roster id."
+          }
+        },
+        "required": [
+          "round",
+          "pick",
+          "team",
+          "originalTeam",
+          "playerId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "prospects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pos": {
+            "type": "string",
+            "enum": [
+              "QB",
+              "RB",
+              "WR",
+              "TE",
+              "OL",
+              "DL",
+              "LB",
+              "CB",
+              "S",
+              "K",
+              "P"
+            ],
+            "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+          },
+          "birthYear": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2200
+          },
+          "college": {
+            "type": "string"
+          },
+          "heightIn": {
+            "type": "number"
+          },
+          "weightLb": {
+            "type": "number"
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "season": {
+                    "type": "integer",
+                    "minimum": 1920,
+                    "maximum": 2200,
+                    "description": "NFL season year, e.g. 2015."
+                  },
+                  "round": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 7
+                  },
+                  "pick": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 300,
+                    "description": "Overall pick number."
+                  },
+                  "team": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Team that made the pick."
+                  }
+                },
+                "required": [
+                  "season",
+                  "round",
+                  "pick",
+                  "team"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null = undrafted free agent."
+          },
+          "real": {
+            "type": "boolean",
+            "description": "false for procedurally generated players."
+          },
+          "rookieSeason": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "First NFL season (nflverse rookie_year / entry_year)."
+          },
+          "scouting": {
+            "type": "object",
+            "properties": {
+              "ovr": {
+                "type": "number",
+                "minimum": 40,
+                "maximum": 99,
+                "description": "Consensus current ability — what the world believes right now."
+              },
+              "pot": {
+                "type": "number",
+                "minimum": 40,
+                "maximum": 99,
+                "description": "Consensus ceiling from age/draft slot/combine. NEVER derived from real future."
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "0–1. Low for rookies/UDFA, high for established veterans."
+              }
+            },
+            "required": [
+              "ovr",
+              "pot",
+              "confidence"
+            ],
+            "additionalProperties": false,
+            "description": "Pre-draft consensus from slot/combine/age only."
+          },
+          "combine": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "pos",
+          "birthYear",
+          "draft",
+          "real",
+          "rookieSeason",
+          "scouting"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Every drafted player + every real UDFA of the class."
+    },
+    "udfa": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      }
+    }
+  },
+  "required": [
+    "attribution",
+    "season",
+    "order",
+    "prospects",
+    "udfa"
+  ],
+  "additionalProperties": false
+}

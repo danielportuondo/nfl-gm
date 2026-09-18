@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/trajectories.schema.json",
+  "title": "trajectories",
+  "description": "Gridiron GM data contract for trajectories.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "seasons": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        },
+        {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "byPlayer": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "NFL season year, e.g. 2015."
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 40,
+                  "maximum": 99,
+                  "description": "Rating on the shared 40–99 scale."
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "retiresAfter": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "NFL season year, e.g. 2015."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "start",
+          "values",
+          "retiresAfter"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "attribution",
+    "seasons",
+    "byPlayer"
+  ],
+  "additionalProperties": false
+}

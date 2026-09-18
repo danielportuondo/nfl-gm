@@ -1,0 +1,1630 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/savedLeague.schema.json",
+  "title": "savedLeague",
+  "description": "Gridiron GM data contract for (IndexedDB / exported .json — not a data file). Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "seed": {
+      "type": "string",
+      "minLength": 1
+    },
+    "season": {
+      "type": "integer",
+      "minimum": 1920,
+      "maximum": 2200,
+      "description": "NFL season year, e.g. 2015."
+    },
+    "week": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 30
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "PRESEASON",
+        "REGULAR",
+        "PLAYOFFS",
+        "OFFSEASON_RESIGN",
+        "DRAFT",
+        "UDFA",
+        "FREE_AGENCY",
+        "TRAINING_CAMP"
+      ],
+      "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+    },
+    "userTeam": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 3,
+      "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+    },
+    "horizonEnd": {
+      "type": "integer",
+      "minimum": 1920,
+      "maximum": 2200,
+      "description": "Last season in which a Super Bowl win counts."
+    },
+    "startSeason": {
+      "type": "integer",
+      "minimum": 1920,
+      "maximum": 2200,
+      "description": "NFL season year, e.g. 2015."
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "tradeStrictness": {
+          "type": "string",
+          "enum": [
+            "lenient",
+            "balanced",
+            "strict",
+            "ruthless"
+          ]
+        },
+        "aiOfferFrequency": {
+          "type": "string",
+          "enum": [
+            "rare",
+            "normal",
+            "aggressive"
+          ]
+        },
+        "injuries": {
+          "type": "boolean"
+        },
+        "difficultyNotes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "tradeStrictness",
+        "aiOfferFrequency",
+        "injuries"
+      ],
+      "additionalProperties": false
+    },
+    "teams": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 3,
+        "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "roster": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "playerId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "teamId": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 3,
+                  "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                },
+                "contract": {
+                  "type": "object",
+                  "properties": {
+                    "years": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 7,
+                      "description": "Years remaining including the current season."
+                    },
+                    "apy": {
+                      "type": "number",
+                      "minimum": 0,
+                      "description": "Average per year in $M."
+                    },
+                    "guaranteedPct": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "signedSeason": {
+                      "type": "integer",
+                      "minimum": 1920,
+                      "maximum": 2200,
+                      "description": "NFL season year, e.g. 2015."
+                    },
+                    "rookie": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "years",
+                    "apy",
+                    "guaranteedPct",
+                    "signedSeason",
+                    "rookie"
+                  ],
+                  "additionalProperties": false
+                },
+                "injured": {
+                  "type": "object",
+                  "properties": {
+                    "weeksOut": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "season": {
+                      "type": "integer",
+                      "minimum": 1920,
+                      "maximum": 2200,
+                      "description": "NFL season year, e.g. 2015."
+                    },
+                    "week": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 30
+                    }
+                  },
+                  "required": [
+                    "weeksOut",
+                    "kind",
+                    "season",
+                    "week"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "playerId",
+                "teamId",
+                "contract"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "depthChart": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "enum": [
+                "QB",
+                "RB",
+                "WR",
+                "TE",
+                "OL",
+                "DL",
+                "LB",
+                "CB",
+                "S",
+                "K",
+                "P"
+              ],
+              "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              }
+            },
+            "description": "Ordered player ids per position group; starters first."
+          },
+          "record": {
+            "type": "object",
+            "properties": {
+              "wins": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "losses": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "ties": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "pointsFor": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "pointsAgainst": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "wins",
+              "losses",
+              "ties",
+              "pointsFor",
+              "pointsAgainst"
+            ],
+            "additionalProperties": false
+          },
+          "deadMoney": {
+            "type": "number",
+            "minimum": 0,
+            "description": "$M charged against this season's cap from releases."
+          },
+          "tradeAnnoyance": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Raised by declined lowballs; raises this team's trade margin for the season (§6.5)."
+          },
+          "userControlled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "roster",
+          "depthChart",
+          "record",
+          "deadMoney",
+          "tradeAnnoyance",
+          "userControlled"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "players": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pos": {
+            "type": "string",
+            "enum": [
+              "QB",
+              "RB",
+              "WR",
+              "TE",
+              "OL",
+              "DL",
+              "LB",
+              "CB",
+              "S",
+              "K",
+              "P"
+            ],
+            "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+          },
+          "birthYear": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2200
+          },
+          "college": {
+            "type": "string"
+          },
+          "heightIn": {
+            "type": "number"
+          },
+          "weightLb": {
+            "type": "number"
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "season": {
+                    "type": "integer",
+                    "minimum": 1920,
+                    "maximum": 2200,
+                    "description": "NFL season year, e.g. 2015."
+                  },
+                  "round": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 7
+                  },
+                  "pick": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 300,
+                    "description": "Overall pick number."
+                  },
+                  "team": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Team that made the pick."
+                  }
+                },
+                "required": [
+                  "season",
+                  "round",
+                  "pick",
+                  "team"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null = undrafted free agent."
+          },
+          "real": {
+            "type": "boolean",
+            "description": "false for procedurally generated players."
+          },
+          "rookieSeason": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "First NFL season (nflverse rookie_year / entry_year)."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "pos",
+          "birthYear",
+          "draft",
+          "real",
+          "rookieSeason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scouting": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "ovr": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 99,
+            "description": "Consensus current ability — what the world believes right now."
+          },
+          "pot": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 99,
+            "description": "Consensus ceiling from age/draft slot/combine. NEVER derived from real future."
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "0–1. Low for rookies/UDFA, high for established veterans."
+          }
+        },
+        "required": [
+          "ovr",
+          "pot",
+          "confidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "truth": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "bySeason": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 40,
+              "maximum": 99,
+              "description": "Rating on the shared 40–99 scale."
+            },
+            "description": "Keys are season years as strings. True value per season from the real career (or generated once past data)."
+          },
+          "retiresAfter": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "NFL season year, e.g. 2015."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Last season played; null = unknown/still active."
+          }
+        },
+        "required": [
+          "bySeason",
+          "retiresAfter"
+        ],
+        "additionalProperties": false
+      },
+      "description": "HIDDEN. Present in state; nothing under screens/ or ui/ may read it."
+    },
+    "picks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "season": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "NFL season year, e.g. 2015."
+          },
+          "round": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "pick": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Overall pick number; null until the draft order for that season is set."
+          },
+          "originalTeam": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "playerId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Filled once the pick is used."
+          }
+        },
+        "required": [
+          "season",
+          "round",
+          "pick",
+          "originalTeam",
+          "owner",
+          "playerId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "\"<season>-<type>-<week>-<away>@<home>\""
+          },
+          "season": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "NFL season year, e.g. 2015."
+          },
+          "week": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "REG",
+              "WC",
+              "DIV",
+              "CONF",
+              "SB"
+            ]
+          },
+          "home": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "away": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "neutralSite": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "season",
+          "week",
+          "type",
+          "home",
+          "away"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "\"<season>-<type>-<week>-<away>@<home>\""
+          },
+          "homeScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "awayScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "overtime": {
+            "type": "boolean"
+          },
+          "box": {
+            "type": "object",
+            "properties": {
+              "home": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "playerId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                    },
+                    "teamId": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 3,
+                      "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                    },
+                    "passAtt": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passCmp": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passTd": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passInt": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rushAtt": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rushYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rushTd": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "targets": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rec": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "recYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "recTd": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "tackles": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "sacks": {
+                      "type": "number"
+                    },
+                    "ints": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "forcedFumbles": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passesDefended": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "fgm": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "fga": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "xpm": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "xpa": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "punts": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "puntYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "playerId",
+                    "teamId"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "away": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "playerId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                    },
+                    "teamId": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 3,
+                      "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                    },
+                    "passAtt": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passCmp": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passTd": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passInt": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rushAtt": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rushYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rushTd": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "targets": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "rec": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "recYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "recTd": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "tackles": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "sacks": {
+                      "type": "number"
+                    },
+                    "ints": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "forcedFumbles": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "passesDefended": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "fgm": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "fga": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "xpm": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "xpa": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "punts": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "puntYds": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "playerId",
+                    "teamId"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "home",
+              "away"
+            ],
+            "additionalProperties": false
+          },
+          "injuries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "playerId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "teamId": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 3,
+                  "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                },
+                "weeksOut": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "kind": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "playerId",
+                "teamId",
+                "weeksOut",
+                "kind"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "gameId",
+          "homeScore",
+          "awayScore",
+          "overtime",
+          "injuries"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "season": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "NFL season year, e.g. 2015."
+          },
+          "champion": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 3,
+                "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "runnerUp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 3,
+                "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "standings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "teamId": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 3,
+                  "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                },
+                "wins": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "losses": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "ties": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "pointsFor": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "pointsAgainst": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "divRank": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                "confRank": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16
+                },
+                "clinched": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "DIV",
+                        "WC",
+                        "BYE",
+                        "OUT"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "teamId",
+                "wins",
+                "losses",
+                "ties",
+                "pct",
+                "pointsFor",
+                "pointsAgainst",
+                "divRank",
+                "confRank",
+                "clinched"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "awards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "playerId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "teamId": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 3,
+                  "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "userTeam": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "userRecord": {
+            "type": "object",
+            "properties": {
+              "wins": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "losses": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "ties": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "pointsFor": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "pointsAgainst": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "wins",
+              "losses",
+              "ties",
+              "pointsFor",
+              "pointsAgainst"
+            ],
+            "additionalProperties": false
+          },
+          "userPlayoffExit": {
+            "type": "string",
+            "enum": [
+              "MISSED",
+              "WC",
+              "DIV",
+              "CONF",
+              "SB_LOSS",
+              "CHAMPION"
+            ]
+          }
+        },
+        "required": [
+          "season",
+          "champion",
+          "runnerUp",
+          "standings",
+          "awards",
+          "userTeam",
+          "userRecord",
+          "userPlayoffExit"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "divergence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      },
+      "description": "Players whose ownership left the historical path (§6.8)."
+    },
+    "freeAgents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+      }
+    },
+    "draftRoom": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "season": {
+              "type": "integer",
+              "minimum": 1920,
+              "maximum": 2200,
+              "description": "NFL season year, e.g. 2015."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "ON_CLOCK",
+                "COMPLETE"
+              ]
+            },
+            "currentPickIndex": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "order": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "season": {
+                    "type": "integer",
+                    "minimum": 1920,
+                    "maximum": 2200,
+                    "description": "NFL season year, e.g. 2015."
+                  },
+                  "round": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 7
+                  },
+                  "pick": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 300
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "Overall pick number; null until the draft order for that season is set."
+                  },
+                  "originalTeam": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                  },
+                  "owner": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                  },
+                  "playerId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "Filled once the pick is used."
+                  }
+                },
+                "required": [
+                  "season",
+                  "round",
+                  "pick",
+                  "originalTeam",
+                  "owner",
+                  "playerId"
+                ],
+                "additionalProperties": false
+              },
+              "description": "All picks of the season in order; playerId filled as they are made."
+            },
+            "available": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              },
+              "description": "Undrafted prospects, sorted by consensus pot desc."
+            },
+            "udfaPool": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              }
+            },
+            "log": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pick": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "round": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "team": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                  },
+                  "playerId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                  },
+                  "historical": {
+                    "type": "boolean",
+                    "description": "true when the pick matched the real-life selection."
+                  }
+                },
+                "required": [
+                  "pick",
+                  "round",
+                  "team",
+                  "playerId",
+                  "historical"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "pendingOffers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "offer": {
+                    "type": "object",
+                    "properties": {
+                      "teamId": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 3,
+                        "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                      },
+                      "players": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                        }
+                      },
+                      "picks": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "season": {
+                              "type": "integer",
+                              "minimum": 1920,
+                              "maximum": 2200,
+                              "description": "NFL season year, e.g. 2015."
+                            },
+                            "round": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 7
+                            },
+                            "originalTeam": {
+                              "type": "string",
+                              "minLength": 2,
+                              "maxLength": 3,
+                              "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                            }
+                          },
+                          "required": [
+                            "season",
+                            "round",
+                            "originalTeam"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Identifies a DraftPick regardless of current owner."
+                        }
+                      }
+                    },
+                    "required": [
+                      "teamId",
+                      "players",
+                      "picks"
+                    ],
+                    "additionalProperties": false,
+                    "description": "What the proposer gives."
+                  },
+                  "request": {
+                    "type": "object",
+                    "properties": {
+                      "teamId": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 3,
+                        "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                      },
+                      "players": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                        }
+                      },
+                      "picks": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "season": {
+                              "type": "integer",
+                              "minimum": 1920,
+                              "maximum": 2200,
+                              "description": "NFL season year, e.g. 2015."
+                            },
+                            "round": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 7
+                            },
+                            "originalTeam": {
+                              "type": "string",
+                              "minLength": 2,
+                              "maxLength": 3,
+                              "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                            }
+                          },
+                          "required": [
+                            "season",
+                            "round",
+                            "originalTeam"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Identifies a DraftPick regardless of current owner."
+                        }
+                      }
+                    },
+                    "required": [
+                      "teamId",
+                      "players",
+                      "picks"
+                    ],
+                    "additionalProperties": false,
+                    "description": "What the proposer wants from the counterparty."
+                  },
+                  "initiatedBy": {
+                    "type": "string",
+                    "enum": [
+                      "USER",
+                      "AI"
+                    ]
+                  },
+                  "season": {
+                    "type": "integer",
+                    "minimum": 1920,
+                    "maximum": 2200,
+                    "description": "NFL season year, e.g. 2015."
+                  },
+                  "week": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 30
+                  }
+                },
+                "required": [
+                  "id",
+                  "offer",
+                  "request",
+                  "initiatedBy",
+                  "season",
+                  "week"
+                ],
+                "additionalProperties": false
+              },
+              "description": "AI offers shown while the user is on the clock."
+            }
+          },
+          "required": [
+            "season",
+            "status",
+            "currentPickIndex",
+            "order",
+            "available",
+            "udfaPool",
+            "log",
+            "pendingOffers"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "snapLog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "season": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "NFL season year, e.g. 2015."
+          },
+          "playerId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+          },
+          "fromTeam": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 3,
+                "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "toTeam": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 3,
+                "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "HISTORY",
+              "RETIRED",
+              "DIVERGED_KEPT",
+              "NEW_ARRIVAL"
+            ]
+          }
+        },
+        "required": [
+          "season",
+          "playerId",
+          "fromTeam",
+          "toTeam",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "IN_PROGRESS",
+        "CHAMPION",
+        "HORIZON_EXPIRED"
+      ]
+    },
+    "savedAt": {
+      "type": "string",
+      "description": "ISO timestamp of the save."
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "seed",
+    "season",
+    "week",
+    "phase",
+    "userTeam",
+    "horizonEnd",
+    "startSeason",
+    "settings",
+    "teams",
+    "players",
+    "scouting",
+    "truth",
+    "picks",
+    "schedule",
+    "results",
+    "history",
+    "divergence",
+    "freeAgents",
+    "draftRoom",
+    "snapLog",
+    "outcome",
+    "savedAt"
+  ],
+  "additionalProperties": false
+}

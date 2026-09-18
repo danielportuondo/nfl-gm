@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/cap.schema.json",
+  "title": "cap",
+  "description": "Gridiron GM data contract for cap.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "bySeason": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "description": "Salary cap in $M keyed by season string. 2010 uncapped → 123.0 for game purposes."
+    },
+    "growthAfterData": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.2,
+      "description": "Annual growth applied beyond the last real season (0.06)."
+    }
+  },
+  "required": [
+    "attribution",
+    "bySeason",
+    "growthAfterData"
+  ],
+  "additionalProperties": false
+}

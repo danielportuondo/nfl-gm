@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/injuryModel.schema.json",
+  "title": "injuryModel",
+  "description": "Gridiron GM data contract for injuryModel.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "fitSeasons": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        },
+        {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "ratePerPlayerGame": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "enum": [
+          "QB",
+          "RB",
+          "WR",
+          "TE",
+          "OL",
+          "DL",
+          "LB",
+          "CB",
+          "S",
+          "K",
+          "P"
+        ],
+        "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+      },
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "required": [
+        "QB",
+        "RB",
+        "WR",
+        "TE",
+        "OL",
+        "DL",
+        "LB",
+        "CB",
+        "S",
+        "K",
+        "P"
+      ],
+      "description": "P(new multi-week injury) per active player per game."
+    },
+    "duration": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "weeks": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "p": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "weeks",
+          "p"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Discrete distribution of weeks out; sums to ~1."
+    },
+    "kinds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "p": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "kind",
+          "p"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "permanentLoss": {
+      "type": "object",
+      "properties": {
+        "minWeeks": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "p": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "lossRange": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "minWeeks",
+        "p",
+        "lossRange"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "attribution",
+    "fitSeasons",
+    "ratePerPlayerGame",
+    "duration",
+    "kinds",
+    "permanentLoss"
+  ],
+  "additionalProperties": false
+}

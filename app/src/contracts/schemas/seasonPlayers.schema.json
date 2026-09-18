@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/seasonPlayers.schema.json",
+  "title": "seasonPlayers",
+  "description": "Gridiron GM data contract for season/{yyyy}/players.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "season": {
+      "type": "integer",
+      "minimum": 1920,
+      "maximum": 2200,
+      "description": "NFL season year, e.g. 2015."
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pos": {
+            "type": "string",
+            "enum": [
+              "QB",
+              "RB",
+              "WR",
+              "TE",
+              "OL",
+              "DL",
+              "LB",
+              "CB",
+              "S",
+              "K",
+              "P"
+            ],
+            "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+          },
+          "birthYear": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2200
+          },
+          "college": {
+            "type": "string"
+          },
+          "heightIn": {
+            "type": "number"
+          },
+          "weightLb": {
+            "type": "number"
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "season": {
+                    "type": "integer",
+                    "minimum": 1920,
+                    "maximum": 2200,
+                    "description": "NFL season year, e.g. 2015."
+                  },
+                  "round": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 7
+                  },
+                  "pick": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 300,
+                    "description": "Overall pick number."
+                  },
+                  "team": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Team that made the pick."
+                  }
+                },
+                "required": [
+                  "season",
+                  "round",
+                  "pick",
+                  "team"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null = undrafted free agent."
+          },
+          "real": {
+            "type": "boolean",
+            "description": "false for procedurally generated players."
+          },
+          "rookieSeason": {
+            "type": "integer",
+            "minimum": 1920,
+            "maximum": 2200,
+            "description": "First NFL season (nflverse rookie_year / entry_year)."
+          },
+          "scouting": {
+            "type": "object",
+            "properties": {
+              "ovr": {
+                "type": "number",
+                "minimum": 40,
+                "maximum": 99,
+                "description": "Consensus current ability — what the world believes right now."
+              },
+              "pot": {
+                "type": "number",
+                "minimum": 40,
+                "maximum": 99,
+                "description": "Consensus ceiling from age/draft slot/combine. NEVER derived from real future."
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "0–1. Low for rookies/UDFA, high for established veterans."
+              }
+            },
+            "required": [
+              "ovr",
+              "pot",
+              "confidence"
+            ],
+            "additionalProperties": false,
+            "description": "Consensus at season start."
+          },
+          "trueValue": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 99,
+            "description": "True value for THIS season only. Loaded into truth by the engine; never shown."
+          },
+          "team": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 3,
+                "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Team at season start; null if unsigned."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "pos",
+          "birthYear",
+          "draft",
+          "real",
+          "rookieSeason",
+          "scouting",
+          "trueValue",
+          "team"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "attribution",
+    "season",
+    "players"
+  ],
+  "additionalProperties": false
+}

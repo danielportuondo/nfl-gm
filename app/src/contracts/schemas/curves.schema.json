@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/curves.schema.json",
+  "title": "curves",
+  "description": "Gridiron GM data contract for curves.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "fitSeasons": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        },
+        {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "aging": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pos": {
+            "type": "string",
+            "enum": [
+              "QB",
+              "RB",
+              "WR",
+              "TE",
+              "OL",
+              "DL",
+              "LB",
+              "CB",
+              "S",
+              "K",
+              "P"
+            ],
+            "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+          },
+          "byAge": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "Expected true-value delta entering a season at this age (ages as string keys)."
+          },
+          "sd": {
+            "type": "number",
+            "minimum": 0,
+            "description": "σ of the yearly noise for this position."
+          }
+        },
+        "required": [
+          "pos",
+          "byAge",
+          "sd"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "slotGrade": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pick": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "ovr": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 99,
+            "description": "Rating on the shared 40–99 scale."
+          },
+          "pot": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 99,
+            "description": "Rating on the shared 40–99 scale."
+          },
+          "sd": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "pick",
+          "ovr",
+          "pot",
+          "sd"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Consensus ovr/pot by overall pick; interpolate between points."
+    },
+    "udfaGrade": {
+      "type": "object",
+      "properties": {
+        "ovrMean": {
+          "type": "number",
+          "minimum": 40,
+          "maximum": 99,
+          "description": "Rating on the shared 40–99 scale."
+        },
+        "ovrSd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "potQuantiles": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 40,
+            "maximum": 99,
+            "description": "Rating on the shared 40–99 scale."
+          }
+        }
+      },
+      "required": [
+        "ovrMean",
+        "ovrSd",
+        "potQuantiles"
+      ],
+      "additionalProperties": false
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "bucket": {
+            "type": "string",
+            "description": "Pick-slot bucket label, e.g. \"1-10\", \"11-32\", \"33-64\", \"65-105\", \"106-160\", \"161-260\", \"UDFA\"."
+          },
+          "pickMin": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "pickMax": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "pos": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "QB",
+                  "RB",
+                  "WR",
+                  "TE",
+                  "OL",
+                  "DL",
+                  "LB",
+                  "CB",
+                  "S",
+                  "K",
+                  "P"
+                ],
+                "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+              },
+              {
+                "type": "string",
+                "const": "ALL"
+              }
+            ]
+          },
+          "years": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "description": "Career year indices covered (1..8)."
+          },
+          "quantiles": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Quantile levels, e.g. [0.1,0.25,0.5,0.75,0.9]."
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 40,
+                "maximum": 99,
+                "description": "Rating on the shared 40–99 scale."
+              }
+            },
+            "description": "values[yearIdx][quantileIdx] = true value."
+          },
+          "bustRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "P(out of league by year 4)."
+          }
+        },
+        "required": [
+          "bucket",
+          "pickMin",
+          "pickMax",
+          "pos",
+          "years",
+          "quantiles",
+          "values",
+          "bustRate"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "retirement": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pos": {
+            "type": "string",
+            "enum": [
+              "QB",
+              "RB",
+              "WR",
+              "TE",
+              "OL",
+              "DL",
+              "LB",
+              "CB",
+              "S",
+              "K",
+              "P"
+            ],
+            "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+          },
+          "byAge": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "description": "P(retire after season) at this age, evaluated at position-mean value."
+          },
+          "valueSlope": {
+            "type": "number",
+            "description": "Logit slope per rating point above/below position mean (negative: better players retire later)."
+          }
+        },
+        "required": [
+          "pos",
+          "byAge",
+          "valueSlope"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "positionMix": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "enum": [
+          "QB",
+          "RB",
+          "WR",
+          "TE",
+          "OL",
+          "DL",
+          "LB",
+          "CB",
+          "S",
+          "K",
+          "P"
+        ],
+        "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
+      },
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "required": [
+        "QB",
+        "RB",
+        "WR",
+        "TE",
+        "OL",
+        "DL",
+        "LB",
+        "CB",
+        "S",
+        "K",
+        "P"
+      ],
+      "description": "Share of a draft class by position; sums to ~1."
+    },
+    "classSize": {
+      "type": "object",
+      "properties": {
+        "drafted": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "udfa": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "drafted",
+        "udfa"
+      ],
+      "additionalProperties": false
+    },
+    "names": {
+      "type": "object",
+      "properties": {
+        "first": {
+          "minItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last": {
+          "minItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "first",
+        "last"
+      ],
+      "additionalProperties": false,
+      "description": "Generated names for procedural players. Never real player names."
+    }
+  },
+  "required": [
+    "attribution",
+    "fitSeasons",
+    "aging",
+    "slotGrade",
+    "udfaGrade",
+    "outcomes",
+    "retirement",
+    "positionMix",
+    "classSize",
+    "names"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridiron-gm.dev/schemas/teams.schema.json",
+  "title": "teams",
+  "description": "Gridiron GM data contract for teams.json. Generated from app/src/contracts/schemas.ts — do not edit by hand. Data courtesy of nflverse (CC BY 4.0).",
+  "type": "object",
+  "properties": {
+    "attribution": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Must mention nflverse and CC BY 4.0."
+    },
+    "teams": {
+      "minItems": 32,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+          },
+          "city": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "abbr": {
+            "type": "string",
+            "description": "Display abbreviation for the current era."
+          },
+          "conf": {
+            "type": "string",
+            "enum": [
+              "AFC",
+              "NFC"
+            ]
+          },
+          "div": {
+            "type": "string",
+            "enum": [
+              "East",
+              "North",
+              "South",
+              "West"
+            ]
+          },
+          "colors": {
+            "type": "object",
+            "properties": {
+              "primary": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              "secondary": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              "tertiary": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              }
+            },
+            "required": [
+              "primary",
+              "secondary"
+            ],
+            "additionalProperties": false
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "nflverse team codes this franchise has used (e.g. [\"STL\",\"LA\",\"LAR\"]). No logo URLs — ever."
+          },
+          "eras": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "integer",
+                  "minimum": 1920,
+                  "maximum": 2200,
+                  "description": "NFL season year, e.g. 2015."
+                },
+                "to": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1920,
+                      "maximum": 2200,
+                      "description": "NFL season year, e.g. 2015."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "city": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "abbr": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "city",
+                "name",
+                "abbr"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "city",
+          "name",
+          "abbr",
+          "conf",
+          "div",
+          "colors",
+          "aliases"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "attribution",
+    "teams"
+  ],
+  "additionalProperties": false
+}
