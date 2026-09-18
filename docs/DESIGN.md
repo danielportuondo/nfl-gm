@@ -183,6 +183,7 @@ with the fallback stacks above so text never blocks.
 - **Strip** (top, sticky, `top: env(safe-area-inset-top, 0px)`): team plate, season and week, record,
   cap space, horizon countdown. Readouts are separated by a 2px `--line` vertical rule with `--sp-3`
   on each side — separate gauges on one scoreboard, which is what they are. Height 48px desktop.
+  The Strip's trailing (right) slot holds the theme toggle on every in-game screen; nothing else lives there.
 - **Rail** (left, 200px, `--surface-1`): screen list in Pixelify 16, active item gets a 6px
   `--team-primary` left bar and `--surface-3` fill. At ≤ 720px the rail becomes a **bottom tab bar**
   (5 tabs: Dashboard, Roster, Schedule, Draft/Trades by phase, More) with `padding-bottom:

@@ -113,7 +113,8 @@ def build_injury_model(seasons: list[int]) -> dict:
     permanent_loss = {
         "minWeeks": PERMANENT_LOSS_MIN_WEEKS,
         "p": round(long_episodes / total_episodes, 4),
-        "lossRange": [5.0, 20.0],  # rating-point loss on a season-ending injury; not in source data
+        # Rating-point loss after a long injury (HANDOFF §6.7); not in the source data.
+        "lossRange": [1.0, 3.0],
     }
 
     obj = {

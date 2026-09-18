@@ -185,7 +185,10 @@ function roundRobin(teams: readonly TeamId[], season: number, weeks: number): Ga
   for (let w = 1; w <= weeks; w++) {
     for (let i = 0; i < n / 2; i++) {
       const a = ids[i]!, b = ids[n - 1 - i]!
-      const [home, away] = (w + i) % 2 === 0 ? [a, b] : [b, a]
+      // Positions rotate by one each week, so "home when your position is even" alternates every
+      // team's venue; the fixed team at position 0 alternates on week parity instead.
+      const aHome = i === 0 ? w % 2 === 0 : i % 2 === 0
+      const [home, away] = aHome ? [a, b] : [b, a]
       games.push({ id: `${season}-REG-${w}-${away}@${home}`, season, week: w, type: 'REG', home, away })
     }
     ids.splice(1, 0, ids.pop()!)

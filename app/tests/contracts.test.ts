@@ -14,6 +14,15 @@ describe('mock league fixture', () => {
     for (const id of TEAM_IDS) expect(league.teams[id]!.roster).toHaveLength(53)
   })
 
+  it('schedules every team a balanced number of home games', () => {
+    const league = mockLeague()
+    const home = new Map<string, number>()
+    for (const g of league.schedule) home.set(g.home, (home.get(g.home) ?? 0) + 1)
+    const weeks = league.schedule.length / 16
+    for (const id of TEAM_IDS) expect(home.get(id) ?? 0, id).toBeGreaterThanOrEqual(Math.floor(weeks / 2) - 1)
+    for (const id of TEAM_IDS) expect(home.get(id) ?? 0, id).toBeLessThanOrEqual(Math.ceil(weeks / 2) + 1)
+  })
+
   it('is deterministic for the same seed and differs across seeds', () => {
     const a = mockLeague({ seed: 'alpha' })
     const b = mockLeague({ seed: 'alpha' })
