@@ -1,7 +1,9 @@
-import { useState } from 'react'
-import { TEAM_IDS, type LeagueState, type Position, type PlayerId, type StaticData, type TeamId } from '@contracts/index'
-import { Panel, PositionBadge, StatTile, Table, TeamBadge, type Column } from '@ui/primitives'
+import { useMemo, useState } from 'react'
+import { POSITIONS, TEAM_IDS, type LeagueState, type Position, type PlayerId, type StaticData, type TeamId } from '@contracts/index'
+import { Panel, PositionBadge, StatTile, Table, TeamBadge, type Column, type SortState } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+
+const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 
 export interface LeagueBrowserProps {
   state: LeagueState
@@ -26,12 +28,14 @@ function formatMoney(m: number): string {
 /** Team plate grid → that team's roster, picks and cap (docs/DESIGN.md §11). */
 export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProps) {
   const [selectedTeam, setSelectedTeam] = useState<TeamId>(state.userTeam)
+  const [posFilter, setPosFilter] = useState<Position | 'ALL'>('ALL')
+  const [sort, setSort] = useState<SortState>({ key: 'ovr', dir: 'desc' })
   const team = state.teams[selectedTeam]
   const info = data.teams[selectedTeam]
   const cap = data.cap.bySeason[String(state.season)] ?? 0
   const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
 
-  const rows: Row[] = (team?.roster ?? [])
+  const allRows: Row[] = (team?.roster ?? [])
     .map((slot) => {
       const player = state.players[slot.playerId]
       const scouting = state.scouting[slot.playerId]
@@ -39,13 +43,25 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
       return { id: slot.playerId, name: player.name, pos: player.pos, ovr: scouting.ovr, pot: scouting.pot, apy: slot.contract.apy, years: slot.contract.years }
     })
     .filter((r): r is Row => r !== null)
-    .sort((a, b) => b.ovr - a.ovr)
+
+  const rows = useMemo(() => {
+    const filtered = posFilter === 'ALL' ? allRows : allRows.filter((r) => r.pos === posFilter)
+    const dir = sort.dir === 'asc' ? 1 : -1
+    const sorted = [...filtered]
+    sorted.sort((a, b) => {
+      const va = sort.key === 'name' ? a.name : sort.key === 'pot' ? a.pot : sort.key === 'years' ? a.years : sort.key === 'apy' ? a.apy : a.ovr
+      const vb = sort.key === 'name' ? b.name : sort.key === 'pot' ? b.pot : sort.key === 'years' ? b.years : sort.key === 'apy' ? b.apy : b.ovr
+      return va < vb ? -1 * dir : va > vb ? 1 * dir : 0
+    })
+    return sorted
+  }, [allRows, posFilter, sort])
 
   const columns: Column<Row>[] = [
     {
       key: 'name',
       header: 'Player',
       frozen: true,
+      sortValue: (r) => r.name,
       render: (r) => (
         <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
           <BustSprite pos={r.pos} size={2} />
@@ -53,10 +69,10 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
         </span>
       ),
     },
-    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, render: (r) => r.ovr },
-    { key: 'pot', header: 'Pot', numeric: true, rating: true, render: (r) => r.pot },
-    { key: 'years', header: 'Years', numeric: true, render: (r) => r.years },
-    { key: 'apy', header: 'APY', numeric: true, render: (r) => formatMoney(r.apy) },
+    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, sortValue: (r) => r.ovr, render: (r) => r.ovr },
+    { key: 'pot', header: 'Pot', numeric: true, rating: true, sortValue: (r) => r.pot, render: (r) => r.pot },
+    { key: 'years', header: 'Years', numeric: true, sortValue: (r) => r.years, render: (r) => r.years },
+    { key: 'apy', header: 'APY', numeric: true, sortValue: (r) => r.apy, render: (r) => formatMoney(r.apy) },
   ]
 
   const picks = state.picks
@@ -120,7 +136,30 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
 
           <div className="gg-col-8">
             <Panel title="Roster" variant="sunken" revealIndex={3}>
-              <Table columns={columns} rows={rows} rowKey={(r) => r.id} caption={`${selectedTeam} roster`} dense onRowClick={(r) => onSelectPlayer(r.id)} />
+              <div role="group" aria-label="Filter by position" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)', marginBottom: 'var(--sp-3)' }}>
+                {FILTERS.map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    className="gg-button gg-button--secondary"
+                    aria-pressed={posFilter === f}
+                    onClick={() => setPosFilter(f)}
+                    style={posFilter === f ? { boxShadow: 'var(--shadow-press)' } : undefined}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+              <Table
+                columns={columns}
+                rows={rows}
+                rowKey={(r) => r.id}
+                caption={`${selectedTeam} roster`}
+                dense
+                onRowClick={(r) => onSelectPlayer(r.id)}
+                sort={sort}
+                onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
+              />
             </Panel>
           </div>
         </TeamScope>

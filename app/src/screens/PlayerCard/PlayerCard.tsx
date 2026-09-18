@@ -1,6 +1,7 @@
 import type { LeagueState, PlayerId, StaticData, TeamId } from '@contracts/index'
 import { Button, Meter, Panel, PositionBadge, StatusBadge, TeamBadge as TeamBadgePrimitive } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 
 export interface PlayerCardProps {
   state: LeagueState
@@ -58,8 +59,9 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
                   <TeamBadgePrimitive abbr={teamInfo.abbr} />
                 </TeamScope>
               )}
-              {player.rookieSeason === state.season && <StatusBadge status="rookie" />}
+              {isRookie(player, state) && <StatusBadge status="rookie" />}
               {slot?.injured && <StatusBadge status="injured" />}
+              {slot?.injured && <span style={{ color: 'var(--text-2)' }}>{injuredWeeksLabel(slot.injured)}</span>}
             </div>
             <p style={{ margin: 0, color: 'var(--text-2)' }}>Age {age}</p>
             <Button type="button" variant="ghost" onClick={onBack}>

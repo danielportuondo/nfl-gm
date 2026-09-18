@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TEAM_IDS, type GameSettings, type StaticData, type TeamId } from '@contracts/index'
+import { TEAM_IDS, type GameSettings, type SaveSlotMeta, type StaticData, type TeamId } from '@contracts/index'
 import { Button, Panel, TeamBadge } from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
@@ -7,6 +7,10 @@ import type { NewGameInput } from '@store/types'
 export interface NewGameProps {
   data: StaticData
   onStart: (input: NewGameInput) => void
+  /** The 'default' save slot's metadata, when one exists (docs/DECISIONS.md Phase 5 follow-up). */
+  savedGame?: SaveSlotMeta | null
+  onContinue?: () => void
+  continueBusy?: boolean
 }
 
 const MIN_START_SEASON = 2010
@@ -22,7 +26,7 @@ function yearRange(latest: number): number[] {
 const DEFAULT_SETTINGS: GameSettings = { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true }
 
 /** Year → team → horizon + settings, as a single column of panels, then "Your mandate" (docs/DESIGN.md §11). */
-export function NewGame({ data, onStart }: NewGameProps) {
+export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: NewGameProps) {
   const years = yearRange(data.manifest.latestRealSeason)
   const [startSeason, setStartSeason] = useState<number>(data.manifest.latestRealSeason)
   const [userTeam, setUserTeam] = useState<TeamId>(TEAM_IDS[13]) // IND — a reasonable, always-valid default
@@ -32,11 +36,28 @@ export function NewGame({ data, onStart }: NewGameProps) {
   const team = data.teams[userTeam]
   const endYear = startSeason + horizonSeasons - 1
   const seasonsWord = horizonSeasons === 1 ? 'season' : 'seasons'
+  const showContinue = Boolean(savedGame && onContinue)
+  const base = showContinue ? 1 : 0
 
   return (
     <>
+      {savedGame && onContinue && (
+        <div className="gg-col-12">
+          <Panel variant="attention" revealIndex={0}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--sp-3)' }}>
+              <p style={{ margin: 0 }}>
+                Continue as {savedGame.userTeam}, {savedGame.season} · {savedGame.phase.replace(/_/g, ' ').toLowerCase()}.
+              </p>
+              <Button type="button" variant="primary" busy={continueBusy} busyLabel="Loading…" onClick={onContinue}>
+                Continue
+              </Button>
+            </div>
+          </Panel>
+        </div>
+      )}
+
       <div className="gg-col-12">
-        <Panel title="Pick your start year" variant="sunken" revealIndex={0}>
+        <Panel title="Pick your start year" variant="sunken" revealIndex={base}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)' }}>
             {years.map((y) => (
               <Button
@@ -54,7 +75,7 @@ export function NewGame({ data, onStart }: NewGameProps) {
       </div>
 
       <div className="gg-col-12">
-        <Panel title="Pick your team" variant="sunken" revealIndex={1}>
+        <Panel title="Pick your team" variant="sunken" revealIndex={base + 1}>
           <div
             role="grid"
             aria-label="Teams"
@@ -86,7 +107,7 @@ export function NewGame({ data, onStart }: NewGameProps) {
       </div>
 
       <div className="gg-col-12">
-        <Panel title="Set your horizon" variant="sunken" revealIndex={2}>
+        <Panel title="Set your horizon" variant="sunken" revealIndex={base + 2}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-5)', alignItems: 'flex-end' }}>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
               Seasons to win it in
@@ -155,7 +176,7 @@ export function NewGame({ data, onStart }: NewGameProps) {
       {team && (
         <div className="gg-col-12">
           <TeamScope colors={team.colors}>
-            <Panel variant="plate" revealIndex={3}>
+            <Panel variant="plate" revealIndex={base + 3}>
               <p style={{ fontSize: 'var(--fs-3)', margin: '0 0 var(--sp-4)' }}>
                 Your mandate: win the Super Bowl by {endYear}. That's {horizonSeasons} {seasonsWord}.
               </p>

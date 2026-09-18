@@ -1,6 +1,8 @@
 import type { Game, LeagueState, StaticData } from '@contracts/index'
 import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
+import { injuredWeeksLabel } from '@screens/shared/playerStatus'
+import type { ScreenId } from '@store/router'
 
 export interface DashboardProps {
   state: LeagueState
@@ -11,6 +13,14 @@ export interface DashboardProps {
   onAdvancePhase: () => void
   simBusy?: boolean
   advanceBusy?: boolean
+  /** Routes an alert to the screen that can fix it (docs/HANDOFF.md Phase 5A brief item 5). */
+  onNavigate?: (screen: ScreenId) => void
+}
+
+interface Alert {
+  text: string
+  detail: string
+  screen: ScreenId
 }
 
 function nextGame(state: LeagueState): Game | undefined {
@@ -37,7 +47,7 @@ const ADVANCE_LABEL: Record<LeagueState['phase'], string> = {
   TRAINING_CAMP: 'Break camp',
 }
 
-export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy, advanceBusy }: DashboardProps) {
+export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy, advanceBusy, onNavigate }: DashboardProps) {
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
   const record = team?.record ?? { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
@@ -56,15 +66,44 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
   const draftPending = state.phase === 'DRAFT' && state.draftRoom?.status !== 'COMPLETE'
   const advanceLabel = ADVANCE_LABEL[state.phase]
 
-  const injured = (team?.roster ?? []).filter((slot) => slot.injured).length
+  const injuredSlots = (team?.roster ?? []).filter((slot) => slot.injured)
   const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1).length
-  const alerts: string[] = []
-  if (injured > 0) alerts.push(`${injured} player${injured === 1 ? '' : 's'} injured.`)
-  if (expiring > 0) alerts.push(`${expiring} contract${expiring === 1 ? '' : 's'} expiring after this season.`)
-  if (capSpace < 0) alerts.push(`Over the cap by ${formatMoney(-capSpace)}. Release or trade a contract to continue.`)
+  const alerts: Alert[] = []
+  if (injuredSlots.length > 0) {
+    const worst = injuredSlots
+      .map((slot) => ({ name: state.players[slot.playerId]?.name ?? slot.playerId, label: injuredWeeksLabel(slot.injured) }))
+      .sort((a, b) => (b.label ?? '').localeCompare(a.label ?? ''))[0]!
+    alerts.push({
+      text: `${injuredSlots.length} player${injuredSlots.length === 1 ? '' : 's'} injured.`,
+      detail: worst.label ? `${worst.name}: ${worst.label}` : worst.name,
+      screen: 'roster',
+    })
+  }
+  if (expiring > 0) {
+    alerts.push({
+      text: `${expiring} contract${expiring === 1 ? '' : 's'} expiring after this season.`,
+      detail: 'Re-sign or let them walk in Finances.',
+      screen: 'finances',
+    })
+  }
+  if (capSpace < 0) {
+    alerts.push({
+      text: `Over the cap by ${formatMoney(-capSpace)}.`,
+      detail: 'Release or trade a contract to continue.',
+      screen: 'finances',
+    })
+  }
   const rosterSize = team?.roster.length ?? 0
-  if ((state.phase === 'PRESEASON' || inSeason) && rosterSize > 53) alerts.push(`Roster has ${rosterSize} players. Cut to 53 to continue.`)
-  if ((state.phase === 'PRESEASON' || inSeason) && rosterSize < 46) alerts.push(`Roster has ${rosterSize} players. Sign at least ${46 - rosterSize} more to continue.`)
+  if ((state.phase === 'PRESEASON' || inSeason) && rosterSize > 53) {
+    alerts.push({ text: `Roster has ${rosterSize} players.`, detail: 'Cut to 53 to continue.', screen: 'roster' })
+  }
+  if ((state.phase === 'PRESEASON' || inSeason) && rosterSize < 46) {
+    alerts.push({
+      text: `Roster has ${rosterSize} players.`,
+      detail: `Sign at least ${46 - rosterSize} more in free agency.`,
+      screen: 'free-agency',
+    })
+  }
 
   return (
     <>
@@ -111,13 +150,23 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
           </div>
         </Panel>
         <div style={{ height: 'var(--sp-4)' }} />
-        <Panel title="Alerts" variant="default" revealIndex={2}>
+        <Panel title={`Alerts${alerts.length > 0 ? ` (${alerts.length})` : ''}`} variant={alerts.length > 0 ? 'attention' : 'default'} revealIndex={2}>
           {alerts.length === 0 ? (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>No alerts.</p>
           ) : (
-            <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
+            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
               {alerts.map((a, i) => (
-                <li key={i}>{a}</li>
+                <li key={i}>
+                  <button
+                    type="button"
+                    className="gg-nameplate"
+                    style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}
+                    onClick={() => onNavigate?.(a.screen)}
+                  >
+                    <span style={{ fontWeight: 600 }}>{a.text}</span>
+                    <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>{a.detail}</span>
+                  </button>
+                </li>
               ))}
             </ul>
           )}

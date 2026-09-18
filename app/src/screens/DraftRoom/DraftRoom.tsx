@@ -11,7 +11,7 @@ import {
   type TradeProposal,
   type TradeSide,
 } from '@contracts/index'
-import { Button, OfferCard, Panel, PositionBadge, Table, type Column } from '@ui/primitives'
+import { Button, OfferCard, Panel, PositionBadge, Table, type Column, type SortState } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
 
 export interface DraftRoomProps {
@@ -72,6 +72,7 @@ export function DraftRoom({
 }: DraftRoomProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
   const [selected, setSelected] = useState<PlayerId | null>(null)
+  const [sort, setSort] = useState<SortState>({ key: 'pot', dir: 'desc' })
   const room = state.draftRoom
   const teamInfo = data.teams[state.userTeam]
 
@@ -105,13 +106,26 @@ export function DraftRoom({
   const onClock = Boolean(room && room.status === 'ON_CLOCK' && currentPick?.owner === state.userTeam)
   const complete = room?.status === 'COMPLETE'
 
+  const sorted = useMemo(() => {
+    const dir = sort.dir === 'asc' ? 1 : -1
+    const withValues = filtered.map((r) => {
+      const value =
+        sort.key === 'name' ? r.name : sort.key === 'age' ? r.age : sort.key === 'ovr' ? r.ovr : sort.key === 'pot' ? r.pot : 0
+      return { r, value }
+    })
+    withValues.sort((a, b) => (a.value < b.value ? -1 * dir : a.value > b.value ? 1 * dir : 0))
+    return withValues.map((w) => w.r)
+  }, [filtered, sort])
+
   const yourPicks = room ? state.picks.filter((p) => p.season === room.season && p.owner === state.userTeam).sort((a, b) => a.round - b.round) : []
+  const selectedName = selected ? state.players[selected]?.name : undefined
 
   const columns: Column<ProspectRow>[] = [
     {
       key: 'name',
       header: 'Prospect',
       frozen: true,
+      sortValue: (r) => r.name,
       render: (r) => (
         <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
           <BustSprite pos={r.pos} size={2} status={{ rookie: true }} />
@@ -125,9 +139,32 @@ export function DraftRoom({
         </span>
       ),
     },
-    { key: 'age', header: 'Age', numeric: true, render: (r) => r.age },
-    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, render: (r) => r.ovr },
-    { key: 'pot', header: 'Pot', numeric: true, rating: true, render: (r) => r.pot },
+    { key: 'age', header: 'Age', numeric: true, sortValue: (r) => r.age, render: (r) => r.age },
+    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, sortValue: (r) => r.ovr, render: (r) => r.ovr },
+    { key: 'pot', header: 'Pot', numeric: true, rating: true, sortValue: (r) => r.pot, render: (r) => r.pot },
+    ...(onClock
+      ? [
+          {
+            key: 'draft',
+            header: '',
+            render: (r: ProspectRow) => (
+              <Button
+                type="button"
+                variant="primary"
+                busy={busy}
+                busyLabel="…"
+                aria-label={`Draft ${r.name}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onMakePick(r.id)
+                }}
+              >
+                Draft
+              </Button>
+            ),
+          } satisfies Column<ProspectRow>,
+        ]
+      : []),
   ]
 
   if (!room) {
@@ -163,6 +200,7 @@ export function DraftRoom({
               <p style={{ margin: 'var(--sp-2) 0 0', color: 'var(--text-2)' }}>
                 Round {currentPick?.round}, pick {currentPick?.pick ?? room.currentPickIndex + 1}
               </p>
+              <p style={{ margin: 'var(--sp-2) 0 0' }}>Pick a prospect below, then make the pick.</p>
             </div>
           </Panel>
         )}
@@ -200,21 +238,31 @@ export function DraftRoom({
           </div>
           <Table
             columns={columns}
-            rows={filtered}
+            rows={sorted}
             rowKey={(r) => r.id}
-            caption="Available prospects, sorted by consensus potential"
+            caption="Available prospects"
             dense
             selectedRowKey={selected}
             onRowClick={(r) => setSelected(r.id)}
+            sort={sort}
+            onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
           />
         </Panel>
 
         <div style={{ height: 'var(--sp-4)' }} />
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-3)' }}>
-          <Button type="button" variant="primary" busy={busy} busyLabel="Working…" disabled={!onClock || !selected} onClick={() => selected && onMakePick(selected)}>
-            Make pick
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-3)', alignItems: 'center' }}>
+          <Button
+            type="button"
+            variant="primary"
+            busy={busy}
+            busyLabel="Working…"
+            disabled={!onClock || !selected}
+            onClick={() => selected && onMakePick(selected)}
+          >
+            {selectedName ? `Make pick: ${selectedName}` : 'Make pick'}
           </Button>
+          {onClock && !selected && <span style={{ color: 'var(--text-2)' }}>Select a prospect above to make your pick.</span>}
           <Button type="button" variant="secondary" busy={busy} busyLabel="Working…" disabled={complete} onClick={onAutoPick}>
             Auto pick
           </Button>

@@ -1,20 +1,33 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
-import { TEAM_IDS, type DraftPick, type DraftRoomState, type LeagueState, type StandingRow, type TradeEvaluation, type TradeProposal } from '@contracts/index'
+import {
+  TEAM_IDS,
+  type DraftPick,
+  type DraftRoomState,
+  type LeagueState,
+  type SeasonSummary,
+  type StandingRow,
+  type TradeEvaluation,
+  type TradeProposal,
+} from '@contracts/index'
 import { mockLeague, mockStatic } from '@fixtures/mockLeague'
 import { About } from '@screens/About'
 import { Dashboard } from '@screens/Dashboard'
 import { DraftRoom } from '@screens/DraftRoom'
+import { EndGame } from '@screens/EndGame'
+import { Finances } from '@screens/Finances'
 import { FreeAgency } from '@screens/FreeAgency'
 import { LeagueBrowser } from '@screens/LeagueBrowser'
 import { NewGame } from '@screens/NewGame'
 import { PlayerCard } from '@screens/PlayerCard'
 import { Roster } from '@screens/Roster'
 import { Schedule } from '@screens/Schedule'
+import { SeasonRecap } from '@screens/SeasonRecap'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
 import { AcceptanceBar } from '@ui/primitives'
 import { cleanup, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 /** Draft-room fixture: a one-round order with the user on the clock and one AI pending offer. */
@@ -66,6 +79,20 @@ function fixtureStandings(): StandingRow[] {
   }))
 }
 
+/** A completed-season fixture for Season Recap / End Game (docs/HANDOFF.md Phase 5A brief item 6). */
+function fixtureSeasonSummary(state: LeagueState): SeasonSummary {
+  return {
+    season: state.season,
+    champion: state.userTeam,
+    runnerUp: TEAM_IDS.find((t) => t !== state.userTeam)!,
+    standings: fixtureStandings(),
+    awards: [],
+    userTeam: state.userTeam,
+    userRecord: state.teams[state.userTeam]!.record,
+    userPlayoffExit: 'CHAMPION',
+  }
+}
+
 let errorSpy: ReturnType<typeof vi.spyOn>
 
 beforeEach(() => {
@@ -95,6 +122,17 @@ describe('Dashboard', () => {
     const record = state.teams[state.userTeam]!.record
     expect(screen.getByText(new RegExp(`${record.wins}-${record.losses}`))).toBeInTheDocument()
   })
+
+  it('routes an alert to the screen that can fix it', async () => {
+    const state = mockLeague()
+    const team = state.teams[state.userTeam]!
+    const overCap: LeagueState = { ...state, teams: { ...state.teams, [state.userTeam]: { ...team, deadMoney: team.deadMoney + 500 } } }
+    const onNavigate = vi.fn()
+    const data = mockStatic()
+    render(<Dashboard state={overCap} data={data} cap={150} onSimWeek={vi.fn()} onAdvancePhase={vi.fn()} onNavigate={onNavigate} />)
+    await userEvent.click(screen.getByText(/Over the cap/))
+    expect(onNavigate).toHaveBeenCalledWith('finances')
+  })
 })
 
 describe('Roster', () => {
@@ -106,6 +144,32 @@ describe('Roster', () => {
     )
     const rows = container.querySelectorAll('.gg-table tbody tr')
     expect(rows.length).toBe(53)
+  })
+
+  it('shows the injured badge and weeks out for an injured roster slot', () => {
+    const state = mockLeague()
+    const team = state.teams[state.userTeam]!
+    const injuredSlot = { ...team.roster[0]!, injured: { weeksOut: 3, kind: 'knee', season: state.season, week: 1 } }
+    const withInjury: LeagueState = {
+      ...state,
+      teams: { ...state.teams, [state.userTeam]: { ...team, roster: [injuredSlot, ...team.roster.slice(1)] } },
+    }
+    const data = mockStatic()
+    render(<Roster state={withInjury} data={data} onSelectPlayer={vi.fn()} onReorderDepthChart={vi.fn()} />)
+    expect(screen.getByText('Injured')).toBeInTheDocument()
+    expect(screen.getByText('Out 3 wk')).toBeInTheDocument()
+  })
+
+  it('opens a player with Enter on a focused row (keyboard-only, docs/DESIGN.md §10)', async () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const onSelectPlayer = vi.fn()
+    const { container } = render(<Roster state={state} data={data} onSelectPlayer={onSelectPlayer} onReorderDepthChart={vi.fn()} />)
+    const firstRow = container.querySelector<HTMLElement>('.gg-table tbody tr')!
+    expect(firstRow).toHaveAttribute('tabindex', '0')
+    firstRow.focus()
+    await userEvent.keyboard('{Enter}')
+    expect(onSelectPlayer).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -269,5 +333,59 @@ describe('LeagueBrowser', () => {
     expect(screen.getByText('Teams')).toBeInTheDocument()
     const rows = document.querySelectorAll('.gg-table tbody tr')
     expect(rows.length).toBe(53)
+  })
+})
+
+describe('Finances', () => {
+  it('renders the payroll table and cap tiles, and allows a release', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const onRelease = vi.fn()
+    render(<Finances state={state} data={data} cap={200} capNextSeason={210} onRelease={onRelease} />)
+    expect(screen.getByText('Payroll')).toBeInTheDocument()
+    expect(screen.getByText('Cap space next season')).toBeInTheDocument()
+    const releaseButtons = screen.getAllByRole('button', { name: /Release/ })
+    releaseButtons[0]!.click()
+    expect(onRelease).toHaveBeenCalled()
+  })
+})
+
+describe('SeasonRecap', () => {
+  it('shows a placeholder before any season has finished', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    render(<SeasonRecap state={state} data={data} />)
+    expect(screen.getByText(/No season has finished yet/)).toBeInTheDocument()
+  })
+
+  it('renders the standings and the user season line for a completed season', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const withHistory: LeagueState = { ...state, history: [fixtureSeasonSummary(state)] }
+    render(<SeasonRecap state={withHistory} data={data} />)
+    expect(screen.getByText(/season recap/)).toBeInTheDocument()
+    expect(screen.getByText('Final standings')).toBeInTheDocument()
+  })
+})
+
+describe('EndGame', () => {
+  it('celebrates a championship without a Keep playing option', () => {
+    const state = mockLeague()
+    const champion: LeagueState = { ...state, outcome: 'CHAMPION', history: [fixtureSeasonSummary(state)] }
+    const data = mockStatic()
+    render(<EndGame state={champion} data={data} cap={200} />)
+    expect(screen.getByText(/champions/)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Keep playing' })).not.toBeInTheDocument()
+  })
+
+  it('offers Keep playing when the horizon expires', async () => {
+    const state = mockLeague()
+    const expired: LeagueState = { ...state, outcome: 'HORIZON_EXPIRED' }
+    const data = mockStatic()
+    const onKeepPlaying = vi.fn()
+    render(<EndGame state={expired} data={data} cap={200} onKeepPlaying={onKeepPlaying} />)
+    expect(screen.getByText('Horizon reached')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: 'Keep playing' }))
+    expect(onKeepPlaying).toHaveBeenCalled()
   })
 })

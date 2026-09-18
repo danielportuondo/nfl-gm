@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { POSITIONS, type LeagueState, type PlayerId, type Position, type RosterSlot, type StaticData } from '@contracts/index'
-import { Button, NamePlate, Panel, PositionBadge, StatusBadge, Table, type Column } from '@ui/primitives'
+import { Button, NamePlate, Panel, PositionBadge, StatusBadge, Table, type Column, type SortState } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 
 export interface RosterProps {
   state: LeagueState
@@ -24,6 +25,7 @@ interface Row {
   apy: number
   rookie: boolean
   injured: boolean
+  injuredWeeks: string | null
   expiring: boolean
 }
 
@@ -32,6 +34,7 @@ const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 /** Dense roster table with a position filter, plus a keyboard-reorderable depth chart (docs/DESIGN.md §11). */
 export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRelease, releaseBusy }: RosterProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
+  const [sort, setSort] = useState<SortState>({ key: 'ovr', dir: 'desc' })
   const team = state.teams[state.userTeam]
 
   const rows: Row[] = useMemo(() => {
@@ -48,20 +51,47 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
         pot: scouting.pot,
         years: slot.contract.years,
         apy: slot.contract.apy,
-        rookie: player.rookieSeason === state.season,
+        rookie: isRookie(player, state),
         injured: Boolean(slot.injured),
+        injuredWeeks: injuredWeeksLabel(slot.injured),
         expiring: slot.contract.years <= 1,
       }
     })
-  }, [team, state.players, state.scouting, state.season])
+  }, [team, state])
 
   const filtered = filter === 'ALL' ? rows : rows.filter((r) => r.pos === filter)
+  const sorted = useMemo(() => {
+    const dir = sort.dir === 'asc' ? 1 : -1
+    const withValues = filtered.map((r) => ({ row: r, value: sortValue(r, sort.key) }))
+    withValues.sort((a, b) => (a.value < b.value ? -1 * dir : a.value > b.value ? 1 * dir : 0))
+    return withValues.map((w) => w.row)
+  }, [filtered, sort])
+
+  function sortValue(r: Row, key: string): number | string {
+    switch (key) {
+      case 'name':
+        return r.name
+      case 'age':
+        return r.age
+      case 'ovr':
+        return r.ovr
+      case 'pot':
+        return r.pot
+      case 'years':
+        return r.years
+      case 'apy':
+        return r.apy
+      default:
+        return 0
+    }
+  }
 
   const columns: Column<Row>[] = [
     {
       key: 'name',
       header: 'Player',
       frozen: true,
+      sortValue: (r) => r.name,
       render: (r) => (
         <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
           <BustSprite pos={r.pos} size={2} status={{ injured: r.injured, rookie: r.rookie }} />
@@ -70,18 +100,23 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
         </span>
       ),
     },
-    { key: 'age', header: 'Age', numeric: true, render: (r) => r.age },
-    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, render: (r) => r.ovr },
-    { key: 'pot', header: 'Pot', numeric: true, rating: true, render: (r) => r.pot },
-    { key: 'years', header: 'Years', numeric: true, render: (r) => r.years },
-    { key: 'apy', header: 'APY', numeric: true, render: (r) => `$${r.apy.toFixed(1)}M` },
+    { key: 'age', header: 'Age', numeric: true, sortValue: (r) => r.age, render: (r) => r.age },
+    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, sortValue: (r) => r.ovr, render: (r) => r.ovr },
+    { key: 'pot', header: 'Pot', numeric: true, rating: true, sortValue: (r) => r.pot, render: (r) => r.pot },
+    { key: 'years', header: 'Years', numeric: true, sortValue: (r) => r.years, render: (r) => r.years },
+    { key: 'apy', header: 'APY', numeric: true, sortValue: (r) => r.apy, render: (r) => `$${r.apy.toFixed(1)}M` },
     {
       key: 'status',
       header: 'Status',
       render: (r) => (
-        <span style={{ display: 'flex', gap: 'var(--sp-1)' }}>
+        <span style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'center', flexWrap: 'wrap' }}>
           {r.rookie && <StatusBadge status="rookie" />}
-          {r.injured && <StatusBadge status="injured" />}
+          {r.injured && (
+            <>
+              <StatusBadge status="injured" />
+              {r.injuredWeeks && <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>{r.injuredWeeks}</span>}
+            </>
+          )}
           {r.expiring && <StatusBadge status="expiring" />}
         </span>
       ),
@@ -134,10 +169,12 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
           </div>
           <Table
             columns={columns}
-            rows={filtered}
+            rows={sorted}
             rowKey={(r) => r.slot.playerId}
             caption={`${team?.id ?? ''} roster · ${rows.length} players`}
             dense
+            sort={sort}
+            onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
             onRowClick={(r) => onSelectPlayer(r.slot.playerId)}
           />
         </Panel>

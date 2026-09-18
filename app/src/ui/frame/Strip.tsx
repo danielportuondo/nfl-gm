@@ -12,6 +12,8 @@ export interface StripProps {
   record: string
   capSpaceText: string
   horizonText: string
+  /** Only REGULAR/PLAYOFFS have a meaningful week number; the offseason shows the phase label alone. */
+  inSeason?: boolean
   /** The one bold moment (docs/DESIGN.md §5.3): reused by the Draft Room, built by a later dispatch. */
   onClock?: boolean
   /** Trailing slot, right-aligned — the theme toggle lives here so it's reachable from every screen. */
@@ -19,7 +21,7 @@ export interface StripProps {
 }
 
 /** Sticky scoreboard strip: team plate, season/week, record, cap space, horizon (docs/DESIGN.md §4). */
-export function Strip({ teamAbbr, teamColors, season, week, phaseLabel, record, capSpaceText, horizonText, onClock, end }: StripProps) {
+export function Strip({ teamAbbr, teamColors, season, week, phaseLabel, record, capSpaceText, horizonText, inSeason, onClock, end }: StripProps) {
   return (
     <header className={onClock ? 'gg-strip gg-strip--on-clock' : 'gg-strip'}>
       <TeamScope as="span" colors={teamColors} className="gg-strip__item">
@@ -30,7 +32,7 @@ export function Strip({ teamAbbr, teamColors, season, week, phaseLabel, record, 
       ) : (
         <>
           <span className="gg-strip__item tabular-nums">
-            {season} · {phaseLabel} {week > 0 ? `· week ${week}` : ''}
+            {season} · {phaseLabel} {inSeason && week > 0 ? `· week ${week}` : ''}
           </span>
           <span className="gg-strip__item tabular-nums">{record}</span>
           <span className="gg-strip__item tabular-nums">{capSpaceText}</span>

@@ -96,6 +96,18 @@ export function createGameStore(config: StoreConfig = {}) {
       for (const e of toastEvents) addToast(e, 'info')
     }
 
+    /**
+     * Season-boundary navigation (docs/HANDOFF.md Phase 5A brief items 6–7): leaving PLAYOFFS surfaces
+     * the Season Recap; a terminal outcome (Super Bowl win or horizon expiry) takes over the screen.
+     */
+    function routeAfterSim(before: LeagueState, after: LeagueState) {
+      if (before.outcome === 'IN_PROGRESS' && after.outcome !== 'IN_PROGRESS') {
+        get().actions.goTo('end-game')
+      } else if (before.phase === 'PLAYOFFS' && after.phase !== 'PLAYOFFS') {
+        get().actions.goTo('season-recap')
+      }
+    }
+
     const seasonData: EngineContext['seasonData'] =
       config.ctx?.seasonData ??
       ((season) => {
@@ -129,22 +141,18 @@ export function createGameStore(config: StoreConfig = {}) {
       autosaveTimer = setTimeout(() => autosave(next.state!), 1000)
     })
 
-    /** Pick the last game back up after a reload; a missing slot just leaves the new-game screen up. */
-    async function restoreSave(): Promise<void> {
+    /**
+     * Checks for a save without loading it (docs/DECISIONS.md Phase 5 follow-up: restore used to be
+     * silent — the New Game screen now shows an explicit "Continue" affordance instead).
+     */
+    async function checkForSave(): Promise<void> {
       if (mode === 'mock' || get().state) return
-      let league: LeagueState
       try {
-        league = await persistence.load('default')
+        const saves = await persistence.listSaves()
+        const meta = saves.find((s) => s.slot === 'default') ?? null
+        set({ savedGame: meta })
       } catch {
-        return
-      }
-      try {
-        await ensureLoaded(league.season, league.season + 1 + DRAFTS_AHEAD)
-        if (get().state) return
-        set({ state: league })
-        if (get().screen === 'new-game') get().actions.goTo('dashboard')
-      } catch (err) {
-        reportNotBuilt('Could not restore the saved game.', err)
+        // No saves yet, or persistence isn't built — the New Game screen just has no Continue button.
       }
     }
 
@@ -171,7 +179,7 @@ export function createGameStore(config: StoreConfig = {}) {
         .loadStatic()
         .then((data) => {
           set({ data, dataStatus: 'ready', dataError: null })
-          return restoreSave()
+          return checkForSave()
         })
         .catch((err: unknown) => {
           const message = err instanceof Error ? err.message : String(err)
@@ -198,6 +206,7 @@ export function createGameStore(config: StoreConfig = {}) {
       theme: initialTheme,
       toasts: [],
       alerts: [],
+      savedGame: null,
       tradeOffers: [],
       busy: {
         newGame: false,
@@ -267,6 +276,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const report = modules.league.simWeek(league, ctx)
             set({ state: report.state })
             routeEvents(report.events, report.state)
+            routeAfterSim(league, report.state)
             if (report.state.phase !== league.phase || report.state.week % 4 === 0) autosave(report.state)
           } catch (err) {
             reportNotBuilt('Could not sim the week.', err)
@@ -325,6 +335,37 @@ export function createGameStore(config: StoreConfig = {}) {
 
         dismissToast(id: string) {
           set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
+        },
+
+        async continueGame() {
+          set((s) => ({ busy: { ...s.busy, newGame: true } }))
+          try {
+            const league = await persistence.load('default')
+            await ensureLoaded(league.season, league.season + 1 + DRAFTS_AHEAD)
+            if (!get().state) set({ state: league })
+            get().actions.goTo(league.outcome === 'IN_PROGRESS' ? 'dashboard' : 'end-game')
+          } catch (err) {
+            reportNotBuilt('Could not continue the saved game.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, newGame: false } }))
+          }
+        },
+
+        keepPlaying() {
+          const league = get().state
+          if (!league || league.outcome === 'IN_PROGRESS') return
+          const next: LeagueState = { ...league, outcome: 'IN_PROGRESS' }
+          set({ state: next })
+          autosave(next)
+          get().actions.goTo('dashboard')
+        },
+
+        capFor(season: Season): number | null {
+          try {
+            return modules.fa.capFor(season, buildCtx())
+          } catch {
+            return null
+          }
         },
 
         // --- Draft Room --------------------------------------------------------------------------
@@ -576,6 +617,17 @@ export function createGameStore(config: StoreConfig = {}) {
           }
         },
 
+        offerOdds(playerId: PlayerId, contract: Contract): number | null {
+          const league = get().state
+          if (!league) return null
+          try {
+            const ctx = buildCtx()
+            return modules.fa.offerOdds(league, league.userTeam, playerId, contract, ctx)
+          } catch {
+            return null
+          }
+        },
+
         // --- Schedule / season loop ------------------------------------------------------------------
         async simToNextEvent() {
           const league = get().state
@@ -595,7 +647,10 @@ export function createGameStore(config: StoreConfig = {}) {
               if (current.phase !== startPhase) break
               if (report.events.some((e) => eventMentionsUser(e, current))) break
             }
-            if (current !== league) autosave(current)
+            if (current !== league) {
+              autosave(current)
+              routeAfterSim(league, current)
+            }
           } catch (err) {
             reportNotBuilt('Could not sim to the next event.', err)
           } finally {
@@ -612,11 +667,16 @@ export function createGameStore(config: StoreConfig = {}) {
             const MAX_WEEKS = 40
             for (let i = 0; i < MAX_WEEKS; i++) {
               if (current.phase !== 'REGULAR' && current.phase !== 'PLAYOFFS') break
+              const before = current
               const ctx = buildCtx()
               const report = modules.league.simWeek(current, ctx)
               current = report.state
               routeEvents(report.events, current)
               set({ state: current })
+              // Checked every week, not just before/after the whole run: a season that goes straight
+              // from REGULAR through PLAYOFFS to OFFSEASON_RESIGN in one call must still surface the
+              // Season Recap / End Game the moment it crosses that boundary (docs/HANDOFF.md item 6).
+              routeAfterSim(before, current)
             }
             if (current !== league) autosave(current)
           } catch (err) {

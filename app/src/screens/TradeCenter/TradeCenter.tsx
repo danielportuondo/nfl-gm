@@ -1,10 +1,15 @@
 import { useMemo, useState } from 'react'
 import {
+  POSITIONS,
   TEAM_IDS,
   type DraftPick,
   type LeagueState,
   type PickRef,
+  type Player,
   type PlayerId,
+  type Position,
+  type RosterSlot,
+  type ScoutingView,
   type StaticData,
   type TeamId,
   type TradeEvaluation,
@@ -25,12 +30,12 @@ export interface TradeCenterProps {
   onRefreshOffers: () => void
 }
 
-function pickKey(p: Pick<DraftPick, 'season' | 'round' | 'originalTeam'>): string {
-  return `${p.season}-${p.round}-${p.originalTeam}`
+function pickKey(p: Pick<DraftPick, 'season' | 'round' | 'originalTeam' | 'pick'>): string {
+  return `${p.season}-${p.round}-${p.originalTeam}-${p.pick ?? '?'}`
 }
 
 function toRef(p: DraftPick): PickRef {
-  return { season: p.season, round: p.round, originalTeam: p.originalTeam }
+  return { season: p.season, round: p.round, originalTeam: p.originalTeam, pick: p.pick }
 }
 
 function describeSide(state: LeagueState, data: StaticData, side: TradeSide): string {
@@ -58,19 +63,65 @@ interface AssetPickerProps {
   onTogglePick: (key: string) => void
 }
 
+const ASSET_SORTS = [
+  { key: 'ovr', label: 'Overall' },
+  { key: 'name', label: 'Name' },
+  { key: 'age', label: 'Age' },
+] as const
+
 function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePlayer, onTogglePick }: AssetPickerProps) {
   const team = state.teams[teamId]
   const picks = state.picks.filter((p) => p.owner === teamId && p.playerId === null)
+  const [posFilter, setPosFilter] = useState<Position | 'ALL'>('ALL')
+  const [sortKey, setSortKey] = useState<(typeof ASSET_SORTS)[number]['key']>('ovr')
+
+  const rosterRows = (team?.roster ?? [])
+    .map((slot) => {
+      const player = state.players[slot.playerId]
+      const scouting = state.scouting[slot.playerId]
+      if (!player || !scouting) return null
+      return { slot, player, scouting, age: state.season - player.birthYear }
+    })
+    .filter((r): r is { slot: RosterSlot; player: Player; scouting: ScoutingView; age: number } => r !== null)
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
       <div>
-        <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>Players</h4>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--sp-2)', marginBottom: 'var(--sp-2)' }}>
+          <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: 0 }}>Players</h4>
+          <div style={{ display: 'flex', gap: 'var(--sp-2)', flexWrap: 'wrap' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', fontSize: 'var(--fs-1)' }}>
+              Position
+              <select value={posFilter} onChange={(e) => setPosFilter(e.target.value as Position | 'ALL')}>
+                <option value="ALL">All</option>
+                {POSITIONS.map((p) => (
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', fontSize: 'var(--fs-1)' }}>
+              Sort
+              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as (typeof ASSET_SORTS)[number]['key'])}>
+                {ASSET_SORTS.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
         <div style={{ maxHeight: 220, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
-          {(team?.roster ?? []).map((slot) => {
-            const player = state.players[slot.playerId]
-            const scouting = state.scouting[slot.playerId]
-            if (!player || !scouting) return null
-            return (
+          {rosterRows
+            .filter((r) => posFilter === 'ALL' || r.player.pos === posFilter)
+            .sort((a, b) => {
+              if (sortKey === 'name') return a.player.name.localeCompare(b.player.name)
+              if (sortKey === 'age') return b.age - a.age
+              return b.scouting.ovr - a.scouting.ovr
+            })
+            .map(({ slot, player, scouting }) => (
               <label key={slot.playerId} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
                 <input
                   type="checkbox"
@@ -79,22 +130,25 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
                 />
                 {player.name} <PositionBadge pos={player.pos} /> <span className="tabular-nums">{scouting.ovr} ovr</span>
               </label>
-            )
-          })}
+            ))}
+          {rosterRows.length === 0 && <p style={{ margin: 0, color: 'var(--text-2)' }}>No players on this roster.</p>}
         </div>
       </div>
       <div>
         <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>Draft picks</h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
-          {picks.map((p, i) => {
-            const key = pickKey(p)
-            return (
-              <label key={`${key}-${p.pick ?? i}`} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-                <input type="checkbox" checked={selectedPicks.has(key)} onChange={() => onTogglePick(key)} />
-                {p.season} round {p.round}
-              </label>
-            )
-          })}
+          {[...picks]
+            .sort((a, b) => a.season - b.season || a.round - b.round || (a.pick ?? 0) - (b.pick ?? 0))
+            .map((p) => {
+              const key = pickKey(p)
+              return (
+                <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+                  <input type="checkbox" checked={selectedPicks.has(key)} onChange={() => onTogglePick(key)} />
+                  {p.season} round {p.round}
+                  {p.pick != null ? ` (pick ${p.pick})` : ''}
+                </label>
+              )
+            })}
           {picks.length === 0 && <p style={{ margin: 0, color: 'var(--text-2)' }}>No picks owned.</p>}
         </div>
       </div>

@@ -14,6 +14,9 @@ export type ScreenId =
   | 'schedule'
   | 'standings'
   | 'league'
+  | 'finances'
+  | 'season-recap'
+  | 'end-game'
   | 'about'
 
 export interface Route {
@@ -32,6 +35,9 @@ const SCREENS: ScreenId[] = [
   'schedule',
   'standings',
   'league',
+  'finances',
+  'season-recap',
+  'end-game',
   'about',
 ]
 

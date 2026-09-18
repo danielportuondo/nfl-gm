@@ -9,6 +9,8 @@ import type {
   PersistenceModule,
   PlayerId,
   Position,
+  SaveSlotMeta,
+  Season,
   StandingRow,
   StaticData,
   TeamId,
@@ -55,6 +57,8 @@ export interface GameStoreState {
    * later for a full log. Only events involving the user's team become toasts.
    */
   alerts: string[]
+  /** Metadata for the 'default' save slot, if one exists; drives the New Game screen's Continue affordance. */
+  savedGame: SaveSlotMeta | null
   /** Ephemeral AI-initiated season trade offers fetched by the Trade Center; not part of LeagueState. */
   tradeOffers: TradeProposal[]
   busy: {
@@ -80,6 +84,12 @@ export interface GameStoreState {
     advancePhase: () => Promise<void>
     save: () => Promise<void>
     dismissToast: (id: string) => void
+    /** Loads the 'default' save and enters the game (New Game screen's Continue affordance). */
+    continueGame: () => Promise<void>
+    /** Resets a HORIZON_EXPIRED outcome so the user can keep running the front office (End Game screen). */
+    keepPlaying: () => void
+    /** Cap in $M for any season (this or a future one), for Finances' "next season" tile. Null while data is loading. */
+    capFor: (season: Season) => number | null
 
     // --- Draft Room ------------------------------------------------------------------------
     startDraft: () => Promise<void>
@@ -108,6 +118,8 @@ export interface GameStoreState {
     resignAsk: (playerId: PlayerId) => number | null
     /** This season's cap in $M, including the post-data growth rule; null while data is loading. */
     capThisSeason: () => number | null
+    /** P(accept) before any offer is made, for the offer form's live acceptance odds. Null when not built yet. */
+    offerOdds: (playerId: PlayerId, contract: Contract) => number | null
 
     // --- Schedule / season -------------------------------------------------------------------
     simToNextEvent: () => Promise<void>

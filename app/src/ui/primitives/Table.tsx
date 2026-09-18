@@ -83,7 +83,18 @@ export function Table<T>({
               <tr
                 key={key}
                 aria-selected={selected}
+                tabIndex={onRowClick ? 0 : undefined}
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          onRowClick(row)
+                        }
+                      }
+                    : undefined
+                }
                 style={onRowClick ? { cursor: 'pointer' } : undefined}
               >
                 {columns.map((col) => (

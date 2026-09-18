@@ -5,12 +5,15 @@ import { Button } from '@ui/primitives'
 import { About } from '@screens/About'
 import { Dashboard } from '@screens/Dashboard'
 import { DraftRoom } from '@screens/DraftRoom'
+import { EndGame } from '@screens/EndGame'
+import { Finances } from '@screens/Finances'
 import { FreeAgency } from '@screens/FreeAgency'
 import { LeagueBrowser } from '@screens/LeagueBrowser'
 import { NewGame } from '@screens/NewGame'
 import { PlayerCard } from '@screens/PlayerCard'
 import { Roster } from '@screens/Roster'
 import { Schedule } from '@screens/Schedule'
+import { SeasonRecap } from '@screens/SeasonRecap'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
 
@@ -22,7 +25,9 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'draft', label: 'Draft' },
   { id: 'trade', label: 'Trades' },
   { id: 'free-agency', label: 'Free agency' },
+  { id: 'finances', label: 'Finances' },
   { id: 'league', label: 'League' },
+  { id: 'season-recap', label: 'Recap' },
   { id: 'about', label: 'About' },
 ]
 
@@ -33,8 +38,8 @@ function formatPhase(phase: string): string {
 }
 
 export function App() {
-  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, alerts, tradeOffers, busy, actions } = useGameStore()
-  void alerts // surfaced by a future Dashboard pass; kept in the store per docs/HANDOFF.md Phase 3E follow-up.
+  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, alerts, savedGame, tradeOffers, busy, actions } = useGameStore()
+  void alerts // surfaced by the Dashboard alerts panel; kept in the store per docs/HANDOFF.md Phase 3E follow-up.
 
   if (!state || !data) {
     return (
@@ -53,7 +58,7 @@ export function App() {
         {screen === 'about' ? (
           <About />
         ) : data ? (
-          <NewGame data={data} onStart={actions.newGame} />
+          <NewGame data={data} onStart={actions.newGame} savedGame={savedGame} onContinue={actions.continueGame} continueBusy={busy.newGame} />
         ) : dataStatus === 'error' ? (
           <p className="gg-col-12" role="alert">
             Could not load league data. {dataError}
@@ -79,6 +84,7 @@ export function App() {
   const onClock = Boolean(
     state.phase === 'DRAFT' && room?.status === 'ON_CLOCK' && room.order[room.currentPickIndex]?.owner === state.userTeam,
   )
+  const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
 
   return (
     <AppFrame
@@ -91,6 +97,7 @@ export function App() {
         record: record.ties > 0 ? `${record.wins}-${record.losses}-${record.ties}` : `${record.wins}-${record.losses}`,
         capSpaceText: `$${(cap - payroll).toFixed(1)}M free`,
         horizonText: `${horizonElapsed + 1}/${horizonTotal} seasons`,
+        inSeason,
         onClock,
         end: (
           <Button type="button" variant="ghost" onClick={() => actions.setTheme(theme === 'light' ? 'dark' : 'light')}>
@@ -99,7 +106,7 @@ export function App() {
         ),
       }}
       navItems={NAV_ITEMS}
-      currentScreen={screen === 'player' ? 'roster' : screen === 'new-game' ? 'dashboard' : screen}
+      currentScreen={screen === 'player' ? 'roster' : screen === 'new-game' || screen === 'end-game' ? 'dashboard' : screen}
       onSelectScreen={(id) => actions.goTo(id as Parameters<typeof actions.goTo>[0])}
       toasts={toasts}
       onDismissToast={actions.dismissToast}
@@ -127,6 +134,20 @@ export function App() {
           onAdvancePhase={actions.advancePhase}
           simBusy={busy.simWeek}
           advanceBusy={busy.advancePhase}
+          onNavigate={actions.goTo}
+        />
+      )}
+      {screen === 'end-game' && <EndGame state={state} data={data} cap={cap} onKeepPlaying={state.outcome === 'HORIZON_EXPIRED' ? actions.keepPlaying : undefined} />}
+      {screen === 'season-recap' && <SeasonRecap state={state} data={data} />}
+      {screen === 'finances' && (
+        <Finances
+          state={state}
+          data={data}
+          cap={cap}
+          capNextSeason={actions.capFor(state.season + 1)}
+          busy={busy.fa}
+          onRelease={actions.release}
+          onSelectPlayer={actions.selectPlayer}
         />
       )}
       {screen === 'draft' && (
@@ -166,6 +187,7 @@ export function App() {
           onRelease={actions.release}
           onSignUdfa={actions.signUdfa}
           onResignAsk={actions.resignAsk}
+          onOfferOdds={actions.offerOdds}
         />
       )}
       {screen === 'schedule' && (
