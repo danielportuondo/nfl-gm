@@ -14,7 +14,15 @@ interface AppFrameProps {
 }
 
 /** Strip + Rail/Tabs + Board (docs/DESIGN.md §4). Screens render into `children` as the Board content. */
-export function AppFrame({ strip, navItems, currentScreen, onSelectScreen, toasts, onDismissToast, children }: AppFrameProps) {
+export function AppFrame({
+  strip,
+  navItems,
+  currentScreen,
+  onSelectScreen,
+  toasts,
+  onDismissToast,
+  children,
+}: AppFrameProps) {
   return (
     <div className="gg-app">
       <Rail items={navItems} current={currentScreen} onSelect={onSelectScreen} />

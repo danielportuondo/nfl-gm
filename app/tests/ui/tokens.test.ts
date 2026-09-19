@@ -36,34 +36,79 @@ const lightVars = variableNames(lightBlock)
 
 // docs/DESIGN.md §2.1 "night game"
 const COLOR_TOKENS = [
-  '--surface-0', '--surface-1', '--surface-2', '--surface-3', '--line',
-  '--text-1', '--text-2', '--text-3', '--text-inverse',
-  '--accent', '--on-accent', '--danger', '--on-danger', '--positive', '--on-positive',
+  '--surface-0',
+  '--surface-1',
+  '--surface-2',
+  '--surface-3',
+  '--line',
+  '--text-1',
+  '--text-2',
+  '--text-3',
+  '--text-inverse',
+  '--accent',
+  '--on-accent',
+  '--danger',
+  '--on-danger',
+  '--positive',
+  '--on-positive',
 ]
 const TEAM_TOKENS = ['--team-primary', '--team-secondary', '--on-team-primary']
 
 // docs/DESIGN.md §2.3 type scale
 const TYPE_TOKENS = [
-  '--font-display', '--font-body',
-  '--fs-1', '--fs-2', '--fs-3',
-  '--fd-1', '--fd-2', '--fd-3', '--fd-4', '--fd-5',
-  '--lh-body', '--lh-display', '--ls-display',
+  '--font-display',
+  '--font-body',
+  '--fs-1',
+  '--fs-2',
+  '--fs-3',
+  '--fd-1',
+  '--fd-2',
+  '--fd-3',
+  '--fd-4',
+  '--fd-5',
+  '--lh-body',
+  '--lh-display',
+  '--ls-display',
 ]
 
 // docs/DESIGN.md §2.4 space, radius, border, shadow, motion, layering
 const LAYOUT_TOKENS = [
-  '--sp-1', '--sp-2', '--sp-3', '--sp-4', '--sp-5', '--sp-6', '--sp-7', '--sp-8',
-  '--r-0', '--r-1', '--r-2',
-  '--bw', '--bw-plate',
-  '--shadow-raise', '--shadow-hover', '--shadow-press', '--shadow-none',
-  '--t-snap', '--t-quick', '--t-reveal', '--stagger', '--ease-mech', '--ease-out',
-  '--z-rail', '--z-strip', '--z-modal', '--z-toast',
+  '--sp-1',
+  '--sp-2',
+  '--sp-3',
+  '--sp-4',
+  '--sp-5',
+  '--sp-6',
+  '--sp-7',
+  '--sp-8',
+  '--r-0',
+  '--r-1',
+  '--r-2',
+  '--bw',
+  '--bw-plate',
+  '--shadow-raise',
+  '--shadow-hover',
+  '--shadow-press',
+  '--shadow-none',
+  '--t-snap',
+  '--t-quick',
+  '--t-reveal',
+  '--stagger',
+  '--ease-mech',
+  '--ease-out',
+  '--z-rail',
+  '--z-strip',
+  '--z-modal',
+  '--z-toast',
 ]
 
 describe('design tokens (docs/DESIGN.md §2)', () => {
-  it.each([...COLOR_TOKENS, ...TEAM_TOKENS, ...TYPE_TOKENS, ...LAYOUT_TOKENS])('defines %s on :root', (name) => {
-    expect(rootVars.has(name)).toBe(true)
-  })
+  it.each([...COLOR_TOKENS, ...TEAM_TOKENS, ...TYPE_TOKENS, ...LAYOUT_TOKENS])(
+    'defines %s on :root',
+    (name) => {
+      expect(rootVars.has(name)).toBe(true)
+    },
+  )
 
   it.each(COLOR_TOKENS)('redefines the color token %s for the light theme', (name) => {
     expect(lightVars.has(name)).toBe(true)

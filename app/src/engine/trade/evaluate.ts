@@ -4,12 +4,27 @@
  * `evaluate` always answers from `proposal.request.teamId`'s side — the counterparty, the team being
  * asked to say yes. It RECEIVES `proposal.offer` (valueIn) and GIVES `proposal.request` (valueOut).
  */
-import type { EngineContext, LeagueState, PlayerId, TeamId, TradeEvaluation, TradeProposal } from '@contracts/index'
+import type {
+  EngineContext,
+  LeagueState,
+  PlayerId,
+  TeamId,
+  TradeEvaluation,
+  TradeProposal,
+} from '@contracts/index'
 import { acceptanceConstants, needConstants, tradeConstants } from './constants'
-import { findPick, incomingValue, injuryWeeks, needsFor, outgoingValue, pickValueImpl, refKey, rosterIndex } from './value'
+import {
+  findPick,
+  incomingValue,
+  injuryWeeks,
+  needsFor,
+  outgoingValue,
+  pickValueImpl,
+  refKey,
+  rosterIndex,
+} from './value'
 
 export const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x))
-
 
 export function isInSeason(state: LeagueState): boolean {
   return (acceptanceConstants.inSeasonPhases as readonly string[]).includes(state.phase)
@@ -33,7 +48,8 @@ function assetErrors(state: LeagueState, side: TradeProposal['offer']): string[]
     }
     const slot = roster.get(id)
     if (!slot) errors.push(`${state.players[id]?.name ?? id} is not on a roster`)
-    else if (slot.teamId !== side.teamId) errors.push(`${state.players[id]?.name ?? id} is not on ${side.teamId}`)
+    else if (slot.teamId !== side.teamId)
+      errors.push(`${state.players[id]?.name ?? id} is not on ${side.teamId}`)
   }
   const seenPicks = new Set<string>()
   for (const ref of side.picks) {
@@ -50,7 +66,8 @@ function assetErrors(state: LeagueState, side: TradeProposal['offer']): string[]
 
 function payrollDelta(state: LeagueState, incoming: PlayerId[], outgoing: PlayerId[]): number {
   const roster = rosterIndex(state)
-  const sum = (ids: PlayerId[]) => ids.reduce((total, id) => total + (roster.get(id)?.contract.apy ?? 0), 0)
+  const sum = (ids: PlayerId[]) =>
+    ids.reduce((total, id) => total + (roster.get(id)?.contract.apy ?? 0), 0)
   return sum(incoming) - sum(outgoing)
 }
 
@@ -58,7 +75,13 @@ function payrollDelta(state: LeagueState, incoming: PlayerId[], outgoing: Player
  * Salary the trade would add beyond what the team can absorb, or null when it fits (a
  * payroll-neutral or payroll-shedding trade always fits) or when fa cannot answer yet.
  */
-function capOverageFrom(state: LeagueState, teamId: TeamId, incoming: PlayerId[], outgoing: PlayerId[], ctx: EngineContext): number | null {
+function capOverageFrom(
+  state: LeagueState,
+  teamId: TeamId,
+  incoming: PlayerId[],
+  outgoing: PlayerId[],
+  ctx: EngineContext,
+): number | null {
   const delta = payrollDelta(state, incoming, outgoing)
   if (delta <= 0) return null
   const allowance =
@@ -75,10 +98,18 @@ function rosterSizeError(state: LeagueState, teamId: TeamId, delta: number): str
     if (size < min) return `${teamId} would carry ${size} players (min ${min})`
     return null
   }
-  return size > acceptanceConstants.rosterOffseasonMax ? `${teamId} would carry ${size} players (max ${acceptanceConstants.rosterOffseasonMax})` : null
+  return size > acceptanceConstants.rosterOffseasonMax
+    ? `${teamId} would carry ${size} players (max ${acceptanceConstants.rosterOffseasonMax})`
+    : null
 }
 
-function needAdjustment(state: LeagueState, proposal: TradeProposal, valueIn: number, valueOut: number, ctx: EngineContext): number {
+function needAdjustment(
+  state: LeagueState,
+  proposal: TradeProposal,
+  valueIn: number,
+  valueOut: number,
+  ctx: EngineContext,
+): number {
   const evaluator = proposal.request.teamId
   const needs = needsFor(state, evaluator, ctx)
   const top = new Set(needs.top.slice(0, needConstants.topNeeds))
@@ -100,16 +131,27 @@ function needAdjustment(state: LeagueState, proposal: TradeProposal, valueIn: nu
   return Math.max(-cap, Math.min(cap, adj))
 }
 
-export function evaluateImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): TradeEvaluation {
+export function evaluateImpl(
+  state: LeagueState,
+  proposal: TradeProposal,
+  ctx: EngineContext,
+): TradeEvaluation {
   const evaluator = proposal.request.teamId
   const proposer = proposal.offer.teamId
 
   if (evaluator === proposer) return invalid(['a team cannot trade with itself'])
   if (!state.teams[evaluator] || !state.teams[proposer]) return invalid(['unknown team'])
-  const assetCount = proposal.offer.players.length + proposal.offer.picks.length + proposal.request.players.length + proposal.request.picks.length
+  const assetCount =
+    proposal.offer.players.length +
+    proposal.offer.picks.length +
+    proposal.request.players.length +
+    proposal.request.picks.length
   if (assetCount === 0) return invalid(['the proposal is empty'])
 
-  const structural = [...assetErrors(state, proposal.offer), ...assetErrors(state, proposal.request)]
+  const structural = [
+    ...assetErrors(state, proposal.offer),
+    ...assetErrors(state, proposal.request),
+  ]
   if (structural.length) return invalid(structural)
 
   const reasons: string[] = []
@@ -122,7 +164,8 @@ export function evaluateImpl(state: LeagueState, proposal: TradeProposal, ctx: E
 
   for (const id of proposal.offer.players) {
     const weeks = injuryWeeks(state, id)
-    if (weeks > 0) reasons.push(`${state.players[id]?.name ?? id} is out ${weeks} week(s) — discounted`)
+    if (weeks > 0)
+      reasons.push(`${state.players[id]?.name ?? id} is out ${weeks} week(s) — discounted`)
   }
 
   // Anti-exploit: no team mortgages more than two first-rounders at once. The user is not gated —
@@ -130,19 +173,37 @@ export function evaluateImpl(state: LeagueState, proposal: TradeProposal, ctx: E
   const firstsGiven = proposal.request.picks.filter((ref) => ref.round === 1).length
   const evaluatorIsAi = !state.teams[evaluator]?.userControlled
   if (evaluatorIsAi && firstsGiven > tradeConstants.maxFirstsPerDeal) {
-    return invalid([`${evaluator} will not trade ${firstsGiven} first-round picks in one deal`], valueIn, valueOut)
+    return invalid(
+      [`${evaluator} will not trade ${firstsGiven} first-round picks in one deal`],
+      valueIn,
+      valueOut,
+    )
   }
 
   const sizeErrors = [
-    rosterSizeError(state, evaluator, proposal.offer.players.length - proposal.request.players.length),
-    rosterSizeError(state, proposer, proposal.request.players.length - proposal.offer.players.length),
+    rosterSizeError(
+      state,
+      evaluator,
+      proposal.offer.players.length - proposal.request.players.length,
+    ),
+    rosterSizeError(
+      state,
+      proposer,
+      proposal.request.players.length - proposal.offer.players.length,
+    ),
   ].filter((e): e is string => e !== null)
   if (sizeErrors.length) return invalid(sizeErrors, valueIn, valueOut)
 
   if (isInSeason(state)) {
     const overages: [TeamId, number | null][] = [
-      [evaluator, capOverageFrom(state, evaluator, proposal.offer.players, proposal.request.players, ctx)],
-      [proposer, capOverageFrom(state, proposer, proposal.request.players, proposal.offer.players, ctx)],
+      [
+        evaluator,
+        capOverageFrom(state, evaluator, proposal.offer.players, proposal.request.players, ctx),
+      ],
+      [
+        proposer,
+        capOverageFrom(state, proposer, proposal.request.players, proposal.offer.players, ctx),
+      ],
     ]
     const capErrors = overages
       .filter((entry): entry is [TeamId, number] => entry[1] !== null)
@@ -151,12 +212,19 @@ export function evaluateImpl(state: LeagueState, proposal: TradeProposal, ctx: E
   }
 
   const needAdj = needAdjustment(state, proposal, valueIn, valueOut, ctx)
-  if (needAdj < 0) reasons.push(`${evaluator} needs help at ${needsFor(state, evaluator, ctx).top.join('/')}`)
+  if (needAdj < 0)
+    reasons.push(`${evaluator} needs help at ${needsFor(state, evaluator, ctx).top.join('/')}`)
   else if (needAdj > 0) reasons.push(`${evaluator} is not short at those positions`)
 
   const strictnessPct = tradeConstants.marginByStrictness[state.settings.tradeStrictness]
-  const annoyance = Math.min(acceptanceConstants.maxAnnoyance, state.teams[evaluator]?.tradeAnnoyance ?? 0)
-  const annoyancePct = Math.min(acceptanceConstants.maxAnnoyanceMarginPct, tradeConstants.annoyanceMarginPerPoint * annoyance)
+  const annoyance = Math.min(
+    acceptanceConstants.maxAnnoyance,
+    state.teams[evaluator]?.tradeAnnoyance ?? 0,
+  )
+  const annoyancePct = Math.min(
+    acceptanceConstants.maxAnnoyanceMarginPct,
+    tradeConstants.annoyanceMarginPerPoint * annoyance,
+  )
   if (annoyancePct > 0) reasons.push(`${evaluator} is tired of lowball offers`)
   const margin = (strictnessPct + annoyancePct) * valueOut
 

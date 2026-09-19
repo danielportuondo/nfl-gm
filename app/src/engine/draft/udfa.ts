@@ -5,7 +5,11 @@
  */
 import {
   isInHistory,
-  type EngineContext, type LeagueState, type PlayerId, type Season, type TeamId,
+  type EngineContext,
+  type LeagueState,
+  type PlayerId,
+  type Season,
+  type TeamId,
 } from '@contracts/index'
 import { draftConstants, type DraftConstants } from './constants'
 import { chooseProspect } from './picking'
@@ -19,13 +23,22 @@ function rosteredIds(state: LeagueState): Set<PlayerId> {
   return ids
 }
 
-function sign(state: LeagueState, ctx: EngineContext, teamId: TeamId, playerId: PlayerId, season: Season): LeagueState {
+function sign(
+  state: LeagueState,
+  ctx: EngineContext,
+  teamId: TeamId,
+  playerId: PlayerId,
+  season: Season,
+): LeagueState {
   const team = state.teams[teamId]
   if (!team) throw new Error(`draft.runUdfa: unknown team "${teamId}"`)
   const contract = ctx.modules.fa.rookieContract(null, season, ctx)
   return {
     ...state,
-    teams: { ...state.teams, [teamId]: { ...team, roster: [...team.roster, { playerId, teamId, contract }] } },
+    teams: {
+      ...state.teams,
+      [teamId]: { ...team, roster: [...team.roster, { playerId, teamId, contract }] },
+    },
     freeAgents: state.freeAgents.filter((id) => id !== playerId),
   }
 }
@@ -40,7 +53,8 @@ function realTeams(ctx: EngineContext, season: Season): Map<PlayerId, TeamId> {
   return map
 }
 
-const rosterSize = (state: LeagueState, teamId: TeamId): number => state.teams[teamId]?.roster.length ?? 0
+const rosterSize = (state: LeagueState, teamId: TeamId): number =>
+  state.teams[teamId]?.roster.length ?? 0
 
 export function runUdfaPhase(
   state: LeagueState,
@@ -86,11 +100,19 @@ export function runUdfaPhase(
   let progressed = true
   while (pool.length > 0 && progressed) {
     progressed = false
-    for (const teamId of [...fillable].sort((a, b) => rosterSize(s, a) - rosterSize(s, b) || a.localeCompare(b))) {
+    for (const teamId of [...fillable].sort(
+      (a, b) => rosterSize(s, a) - rosterSize(s, b) || a.localeCompare(b),
+    )) {
       if (pool.length === 0) break
       if (rosterSize(s, teamId) >= Math.min(c.udfaFillTo, c.rosterMax)) continue
       const rng = ctx.modules.rng.fromSeed(s.seed, season, 'udfa', teamId, pool.length)
-      const id = chooseProspect(s, ctx, rng, { teamId, season, round: c.rounds, available: pool, anchor: null }, c)
+      const id = chooseProspect(
+        s,
+        ctx,
+        rng,
+        { teamId, season, round: c.rounds, available: pool, anchor: null },
+        c,
+      )
       s = sign(s, ctx, teamId, id, season)
       take(id)
       progressed = true

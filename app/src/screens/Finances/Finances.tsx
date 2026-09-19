@@ -1,6 +1,14 @@
 import { useMemo, useState } from 'react'
 import type { LeagueState, PlayerId, Position, StaticData } from '@contracts/index'
-import { Button, Panel, PositionBadge, StatTile, Table, type Column, type SortState } from '@ui/primitives'
+import {
+  Button,
+  Panel,
+  PositionBadge,
+  StatTile,
+  Table,
+  type Column,
+  type SortState,
+} from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
 
 export interface FinancesProps {
@@ -29,7 +37,15 @@ function formatMoney(m: number): string {
 }
 
 /** Cap table by player, dead money, cap space this season and next, expiring contracts (docs/DESIGN.md §11). */
-export function Finances({ state, data, cap, capNextSeason, busy, onRelease, onSelectPlayer }: FinancesProps) {
+export function Finances({
+  state,
+  data,
+  cap,
+  capNextSeason,
+  busy,
+  onRelease,
+  onSelectPlayer,
+}: FinancesProps) {
   const [sort, setSort] = useState<SortState>({ key: 'apy', dir: 'desc' })
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
@@ -77,8 +93,20 @@ export function Finances({ state, data, cap, capNextSeason, busy, onRelease, onS
         </span>
       ),
     },
-    { key: 'years', header: 'Years', numeric: true, sortValue: (r) => r.years, render: (r) => r.years },
-    { key: 'apy', header: 'APY', numeric: true, sortValue: (r) => r.apy, render: (r) => formatMoney(r.apy) },
+    {
+      key: 'years',
+      header: 'Years',
+      numeric: true,
+      sortValue: (r) => r.years,
+      render: (r) => r.years,
+    },
+    {
+      key: 'apy',
+      header: 'APY',
+      numeric: true,
+      sortValue: (r) => r.apy,
+      render: (r) => formatMoney(r.apy),
+    },
     {
       key: 'release',
       header: '',
@@ -101,13 +129,31 @@ export function Finances({ state, data, cap, capNextSeason, busy, onRelease, onS
   ]
 
   return (
-    <TeamScope colors={teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }} as="div" style={{ display: 'contents' }}>
+    <TeamScope
+      colors={teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }}
+      as="div"
+      style={{ display: 'contents' }}
+    >
       <div className="gg-col-12">
         <Panel title="Cap" revealIndex={0}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--sp-4)' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: 'var(--sp-4)',
+            }}
+          >
             <StatTile value={formatMoney(cap)} label="Cap this season" />
-            <StatTile value={formatMoney(capSpace)} label="Cap space this season" tone={capSpace < 0 ? 'danger' : 'default'} />
-            <StatTile value={formatMoney(deadMoney)} label="Dead money" tone={deadMoney > 0 ? 'danger' : 'default'} />
+            <StatTile
+              value={formatMoney(capSpace)}
+              label="Cap space this season"
+              tone={capSpace < 0 ? 'danger' : 'default'}
+            />
+            <StatTile
+              value={formatMoney(deadMoney)}
+              label="Dead money"
+              tone={deadMoney > 0 ? 'danger' : 'default'}
+            />
             <StatTile
               value={capSpaceNext == null ? '—' : formatMoney(capSpaceNext)}
               label="Cap space next season"
@@ -127,7 +173,9 @@ export function Finances({ state, data, cap, capNextSeason, busy, onRelease, onS
             dense
             onRowClick={onSelectPlayer ? (r) => onSelectPlayer(r.id) : undefined}
             sort={sort}
-            onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
+            onSortChange={(key) =>
+              setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
+            }
           />
         </Panel>
       </div>
@@ -135,7 +183,9 @@ export function Finances({ state, data, cap, capNextSeason, busy, onRelease, onS
       <div className="gg-col-4">
         <Panel title="Contracts expiring" variant="sunken" revealIndex={2}>
           {expiring.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>No contracts expire after this season.</p>
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>
+              No contracts expire after this season.
+            </p>
           ) : (
             <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
               {expiring.map((r) => (

@@ -12,11 +12,13 @@ const [HOME, AWAY] = Object.keys(base.teams).sort() as [TeamId, TeamId]
 
 const setTruth = (state: LeagueState, ids: readonly PlayerId[], value: number): LeagueState => {
   const truth = { ...state.truth }
-  for (const id of ids) truth[id] = { bySeason: { [String(state.season)]: value }, retiresAfter: null }
+  for (const id of ids)
+    truth[id] = { bySeason: { [String(state.season)]: value }, retiresAfter: null }
   return { ...state, truth }
 }
 
-const rosterOf = (state: LeagueState, teamId: TeamId) => state.teams[teamId]!.roster.map((r) => r.playerId)
+const rosterOf = (state: LeagueState, teamId: TeamId) =>
+  state.teams[teamId]!.roster.map((r) => r.playerId)
 
 const neutralGame: Game = {
   id: `${base.season}-REG-1-${AWAY}@${HOME}`,
@@ -42,7 +44,9 @@ describe('team strength from true current-season value', () => {
   it('a team of 90s beats a team of 60s nearly every time', () => {
     let state = setTruth(base, rosterOf(base, HOME), 90)
     state = setTruth(state, rosterOf(state, AWAY), 60)
-    expect(computeTeamStrength(state, HOME).overall).toBeGreaterThan(computeTeamStrength(state, AWAY).overall + 25)
+    expect(computeTeamStrength(state, HOME).overall).toBeGreaterThan(
+      computeTeamStrength(state, AWAY).overall + 25,
+    )
     expect(homeWinPct(state, 1000)).toBeGreaterThanOrEqual(0.9)
   })
 
@@ -86,10 +90,15 @@ describe('team strength from true current-season value', () => {
     // Still on the depth chart, but hurt: the backup plays and the offense drops back to average.
     expect(hurtStar.teams[HOME]!.depthChart.QB).toContain(qb)
     expect(computeTeamStrength(star, HOME).off).toBeGreaterThan(healthy.off + 5)
-    expect(computeTeamStrength(hurtStar, HOME).off).toBeLessThan(computeTeamStrength(star, HOME).off - 5)
+    expect(computeTeamStrength(hurtStar, HOME).off).toBeLessThan(
+      computeTeamStrength(star, HOME).off - 5,
+    )
 
     // Consensus must not leak into strength.
-    const scouted = { ...level, scouting: { ...level.scouting, [qb]: { ovr: 99, pot: 99, confidence: 1 } } }
+    const scouted = {
+      ...level,
+      scouting: { ...level.scouting, [qb]: { ovr: 99, pot: 99, confidence: 1 } },
+    }
     expect(computeTeamStrength(scouted, HOME).overall).toBe(healthy.overall)
   })
 

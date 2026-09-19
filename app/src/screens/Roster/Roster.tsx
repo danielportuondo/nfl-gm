@@ -1,6 +1,22 @@
 import { useMemo, useState } from 'react'
-import { POSITIONS, type LeagueState, type PlayerId, type Position, type RosterSlot, type StaticData } from '@contracts/index'
-import { Button, NamePlate, Panel, PositionBadge, StatusBadge, Table, type Column, type SortState } from '@ui/primitives'
+import {
+  POSITIONS,
+  type LeagueState,
+  type PlayerId,
+  type Position,
+  type RosterSlot,
+  type StaticData,
+} from '@contracts/index'
+import {
+  Button,
+  NamePlate,
+  Panel,
+  PositionBadge,
+  StatusBadge,
+  Table,
+  type Column,
+  type SortState,
+} from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 
@@ -32,7 +48,14 @@ interface Row {
 const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 
 /** Dense roster table with a position filter, plus a keyboard-reorderable depth chart (docs/DESIGN.md §11). */
-export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRelease, releaseBusy }: RosterProps) {
+export function Roster({
+  state,
+  data,
+  onSelectPlayer,
+  onReorderDepthChart,
+  onRelease,
+  releaseBusy,
+}: RosterProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
   const [sort, setSort] = useState<SortState>({ key: 'ovr', dir: 'desc' })
   const team = state.teams[state.userTeam]
@@ -101,20 +124,52 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
       ),
     },
     { key: 'age', header: 'Age', numeric: true, sortValue: (r) => r.age, render: (r) => r.age },
-    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, sortValue: (r) => r.ovr, render: (r) => r.ovr },
-    { key: 'pot', header: 'Pot', numeric: true, rating: true, sortValue: (r) => r.pot, render: (r) => r.pot },
-    { key: 'years', header: 'Years', numeric: true, sortValue: (r) => r.years, render: (r) => r.years },
-    { key: 'apy', header: 'APY', numeric: true, sortValue: (r) => r.apy, render: (r) => `$${r.apy.toFixed(1)}M` },
+    {
+      key: 'ovr',
+      header: 'Ovr',
+      numeric: true,
+      rating: true,
+      sortValue: (r) => r.ovr,
+      render: (r) => r.ovr,
+    },
+    {
+      key: 'pot',
+      header: 'Pot',
+      numeric: true,
+      rating: true,
+      sortValue: (r) => r.pot,
+      render: (r) => r.pot,
+    },
+    {
+      key: 'years',
+      header: 'Years',
+      numeric: true,
+      sortValue: (r) => r.years,
+      render: (r) => r.years,
+    },
+    {
+      key: 'apy',
+      header: 'APY',
+      numeric: true,
+      sortValue: (r) => r.apy,
+      render: (r) => `$${r.apy.toFixed(1)}M`,
+    },
     {
       key: 'status',
       header: 'Status',
       render: (r) => (
-        <span style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'center', flexWrap: 'wrap' }}>
+        <span
+          style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'center', flexWrap: 'wrap' }}
+        >
           {r.rookie && <StatusBadge status="rookie" />}
           {r.injured && (
             <>
               <StatusBadge status="injured" />
-              {r.injuredWeeks && <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>{r.injuredWeeks}</span>}
+              {r.injuredWeeks && (
+                <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
+                  {r.injuredWeeks}
+                </span>
+              )}
             </>
           )}
           {r.expiring && <StatusBadge status="expiring" />}
@@ -147,13 +202,25 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
   ]
 
   const depthPositions: Position[] = ['QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'CB', 'S']
-  const teamColors = data.teams[state.userTeam]?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }
+  const teamColors = data.teams[state.userTeam]?.colors ?? {
+    primary: '#1F4334',
+    secondary: '#F3ECD2',
+  }
 
   return (
     <TeamScope colors={teamColors} as="div" style={{ display: 'contents' }}>
       <div className="gg-col-12">
         <Panel title="Roster" variant="sunken" revealIndex={0}>
-          <div role="group" aria-label="Filter by position" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)', marginBottom: 'var(--sp-3)' }}>
+          <div
+            role="group"
+            aria-label="Filter by position"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 'var(--sp-2)',
+              marginBottom: 'var(--sp-3)',
+            }}
+          >
             {FILTERS.map((f) => (
               <button
                 key={f}
@@ -174,7 +241,9 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
             caption={`${team?.id ?? ''} roster · ${rows.length} players`}
             dense
             sort={sort}
-            onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
+            onSortChange={(key) =>
+              setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
+            }
             onRowClick={(r) => onSelectPlayer(r.slot.playerId)}
           />
         </Panel>
@@ -182,13 +251,31 @@ export function Roster({ state, data, onSelectPlayer, onReorderDepthChart, onRel
 
       <div className="gg-col-12">
         <Panel title="Depth chart" variant="sunken" revealIndex={1}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 'var(--sp-4)' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+              gap: 'var(--sp-4)',
+            }}
+          >
             {depthPositions.map((pos) => {
               const order = team?.depthChart[pos] ?? []
               return (
                 <div key={pos}>
-                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>{pos}</h4>
-                  <div role="list" aria-label={`${pos} depth chart`} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
+                  <h4
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'var(--fd-1)',
+                      margin: '0 0 var(--sp-2)',
+                    }}
+                  >
+                    {pos}
+                  </h4>
+                  <div
+                    role="list"
+                    aria-label={`${pos} depth chart`}
+                    style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}
+                  >
                     {order.map((id, i) => {
                       const player = state.players[id]
                       const scouting = state.scouting[id]

@@ -3,8 +3,15 @@
  * so team sizes stay at the legal 53 and only the asset under test varies.
  */
 import {
-  type EngineContext, type LeagueState, type PickRef, type Player, type PlayerId, type Position,
-  type RosterSlot, type TeamId, type TradeProposal,
+  type EngineContext,
+  type LeagueState,
+  type PickRef,
+  type Player,
+  type PlayerId,
+  type Position,
+  type RosterSlot,
+  type TeamId,
+  type TradeProposal,
 } from '@contracts/index'
 import { makeFakeContext } from '../fakes'
 import { mockBundle, mockLeague } from '@fixtures/mockLeague'
@@ -33,9 +40,16 @@ function slotFor(state: LeagueState, teamId: TeamId, spec: PlayerSpec): RosterSl
   const slot: RosterSlot = {
     playerId: spec.id,
     teamId,
-    contract: { years: spec.years ?? 2, apy: spec.apy ?? 4, guaranteedPct: 0.5, signedSeason: state.season, rookie: false },
+    contract: {
+      years: spec.years ?? 2,
+      apy: spec.apy ?? 4,
+      guaranteedPct: 0.5,
+      signedSeason: state.season,
+      rookie: false,
+    },
   }
-  if (spec.injuredWeeks) slot.injured = { weeksOut: spec.injuredWeeks, kind: 'knee', season: state.season, week: 4 }
+  if (spec.injuredWeeks)
+    slot.injured = { weeksOut: spec.injuredWeeks, kind: 'knee', season: state.season, week: 4 }
   return slot
 }
 
@@ -62,10 +76,17 @@ export function putPlayer(state: LeagueState, teamId: TeamId, spec: PlayerSpec):
   return {
     ...state,
     players: { ...state.players, [spec.id]: player },
-    scouting: { ...state.scouting, [spec.id]: { ovr: spec.ovr, pot: spec.pot ?? spec.ovr, confidence: 0.8 } },
+    scouting: {
+      ...state.scouting,
+      [spec.id]: { ovr: spec.ovr, pot: spec.pot ?? spec.ovr, confidence: 0.8 },
+    },
     teams: {
       ...state.teams,
-      [teamId]: { ...team, roster: [...team.roster.slice(0, -1), slotFor(state, teamId, spec)], depthChart },
+      [teamId]: {
+        ...team,
+        roster: [...team.roster.slice(0, -1), slotFor(state, teamId, spec)],
+        depthChart,
+      },
     },
   }
 }
@@ -76,16 +97,25 @@ export function trimRoster(state: LeagueState, teamId: TeamId, size: number): Le
   const kept = team.roster.slice(0, size)
   const keptIds = new Set(kept.map((r) => r.playerId))
   const depthChart = Object.fromEntries(
-    Object.entries(team.depthChart).map(([pos, ids]) => [pos, (ids ?? []).filter((id) => keptIds.has(id))]),
+    Object.entries(team.depthChart).map(([pos, ids]) => [
+      pos,
+      (ids ?? []).filter((id) => keptIds.has(id)),
+    ]),
   )
   return { ...state, teams: { ...state.teams, [teamId]: { ...team, roster: kept, depthChart } } }
 }
 
 /** Hand `count` picks of `round` to `teamId`, and return their refs. */
-export function giftPicks(state: LeagueState, teamId: TeamId, round: number, count: number): { state: LeagueState; refs: PickRef[] } {
+export function giftPicks(
+  state: LeagueState,
+  teamId: TeamId,
+  round: number,
+  count: number,
+): { state: LeagueState; refs: PickRef[] } {
   const refs: PickRef[] = []
   const picks = state.picks.map((pick) => {
-    if (refs.length >= count || pick.round !== round || pick.owner === teamId || pick.playerId) return pick
+    if (refs.length >= count || pick.round !== round || pick.owner === teamId || pick.playerId)
+      return pick
     refs.push({ season: pick.season, round: pick.round, originalTeam: pick.originalTeam })
     return { ...pick, owner: teamId }
   })
@@ -93,7 +123,11 @@ export function giftPicks(state: LeagueState, teamId: TeamId, round: number, cou
 }
 
 /** Hand the pick at a specific overall slot to `teamId` — the way to get a LATE first. */
-export function giftPickAt(state: LeagueState, teamId: TeamId, overall: number): { state: LeagueState; ref: PickRef } {
+export function giftPickAt(
+  state: LeagueState,
+  teamId: TeamId,
+  overall: number,
+): { state: LeagueState; ref: PickRef } {
   const pick = state.picks.find((p) => p.pick === overall && !p.playerId)
   if (!pick) throw new Error(`no pick at overall ${overall}`)
   const ref: PickRef = { season: pick.season, round: pick.round, originalTeam: pick.originalTeam }

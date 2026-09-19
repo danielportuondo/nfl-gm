@@ -10,7 +10,13 @@
  * CONTRACT REQUESTS for detail; this is a known data-fit gap, not a generator bug.
  */
 import { beforeAll, describe, expect, it } from 'vitest'
-import type { EngineContext, GeneratedClass, LeagueState, Season, SeasonDraftFile } from '@contracts/index'
+import type {
+  EngineContext,
+  GeneratedClass,
+  LeagueState,
+  Season,
+  SeasonDraftFile,
+} from '@contracts/index'
 import { lifecycle } from '@engine/lifecycle'
 import { loadRealContext } from '../../../scripts/lib/publicData'
 
@@ -26,13 +32,29 @@ function quantile(sorted: number[], p: number): number {
 function fakeStateAt(season: Season, seed: string): LeagueState {
   // generateDraftClass only reads state.seed/state.season; the rest is irrelevant scaffolding.
   return {
-    schemaVersion: 1, seed, season, week: 0, phase: 'DRAFT', userTeam: 'IND',
-    horizonEnd: season, startSeason: season,
+    schemaVersion: 1,
+    seed,
+    season,
+    week: 0,
+    phase: 'DRAFT',
+    userTeam: 'IND',
+    horizonEnd: season,
+    startSeason: season,
     settings: { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true },
-    teams: {}, players: {}, scouting: {}, truth: {},
-    picks: [], schedule: [], results: [], history: [],
-    divergence: new Set(), freeAgents: [], draftRoom: null, snapLog: [],
-    outcome: 'IN_PROGRESS', savedAt: '1970-01-01T00:00:00.000Z',
+    teams: {},
+    players: {},
+    scouting: {},
+    truth: {},
+    picks: [],
+    schedule: [],
+    results: [],
+    history: [],
+    divergence: new Set(),
+    freeAgents: [],
+    draftRoom: null,
+    snapLog: [],
+    outcome: 'IN_PROGRESS',
+    savedAt: '1970-01-01T00:00:00.000Z',
   }
 }
 
@@ -56,7 +78,9 @@ describe('lifecycle.generateDraftClass vs. a real class', () => {
   })
 
   it('position mix has L1 distance <= 0.15 from the real class', () => {
-    const positions = [...new Set([...real.prospects.map((p) => p.pos), ...generated.prospects.map((p) => p.pos)])]
+    const positions = [
+      ...new Set([...real.prospects.map((p) => p.pos), ...generated.prospects.map((p) => p.pos)]),
+    ]
     const mixOf = (prospects: { pos: string }[]) => {
       const counts = new Map<string, number>()
       for (const p of prospects) counts.set(p.pos, (counts.get(p.pos) ?? 0) + 1)
@@ -69,15 +93,23 @@ describe('lifecycle.generateDraftClass vs. a real class', () => {
   })
 
   it('never grades a prospect with a ceiling below his floor', () => {
-    for (const p of generated.prospects) expect(p.scouting.pot).toBeGreaterThanOrEqual(p.scouting.ovr)
+    for (const p of generated.prospects)
+      expect(p.scouting.pot).toBeGreaterThanOrEqual(p.scouting.ovr)
   })
 
   it('consensus-pot quantiles roughly match the real class (p50/p90 within 4, p10 within 8)', () => {
     const realPots = real.prospects.map((p) => p.scouting.pot).sort((a, b) => a - b)
     const genPots = generated.prospects.map((p) => p.scouting.pot).sort((a, b) => a - b)
-    for (const [p, tolerance] of [[0.5, 4], [0.9, 4], [0.1, 8]] as const) {
+    for (const [p, tolerance] of [
+      [0.5, 4],
+      [0.9, 4],
+      [0.1, 8],
+    ] as const) {
       const diff = Math.abs(quantile(genPots, p) - quantile(realPots, p))
-      expect(diff, `p${p * 100}: generated=${quantile(genPots, p)} real=${quantile(realPots, p)}`).toBeLessThanOrEqual(tolerance)
+      expect(
+        diff,
+        `p${p * 100}: generated=${quantile(genPots, p)} real=${quantile(realPots, p)}`,
+      ).toBeLessThanOrEqual(tolerance)
     }
   })
 

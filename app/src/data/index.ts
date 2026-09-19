@@ -5,11 +5,29 @@
  * by URL.
  */
 import {
-  CapFileSchema, CurvesFileSchema, DATA_FILES, InjuryModelFileSchema, ManifestSchema,
-  SeasonDraftFileSchema, SeasonPlayersFileSchema, SeasonRostersFileSchema, SeasonScheduleFileSchema,
-  TeamsFileSchema, TrajectoriesFileSchema,
-  type CapFile, type CurvesFile, type DataSource, type InjuryModelFile, type Manifest, type MemoryBundle,
-  type Season, type SeasonData, type StaticData, type TeamId, type TeamInfo, type TrajectoryTable,
+  CapFileSchema,
+  CurvesFileSchema,
+  DATA_FILES,
+  InjuryModelFileSchema,
+  ManifestSchema,
+  SeasonDraftFileSchema,
+  SeasonPlayersFileSchema,
+  SeasonRostersFileSchema,
+  SeasonScheduleFileSchema,
+  TeamsFileSchema,
+  TrajectoriesFileSchema,
+  type CapFile,
+  type CurvesFile,
+  type DataSource,
+  type InjuryModelFile,
+  type Manifest,
+  type MemoryBundle,
+  type Season,
+  type SeasonData,
+  type StaticData,
+  type TeamId,
+  type TeamInfo,
+  type TrajectoryTable,
 } from '@contracts/index'
 import type { ZodType } from 'zod'
 
@@ -56,7 +74,11 @@ export function MemoryDataSource(bundle: MemoryBundle): DataSource {
     async loadStatic() {
       if (!staticCache) {
         const attribution = bundle.static.manifest.attribution
-        validateOrThrow(TeamsFileSchema, { attribution, teams: teamsRecordToArray(bundle.static.teams) }, 'teams.json')
+        validateOrThrow(
+          TeamsFileSchema,
+          { attribution, teams: teamsRecordToArray(bundle.static.teams) },
+          'teams.json',
+        )
         validateOrThrow(CapFileSchema, bundle.static.cap, 'cap.json')
         validateOrThrow(CurvesFileSchema, bundle.static.curves, 'curves.json')
         validateOrThrow(InjuryModelFileSchema, bundle.static.injuryModel, 'injuryModel.json')
@@ -80,13 +102,20 @@ export function MemoryDataSource(bundle: MemoryBundle): DataSource {
 
     async loadTrajectories() {
       if (!trajectoriesCache) {
-        const seasons = Object.values(bundle.trajectories).flatMap((t) => [t.start, t.start + t.values.length - 1])
+        const seasons = Object.values(bundle.trajectories).flatMap((t) => [
+          t.start,
+          t.start + t.values.length - 1,
+        ])
         const range: [Season, Season] = seasons.length
           ? [Math.min(...seasons), Math.max(...seasons)]
           : [bundle.static.manifest.latestRealSeason, bundle.static.manifest.latestRealSeason]
         validateOrThrow(
           TrajectoriesFileSchema,
-          { attribution: bundle.static.manifest.attribution, seasons: range, byPlayer: bundle.trajectories },
+          {
+            attribution: bundle.static.manifest.attribution,
+            seasons: range,
+            byPlayer: bundle.trajectories,
+          },
           'trajectories.json',
         )
         trajectoriesCache = bundle.trajectories
@@ -146,7 +175,8 @@ export function HttpDataSource(baseUrl: string): DataSource {
     },
 
     async loadSeason(season) {
-      const path = (name: keyof typeof DATA_FILES) => DATA_FILES[name].replace('{yyyy}', String(season))
+      const path = (name: keyof typeof DATA_FILES) =>
+        DATA_FILES[name].replace('{yyyy}', String(season))
       const [players, rosters, draft, schedule] = await Promise.all([
         fetchValidated(SeasonPlayersFileSchema, path('seasonPlayers')),
         fetchValidated(SeasonRostersFileSchema, path('seasonRosters')),

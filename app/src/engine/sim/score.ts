@@ -41,12 +41,17 @@ export interface ScoreDraw {
   overtime: boolean
 }
 
-export function expectedMargin(homeOverall: number, awayOverall: number, neutralSite: boolean): number {
+export function expectedMargin(
+  homeOverall: number,
+  awayOverall: number,
+  neutralSite: boolean,
+): number {
   return simConstants.k * (homeOverall - awayOverall) + (neutralSite ? 0 : simConstants.hfa)
 }
 
 function resolveOvertime(tied: number, mu: number, season: Season, rng: Rng): ScoreDraw {
-  const { modifiedFrom, shortPeriodFrom, longPeriodTieMult, fgFirstP, bothScoreP, edgeDamp } = overtimeConstants
+  const { modifiedFrom, shortPeriodFrom, longPeriodTieMult, fgFirstP, bothScoreP, edgeDamp } =
+    overtimeConstants
   const tieP = season >= shortPeriodFrom ? simConstants.tieP : simConstants.tieP * longPeriodTieMult
   if (rng.chance(tieP)) return { home: tied, away: tied, overtime: true }
 
@@ -71,7 +76,8 @@ export function drawScore(mu: number, season: Season, rng: Rng): ScoreDraw {
   const total = Math.min(totalMax, Math.max(totalMin, rng.normal(totalMean, totalSd)))
 
   // A margin this small means nobody was ahead when the clock ran out.
-  if (Math.abs(margin) < otWindow) return resolveOvertime(snapScore(total / 2, rng), mu, season, rng)
+  if (Math.abs(margin) < otWindow)
+    return resolveOvertime(snapScore(total / 2, rng), mu, season, rng)
 
   let home = snapScore((total + margin) / 2, rng)
   let away = snapScore((total - margin) / 2, rng)

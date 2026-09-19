@@ -35,7 +35,9 @@ describe('injury sampling', () => {
       const result = sim.simulateGame(state, game, ctx, sim.gameRng(state, game, ctx))
       for (const event of result.injuries) {
         expect([game.home, game.away]).toContain(event.teamId)
-        expect(state.teams[event.teamId]!.roster.some((r) => r.playerId === event.playerId)).toBe(true)
+        expect(state.teams[event.teamId]!.roster.some((r) => r.playerId === event.playerId)).toBe(
+          true,
+        )
         expect(weeks.has(event.weeksOut)).toBe(true)
         expect(kinds.has(event.kind)).toBe(true)
         seen++

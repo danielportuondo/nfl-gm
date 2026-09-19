@@ -8,8 +8,14 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import {
   TEAM_IDS,
-  type DraftModule, type EngineContext, type LeagueState, type Phase, type Player, type Prospect,
-  type RosterSlot, type TrueTrajectory,
+  type DraftModule,
+  type EngineContext,
+  type LeagueState,
+  type Phase,
+  type Player,
+  type Prospect,
+  type RosterSlot,
+  type TrueTrajectory,
 } from '@contracts/index'
 import { mockBundle } from '@fixtures/mockLeague'
 import { league } from '@engine/league'
@@ -18,7 +24,11 @@ import { faConstants } from '@engine/fa/constants'
 import { fakeDraft, makeFakeContext, makeFakeModules } from '../fakes'
 import { loadRealContext, readManifest } from '../../../scripts/lib/publicData'
 
-const SETTINGS = { tradeStrictness: 'balanced' as const, aiOfferFrequency: 'normal' as const, injuries: true }
+const SETTINGS = {
+  tradeStrictness: 'balanced' as const,
+  aiOfferFrequency: 'normal' as const,
+  injuries: true,
+}
 
 /**
  * fakeDraft (tests/engine/fakes.ts) completes the draft-room state machine but never actually rosters a
@@ -33,10 +43,21 @@ function replenishingDraft(): DraftModule {
   const addProspect = (state: LeagueState, p: Prospect, season: number): LeagueState => {
     if (state.players[p.id]) return state
     const player: Player = {
-      id: p.id, name: p.name, pos: p.pos, birthYear: p.birthYear, college: p.college,
-      heightIn: p.heightIn, weightLb: p.weightLb, draft: p.draft, real: p.real, rookieSeason: p.rookieSeason,
+      id: p.id,
+      name: p.name,
+      pos: p.pos,
+      birthYear: p.birthYear,
+      college: p.college,
+      heightIn: p.heightIn,
+      weightLb: p.weightLb,
+      draft: p.draft,
+      real: p.real,
+      rookieSeason: p.rookieSeason,
     }
-    const truth: TrueTrajectory = { bySeason: { [String(season)]: p.scouting.ovr }, retiresAfter: null }
+    const truth: TrueTrajectory = {
+      bySeason: { [String(season)]: p.scouting.ovr },
+      retiresAfter: null,
+    }
     return {
       ...state,
       players: { ...state.players, [p.id]: player },
@@ -59,12 +80,22 @@ function replenishingDraft(): DraftModule {
           s = addProspect(s, prospect, room.season)
           const team = s.teams[entry.team]
           if (!team || team.userControlled || team.roster.length >= 90) continue
-          const contract = ctx.modules.fa.rookieContract({ round: entry.round, pick: entry.pick }, room.season, ctx)
-          const roster: RosterSlot[] = [...team.roster, { playerId: entry.playerId!, teamId: entry.team, contract }]
+          const contract = ctx.modules.fa.rookieContract(
+            { round: entry.round, pick: entry.pick },
+            room.season,
+            ctx,
+          )
+          const roster: RosterSlot[] = [
+            ...team.roster,
+            { playerId: entry.playerId!, teamId: entry.team, contract },
+          ]
           s = { ...s, teams: { ...s.teams, [entry.team]: { ...team, roster } } }
         }
       }
-      return { ...s, draftRoom: { ...room, status: 'COMPLETE', currentPickIndex: room.order.length } }
+      return {
+        ...s,
+        draftRoom: { ...room, status: 'COMPLETE', currentPickIndex: room.order.length },
+      }
     },
     runUdfa: (state, ctx) => {
       const room = state.draftRoom
@@ -93,7 +124,14 @@ function replenishingDraft(): DraftModule {
 }
 
 function newGameOpts(overrides: Partial<Parameters<typeof league.newGame>[0]> = {}) {
-  return { seed: 'fa-seed', startSeason: 2015, userTeam: 'IND', horizonSeasons: 6, settings: SETTINGS, ...overrides }
+  return {
+    seed: 'fa-seed',
+    startSeason: 2015,
+    userTeam: 'IND',
+    horizonSeasons: 6,
+    settings: SETTINGS,
+    ...overrides,
+  }
 }
 
 function playSeason(state: LeagueState, ctx: EngineContext): LeagueState {
@@ -134,10 +172,15 @@ function assertCapInvariants(state: LeagueState, ctx: EngineContext, label: stri
     expect(v.ok, `${label} ${teamId}: ${v.errors.join(', ')}`).toBe(true)
     expect(team.roster.length, `${label} ${teamId} size`).toBeGreaterThanOrEqual(46)
     expect(team.roster.length, `${label} ${teamId} size`).toBeLessThanOrEqual(53)
-    expect(fa.payroll(state, teamId), `${label} ${teamId} payroll`).toBeLessThanOrEqual(fa.capFor(state.season, ctx) + 1e-6)
+    expect(fa.payroll(state, teamId), `${label} ${teamId} payroll`).toBeLessThanOrEqual(
+      fa.capFor(state.season, ctx) + 1e-6,
+    )
     expect(team.deadMoney, `${label} ${teamId} deadMoney`).toBeGreaterThanOrEqual(0)
     for (const slot of team.roster) {
-      expect(slot.contract.years, `${label} ${teamId} ${slot.playerId} years`).toBeGreaterThanOrEqual(1)
+      expect(
+        slot.contract.years,
+        `${label} ${teamId} ${slot.playerId} years`,
+      ).toBeGreaterThanOrEqual(1)
       expect(slot.contract.apy, `${label} ${teamId} ${slot.playerId} apy`).toBeGreaterThan(0)
     }
   }
@@ -151,7 +194,10 @@ function assertCapInvariants(state: LeagueState, ctx: EngineContext, label: stri
  */
 function withAiManagedUserTeam(state: LeagueState): LeagueState {
   const team = state.teams[state.userTeam]!
-  return { ...state, teams: { ...state.teams, [state.userTeam]: { ...team, userControlled: false } } }
+  return {
+    ...state,
+    teams: { ...state.teams, [state.userTeam]: { ...team, userControlled: false } },
+  }
 }
 
 describe('fa: cap invariants across 5 simulated offseasons (real 2015-2020 data)', () => {
@@ -178,7 +224,13 @@ describe('fa: cap invariants across 5 simulated offseasons (real 2015-2020 data)
       state = playOffseason(state, ctx)
       assertCapInvariants(state, ctx, `offseason ${i + 1}`)
     }
-    expect(phasesSeen).toEqual(['OFFSEASON_RESIGN', 'OFFSEASON_RESIGN', 'OFFSEASON_RESIGN', 'OFFSEASON_RESIGN', 'OFFSEASON_RESIGN'])
+    expect(phasesSeen).toEqual([
+      'OFFSEASON_RESIGN',
+      'OFFSEASON_RESIGN',
+      'OFFSEASON_RESIGN',
+      'OFFSEASON_RESIGN',
+      'OFFSEASON_RESIGN',
+    ])
     expect(state.season).toBe(2020)
   }, 30000)
 
@@ -189,11 +241,16 @@ describe('fa: cap invariants across 5 simulated offseasons (real 2015-2020 data)
     const teamId = TEAM_IDS.find((id) => id !== start.userTeam)!
     const team = start.teams[teamId]!
     const cap = fa.capFor(start.season, ctx)
-    const roster = [...team.roster].sort((a, b) => a.contract.apy - b.contract.apy || a.playerId.localeCompare(b.playerId)).slice(0, 45)
+    const roster = [...team.roster]
+      .sort((a, b) => a.contract.apy - b.contract.apy || a.playerId.localeCompare(b.playerId))
+      .slice(0, 45)
     const base = roster.reduce((sum, r) => sum + r.contract.apy, 0)
     const state: LeagueState = {
       ...start,
-      teams: { ...start.teams, [teamId]: { ...team, roster, deadMoney: Math.max(0, cap - base - 0.2) } },
+      teams: {
+        ...start.teams,
+        [teamId]: { ...team, roster, deadMoney: Math.max(0, cap - base - 0.2) },
+      },
     }
     expect(fa.validateRoster(state, teamId, ctx).ok).toBe(false)
     const next = league.advancePhase(state, ctx)
@@ -240,7 +297,9 @@ describe('fa.synthesizeContract', () => {
   it('gives rookies a 4-year deal shrinking with years already played', () => {
     const ctx = ctxFor(2015)
     const state = league.newGame(newGameOpts(), ctx)
-    const rookie = Object.values(state.players).find((p) => p.draft !== null && p.rookieSeason === 2015)!
+    const rookie = Object.values(state.players).find(
+      (p) => p.draft !== null && p.rookieSeason === 2015,
+    )!
     const contract = fa.synthesizeContract(state, rookie.id, 2015, ctx)
     expect(contract.rookie).toBe(true)
     expect(contract.years).toBe(4)
@@ -267,7 +326,10 @@ describe('fa.release', () => {
     const state = league.newGame(newGameOpts(), ctx)
     const teamId = 'DAL'
     const slot = state.teams[teamId]!.roster[0]!
-    const expectedDead = Math.round(slot.contract.apy * slot.contract.years * slot.contract.guaranteedPct * 0.25 * 100) / 100
+    const expectedDead =
+      Math.round(
+        slot.contract.apy * slot.contract.years * slot.contract.guaranteedPct * 0.25 * 100,
+      ) / 100
 
     const next = fa.release(state, teamId, slot.playerId, ctx)
     expect(next.teams[teamId]!.roster.some((r) => r.playerId === slot.playerId)).toBe(false)
@@ -285,7 +347,10 @@ describe('fa.offer acceptance', () => {
     const teamId = 'DAL'
     // Empty the team's roster for this check so the cap/roster hard gates never bind — only the
     // ratio-driven acceptance probability should vary across trials.
-    const roomyState: LeagueState = { ...state, teams: { ...state.teams, [teamId]: { ...state.teams[teamId]!, roster: [], deadMoney: 0 } } }
+    const roomyState: LeagueState = {
+      ...state,
+      teams: { ...state.teams, [teamId]: { ...state.teams[teamId]!, roster: [], deadMoney: 0 } },
+    }
     const ask = fa.resignAsk(roomyState, playerId, ctx)
 
     const acceptRate = (ratio: number): number => {
@@ -293,7 +358,13 @@ describe('fa.offer acceptance', () => {
       const trials = 80
       for (let i = 0; i < trials; i++) {
         const rng = ctx.modules.rng.fromSeed('offer-test', i)
-        const contract = { years: 2, apy: ask * ratio, guaranteedPct: 0.4, signedSeason: 2015, rookie: false }
+        const contract = {
+          years: 2,
+          apy: ask * ratio,
+          guaranteedPct: 0.4,
+          signedSeason: 2015,
+          rookie: false,
+        }
         const result = fa.offer(roomyState, teamId, playerId, contract, ctx, rng)
         if (result.accepted) accepted++
       }
@@ -313,12 +384,16 @@ describe('fa.rolloverContracts', () => {
   it('decrements years, moves 0-year contracts to freeAgents, and resets deadMoney', () => {
     const ctx = ctxFor(2015)
     const state = league.newGame(newGameOpts(), ctx)
-    const withDead = { ...state, teams: { ...state.teams, DAL: { ...state.teams.DAL!, deadMoney: 12.5 } } }
+    const withDead = {
+      ...state,
+      teams: { ...state.teams, DAL: { ...state.teams.DAL!, deadMoney: 12.5 } },
+    }
     const { state: rolled, expiring } = fa.rolloverContracts(withDead, ctx)
 
     expect(rolled.teams.DAL!.deadMoney).toBe(0)
     for (const teamId of TEAM_IDS) {
-      for (const slot of rolled.teams[teamId]!.roster) expect(slot.contract.years).toBeGreaterThanOrEqual(1)
+      for (const slot of rolled.teams[teamId]!.roster)
+        expect(slot.contract.years).toBeGreaterThanOrEqual(1)
     }
     const totalExpiring = Object.values(expiring).reduce((n, ids) => n + ids.length, 0)
     expect(rolled.freeAgents.length).toBe(state.freeAgents.length + totalExpiring)

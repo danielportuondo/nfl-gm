@@ -6,8 +6,12 @@
  * what stops the AI from taking the historical pick at a position it has no business adding to.
  */
 import {
-  POSITIONS, STARTER_TEMPLATE,
-  type LeagueState, type NeedProfile, type Position, type TeamId,
+  POSITIONS,
+  STARTER_TEMPLATE,
+  type LeagueState,
+  type NeedProfile,
+  type Position,
+  type TeamId,
 } from '@contracts/index'
 import { draftConstants, type DraftConstants } from './constants'
 
@@ -37,7 +41,11 @@ function starterQuality(ovrs: number[], starters: number, c: DraftConstants): nu
   return total / starters
 }
 
-export function needProfile(state: LeagueState, teamId: TeamId, c: DraftConstants = draftConstants): NeedProfile {
+export function needProfile(
+  state: LeagueState,
+  teamId: TeamId,
+  c: DraftConstants = draftConstants,
+): NeedProfile {
   if (!state.teams[teamId]) throw new Error(`draft.teamNeeds: unknown team "${teamId}"`)
 
   const byPos = {} as Record<Position, number>
@@ -55,14 +63,20 @@ export function needProfile(state: LeagueState, teamId: TeamId, c: DraftConstant
 
   const satSet = new Set(saturated)
   const top = POSITIONS.filter((pos) => !satSet.has(pos) && byPos[pos] >= c.topMin)
-    .sort((a, b) => byPos[b] * c.posImportance[b] - byPos[a] * c.posImportance[a] || a.localeCompare(b))
+    .sort(
+      (a, b) => byPos[b] * c.posImportance[b] - byPos[a] * c.posImportance[a] || a.localeCompare(b),
+    )
     .slice(0, c.topCount)
 
   return { byPos, top, saturated }
 }
 
 /** Multiplier applied to consensus pot in the need-aware fallback. */
-export function needWeight(needs: NeedProfile, pos: Position, c: DraftConstants = draftConstants): number {
+export function needWeight(
+  needs: NeedProfile,
+  pos: Position,
+  c: DraftConstants = draftConstants,
+): number {
   const saturated = needs.saturated.includes(pos) ? c.satPenalty : 1
   return (1 + c.needScale * needs.byPos[pos] * c.posImportance[pos]) * saturated
 }

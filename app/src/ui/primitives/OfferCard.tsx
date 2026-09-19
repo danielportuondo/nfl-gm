@@ -22,7 +22,18 @@ export interface OfferCardProps {
  * (docs/HANDOFF.md Phase 3E; docs/DESIGN.md §11 Draft Room / Trade Center). Used in the draft-room
  * offers panel and the Trade Center's incoming-offers list.
  */
-export function OfferCard({ title, youGet, youGive, evaluation, onAccept, onDecline, busy, revealIndex, acceptLabel, declineLabel }: OfferCardProps) {
+export function OfferCard({
+  title,
+  youGet,
+  youGive,
+  evaluation,
+  onAccept,
+  onDecline,
+  busy,
+  revealIndex,
+  acceptLabel,
+  declineLabel,
+}: OfferCardProps) {
   return (
     <Panel variant="attention" title={title} revealIndex={revealIndex}>
       <p style={{ margin: '0 0 var(--sp-2)' }}>
@@ -33,7 +44,14 @@ export function OfferCard({ title, youGet, youGive, evaluation, onAccept, onDecl
       </p>
       <AcceptanceBar p={evaluation.p} valid={evaluation.valid} mode="fairness" />
       {evaluation.reasons.length > 0 && (
-        <ul style={{ margin: 'var(--sp-2) 0 0', paddingLeft: 'var(--sp-4)', color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
+        <ul
+          style={{
+            margin: 'var(--sp-2) 0 0',
+            paddingLeft: 'var(--sp-4)',
+            color: 'var(--text-2)',
+            fontSize: 'var(--fs-1)',
+          }}
+        >
           {evaluation.reasons.map((r, i) => (
             <li key={i}>{r}</li>
           ))}

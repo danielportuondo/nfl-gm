@@ -7,15 +7,28 @@
  * ranking or need code below may read either.
  */
 import {
-  isInHistory, SeasonNotLoadedError,
-  type CompactTrajectory, type EngineContext, type LeagueState, type Player, type PlayerId,
-  type Prospect, type ScoutingView, type Season, type TrajectoryTable, type TrueTrajectory,
+  isInHistory,
+  SeasonNotLoadedError,
+  type CompactTrajectory,
+  type EngineContext,
+  type LeagueState,
+  type Player,
+  type PlayerId,
+  type Prospect,
+  type ScoutingView,
+  type Season,
+  type TrajectoryTable,
+  type TrueTrajectory,
 } from '@contracts/index'
 
 /** Season S's DRAFT phase drafts the S+1 class. */
 export const draftSeasonOf = (state: LeagueState): Season => state.season + 1
 
-function compactToTrajectory(compact: CompactTrajectory, fallbackSeason: Season, fallback: number): TrueTrajectory {
+function compactToTrajectory(
+  compact: CompactTrajectory,
+  fallbackSeason: Season,
+  fallback: number,
+): TrueTrajectory {
   const bySeason: Record<string, number> = {}
   compact.values.forEach((v, i) => {
     if (v !== null) bySeason[String(compact.start + i)] = v
@@ -43,8 +56,16 @@ function copyRealTruth(
 /** Prospects enter state undrafted: `draft` is filled in by the pick that actually takes them. */
 function asUndraftedPlayer(p: Prospect): Player {
   return {
-    id: p.id, name: p.name, pos: p.pos, birthYear: p.birthYear, college: p.college,
-    heightIn: p.heightIn, weightLb: p.weightLb, draft: null, real: p.real, rookieSeason: p.rookieSeason,
+    id: p.id,
+    name: p.name,
+    pos: p.pos,
+    birthYear: p.birthYear,
+    college: p.college,
+    heightIn: p.heightIn,
+    weightLb: p.weightLb,
+    draft: null,
+    real: p.real,
+    rookieSeason: p.rookieSeason,
   }
 }
 
@@ -74,7 +95,11 @@ export function loadClass(state: LeagueState, ctx: EngineContext): LeagueState {
   if (isInHistory(ctx, season)) {
     const sd = ctx.seasonData(season)
     if (!sd) throw new SeasonNotLoadedError(season)
-    return merge(state, sd.draft.prospects, copyRealTruth(sd.draft.prospects, ctx.trajectories, season))
+    return merge(
+      state,
+      sd.draft.prospects,
+      copyRealTruth(sd.draft.prospects, ctx.trajectories, season),
+    )
   }
   // lifecycle stamps ids and rookieSeason with state.season; the class being drafted is season S+1.
   const rng = ctx.modules.rng.fromSeed(state.seed, season, 'draftClass')

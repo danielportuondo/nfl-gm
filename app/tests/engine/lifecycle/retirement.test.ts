@@ -5,22 +5,47 @@
  *    old (36+) non-K/P players retire more often than not.
  */
 import { describe, expect, it } from 'vitest'
-import { type LeagueState, type Player, type PlayerId, type RosterSlot, type TeamState, type TrueTrajectory } from '@contracts/index'
+import {
+  type LeagueState,
+  type Player,
+  type PlayerId,
+  type RosterSlot,
+  type TeamState,
+  type TrueTrajectory,
+} from '@contracts/index'
 import { mockBundle, mockLeague } from '@fixtures/mockLeague'
 import { lifecycle } from '@engine/lifecycle'
 import { makeFakeContext } from '../fakes'
 
 const SEASON = 2016
 
-function playerAt(id: PlayerId, pos: Player['pos'], age: number, real: boolean, retiresAfter: number | null): { player: Player; truth: TrueTrajectory } {
+function playerAt(
+  id: PlayerId,
+  pos: Player['pos'],
+  age: number,
+  real: boolean,
+  retiresAfter: number | null,
+): { player: Player; truth: TrueTrajectory } {
   return {
-    player: { id, name: id, pos, birthYear: SEASON - age, draft: null, real, rookieSeason: SEASON - age + 21 },
+    player: {
+      id,
+      name: id,
+      pos,
+      birthYear: SEASON - age,
+      draft: null,
+      real,
+      rookieSeason: SEASON - age + 21,
+    },
     truth: { bySeason: { [String(SEASON - 1)]: 65, [String(SEASON)]: 65 }, retiresAfter },
   }
 }
 
 /** A LeagueState at `SEASON` with `ids` on a single team roster and everyone else stripped out. */
-function stateWith(ids: PlayerId[], players: Record<PlayerId, Player>, truth: Record<PlayerId, TrueTrajectory>): LeagueState {
+function stateWith(
+  ids: PlayerId[],
+  players: Record<PlayerId, Player>,
+  truth: Record<PlayerId, TrueTrajectory>,
+): LeagueState {
   const base = mockLeague({ season: SEASON })
   const roster: RosterSlot[] = ids.map((id) => ({
     playerId: id,
@@ -28,8 +53,13 @@ function stateWith(ids: PlayerId[], players: Record<PlayerId, Player>, truth: Re
     contract: { years: 1, apy: 1, guaranteedPct: 0, signedSeason: SEASON, rookie: false },
   }))
   const team: TeamState = {
-    id: 'IND', roster, depthChart: {}, record: { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 },
-    deadMoney: 0, tradeAnnoyance: 0, userControlled: true,
+    id: 'IND',
+    roster,
+    depthChart: {},
+    record: { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 },
+    deadMoney: 0,
+    tradeAnnoyance: 0,
+    userControlled: true,
   }
   return { ...base, teams: { IND: team }, players, truth, scouting: {}, freeAgents: [] }
 }
@@ -48,7 +78,11 @@ describe('lifecycle.retirements', () => {
     const ctx = makeFakeContext(bundle, { lifecycle })
     const rng = ctx.modules.rng.fromSeed('retire-real', SEASON, 'retirements')
 
-    const { state: next, retired } = lifecycle.retirements(stateWith(['real-1'], players, truth), ctx, rng)
+    const { state: next, retired } = lifecycle.retirements(
+      stateWith(['real-1'], players, truth),
+      ctx,
+      rng,
+    )
     expect(retired).toEqual(['real-1'])
     expect(next.teams.IND!.roster).toHaveLength(0)
   })

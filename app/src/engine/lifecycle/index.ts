@@ -7,14 +7,37 @@
 import {
   isInHistory,
   lifecycleStub,
-  type CompactTrajectory, type CurvesFile, type EngineContext, type InjuryEvent, type LeagueState,
-  type LifecycleModule, type Player, type PlayerId, type Rng, type Season, type TeamState,
+  type CompactTrajectory,
+  type CurvesFile,
+  type EngineContext,
+  type InjuryEvent,
+  type LeagueState,
+  type LifecycleModule,
+  type Player,
+  type PlayerId,
+  type Rng,
+  type Season,
+  type TeamState,
 } from '@contracts/index'
 import {
-  CONFIDENCE_BASE, CONFIDENCE_MAX, CONFIDENCE_PER_SEASON, PEDIGREE_BASELINE_PICK, PEDIGREE_BUMP_MAX,
-  PEDIGREE_BUMP_SCALE, RETIREMENT_VALUE_BASELINE, VETERAN_OVR_NOISE_BASE_SD, VETERAN_OVR_NOISE_MIN_SD,
+  CONFIDENCE_BASE,
+  CONFIDENCE_MAX,
+  CONFIDENCE_PER_SEASON,
+  PEDIGREE_BASELINE_PICK,
+  PEDIGREE_BUMP_MAX,
+  PEDIGREE_BUMP_SCALE,
+  RETIREMENT_VALUE_BASELINE,
+  VETERAN_OVR_NOISE_BASE_SD,
+  VETERAN_OVR_NOISE_MIN_SD,
 } from './constants'
-import { ageDelta, agingSd, clampRating, interpolateSlotGrade, projectedCeiling, retireProbability } from './curves'
+import {
+  ageDelta,
+  agingSd,
+  clampRating,
+  interpolateSlotGrade,
+  projectedCeiling,
+  retireProbability,
+} from './curves'
 import { generateDraftClass as generateDraftClassImpl } from './draftClass'
 
 // -------------------------------------------------------------------------------------------
@@ -28,7 +51,10 @@ function exactTrajectoryValue(compact: CompactTrajectory, season: Season): numbe
 }
 
 /** Most recent true value strictly before `beforeSeason` (gaps in bySeason are skipped). */
-function lastKnownValue(bySeason: Record<string, number>, beforeSeason: Season): number | undefined {
+function lastKnownValue(
+  bySeason: Record<string, number>,
+  beforeSeason: Season,
+): number | undefined {
   let bestSeason = -Infinity
   let bestValue: number | undefined
   for (const key of Object.keys(bySeason)) {
@@ -69,7 +95,10 @@ function progressSeason(state: LeagueState, ctx: EngineContext, rng: Rng): Leagu
       const noise = rng.fork(id).normal(0, sd)
       value = clampRating(prev + delta + noise)
     }
-    truth = { ...truth, [id]: { ...current, bySeason: { ...current.bySeason, [String(season)]: value } } }
+    truth = {
+      ...truth,
+      [id]: { ...current, bySeason: { ...current.bySeason, [String(season)]: value } },
+    }
     changed = true
   }
   return changed ? { ...state, truth } : state
@@ -79,11 +108,16 @@ function progressSeason(state: LeagueState, ctx: EngineContext, rng: Rng): Leagu
 // retirements
 // -------------------------------------------------------------------------------------------
 
-function retirements(state: LeagueState, ctx: EngineContext, rng: Rng): { state: LeagueState; retired: PlayerId[] } {
+function retirements(
+  state: LeagueState,
+  ctx: EngineContext,
+  rng: Rng,
+): { state: LeagueState; retired: PlayerId[] } {
   const season = state.season
   const curves = ctx.data.curves
   const activeIds = new Set<PlayerId>()
-  for (const team of Object.values(state.teams)) for (const slot of team.roster) activeIds.add(slot.playerId)
+  for (const team of Object.values(state.teams))
+    for (const slot of team.roster) activeIds.add(slot.playerId)
   for (const id of state.freeAgents) activeIds.add(id)
 
   const retired: PlayerId[] = []
@@ -103,15 +137,17 @@ function retirements(state: LeagueState, ctx: EngineContext, rng: Rng): { state:
         : knownActive
           ? false
           : rng
-            .fork(id)
-            .chance(
-              retireProbability(
-                curves,
-                player.pos,
-                season - player.birthYear,
-                traj.bySeason[String(season)] ?? traj.bySeason[String(season - 1)] ?? RETIREMENT_VALUE_BASELINE,
-              ),
-            )
+              .fork(id)
+              .chance(
+                retireProbability(
+                  curves,
+                  player.pos,
+                  season - player.birthYear,
+                  traj.bySeason[String(season)] ??
+                    traj.bySeason[String(season - 1)] ??
+                    RETIREMENT_VALUE_BASELINE,
+                ),
+              )
 
     if (retire) {
       retired.push(id)
@@ -170,7 +206,10 @@ function refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState {
     if (priorValue == null) continue // nothing completed to report on yet
 
     const yearsIn = Math.max(0, season - player.rookieSeason)
-    const noiseSd = Math.max(VETERAN_OVR_NOISE_MIN_SD, VETERAN_OVR_NOISE_BASE_SD / Math.sqrt(1 + yearsIn))
+    const noiseSd = Math.max(
+      VETERAN_OVR_NOISE_MIN_SD,
+      VETERAN_OVR_NOISE_BASE_SD / Math.sqrt(1 + yearsIn),
+    )
     const ovrRng = ctx.modules.rng.fromSeed(state.seed, season, 'scouting', id)
     const ovr = clampRating(priorValue + ovrRng.normal(0, noiseSd))
     const ceiling = projectedCeiling(curves, player.pos, season - player.birthYear, ovr)
@@ -202,7 +241,10 @@ function applyInjuryEvents(state: LeagueState, events: InjuryEvent[]): LeagueSta
       if (!hit) return slot
       // A player hurt again while already out serves the longer of the two absences.
       const weeksOut = Math.max(hit.weeksOut, slot.injured?.weeksOut ?? 0)
-      return { ...slot, injured: { weeksOut, kind: hit.kind, season: state.season, week: state.week } }
+      return {
+        ...slot,
+        injured: { weeksOut, kind: hit.kind, season: state.season, week: state.week },
+      }
     })
     teams = { ...teams, [teamId]: { ...team, roster } }
   }
@@ -224,7 +266,8 @@ function tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueS
       if (weeksOut <= 0) {
         // The injury clears this week. If it was long (elapsed >= minWeeks; a season boundary in
         // between counts as long — no weekly ticks run over the offseason), roll for permanent loss.
-        const elapsed = slot.injured.season === state.season ? state.week - slot.injured.week + 1 : Infinity
+        const elapsed =
+          slot.injured.season === state.season ? state.week - slot.injured.week + 1 : Infinity
         if (elapsed >= model.minWeeks && rng.fork(slot.playerId).chance(model.p)) {
           const traj = truth[slot.playerId]
           const key = String(state.season)
@@ -232,7 +275,13 @@ function tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueS
           if (traj && currentValue != null) {
             const [lo, hi] = model.lossRange
             const loss = rng.fork(`${slot.playerId}:loss`).int(Math.round(lo), Math.round(hi))
-            truth = { ...truth, [slot.playerId]: { ...traj, bySeason: { ...traj.bySeason, [key]: clampRating(currentValue - loss) } } }
+            truth = {
+              ...truth,
+              [slot.playerId]: {
+                ...traj,
+                bySeason: { ...traj.bySeason, [key]: clampRating(currentValue - loss) },
+              },
+            }
           }
         }
         const healthy = { ...slot }

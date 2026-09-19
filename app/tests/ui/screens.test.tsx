@@ -32,7 +32,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 /** Draft-room fixture: a one-round order with the user on the clock and one AI pending offer. */
 function fixtureDraftRoom(state: LeagueState): DraftRoomState {
-  const order: DraftPick[] = TEAM_IDS.map((t, i) => ({ season: state.season + 1, round: 1, pick: i + 1, originalTeam: t, owner: t, playerId: null }))
+  const order: DraftPick[] = TEAM_IDS.map((t, i) => ({
+    season: state.season + 1,
+    round: 1,
+    pick: i + 1,
+    originalTeam: t,
+    owner: t,
+    playerId: null,
+  }))
   const userIndex = (TEAM_IDS as readonly string[]).indexOf(state.userTeam)
   const available = Object.keys(state.scouting).slice(0, 25)
   return {
@@ -62,7 +69,15 @@ function fixtureTradeProposal(state: LeagueState): TradeProposal {
   }
 }
 
-const FIXTURE_EVALUATION: TradeEvaluation = { valueIn: 10, valueOut: 8, needAdj: 0, margin: 1, p: 0.62, valid: true, reasons: [] }
+const FIXTURE_EVALUATION: TradeEvaluation = {
+  valueIn: 10,
+  valueOut: 8,
+  needAdj: 0,
+  margin: 1,
+  p: 0.62,
+  valid: true,
+  reasons: [],
+}
 
 function fixtureStandings(): StandingRow[] {
   return TEAM_IDS.map((teamId, i) => ({
@@ -109,7 +124,9 @@ describe('NewGame', () => {
   it('renders the mandate sentence and a Start button', () => {
     const data = mockStatic()
     render(<NewGame data={data} onStart={vi.fn()} />)
-    expect(screen.getByText(/Your mandate: win the Super Bowl by \d{4}\. That's \d+ seasons?\./)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Your mandate: win the Super Bowl by \d{4}\. That's \d+ seasons?\./),
+    ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Start' })).toBeInTheDocument()
   })
 })
@@ -118,7 +135,15 @@ describe('Dashboard', () => {
   it('renders the team record', () => {
     const state = mockLeague()
     const data = mockStatic()
-    render(<Dashboard state={state} data={data} cap={150} onSimWeek={vi.fn()} onAdvancePhase={vi.fn()} />)
+    render(
+      <Dashboard
+        state={state}
+        data={data}
+        cap={150}
+        onSimWeek={vi.fn()}
+        onAdvancePhase={vi.fn()}
+      />,
+    )
     const record = state.teams[state.userTeam]!.record
     expect(screen.getByText(new RegExp(`${record.wins}-${record.losses}`))).toBeInTheDocument()
   })
@@ -126,10 +151,22 @@ describe('Dashboard', () => {
   it('routes an alert to the screen that can fix it', async () => {
     const state = mockLeague()
     const team = state.teams[state.userTeam]!
-    const overCap: LeagueState = { ...state, teams: { ...state.teams, [state.userTeam]: { ...team, deadMoney: team.deadMoney + 500 } } }
+    const overCap: LeagueState = {
+      ...state,
+      teams: { ...state.teams, [state.userTeam]: { ...team, deadMoney: team.deadMoney + 500 } },
+    }
     const onNavigate = vi.fn()
     const data = mockStatic()
-    render(<Dashboard state={overCap} data={data} cap={150} onSimWeek={vi.fn()} onAdvancePhase={vi.fn()} onNavigate={onNavigate} />)
+    render(
+      <Dashboard
+        state={overCap}
+        data={data}
+        cap={150}
+        onSimWeek={vi.fn()}
+        onAdvancePhase={vi.fn()}
+        onNavigate={onNavigate}
+      />,
+    )
     await userEvent.click(screen.getByText(/Over the cap/))
     expect(onNavigate).toHaveBeenCalledWith('finances')
   })
@@ -149,13 +186,26 @@ describe('Roster', () => {
   it('shows the injured badge and weeks out for an injured roster slot', () => {
     const state = mockLeague()
     const team = state.teams[state.userTeam]!
-    const injuredSlot = { ...team.roster[0]!, injured: { weeksOut: 3, kind: 'knee', season: state.season, week: 1 } }
+    const injuredSlot = {
+      ...team.roster[0]!,
+      injured: { weeksOut: 3, kind: 'knee', season: state.season, week: 1 },
+    }
     const withInjury: LeagueState = {
       ...state,
-      teams: { ...state.teams, [state.userTeam]: { ...team, roster: [injuredSlot, ...team.roster.slice(1)] } },
+      teams: {
+        ...state.teams,
+        [state.userTeam]: { ...team, roster: [injuredSlot, ...team.roster.slice(1)] },
+      },
     }
     const data = mockStatic()
-    render(<Roster state={withInjury} data={data} onSelectPlayer={vi.fn()} onReorderDepthChart={vi.fn()} />)
+    render(
+      <Roster
+        state={withInjury}
+        data={data}
+        onSelectPlayer={vi.fn()}
+        onReorderDepthChart={vi.fn()}
+      />,
+    )
     expect(screen.getByText('Injured')).toBeInTheDocument()
     expect(screen.getByText('Out 3 wk')).toBeInTheDocument()
   })
@@ -164,7 +214,14 @@ describe('Roster', () => {
     const state = mockLeague()
     const data = mockStatic()
     const onSelectPlayer = vi.fn()
-    const { container } = render(<Roster state={state} data={data} onSelectPlayer={onSelectPlayer} onReorderDepthChart={vi.fn()} />)
+    const { container } = render(
+      <Roster
+        state={state}
+        data={data}
+        onSelectPlayer={onSelectPlayer}
+        onReorderDepthChart={vi.fn()}
+      />,
+    )
     const firstRow = container.querySelector<HTMLElement>('.gg-table tbody tr')!
     expect(firstRow).toHaveAttribute('tabindex', '0')
     firstRow.focus()
@@ -304,7 +361,15 @@ describe('Schedule', () => {
   it('renders sim controls and the user schedule', () => {
     const state = mockLeague()
     const data = mockStatic()
-    render(<Schedule state={state} data={data} onSimWeek={vi.fn()} onSimToNextEvent={vi.fn()} onSimSeason={vi.fn()} />)
+    render(
+      <Schedule
+        state={state}
+        data={data}
+        onSimWeek={vi.fn()}
+        onSimToNextEvent={vi.fn()}
+        onSimSeason={vi.fn()}
+      />,
+    )
     expect(screen.getByRole('button', { name: 'Sim week' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Sim to next event' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Sim season' })).toBeInTheDocument()
@@ -343,7 +408,9 @@ describe('Finances', () => {
     const state = mockLeague()
     const data = mockStatic()
     const onRelease = vi.fn()
-    render(<Finances state={state} data={data} cap={200} capNextSeason={210} onRelease={onRelease} />)
+    render(
+      <Finances state={state} data={data} cap={200} capNextSeason={210} onRelease={onRelease} />,
+    )
     expect(screen.getByText('Payroll')).toBeInTheDocument()
     expect(screen.getByText('Cap space next season')).toBeInTheDocument()
     const releaseButtons = screen.getAllByRole('button', { name: /Release/ })
@@ -373,7 +440,11 @@ describe('SeasonRecap', () => {
 describe('EndGame', () => {
   it('celebrates a championship without a Keep playing option', () => {
     const state = mockLeague()
-    const champion: LeagueState = { ...state, outcome: 'CHAMPION', history: [fixtureSeasonSummary(state)] }
+    const champion: LeagueState = {
+      ...state,
+      outcome: 'CHAMPION',
+      history: [fixtureSeasonSummary(state)],
+    }
     const data = mockStatic()
     render(<EndGame state={champion} data={data} cap={200} />)
     expect(screen.getByText(/champions/)).toBeInTheDocument()

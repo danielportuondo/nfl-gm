@@ -69,13 +69,19 @@ describe('HttpDataSource', () => {
   })
 
   it('fetches, validates, and caches files by URL', async () => {
-    const teamsFile = { attribution: bundle.static.manifest.attribution, teams: Object.values(bundle.static.teams) }
+    const teamsFile = {
+      attribution: bundle.static.manifest.attribution,
+      teams: Object.values(bundle.static.teams),
+    }
     const fetchMock = vi.fn((input: string) => {
-      if (input === urlFor(DATA_FILES.manifest)) return Promise.resolve(jsonResponse(bundle.static.manifest))
+      if (input === urlFor(DATA_FILES.manifest))
+        return Promise.resolve(jsonResponse(bundle.static.manifest))
       if (input === urlFor(DATA_FILES.teams)) return Promise.resolve(jsonResponse(teamsFile))
       if (input === urlFor(DATA_FILES.cap)) return Promise.resolve(jsonResponse(bundle.static.cap))
-      if (input === urlFor(DATA_FILES.curves)) return Promise.resolve(jsonResponse(bundle.static.curves))
-      if (input === urlFor(DATA_FILES.injuryModel)) return Promise.resolve(jsonResponse(bundle.static.injuryModel))
+      if (input === urlFor(DATA_FILES.curves))
+        return Promise.resolve(jsonResponse(bundle.static.curves))
+      if (input === urlFor(DATA_FILES.injuryModel))
+        return Promise.resolve(jsonResponse(bundle.static.injuryModel))
       throw new Error(`unexpected fetch: ${input}`)
     })
     vi.stubGlobal('fetch', fetchMock)
@@ -93,10 +99,14 @@ describe('HttpDataSource', () => {
   it('loads a full season chunk with substituted season path', async () => {
     const season = bundle.seasons[2015]!
     const fetchMock = vi.fn((input: string) => {
-      if (input === urlFor(DATA_FILES.seasonPlayers.replace('{yyyy}', '2015'))) return Promise.resolve(jsonResponse(season.players))
-      if (input === urlFor(DATA_FILES.seasonRosters.replace('{yyyy}', '2015'))) return Promise.resolve(jsonResponse(season.rosters))
-      if (input === urlFor(DATA_FILES.seasonDraft.replace('{yyyy}', '2015'))) return Promise.resolve(jsonResponse(season.draft))
-      if (input === urlFor(DATA_FILES.seasonSchedule.replace('{yyyy}', '2015'))) return Promise.resolve(jsonResponse(season.schedule))
+      if (input === urlFor(DATA_FILES.seasonPlayers.replace('{yyyy}', '2015')))
+        return Promise.resolve(jsonResponse(season.players))
+      if (input === urlFor(DATA_FILES.seasonRosters.replace('{yyyy}', '2015')))
+        return Promise.resolve(jsonResponse(season.rosters))
+      if (input === urlFor(DATA_FILES.seasonDraft.replace('{yyyy}', '2015')))
+        return Promise.resolve(jsonResponse(season.draft))
+      if (input === urlFor(DATA_FILES.seasonSchedule.replace('{yyyy}', '2015')))
+        return Promise.resolve(jsonResponse(season.schedule))
       throw new Error(`unexpected fetch: ${input}`)
     })
     vi.stubGlobal('fetch', fetchMock)
@@ -108,7 +118,8 @@ describe('HttpDataSource', () => {
 
   it('rejects an invalid file with a message naming the file', async () => {
     const fetchMock = vi.fn((input: string) => {
-      if (input === urlFor(DATA_FILES.manifest)) return Promise.resolve(jsonResponse({ garbage: true }))
+      if (input === urlFor(DATA_FILES.manifest))
+        return Promise.resolve(jsonResponse({ garbage: true }))
       throw new Error(`unexpected fetch: ${input}`)
     })
     vi.stubGlobal('fetch', fetchMock)

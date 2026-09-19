@@ -6,10 +6,25 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import {
-  DATA_FILES, SeasonNotLoadedError,
-  type CapFile, type CurvesFile, type EngineContext, type EngineModules, type InjuryModelFile, type Manifest,
-  type MemoryBundle, type Season, type SeasonData, type SeasonDraftFile, type SeasonPlayersFile,
-  type SeasonRostersFile, type SeasonScheduleFile, type StaticData, type TeamId, type TeamInfo, type TeamsFile,
+  DATA_FILES,
+  SeasonNotLoadedError,
+  type CapFile,
+  type CurvesFile,
+  type EngineContext,
+  type EngineModules,
+  type InjuryModelFile,
+  type Manifest,
+  type MemoryBundle,
+  type Season,
+  type SeasonData,
+  type SeasonDraftFile,
+  type SeasonPlayersFile,
+  type SeasonRostersFile,
+  type SeasonScheduleFile,
+  type StaticData,
+  type TeamId,
+  type TeamInfo,
+  type TeamsFile,
   type TrajectoriesFile,
 } from '@contracts/index'
 import { MemoryDataSource } from '@data/index'
@@ -45,7 +60,8 @@ export function readPublicBundle(seasons: readonly Season[], root = PUBLIC_DATA_
     injuryModel: readJson<InjuryModelFile>(root, DATA_FILES.injuryModel),
   }
   const seasonChunks: Record<Season, SeasonData> = {}
-  const path = (name: keyof typeof DATA_FILES, season: Season) => DATA_FILES[name].replace('{yyyy}', String(season))
+  const path = (name: keyof typeof DATA_FILES, season: Season) =>
+    DATA_FILES[name].replace('{yyyy}', String(season))
   for (const season of [...new Set(seasons)].sort((a, b) => a - b)) {
     if (season > manifest.latestRealSeason || !manifest.seasons.includes(season)) continue
     seasonChunks[season] = {
@@ -55,7 +71,11 @@ export function readPublicBundle(seasons: readonly Season[], root = PUBLIC_DATA_
       schedule: readJson<SeasonScheduleFile>(root, path('seasonSchedule', season)),
     }
   }
-  return { static: staticData, seasons: seasonChunks, trajectories: readJson<TrajectoriesFile>(root, DATA_FILES.trajectories).byPlayer }
+  return {
+    static: staticData,
+    seasons: seasonChunks,
+    trajectories: readJson<TrajectoriesFile>(root, DATA_FILES.trajectories).byPlayer,
+  }
 }
 
 /** Validated EngineContext over the shipped data. `seasons` are loaded eagerly; others throw SeasonNotLoadedError. */
@@ -69,7 +89,8 @@ export async function loadRealContext(
   const trajectories = await source.loadTrajectories()
   const loaded = new Map<Season, SeasonData>()
   for (const season of seasons) {
-    if (season <= data.manifest.latestRealSeason) loaded.set(season, await source.loadSeason(season))
+    if (season <= data.manifest.latestRealSeason)
+      loaded.set(season, await source.loadSeason(season))
   }
   return {
     data,

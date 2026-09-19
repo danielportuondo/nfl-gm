@@ -4,7 +4,16 @@
  * Pure per-game functions; the league module applies results to state. Sim reads `state.truth` for
  * team strength — that is the hindsight model: games are decided by who players really are.
  */
-import type { EngineContext, Game, GameResult, InjuryEvent, LeagueState, Rng, SimModule, TeamId } from '@contracts/index'
+import type {
+  EngineContext,
+  Game,
+  GameResult,
+  InjuryEvent,
+  LeagueState,
+  Rng,
+  SimModule,
+  TeamId,
+} from '@contracts/index'
 import { buildBoxScore, offenseTotals } from './boxScore'
 import { simConstants } from './constants'
 import { sampleInjuries } from './injuries'
@@ -60,6 +69,12 @@ export const sim: SimModule = {
 
 export { simConstants } from './constants'
 export { apportion } from './boxScore'
-export { availableByPosition, computeTeamStrength, resetTruthFallbackCount, truthFallbackCount, trueValue } from './strength'
+export {
+  availableByPosition,
+  computeTeamStrength,
+  resetTruthFallbackCount,
+  truthFallbackCount,
+  trueValue,
+} from './strength'
 export { drawScore, expectedMargin, isPlausibleScore } from './score'
 export { sampleInjuries } from './injuries'

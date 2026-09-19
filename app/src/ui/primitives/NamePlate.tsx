@@ -17,7 +17,17 @@ export interface NamePlateProps {
 }
 
 /** Draft-board tile: bust sprite, name, position badge, consensus ovr/pot (docs/DESIGN.md §8). */
-export function NamePlate({ name, pos, number, status, meta, selected, onClick, onMoveUp, onMoveDown }: NamePlateProps) {
+export function NamePlate({
+  name,
+  pos,
+  number,
+  status,
+  meta,
+  selected,
+  onClick,
+  onMoveUp,
+  onMoveDown,
+}: NamePlateProps) {
   const content = (
     <>
       <BustSprite pos={pos} size={2} number={number} status={status} />

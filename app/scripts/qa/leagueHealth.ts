@@ -8,7 +8,12 @@
  * retirements, the procedural share of rostered players, and the consensus grades of each rookie class.
  * The last two are what separates a historical season from a procedural one.
  */
-import { TEAM_IDS, type EngineContext, type LeagueState, type PlayerId } from '../../src/contracts/index'
+import {
+  TEAM_IDS,
+  type EngineContext,
+  type LeagueState,
+  type PlayerId,
+} from '../../src/contracts/index'
 import { emptyLog, userCutdowns, userDraft, userFreeAgency, userResign } from '../lib/scriptedGm'
 import { mean, newRealGame, quantile, sd, table } from './lib'
 
@@ -45,9 +50,17 @@ interface SeasonRow {
   rookieOvr: string
 }
 
-function strengthStats(state: LeagueState, ctx: EngineContext): { sd: number; mean: number; min: number; max: number } {
+function strengthStats(
+  state: LeagueState,
+  ctx: EngineContext,
+): { sd: number; mean: number; min: number; max: number } {
   const overalls = TEAM_IDS.map((t) => ctx.modules.sim.teamStrength(state, t, ctx).overall)
-  return { sd: sd(overalls), mean: mean(overalls), min: Math.min(...overalls), max: Math.max(...overalls) }
+  return {
+    sd: sd(overalls),
+    mean: mean(overalls),
+    min: Math.min(...overalls),
+    max: Math.max(...overalls),
+  }
 }
 
 function rookieGrades(state: LeagueState, season: number): string {
@@ -84,9 +97,12 @@ async function main(): Promise<void> {
     const payrolls = TEAM_IDS.map((t) => fa.payroll(state, t))
     const dead = TEAM_IDS.map((t) => state.teams[t]!.deadMoney)
     const sizes = TEAM_IDS.map((t) => state.teams[t]!.roster.length)
-    const generated = TEAM_IDS.flatMap((t) => state.teams[t]!.roster).filter((r) => !state.players[r.playerId]?.real).length
+    const generated = TEAM_IDS.flatMap((t) => state.teams[t]!.roster).filter(
+      (r) => !state.players[r.playerId]?.real,
+    ).length
 
-    while (state.phase === 'REGULAR' || state.phase === 'PLAYOFFS') state = league.simWeek(state, ctx).state
+    while (state.phase === 'REGULAR' || state.phase === 'PLAYOFFS')
+      state = league.simWeek(state, ctx).state
     const wins = TEAM_IDS.map((t) => state.teams[t]!.record.wins)
 
     let retired = 0
@@ -117,16 +133,36 @@ async function main(): Promise<void> {
       payrollSd: sd(payrolls),
       deadMean: mean(dead),
       rosterRange: `${Math.min(...sizes)}–${Math.max(...sizes)}`,
-      generatedShare: generated / Math.max(1, sizes.reduce((s, v) => s + v, 0)),
+      generatedShare:
+        generated /
+        Math.max(
+          1,
+          sizes.reduce((s, v) => s + v, 0),
+        ),
       retired,
       rookieOvr: rookieGrades(state, season + 1),
     })
   }
 
-  console.log(`\nleague health — ${args.team} ${args.start}, ${args.seasons} seasons, seed "${args.seed}"\n`)
+  console.log(
+    `\nleague health — ${args.team} ${args.start}, ${args.seasons} seasons, seed "${args.seed}"\n`,
+  )
   console.log(
     table([
-      ['season', 'sd(ovr)', 'mean ovr', 'ovr range', 'sd(wins)', 'payroll $M', 'sd(pay)', 'dead $M', 'rosters', 'gen %', 'retired', `rookie class (consensus ovr)`],
+      [
+        'season',
+        'sd(ovr)',
+        'mean ovr',
+        'ovr range',
+        'sd(wins)',
+        'payroll $M',
+        'sd(pay)',
+        'dead $M',
+        'rosters',
+        'gen %',
+        'retired',
+        `rookie class (consensus ovr)`,
+      ],
       ...rows.map((r) => [
         String(r.season),
         r.overallSd.toFixed(2),

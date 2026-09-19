@@ -33,7 +33,10 @@ async function cutdownToRosterLimit(page: Page): Promise<void> {
   for (let i = 0; i < 40; i++) {
     const count = rosterCount(await caption.textContent())
     if (count <= 53) return
-    await page.getByRole('button', { name: /^Release /, exact: false }).last().click()
+    await page
+      .getByRole('button', { name: /^Release /, exact: false })
+      .last()
+      .click()
     await page.waitForTimeout(50)
   }
 }
@@ -49,7 +52,10 @@ async function fixCapForPreseason(page: Page): Promise<void> {
     if (!overCap) return
     await goTo(page, 'Roster')
     await page.getByRole('button', { name: 'APY', exact: true }).click()
-    await page.getByRole('button', { name: /^Release /, exact: false }).first().click()
+    await page
+      .getByRole('button', { name: /^Release /, exact: false })
+      .first()
+      .click()
     await page.waitForTimeout(50)
   }
 }
@@ -102,8 +108,12 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
 
   await test.step('propose a trade in the Trade Center', async () => {
     await goTo(page, 'Trades')
-    const yourOffer = page.locator('section').filter({ has: page.getByRole('heading', { name: 'Your offer' }) })
-    const theirSide = page.locator('section').filter({ has: page.getByRole('heading', { name: 'Their side' }) })
+    const yourOffer = page
+      .locator('section')
+      .filter({ has: page.getByRole('heading', { name: 'Your offer' }) })
+    const theirSide = page
+      .locator('section')
+      .filter({ has: page.getByRole('heading', { name: 'Their side' }) })
     await yourOffer.getByRole('checkbox').first().check()
     await theirSide.getByRole('checkbox').first().check()
 
@@ -111,7 +121,11 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
 
     await page.getByRole('button', { name: 'Offer trade' }).click()
     // Either outcome proves the acceptance evaluation ran; the trade only needs to be evaluated, not accepted.
-    await expect(page.getByRole('status').filter({ hasText: /Trade accepted|Trade fell through|They passed on that trade/ })).toBeVisible({
+    await expect(
+      page
+        .getByRole('status')
+        .filter({ hasText: /Trade accepted|Trade fell through|They passed on that trade/ }),
+    ).toBeVisible({
       timeout: 15_000,
     })
   })
@@ -143,7 +157,10 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
     headerBefore = (await HEADER(page).textContent()) ?? ''
 
     await goTo(page, 'Roster')
-    const caption = await page.getByText(/roster · \d+ players/).first().textContent()
+    const caption = await page
+      .getByText(/roster · \d+ players/)
+      .first()
+      .textContent()
     rosterCaption = caption ?? ''
     expect(rosterCaption).not.toBe('')
   })
@@ -156,7 +173,8 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
     // The new-game screen may offer to resume the autosave ("Continue as ...") instead of restoring
     // straight away; accept that prompt if present.
     const continueButton = page.getByRole('button', { name: 'Continue', exact: true })
-    if (await continueButton.isVisible({ timeout: 5_000 }).catch(() => false)) await continueButton.click()
+    if (await continueButton.isVisible({ timeout: 5_000 }).catch(() => false))
+      await continueButton.click()
     await expect(HEADER(page)).toContainText('week 5', { timeout: 15_000 })
     const headerAfter = await HEADER(page).textContent()
     expect(headerAfter).toBe(headerBefore)

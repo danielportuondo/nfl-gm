@@ -1,6 +1,21 @@
 import { useMemo, useState } from 'react'
-import { POSITIONS, type Contract, type LeagueState, type PlayerId, type Position } from '@contracts/index'
-import { Button, Meter, Panel, PositionBadge, StatTile, Table, type Column, type SortState } from '@ui/primitives'
+import {
+  POSITIONS,
+  type Contract,
+  type LeagueState,
+  type PlayerId,
+  type Position,
+} from '@contracts/index'
+import {
+  Button,
+  Meter,
+  Panel,
+  PositionBadge,
+  StatTile,
+  Table,
+  type Column,
+  type SortState,
+} from '@ui/primitives'
 
 export interface FreeAgencyProps {
   state: LeagueState
@@ -32,7 +47,17 @@ interface PoolRow {
 }
 
 /** Pool table with asks, your offers, re-sign list, UDFA list (docs/DESIGN.md §11). */
-export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRelease, onSignUdfa, onResignAsk, onOfferOdds }: FreeAgencyProps) {
+export function FreeAgency({
+  state,
+  cap,
+  busy,
+  onOfferContract,
+  onResign,
+  onRelease,
+  onSignUdfa,
+  onResignAsk,
+  onOfferOdds,
+}: FreeAgencyProps) {
   const team = state.teams[state.userTeam]
   const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
   const capSpace = cap - payroll - (team?.deadMoney ?? 0)
@@ -44,7 +69,9 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
   const [posFilter, setPosFilter] = useState<Position | 'ALL'>('ALL')
   const [sort, setSort] = useState<SortState>({ key: 'ovr', dir: 'desc' })
 
-  const [resignDrafts, setResignDrafts] = useState<Record<PlayerId, { years: number; apy: number }>>({})
+  const [resignDrafts, setResignDrafts] = useState<
+    Record<PlayerId, { years: number; apy: number }>
+  >({})
   const [udfaSelected, setUdfaSelected] = useState<Set<PlayerId>>(new Set())
 
   const allRows: PoolRow[] = state.freeAgents
@@ -52,7 +79,14 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
       const player = state.players[id]
       const scouting = state.scouting[id]
       if (!player || !scouting) return null
-      return { id, name: player.name, pos: player.pos, age: state.season - player.birthYear, ovr: scouting.ovr, pot: scouting.pot }
+      return {
+        id,
+        name: player.name,
+        pos: player.pos,
+        age: state.season - player.birthYear,
+        ovr: scouting.ovr,
+        pot: scouting.pot,
+      }
     })
     .filter((r): r is PoolRow => r !== null)
 
@@ -61,8 +95,22 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
     const dir = sort.dir === 'asc' ? 1 : -1
     const sorted = [...filtered]
     sorted.sort((a, b) => {
-      const va = sort.key === 'name' ? a.name : sort.key === 'age' ? a.age : sort.key === 'pot' ? a.pot : a.ovr
-      const vb = sort.key === 'name' ? b.name : sort.key === 'age' ? b.age : sort.key === 'pot' ? b.pot : b.ovr
+      const va =
+        sort.key === 'name'
+          ? a.name
+          : sort.key === 'age'
+            ? a.age
+            : sort.key === 'pot'
+              ? a.pot
+              : a.ovr
+      const vb =
+        sort.key === 'name'
+          ? b.name
+          : sort.key === 'age'
+            ? b.age
+            : sort.key === 'pot'
+              ? b.pot
+              : b.ovr
       return va < vb ? -1 * dir : va > vb ? 1 * dir : 0
     })
     return sorted
@@ -81,11 +129,34 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
       ),
     },
     { key: 'age', header: 'Age', numeric: true, sortValue: (r) => r.age, render: (r) => r.age },
-    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, sortValue: (r) => r.ovr, render: (r) => r.ovr },
-    { key: 'pot', header: 'Pot', numeric: true, rating: true, sortValue: (r) => r.pot, render: (r) => r.pot },
+    {
+      key: 'ovr',
+      header: 'Ovr',
+      numeric: true,
+      rating: true,
+      sortValue: (r) => r.ovr,
+      render: (r) => r.ovr,
+    },
+    {
+      key: 'pot',
+      header: 'Pot',
+      numeric: true,
+      rating: true,
+      sortValue: (r) => r.pot,
+      render: (r) => r.pot,
+    },
   ]
 
-  const offerOdds = selected && onOfferOdds ? onOfferOdds(selected, { years: offerYears, apy: offerApy, guaranteedPct: 0.3, signedSeason: state.season, rookie: false }) : null
+  const offerOdds =
+    selected && onOfferOdds
+      ? onOfferOdds(selected, {
+          years: offerYears,
+          apy: offerApy,
+          guaranteedPct: 0.3,
+          signedSeason: state.season,
+          rookie: false,
+        })
+      : null
 
   const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1)
   const udfaPool = state.phase === 'UDFA' ? (state.draftRoom?.udfaPool ?? []) : []
@@ -94,9 +165,19 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
     <>
       <div className="gg-col-12">
         <Panel title="Cap" revealIndex={0}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--sp-4)' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: 'var(--sp-4)',
+            }}
+          >
             <StatTile value={formatMoney(cap)} label="Cap this season" />
-            <StatTile value={formatMoney(capSpace)} label="Cap space" tone={capSpace < 0 ? 'danger' : 'default'} />
+            <StatTile
+              value={formatMoney(capSpace)}
+              label="Cap space"
+              tone={capSpace < 0 ? 'danger' : 'default'}
+            />
             <StatTile value={String((team?.roster ?? []).length)} label="Roster size" />
           </div>
         </Panel>
@@ -113,13 +194,26 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
                   const player = state.players[slot.playerId]
                   if (!player) return null
                   const ask = onResignAsk(slot.playerId)
-                  const draft = resignDrafts[slot.playerId] ?? { years: 2, apy: ask ?? slot.contract.apy }
+                  const draft = resignDrafts[slot.playerId] ?? {
+                    years: 2,
+                    apy: ask ?? slot.contract.apy,
+                  }
                   return (
-                    <div key={slot.playerId} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--sp-3)' }}>
+                    <div
+                      key={slot.playerId}
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                        gap: 'var(--sp-3)',
+                      }}
+                    >
                       <span style={{ minWidth: 160 }}>
                         {player.name} <PositionBadge pos={player.pos} />
                       </span>
-                      <span style={{ color: 'var(--text-2)' }}>{ask != null ? `Asking ${formatMoney(ask)}/yr` : 'Ask unavailable'}</span>
+                      <span style={{ color: 'var(--text-2)' }}>
+                        {ask != null ? `Asking ${formatMoney(ask)}/yr` : 'Ask unavailable'}
+                      </span>
                       <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
                         Years
                         <input
@@ -129,7 +223,10 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
                           value={draft.years}
                           style={{ width: '4ch' }}
                           onChange={(e) =>
-                            setResignDrafts((d) => ({ ...d, [slot.playerId]: { ...draft, years: Number(e.target.value) } }))
+                            setResignDrafts((d) => ({
+                              ...d,
+                              [slot.playerId]: { ...draft, years: Number(e.target.value) },
+                            }))
                           }
                         />
                       </label>
@@ -141,7 +238,12 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
                           step={0.1}
                           value={draft.apy}
                           style={{ width: '6ch' }}
-                          onChange={(e) => setResignDrafts((d) => ({ ...d, [slot.playerId]: { ...draft, apy: Number(e.target.value) } }))}
+                          onChange={(e) =>
+                            setResignDrafts((d) => ({
+                              ...d,
+                              [slot.playerId]: { ...draft, apy: Number(e.target.value) },
+                            }))
+                          }
                         />
                       </label>
                       <Button
@@ -161,7 +263,13 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
                       >
                         Re-sign
                       </Button>
-                      <Button type="button" variant="danger" busy={busy} busyLabel="Working…" onClick={() => onRelease(slot.playerId)}>
+                      <Button
+                        type="button"
+                        variant="danger"
+                        busy={busy}
+                        busyLabel="Working…"
+                        onClick={() => onRelease(slot.playerId)}
+                      >
                         Release
                       </Button>
                     </div>
@@ -180,13 +288,24 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
               <p style={{ margin: 0, color: 'var(--text-2)' }}>No UDFA pool loaded.</p>
             ) : (
               <>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)', maxHeight: 320, overflowY: 'auto' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 'var(--sp-1)',
+                    maxHeight: 320,
+                    overflowY: 'auto',
+                  }}
+                >
                   {udfaPool.map((id) => {
                     const player = state.players[id]
                     const scouting = state.scouting[id]
                     if (!player || !scouting) return null
                     return (
-                      <label key={id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+                      <label
+                        key={id}
+                        style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}
+                      >
                         <input
                           type="checkbox"
                           checked={udfaSelected.has(id)}
@@ -197,13 +316,20 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
                             setUdfaSelected(next)
                           }}
                         />
-                        {player.name} <PositionBadge pos={player.pos} /> <span className="tabular-nums">{scouting.ovr} ovr</span>
+                        {player.name} <PositionBadge pos={player.pos} />{' '}
+                        <span className="tabular-nums">{scouting.ovr} ovr</span>
                       </label>
                     )
                   })}
                 </div>
                 <div style={{ marginTop: 'var(--sp-3)' }}>
-                  <Button type="button" variant="primary" busy={busy} busyLabel="Signing…" onClick={() => onSignUdfa([...udfaSelected])}>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    busy={busy}
+                    busyLabel="Signing…"
+                    onClick={() => onSignUdfa([...udfaSelected])}
+                  >
                     Sign UDFA
                   </Button>
                 </div>
@@ -215,7 +341,16 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
 
       <div className="gg-col-8">
         <Panel title="Free agent pool" variant="sunken" revealIndex={2}>
-          <div role="group" aria-label="Filter by position" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)', marginBottom: 'var(--sp-3)' }}>
+          <div
+            role="group"
+            aria-label="Filter by position"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 'var(--sp-2)',
+              marginBottom: 'var(--sp-3)',
+            }}
+          >
             {POOL_FILTERS.map((f) => (
               <button
                 key={f}
@@ -238,7 +373,9 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
             selectedRowKey={selected}
             onRowClick={(r) => setSelected(r.id)}
             sort={sort}
-            onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
+            onSortChange={(key) =>
+              setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
+            }
           />
         </Panel>
       </div>
@@ -253,26 +390,53 @@ export function FreeAgency({ state, cap, busy, onOfferContract, onResign, onRele
                 {state.players[selected]?.name}
                 {(() => {
                   const ask = onResignAsk(selected)
-                  return ask === null ? null : <span style={{ color: 'var(--text-2)' }}> · asking about {formatMoney(ask)}/yr</span>
+                  return ask === null ? null : (
+                    <span style={{ color: 'var(--text-2)' }}>
+                      {' '}
+                      · asking about {formatMoney(ask)}/yr
+                    </span>
+                  )
                 })()}
               </p>
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
                 Years
-                <input type="number" min={1} max={5} value={offerYears} onChange={(e) => setOfferYears(Number(e.target.value))} />
+                <input
+                  type="number"
+                  min={1}
+                  max={5}
+                  value={offerYears}
+                  onChange={(e) => setOfferYears(Number(e.target.value))}
+                />
               </label>
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
                 APY ($M)
-                <input type="number" min={minApy} step={0.1} value={offerApy} onChange={(e) => setOfferApy(Number(e.target.value))} />
-                <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>League minimum is about {formatMoney(minApy)}.</span>
+                <input
+                  type="number"
+                  min={minApy}
+                  step={0.1}
+                  value={offerApy}
+                  onChange={(e) => setOfferApy(Number(e.target.value))}
+                />
+                <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
+                  League minimum is about {formatMoney(minApy)}.
+                </span>
               </label>
-              {offerOdds !== null && <Meter value={offerOdds} label="Acceptance odds before you offer" />}
+              {offerOdds !== null && (
+                <Meter value={offerOdds} label="Acceptance odds before you offer" />
+              )}
               <Button
                 type="button"
                 variant="primary"
                 busy={busy}
                 busyLabel="Working…"
                 onClick={() =>
-                  onOfferContract(selected, { years: offerYears, apy: offerApy, guaranteedPct: 0.3, signedSeason: state.season, rookie: false })
+                  onOfferContract(selected, {
+                    years: offerYears,
+                    apy: offerApy,
+                    guaranteedPct: 0.3,
+                    signedSeason: state.season,
+                    rookie: false,
+                  })
                 }
               >
                 Offer contract

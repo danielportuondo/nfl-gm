@@ -3,7 +3,15 @@
  * usage weights from position, true value and noise. Every allocation sums exactly to the team total:
  * receiving yards equal passing yards, receptions equal completions, targets equal attempts.
  */
-import type { BoxScore, LeagueState, PlayerGameLine, PlayerId, Position, Rng, TeamId } from '@contracts/index'
+import type {
+  BoxScore,
+  LeagueState,
+  PlayerGameLine,
+  PlayerId,
+  Position,
+  Rng,
+  TeamId,
+} from '@contracts/index'
 import { boxConstants as B } from './constants'
 import { pickDecomposition } from './points'
 import { trueValue } from './strength'
@@ -85,8 +93,16 @@ export interface OffenseTotals {
 export function offenseTotals(points: number, rng: Rng): OffenseTotals {
   const d = pickDecomposition(points, rng)
 
-  const yards = clamp(Math.round(rng.normal(B.yardsBase + B.yardsPerPoint * points, B.yardsSd)), B.yardsMin, B.yardsMax)
-  const passShare = clamp(rng.normal(B.passShareMean, B.passShareSd), B.passShareMin, B.passShareMax)
+  const yards = clamp(
+    Math.round(rng.normal(B.yardsBase + B.yardsPerPoint * points, B.yardsSd)),
+    B.yardsMin,
+    B.yardsMax,
+  )
+  const passShare = clamp(
+    rng.normal(B.passShareMean, B.passShareSd),
+    B.passShareMin,
+    B.passShareMax,
+  )
   const passYds = Math.round(yards * passShare)
   const rushYds = yards - passYds
 
@@ -110,7 +126,11 @@ export function offenseTotals(points: number, rng: Rng): OffenseTotals {
   const xpa = d.td - d.twoPt
   const xpm = Math.max(0, xpa - d.missedXp)
 
-  const punts = clamp(Math.round(rng.normal(B.puntsBase - points * B.puntsPerPoint, B.puntsSd)), 1, 10)
+  const punts = clamp(
+    Math.round(rng.normal(B.puntsBase - points * B.puntsPerPoint, B.puntsSd)),
+    1,
+    10,
+  )
   const puntYds = punts * Math.round(clamp(rng.normal(B.puntYdsMean, B.puntYdsSd), 30, 60))
 
   return {
@@ -137,7 +157,12 @@ interface Usage {
 }
 
 /** One usage weight per player: positional baseline × true-value tilt × log-normal noise. */
-function usage(state: LeagueState, ids: readonly PlayerId[], baseline: readonly number[], rng: Rng): Usage[] {
+function usage(
+  state: LeagueState,
+  ids: readonly PlayerId[],
+  baseline: readonly number[],
+  rng: Rng,
+): Usage[] {
   const n = Math.min(ids.length, baseline.length)
   if (n === 0) return []
   let sum = 0
@@ -150,7 +175,10 @@ function usage(state: LeagueState, ids: readonly PlayerId[], baseline: readonly 
   const mean = sum / n
   const out: Usage[] = []
   for (let i = 0; i < n; i++) {
-    const w = baseline[i]! * Math.exp(B.valueTilt * (values[i]! - mean)) * Math.exp(rng.normal(0, B.usageNoiseSd))
+    const w =
+      baseline[i]! *
+      Math.exp(B.valueTilt * (values[i]! - mean)) *
+      Math.exp(rng.normal(0, B.usageNoiseSd))
     out.push({ id: ids[i]!, weight: Math.max(1e-6, w) })
   }
   return out
@@ -158,7 +186,11 @@ function usage(state: LeagueState, ids: readonly PlayerId[], baseline: readonly 
 
 const ones = (n: number) => new Array<number>(n).fill(1)
 
-function lineFor(lines: Map<PlayerId, PlayerGameLine>, teamId: TeamId, id: PlayerId): PlayerGameLine {
+function lineFor(
+  lines: Map<PlayerId, PlayerGameLine>,
+  teamId: TeamId,
+  id: PlayerId,
+): PlayerGameLine {
   let line = lines.get(id)
   if (!line) {
     line = { playerId: id, teamId }
@@ -195,8 +227,14 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     ...usage(state, byPos.WR, [B.rushWeights.WR], rng),
   ]
   if (rushers.length > 0 && totals.rushAtt > 0) {
-    const att = apportion(totals.rushAtt, rushers.map((r) => r.weight))
-    const yds = apportion(totals.rushYds, att.map((a) => a * Math.exp(rng.normal(0, B.usageNoiseSd))))
+    const att = apportion(
+      totals.rushAtt,
+      rushers.map((r) => r.weight),
+    )
+    const yds = apportion(
+      totals.rushYds,
+      att.map((a) => a * Math.exp(rng.normal(0, B.usageNoiseSd))),
+    )
     const tds = capAllocation(apportion(totals.rushTd, att), att)
     rushers.forEach((r, i) => {
       if (att[i]! === 0 && yds[i]! === 0) return
@@ -216,9 +254,15 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
           ...usage(state, byPos.RB, B.recWeights.RB, rng),
         ]
   if (receivers.length > 0 && totals.passAtt > 0) {
-    const targets = apportion(totals.passAtt, receivers.map((r) => r.weight))
+    const targets = apportion(
+      totals.passAtt,
+      receivers.map((r) => r.weight),
+    )
     const rec = capAllocation(apportion(totals.passCmp, targets), targets)
-    const recYds = apportion(totals.passYds, rec.map((r) => r * Math.exp(rng.normal(0, B.usageNoiseSd))))
+    const recYds = apportion(
+      totals.passYds,
+      rec.map((r) => r * Math.exp(rng.normal(0, B.usageNoiseSd))),
+    )
     const recTd = capAllocation(apportion(totals.passTd, rec), rec)
     receivers.forEach((r, i) => {
       if (targets[i]! === 0 && recYds[i]! === 0) return
@@ -247,8 +291,14 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     }
   }
   if (defenders.length > 0) {
-    const tackles = apportion(clamp(Math.round(rng.normal(B.tacklesMean, B.tacklesSd)), 35, 90), tackleW)
-    const sacks = apportion(clamp(Math.round(rng.normal(B.sacksMean, B.sacksSd)), 0, B.sacksMax), sackW)
+    const tackles = apportion(
+      clamp(Math.round(rng.normal(B.tacklesMean, B.tacklesSd)), 35, 90),
+      tackleW,
+    )
+    const sacks = apportion(
+      clamp(Math.round(rng.normal(B.sacksMean, B.sacksSd)), 0, B.sacksMax),
+      sackW,
+    )
     const ints = apportion(input.takeaways, intW)
     const pds = apportion(clamp(Math.round(rng.normal(B.pdMean, B.pdSd)), 0, B.pdMax), pdW)
     const ffs = apportion(pickIndex(B.ffDist, rng), ffW)
@@ -280,6 +330,11 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
   return [...lines.values()].filter((line) => Object.keys(line).length > 2)
 }
 
-export function buildBoxScore(state: LeagueState, home: TeamBoxInput, away: TeamBoxInput, rng: Rng): BoxScore {
+export function buildBoxScore(
+  state: LeagueState,
+  home: TeamBoxInput,
+  away: TeamBoxInput,
+  rng: Rng,
+): BoxScore {
   return { home: teamLines(state, home, rng), away: teamLines(state, away, rng) }
 }

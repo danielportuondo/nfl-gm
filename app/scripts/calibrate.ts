@@ -33,15 +33,31 @@ function parseArgs(argv: readonly string[]): Args {
   return args
 }
 
-const CALIBRATION_SETTINGS = { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true } as const
+const CALIBRATION_SETTINGS = {
+  tradeStrictness: 'balanced',
+  aiOfferFrequency: 'normal',
+  injuries: true,
+} as const
 
 /** A league at week 0 of a real season, built by the real engine from the shipped data chunks. */
-async function loadRealLeague(season: number, seed: string): Promise<{ state: LeagueState; ctx: EngineContext; realWins: Record<TeamId, number> | null }> {
+async function loadRealLeague(
+  season: number,
+  seed: string,
+): Promise<{ state: LeagueState; ctx: EngineContext; realWins: Record<TeamId, number> | null }> {
   const manifest = readManifest()
-  if (!manifest.seasons.includes(season)) throw new Error(`season ${season} is not in app/public/data (have ${manifest.seasons[0]}–${manifest.latestRealSeason})`)
+  if (!manifest.seasons.includes(season))
+    throw new Error(
+      `season ${season} is not in app/public/data (have ${manifest.seasons[0]}–${manifest.latestRealSeason})`,
+    )
   const ctx = await loadRealContext(seasonsForNewGame(season, manifest.latestRealSeason))
   const state = ctx.modules.league.newGame(
-    { seed, startSeason: season, userTeam: 'IND', horizonSeasons: 1, settings: CALIBRATION_SETTINGS },
+    {
+      seed,
+      startSeason: season,
+      userTeam: 'IND',
+      horizonSeasons: 1,
+      settings: CALIBRATION_SETTINGS,
+    },
     ctx,
   )
   return { state, ctx, realWins: realWinTotals(ctx.seasonData(season)!.schedule) }
@@ -50,7 +66,11 @@ async function loadRealLeague(season: number, seed: string): Promise<{ state: Le
 function report(r: CalibrationReport, label: string): void {
   const rows: [string, string, string][] = [
     ['win corr (rating)', r.winCorrelation.toFixed(3), '>= 0.50'],
-    ['win corr (real)', r.realWinCorrelation === null ? 'n/a' : r.realWinCorrelation.toFixed(3), '>= 0.50'],
+    [
+      'win corr (real)',
+      r.realWinCorrelation === null ? 'n/a' : r.realWinCorrelation.toFixed(3),
+      '>= 0.50',
+    ],
     ['sd of team wins', r.winSd.toFixed(2), '2.4 - 3.6'],
     ['home win %', r.homeWinPct.toFixed(1), '54 - 60'],
     ['mean total points', r.meanTotalPoints.toFixed(1), '41 - 49'],
@@ -75,11 +95,17 @@ async function main(): Promise<void> {
   try {
     if (args.mock) {
       const state = mockLeague({ seed: args.seed, season: args.season })
-      report(calibrate({ sims: args.sims, seed: args.seed, state, ctx: makeCtx() }), `mock league ${args.season}`)
+      report(
+        calibrate({ sims: args.sims, seed: args.seed, state, ctx: makeCtx() }),
+        `mock league ${args.season}`,
+      )
       return
     }
     const { state, ctx, realWins } = await loadRealLeague(args.season, args.seed)
-    report(calibrate({ sims: args.sims, seed: args.seed, state, ctx, realWins: realWins ?? undefined }), `real league ${args.season}`)
+    report(
+      calibrate({ sims: args.sims, seed: args.seed, state, ctx, realWins: realWins ?? undefined }),
+      `real league ${args.season}`,
+    )
   } catch (error) {
     console.error(`calibrate: ${error instanceof Error ? error.message : String(error)}`)
     process.exitCode = 1

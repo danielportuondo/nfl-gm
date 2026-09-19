@@ -1,5 +1,12 @@
 import { useMemo, useState } from 'react'
-import type { Game, GameType, LeagueState, PlayoffExit, SeasonSummary, StaticData } from '@contracts/index'
+import type {
+  Game,
+  GameType,
+  LeagueState,
+  PlayoffExit,
+  SeasonSummary,
+  StaticData,
+} from '@contracts/index'
 import { Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 
@@ -17,7 +24,13 @@ const EXIT_LABEL: Record<PlayoffExit, string> = {
   CHAMPION: 'Won the Super Bowl',
 }
 
-const ROUND_LABEL: Record<GameType, string> = { REG: 'Regular season', WC: 'Wild card', DIV: 'Divisional', CONF: 'Conference', SB: 'Super Bowl' }
+const ROUND_LABEL: Record<GameType, string> = {
+  REG: 'Regular season',
+  WC: 'Wild card',
+  DIV: 'Divisional',
+  CONF: 'Conference',
+  SB: 'Super Bowl',
+}
 const ROUND_ORDER: GameType[] = ['WC', 'DIV', 'CONF', 'SB']
 
 function teamLabel(data: StaticData, teamId: string): string {
@@ -26,15 +39,21 @@ function teamLabel(data: StaticData, teamId: string): string {
 
 /** Final standings, playoff bracket and awards for a completed season (docs/DESIGN.md §11). */
 export function SeasonRecap({ state, data }: SeasonRecapProps) {
-  const seasons = useMemo(() => state.history.map((h) => h.season).sort((a, b) => b - a), [state.history])
+  const seasons = useMemo(
+    () => state.history.map((h) => h.season).sort((a, b) => b - a),
+    [state.history],
+  )
   const [season, setSeason] = useState<number | null>(seasons[0] ?? null)
-  const summary: SeasonSummary | undefined = state.history.find((h) => h.season === season) ?? state.history[state.history.length - 1]
+  const summary: SeasonSummary | undefined =
+    state.history.find((h) => h.season === season) ?? state.history[state.history.length - 1]
 
   if (!summary) {
     return (
       <div className="gg-col-12">
         <Panel title="Season recap" revealIndex={0}>
-          <p style={{ margin: 0, color: 'var(--text-2)' }}>No season has finished yet. Play through the playoffs to see a recap here.</p>
+          <p style={{ margin: 0, color: 'var(--text-2)' }}>
+            No season has finished yet. Play through the playoffs to see a recap here.
+          </p>
         </Panel>
       </div>
     )
@@ -53,10 +72,16 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
     return `${teamLabel(data, game.away)} ${result.awayScore} – ${result.homeScore} ${teamLabel(data, game.home)}${result.overtime ? ' OT' : ''}`
   }
 
-  const sortedStandings = [...summary.standings].sort((a, b) => a.divRank - b.divRank || b.pct - a.pct)
+  const sortedStandings = [...summary.standings].sort(
+    (a, b) => a.divRank - b.divRank || b.pct - a.pct,
+  )
 
   return (
-    <TeamScope colors={teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }} as="div" style={{ display: 'contents' }}>
+    <TeamScope
+      colors={teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }}
+      as="div"
+      style={{ display: 'contents' }}
+    >
       <div className="gg-col-12">
         <Panel
           title={`${summary.season} season recap`}
@@ -76,7 +101,14 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
             ) : undefined
           }
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-4)', marginBottom: 'var(--sp-4)' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--sp-4)',
+              marginBottom: 'var(--sp-4)',
+            }}
+          >
             {teamInfo && (
               <TeamScope colors={teamInfo.colors}>
                 <HelmetSprite pos="QB" size={4} />
@@ -84,14 +116,29 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
             )}
             <div>
               <p style={{ margin: 0, fontSize: 'var(--fs-3)' }}>
-                {teamInfo?.city} {teamInfo?.name} finished {summary.userRecord.wins}-{summary.userRecord.losses}-{summary.userRecord.ties}.
+                {teamInfo?.city} {teamInfo?.name} finished {summary.userRecord.wins}-
+                {summary.userRecord.losses}-{summary.userRecord.ties}.
               </p>
-              <p style={{ margin: 0, color: 'var(--text-2)' }}>{EXIT_LABEL[summary.userPlayoffExit]}</p>
+              <p style={{ margin: 0, color: 'var(--text-2)' }}>
+                {EXIT_LABEL[summary.userPlayoffExit]}
+              </p>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--sp-4)' }}>
-            <StatTile value={summary.champion ? teamLabel(data, summary.champion) : '—'} label="Champion" />
-            <StatTile value={summary.runnerUp ? teamLabel(data, summary.runnerUp) : '—'} label="Runner-up" />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: 'var(--sp-4)',
+            }}
+          >
+            <StatTile
+              value={summary.champion ? teamLabel(data, summary.champion) : '—'}
+              label="Champion"
+            />
+            <StatTile
+              value={summary.runnerUp ? teamLabel(data, summary.runnerUp) : '—'}
+              label="Runner-up"
+            />
           </div>
         </Panel>
       </div>
@@ -111,12 +158,25 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
       <div className="gg-col-6">
         <Panel title="Playoff bracket" variant="sunken" revealIndex={2}>
           {rounds.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>No playoff games recorded for this season.</p>
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>
+              No playoff games recorded for this season.
+            </p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
               {rounds.map((round) => (
-                <div key={round.type} style={{ borderTop: 'var(--bw) solid var(--line)', paddingTop: 'var(--sp-2)' }}>
-                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>{ROUND_LABEL[round.type]}</h4>
+                <div
+                  key={round.type}
+                  style={{ borderTop: 'var(--bw) solid var(--line)', paddingTop: 'var(--sp-2)' }}
+                >
+                  <h4
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'var(--fd-1)',
+                      margin: '0 0 var(--sp-2)',
+                    }}
+                  >
+                    {ROUND_LABEL[round.type]}
+                  </h4>
                   <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
                     {round.games.map((g) => (
                       <li key={g.id} className="tabular-nums">

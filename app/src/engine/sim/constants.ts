@@ -23,7 +23,19 @@ export const simConstants: SimConstants = {
 
 export const strengthConstants = {
   /** Slots that count as starters for each position group. */
-  starters: { QB: 1, RB: 1, WR: 3, TE: 1, OL: 5, DL: 4, LB: 3, CB: 3, S: 2, K: 1, P: 1 } satisfies Record<Position, number>,
+  starters: {
+    QB: 1,
+    RB: 1,
+    WR: 3,
+    TE: 1,
+    OL: 5,
+    DL: 4,
+    LB: 3,
+    CB: 3,
+    S: 2,
+    K: 1,
+    P: 1,
+  } satisfies Record<Position, number>,
   /** How many reserves behind the starters feed the bench term. */
   benchDepth: 3,
   /** Value used when a team has nobody healthy at a slot. */

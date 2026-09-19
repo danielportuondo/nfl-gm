@@ -34,17 +34,61 @@ Ownership per module is in the header comment of each file; see `docs/HANDOFF.md
  */
 import type { z } from 'zod'
 import type {
-  AgingCurveSchema, AwardSchema, BoxScoreSchema, CapFileSchema, CompactTrajectorySchema, ContractSchema,
-  CurvesFileSchema, DepthChartSchema, DraftLogEntrySchema, DraftOrderEntrySchema, DraftOriginSchema,
-  DraftPickSchema, DraftRoomStateSchema, GameOutcomeSchema, GameResultSchema, GameSchema,
-  GameSettingsSchema, GameTypeSchema, InjuryEventSchema, InjuryModelFileSchema, InjurySchema,
-  ManifestSchema, OutcomeTableSchema, PhaseSchema, PickRefSchema, PlayerGameLineSchema, PlayerSchema,
-  PlayoffBracketSchema, PlayoffExitSchema, PlayoffFormatSchema, PlayoffSeedSchema, PositionSchema,
-  ProspectSchema, RetirementCurveSchema, RosterEntrySchema, RosterSlotSchema, SavedLeagueSchema,
-  ScheduledGameSchema, ScoutingViewSchema, SeasonDraftFileSchema, SeasonPlayerSchema,
-  SeasonPlayersFileSchema, SeasonRostersFileSchema, SeasonScheduleFileSchema, SeasonSummarySchema,
-  SlotGradePointSchema, SnapEventSchema, StandingRowSchema, TeamInfoSchema, TeamRecordSchema,
-  TeamStateSchema, TeamsFileSchema, TradeProposalSchema, TradeSideSchema, TrajectoriesFileSchema,
+  AgingCurveSchema,
+  AwardSchema,
+  BoxScoreSchema,
+  CapFileSchema,
+  CompactTrajectorySchema,
+  ContractSchema,
+  CurvesFileSchema,
+  DepthChartSchema,
+  DraftLogEntrySchema,
+  DraftOrderEntrySchema,
+  DraftOriginSchema,
+  DraftPickSchema,
+  DraftRoomStateSchema,
+  GameOutcomeSchema,
+  GameResultSchema,
+  GameSchema,
+  GameSettingsSchema,
+  GameTypeSchema,
+  InjuryEventSchema,
+  InjuryModelFileSchema,
+  InjurySchema,
+  ManifestSchema,
+  OutcomeTableSchema,
+  PhaseSchema,
+  PickRefSchema,
+  PlayerGameLineSchema,
+  PlayerSchema,
+  PlayoffBracketSchema,
+  PlayoffExitSchema,
+  PlayoffFormatSchema,
+  PlayoffSeedSchema,
+  PositionSchema,
+  ProspectSchema,
+  RetirementCurveSchema,
+  RosterEntrySchema,
+  RosterSlotSchema,
+  SavedLeagueSchema,
+  ScheduledGameSchema,
+  ScoutingViewSchema,
+  SeasonDraftFileSchema,
+  SeasonPlayerSchema,
+  SeasonPlayersFileSchema,
+  SeasonRostersFileSchema,
+  SeasonScheduleFileSchema,
+  SeasonSummarySchema,
+  SlotGradePointSchema,
+  SnapEventSchema,
+  StandingRowSchema,
+  TeamInfoSchema,
+  TeamRecordSchema,
+  TeamStateSchema,
+  TeamsFileSchema,
+  TradeProposalSchema,
+  TradeSideSchema,
+  TrajectoriesFileSchema,
   TrueTrajectorySchema,
 } from './schemas'
 
@@ -207,9 +251,38 @@ export interface RosterValidation {
 import type { Conference, Division, TeamId } from './types'
 
 export const TEAM_IDS = [
-  'ARI', 'ATL', 'BAL', 'BUF', 'CAR', 'CHI', 'CIN', 'CLE', 'DAL', 'DEN', 'DET', 'GB', 'HOU', 'IND',
-  'JAX', 'KC', 'LAR', 'LAC', 'LV', 'MIA', 'MIN', 'NE', 'NO', 'NYG', 'NYJ', 'PHI', 'PIT', 'SEA',
-  'SF', 'TB', 'TEN', 'WAS',
+  'ARI',
+  'ATL',
+  'BAL',
+  'BUF',
+  'CAR',
+  'CHI',
+  'CIN',
+  'CLE',
+  'DAL',
+  'DEN',
+  'DET',
+  'GB',
+  'HOU',
+  'IND',
+  'JAX',
+  'KC',
+  'LAR',
+  'LAC',
+  'LV',
+  'MIA',
+  'MIN',
+  'NE',
+  'NO',
+  'NYG',
+  'NYJ',
+  'PHI',
+  'PIT',
+  'SEA',
+  'SF',
+  'TB',
+  'TEN',
+  'WAS',
 ] as const satisfies readonly TeamId[]
 
 export type CanonicalTeamId = (typeof TEAM_IDS)[number]
@@ -220,12 +293,24 @@ export type CanonicalTeamId = (typeof TEAM_IDS)[number]
  * and PFR-style codes in draft_picks such as GNB/KAN/NWE); pipeline/.../build/teams.py mirrors this table.
  */
 export const TEAM_ALIASES: Record<string, CanonicalTeamId> = {
-  STL: 'LAR', LA: 'LAR', LAR: 'LAR', SL: 'LAR', RAM: 'LAR',
-  SD: 'LAC', LAC: 'LAC', SDG: 'LAC',
-  OAK: 'LV', LV: 'LV', LVR: 'LV', RAI: 'LV',
-  WSH: 'WAS', WAS: 'WAS',
-  JAC: 'JAX', JAX: 'JAX',
-  ARZ: 'ARI', PHO: 'ARI',
+  STL: 'LAR',
+  LA: 'LAR',
+  LAR: 'LAR',
+  SL: 'LAR',
+  RAM: 'LAR',
+  SD: 'LAC',
+  LAC: 'LAC',
+  SDG: 'LAC',
+  OAK: 'LV',
+  LV: 'LV',
+  LVR: 'LV',
+  RAI: 'LV',
+  WSH: 'WAS',
+  WAS: 'WAS',
+  JAC: 'JAX',
+  JAX: 'JAX',
+  ARZ: 'ARI',
+  PHO: 'ARI',
   BLT: 'BAL',
   CLV: 'CLE',
   HST: 'HOU',
@@ -240,23 +325,52 @@ export const TEAM_ALIASES: Record<string, CanonicalTeamId> = {
 export function canonicalTeamId(code: string): CanonicalTeamId {
   const upper = code.toUpperCase()
   const mapped = TEAM_ALIASES[upper] ?? upper
-  if (!(TEAM_IDS as readonly string[]).includes(mapped)) throw new Error(`Unknown team code: ${code}`)
+  if (!(TEAM_IDS as readonly string[]).includes(mapped))
+    throw new Error(`Unknown team code: ${code}`)
   return mapped as CanonicalTeamId
 }
 
 export const DIVISIONS: Record<CanonicalTeamId, { conf: Conference; div: Division }> = {
-  BUF: { conf: 'AFC', div: 'East' }, MIA: { conf: 'AFC', div: 'East' }, NE: { conf: 'AFC', div: 'East' }, NYJ: { conf: 'AFC', div: 'East' },
-  BAL: { conf: 'AFC', div: 'North' }, CIN: { conf: 'AFC', div: 'North' }, CLE: { conf: 'AFC', div: 'North' }, PIT: { conf: 'AFC', div: 'North' },
-  HOU: { conf: 'AFC', div: 'South' }, IND: { conf: 'AFC', div: 'South' }, JAX: { conf: 'AFC', div: 'South' }, TEN: { conf: 'AFC', div: 'South' },
-  DEN: { conf: 'AFC', div: 'West' }, KC: { conf: 'AFC', div: 'West' }, LV: { conf: 'AFC', div: 'West' }, LAC: { conf: 'AFC', div: 'West' },
-  DAL: { conf: 'NFC', div: 'East' }, NYG: { conf: 'NFC', div: 'East' }, PHI: { conf: 'NFC', div: 'East' }, WAS: { conf: 'NFC', div: 'East' },
-  CHI: { conf: 'NFC', div: 'North' }, DET: { conf: 'NFC', div: 'North' }, GB: { conf: 'NFC', div: 'North' }, MIN: { conf: 'NFC', div: 'North' },
-  ATL: { conf: 'NFC', div: 'South' }, CAR: { conf: 'NFC', div: 'South' }, NO: { conf: 'NFC', div: 'South' }, TB: { conf: 'NFC', div: 'South' },
-  ARI: { conf: 'NFC', div: 'West' }, LAR: { conf: 'NFC', div: 'West' }, SF: { conf: 'NFC', div: 'West' }, SEA: { conf: 'NFC', div: 'West' },
+  BUF: { conf: 'AFC', div: 'East' },
+  MIA: { conf: 'AFC', div: 'East' },
+  NE: { conf: 'AFC', div: 'East' },
+  NYJ: { conf: 'AFC', div: 'East' },
+  BAL: { conf: 'AFC', div: 'North' },
+  CIN: { conf: 'AFC', div: 'North' },
+  CLE: { conf: 'AFC', div: 'North' },
+  PIT: { conf: 'AFC', div: 'North' },
+  HOU: { conf: 'AFC', div: 'South' },
+  IND: { conf: 'AFC', div: 'South' },
+  JAX: { conf: 'AFC', div: 'South' },
+  TEN: { conf: 'AFC', div: 'South' },
+  DEN: { conf: 'AFC', div: 'West' },
+  KC: { conf: 'AFC', div: 'West' },
+  LV: { conf: 'AFC', div: 'West' },
+  LAC: { conf: 'AFC', div: 'West' },
+  DAL: { conf: 'NFC', div: 'East' },
+  NYG: { conf: 'NFC', div: 'East' },
+  PHI: { conf: 'NFC', div: 'East' },
+  WAS: { conf: 'NFC', div: 'East' },
+  CHI: { conf: 'NFC', div: 'North' },
+  DET: { conf: 'NFC', div: 'North' },
+  GB: { conf: 'NFC', div: 'North' },
+  MIN: { conf: 'NFC', div: 'North' },
+  ATL: { conf: 'NFC', div: 'South' },
+  CAR: { conf: 'NFC', div: 'South' },
+  NO: { conf: 'NFC', div: 'South' },
+  TB: { conf: 'NFC', div: 'South' },
+  ARI: { conf: 'NFC', div: 'West' },
+  LAR: { conf: 'NFC', div: 'West' },
+  SF: { conf: 'NFC', div: 'West' },
+  SEA: { conf: 'NFC', div: 'West' },
 }
 
 /** Era-correct league structure (docs/HANDOFF.md §4). */
-export function leagueFormat(season: number): { regularSeasonGames: 16 | 17; playoffTeams: 12 | 14; byesPerConf: 1 | 2 } {
+export function leagueFormat(season: number): {
+  regularSeasonGames: 16 | 17
+  playoffTeams: 12 | 14
+  byesPerConf: 1 | 2
+} {
   return {
     regularSeasonGames: season >= 2021 ? 17 : 16,
     playoffTeams: season >= 2020 ? 14 : 12,
@@ -266,12 +380,32 @@ export function leagueFormat(season: number): { regularSeasonGames: 16 | 17; pla
 
 /** Positional roster template used for need computation and depth charts (starters). */
 export const STARTER_TEMPLATE: Record<string, number> = {
-  QB: 1, RB: 1, WR: 3, TE: 1, OL: 5, DL: 4, LB: 3, CB: 3, S: 2, K: 1, P: 1,
+  QB: 1,
+  RB: 1,
+  WR: 3,
+  TE: 1,
+  OL: 5,
+  DL: 4,
+  LB: 3,
+  CB: 3,
+  S: 2,
+  K: 1,
+  P: 1,
 }
 
 /** Typical 53-man distribution used by the mock fixture and procedural class sizing. */
 export const ROSTER_TEMPLATE_53: Record<string, number> = {
-  QB: 3, RB: 4, WR: 6, TE: 3, OL: 9, DL: 9, LB: 7, CB: 6, S: 4, K: 1, P: 1,
+  QB: 3,
+  RB: 4,
+  WR: 6,
+  TE: 3,
+  OL: 9,
+  DL: 9,
+  LB: 7,
+  CB: 6,
+  S: 4,
+  K: 1,
+  P: 1,
 }
 ```
 
@@ -424,8 +558,17 @@ export const rngStub: RngModule = {
  * synthesizes a contract (fa), never changes a rating (lifecycle), never snaps rosters (history).
  */
 import type {
-  DepthChart, Game, GameSettings, LeagueState, PlayoffBracket, PlayoffFormat, Season, SeasonSummary,
-  StandingRow, TeamId, TeamStrength,
+  DepthChart,
+  Game,
+  GameSettings,
+  LeagueState,
+  PlayoffBracket,
+  PlayoffFormat,
+  Season,
+  SeasonSummary,
+  StandingRow,
+  TeamId,
+  TeamStrength,
 } from '../types'
 import type { EngineContext } from './context'
 import { notImplemented } from './context'
@@ -576,10 +719,16 @@ export interface SimModule {
 
 export const simStub: SimModule = {
   constants: {
-    k: 0.9, hfa: 2.0, marginSd: 13.5, totalMean: 45, totalSd: 10, tieP: 0.003,
+    k: 0.9,
+    hfa: 2.0,
+    marginSd: 13.5,
+    totalMean: 45,
+    totalSd: 10,
+    tieP: 0.003,
     offenseWeights: { QB: 0.35, OL: 0.25, WRTE: 0.25, RB: 0.15 },
     defenseWeights: { DL: 0.3, LB: 0.2, CB: 0.3, S: 0.2 },
-    stWeight: 0.05, benchFactor: 0.15,
+    stWeight: 0.05,
+    benchFactor: 0.15,
   },
   teamStrength: () => notImplemented('sim.teamStrength'),
   simulateGame: () => notImplemented('sim.simulateGame'),
@@ -599,7 +748,16 @@ export const simStub: SimModule = {
  * season) is the S+1 class. `DraftPick.season`, `draftRoom.season` and the chunk read by loadProspects /
  * buildDraftOrder are all S+1; `league.newGame(S)` owns picks for S+1 and S+2 (the next two drafts).
  */
-import type { DraftPick, DraftRoomState, LeagueState, NeedProfile, PlayerId, Season, TeamId, TradeProposal } from '../types'
+import type {
+  DraftPick,
+  DraftRoomState,
+  LeagueState,
+  NeedProfile,
+  PlayerId,
+  Season,
+  TeamId,
+  TradeProposal,
+} from '../types'
 import type { EngineContext } from './context'
 import { notImplemented } from './context'
 import type { Rng } from './rng'
@@ -743,7 +901,12 @@ export interface TradeModule {
    * need matches the best available prospect), and per settings.aiOfferFrequency in-season. Each has
    * the AI's own p ≥ 0.5 and value within a plausible band.
    */
-  generateAiOffers(state: LeagueState, ctx: EngineContext, rng: Rng, context: 'draft' | 'season'): TradeProposal[]
+  generateAiOffers(
+    state: LeagueState,
+    ctx: EngineContext,
+    rng: Rng,
+    context: 'draft' | 'season',
+  ): TradeProposal[]
 
   /**
    * Proactive suggestions for the user (Phase 6): AI-initiated deals that send the user a player at one
@@ -796,16 +959,31 @@ export interface FaModule {
   marketApy(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number
 
   /** 4 years, apy from slot table (fit to real rookie scale % of cap); UDFA = minimum, 3 years. */
-  rookieContract(pick: { round: number; pick: number } | null, season: Season, ctx: EngineContext): Contract
+  rookieContract(
+    pick: { round: number; pick: number } | null,
+    season: Season,
+    ctx: EngineContext,
+  ): Contract
 
   /** Veteran contract synthesized from market apy; length by age (younger → longer, max 5). */
-  synthesizeContract(state: LeagueState, playerId: PlayerId, season: Season, ctx: EngineContext, hint?: { apy?: number; years?: number }): Contract
+  synthesizeContract(
+    state: LeagueState,
+    playerId: PlayerId,
+    season: Season,
+    ctx: EngineContext,
+    hint?: { apy?: number; years?: number },
+  ): Contract
 
   /** Expiring players' asks for the OFFSEASON_RESIGN phase: marketApy × (1 ± 10%), seeded per player. */
   resignAsk(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number
 
   /** User re-signs at `apy` ≥ ask. Throws if below ask or over cap. */
-  resign(state: LeagueState, playerId: PlayerId, contract: Contract, ctx: EngineContext): LeagueState
+  resign(
+    state: LeagueState,
+    playerId: PlayerId,
+    contract: Contract,
+    ctx: EngineContext,
+  ): LeagueState
 
   /** AI teams re-sign: history-anchored when the player is on their real next-season roster, else by value/need under cap. Unsigned → freeAgents. */
   runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
@@ -817,10 +995,23 @@ export interface FaModule {
    * User offer with 1-day simulated bidding: P(accept) rises with offer/ask and team quality.
    * Hard gates: cap, roster ≤ 90 (offseason) / 53 (in-season). Marks the player diverged on success.
    */
-  offer(state: LeagueState, teamId: TeamId, playerId: PlayerId, contract: Contract, ctx: EngineContext, rng: Rng): { accepted: boolean; state: LeagueState }
+  offer(
+    state: LeagueState,
+    teamId: TeamId,
+    playerId: PlayerId,
+    contract: Contract,
+    ctx: EngineContext,
+    rng: Rng,
+  ): { accepted: boolean; state: LeagueState }
 
   /** P(accept) the offer would face before any hard gate (cap, roster size); pure, for UI previews. */
-  offerOdds(state: LeagueState, teamId: TeamId, playerId: PlayerId, contract: Contract, ctx: EngineContext): number
+  offerOdds(
+    state: LeagueState,
+    teamId: TeamId,
+    playerId: PlayerId,
+    contract: Contract,
+    ctx: EngineContext,
+  ): number
 
   /** AI signings: history-anchored (real team for that season) with value/need fallback under cap. */
   runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
@@ -840,7 +1031,10 @@ export interface FaModule {
   validateRoster(state: LeagueState, teamId: TeamId, ctx: EngineContext): RosterValidation
 
   /** Decrement contract years at season rollover; expiring → returned for the re-sign phase. */
-  rolloverContracts(state: LeagueState, ctx: EngineContext): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> }
+  rolloverContracts(
+    state: LeagueState,
+    ctx: EngineContext,
+  ): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> }
 }
 
 export const faStub: FaModule = {
@@ -898,7 +1092,11 @@ export interface LifecycleModule {
    * (truth.retiresAfter). Otherwise logistic in age and value from curves.retirement. Removes them from
    * rosters/freeAgents, returns the ids.
    */
-  retirements(state: LeagueState, ctx: EngineContext, rng: Rng): { state: LeagueState; retired: PlayerId[] }
+  retirements(
+    state: LeagueState,
+    ctx: EngineContext,
+    rng: Rng,
+  ): { state: LeagueState; retired: PlayerId[] }
 
   /**
    * Recompute consensus at season start: veterans ovr = last completed season's true value, pot from

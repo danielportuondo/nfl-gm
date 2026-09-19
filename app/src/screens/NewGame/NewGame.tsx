@@ -1,5 +1,11 @@
 import { useState } from 'react'
-import { TEAM_IDS, type GameSettings, type SaveSlotMeta, type StaticData, type TeamId } from '@contracts/index'
+import {
+  TEAM_IDS,
+  type GameSettings,
+  type SaveSlotMeta,
+  type StaticData,
+  type TeamId,
+} from '@contracts/index'
 import { Button, Panel, TeamBadge } from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
@@ -23,7 +29,11 @@ function yearRange(latest: number): number[] {
   return years
 }
 
-const DEFAULT_SETTINGS: GameSettings = { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true }
+const DEFAULT_SETTINGS: GameSettings = {
+  tradeStrictness: 'balanced',
+  aiOfferFrequency: 'normal',
+  injuries: true,
+}
 
 /** Year → team → horizon + settings, as a single column of panels, then "Your mandate" (docs/DESIGN.md §11). */
 export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: NewGameProps) {
@@ -44,11 +54,26 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
       {savedGame && onContinue && (
         <div className="gg-col-12">
           <Panel variant="attention" revealIndex={0}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--sp-3)' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 'var(--sp-3)',
+              }}
+            >
               <p style={{ margin: 0 }}>
-                Continue as {savedGame.userTeam}, {savedGame.season} · {savedGame.phase.replace(/_/g, ' ').toLowerCase()}.
+                Continue as {savedGame.userTeam}, {savedGame.season} ·{' '}
+                {savedGame.phase.replace(/_/g, ' ').toLowerCase()}.
               </p>
-              <Button type="button" variant="primary" busy={continueBusy} busyLabel="Loading…" onClick={onContinue}>
+              <Button
+                type="button"
+                variant="primary"
+                busy={continueBusy}
+                busyLabel="Loading…"
+                onClick={onContinue}
+              >
                 Continue
               </Button>
             </div>
@@ -79,7 +104,11 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
           <div
             role="grid"
             aria-label="Teams"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 'var(--sp-2)' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+              gap: 'var(--sp-2)',
+            }}
           >
             {TEAM_IDS.map((id) => {
               const info = data.teams[id]
@@ -92,7 +121,13 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
                     aria-selected={id === userTeam}
                     aria-label={`${info.city} ${info.name}`}
                     onClick={() => setUserTeam(id)}
-                    style={{ flexDirection: 'column', gap: 'var(--sp-1)', alignItems: 'flex-start', textAlign: 'left', width: '100%' }}
+                    style={{
+                      flexDirection: 'column',
+                      gap: 'var(--sp-1)',
+                      alignItems: 'flex-start',
+                      textAlign: 'left',
+                      width: '100%',
+                    }}
                   >
                     <TeamBadge abbr={info.abbr} />
                     <span className="gg-nameplate__name" style={{ width: '100%' }}>
@@ -108,7 +143,14 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
 
       <div className="gg-col-12">
         <Panel title="Set your horizon" variant="sunken" revealIndex={base + 2}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-5)', alignItems: 'flex-end' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 'var(--sp-5)',
+              alignItems: 'flex-end',
+            }}
+          >
             <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
               Seasons to win it in
               <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
@@ -121,7 +163,15 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
                 >
                   −
                 </Button>
-                <span className="tabular-nums" style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-3)', minWidth: '2ch', textAlign: 'center' }}>
+                <span
+                  className="tabular-nums"
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'var(--fd-3)',
+                    minWidth: '2ch',
+                    textAlign: 'center',
+                  }}
+                >
                   {horizonSeasons}
                 </span>
                 <Button
@@ -140,7 +190,12 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
               Trade strictness
               <select
                 value={settings.tradeStrictness}
-                onChange={(e) => setSettings((s) => ({ ...s, tradeStrictness: e.target.value as GameSettings['tradeStrictness'] }))}
+                onChange={(e) =>
+                  setSettings((s) => ({
+                    ...s,
+                    tradeStrictness: e.target.value as GameSettings['tradeStrictness'],
+                  }))
+                }
               >
                 <option value="lenient">Lenient</option>
                 <option value="balanced">Balanced</option>
@@ -153,7 +208,12 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
               AI offer frequency
               <select
                 value={settings.aiOfferFrequency}
-                onChange={(e) => setSettings((s) => ({ ...s, aiOfferFrequency: e.target.value as GameSettings['aiOfferFrequency'] }))}
+                onChange={(e) =>
+                  setSettings((s) => ({
+                    ...s,
+                    aiOfferFrequency: e.target.value as GameSettings['aiOfferFrequency'],
+                  }))
+                }
               >
                 <option value="rare">Rare</option>
                 <option value="normal">Normal</option>
@@ -178,7 +238,8 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
           <TeamScope colors={team.colors}>
             <Panel variant="plate" revealIndex={base + 3}>
               <p style={{ fontSize: 'var(--fs-3)', margin: '0 0 var(--sp-4)' }}>
-                Your mandate: win the Super Bowl by {endYear}. That's {horizonSeasons} {seasonsWord}.
+                Your mandate: win the Super Bowl by {endYear}. That's {horizonSeasons} {seasonsWord}
+                .
               </p>
               <Button
                 type="button"

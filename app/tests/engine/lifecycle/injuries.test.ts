@@ -12,20 +12,48 @@ import { makeFakeContext } from '../fakes'
 const SEASON = 2015
 const WEEK = 10
 
-function injuredState(weeksOutAtInjury: number, value = 80): { ctx: ReturnType<typeof makeFakeContext>; state: LeagueState } {
+function injuredState(
+  weeksOutAtInjury: number,
+  value = 80,
+): { ctx: ReturnType<typeof makeFakeContext>; state: LeagueState } {
   const bundle = mockBundle({ season: SEASON })
   const ctx = makeFakeContext(bundle, { lifecycle })
-  const player: Player = { id: 'hurt-1', name: 'hurt-1', pos: 'RB', birthYear: SEASON - 25, draft: null, real: false, rookieSeason: SEASON - 3 }
+  const player: Player = {
+    id: 'hurt-1',
+    name: 'hurt-1',
+    pos: 'RB',
+    birthYear: SEASON - 25,
+    draft: null,
+    real: false,
+    rookieSeason: SEASON - 3,
+  }
   const truth: TrueTrajectory = { bySeason: { [String(SEASON)]: value }, retiresAfter: null }
   const roster: RosterSlot[] = [
-    { playerId: 'hurt-1', teamId: 'IND', contract: { years: 1, apy: 1, guaranteedPct: 0, signedSeason: SEASON, rookie: false }, injured: { weeksOut: 1, kind: 'knee', season: SEASON, week: WEEK - weeksOutAtInjury + 1 } },
+    {
+      playerId: 'hurt-1',
+      teamId: 'IND',
+      contract: { years: 1, apy: 1, guaranteedPct: 0, signedSeason: SEASON, rookie: false },
+      injured: { weeksOut: 1, kind: 'knee', season: SEASON, week: WEEK - weeksOutAtInjury + 1 },
+    },
   ]
   const team: TeamState = {
-    id: 'IND', roster, depthChart: {}, record: { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 },
-    deadMoney: 0, tradeAnnoyance: 0, userControlled: true,
+    id: 'IND',
+    roster,
+    depthChart: {},
+    record: { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 },
+    deadMoney: 0,
+    tradeAnnoyance: 0,
+    userControlled: true,
   }
   const base = mockLeague({ season: SEASON })
-  const state: LeagueState = { ...base, week: WEEK, teams: { IND: team }, players: { 'hurt-1': player }, truth: { 'hurt-1': truth }, freeAgents: [] }
+  const state: LeagueState = {
+    ...base,
+    week: WEEK,
+    teams: { IND: team },
+    players: { 'hurt-1': player },
+    truth: { 'hurt-1': truth },
+    freeAgents: [],
+  }
   return { ctx, state }
 }
 

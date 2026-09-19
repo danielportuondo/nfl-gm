@@ -19,14 +19,21 @@ function walk(dir: string, out: string[] = []): string[] {
   return out
 }
 
-const stripComments = (code: string) => code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
+const stripComments = (code: string) =>
+  code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
 
 describe('truth isolation', () => {
   const uiFiles = [...walk(join(src, 'screens')), ...walk(join(src, 'ui'))]
   it('UI never reads .truth or imports truth/TrueTrajectory', () => {
     const offenders = uiFiles.filter((f) => {
       const code = stripComments(readFileSync(f, 'utf8'))
-      return /\.truth\b/.test(code) || /\[['"]truth['"]\]/.test(code) || /\bTrueTrajectory\b/.test(code) || /from\s+['"][^'"]*truth[^'"]*['"]/i.test(code) || /\btrajectories\b/.test(code)
+      return (
+        /\.truth\b/.test(code) ||
+        /\[['"]truth['"]\]/.test(code) ||
+        /\bTrueTrajectory\b/.test(code) ||
+        /from\s+['"][^'"]*truth[^'"]*['"]/i.test(code) ||
+        /\btrajectories\b/.test(code)
+      )
     })
     expect(offenders.map((f) => f.replace(src, 'src/'))).toEqual([])
   })
@@ -36,7 +43,11 @@ describe('engine determinism', () => {
   it('engine never calls Math.random or Date.now', () => {
     const offenders = walk(join(src, 'engine')).filter((f) => {
       const code = stripComments(readFileSync(f, 'utf8'))
-      return /Math\.random\s*\(/.test(code) || /Date\.now\s*\(/.test(code) || /new Date\s*\(\s*\)/.test(code)
+      return (
+        /Math\.random\s*\(/.test(code) ||
+        /Date\.now\s*\(/.test(code) ||
+        /new Date\s*\(\s*\)/.test(code)
+      )
     })
     expect(offenders.map((f) => f.replace(src, 'src/'))).toEqual([])
   })

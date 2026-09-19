@@ -6,7 +6,13 @@
  */
 import {
   STARTER_TEMPLATE,
-  type Contract, type EngineContext, type LeagueState, type PlayerId, type Position, type RosterSlot, type TeamId,
+  type Contract,
+  type EngineContext,
+  type LeagueState,
+  type PlayerId,
+  type Position,
+  type RosterSlot,
+  type TeamId,
 } from '../../src/contracts/index'
 import { faConstants } from '../../src/engine/fa/constants'
 
@@ -31,9 +37,11 @@ const policy = {
 }
 
 const ovrOf = (state: LeagueState, id: PlayerId): number => state.scouting[id]?.ovr ?? 40
-const potOf = (state: LeagueState, id: PlayerId): number => state.scouting[id]?.pot ?? ovrOf(state, id)
+const potOf = (state: LeagueState, id: PlayerId): number =>
+  state.scouting[id]?.pot ?? ovrOf(state, id)
 const posOf = (state: LeagueState, id: PlayerId): Position | undefined => state.players[id]?.pos
-const roster = (state: LeagueState, teamId: TeamId): RosterSlot[] => state.teams[teamId]?.roster ?? []
+const roster = (state: LeagueState, teamId: TeamId): RosterSlot[] =>
+  state.teams[teamId]?.roster ?? []
 
 function veteranContract(state: LeagueState, playerId: PlayerId, apy: number): Contract {
   const age = state.season - (state.players[playerId]?.birthYear ?? state.season - 27)
@@ -101,7 +109,11 @@ export function userDraft(state: LeagueState, ctx: EngineContext, log: Offseason
 }
 
 /** FREE_AGENCY: offer the ask to the best free agents at positions below the starter template, then depth. */
-export function userFreeAgency(state: LeagueState, ctx: EngineContext, log: OffseasonLog): LeagueState {
+export function userFreeAgency(
+  state: LeagueState,
+  ctx: EngineContext,
+  log: OffseasonLog,
+): LeagueState {
   const { fa, rng } = ctx.modules
   let s = state
   const cap = fa.capFor(s.season, ctx)
@@ -143,7 +155,11 @@ function cutCandidates(state: LeagueState): RosterSlot[] {
  * a roster left short by retirements (they land at the rollover, after free agency closed) signs the
  * best unsigned players it can afford back up to 53.
  */
-export function userCutdowns(state: LeagueState, ctx: EngineContext, log: OffseasonLog): LeagueState {
+export function userCutdowns(
+  state: LeagueState,
+  ctx: EngineContext,
+  log: OffseasonLog,
+): LeagueState {
   const { fa, league, rng } = ctx.modules
   let s = state
   const cap = fa.capFor(s.season, ctx)
@@ -159,11 +175,20 @@ export function userCutdowns(state: LeagueState, ctx: EngineContext, log: Offsea
     const c = slot.contract
     return c.apy - c.apy * c.years * c.guaranteedPct * faConstants.deadMoneyPct
   }
-  const savingsPerPoint = (slot: RosterSlot): number => netSavings(slot) / Math.max(1, ovrOf(s, slot.playerId) - 40)
-  for (let guard = 0; guard < 200 && fa.payroll(s, s.userTeam) > cap && roster(s, s.userTeam).length > policy.cutMinSize; guard++) {
+  const savingsPerPoint = (slot: RosterSlot): number =>
+    netSavings(slot) / Math.max(1, ovrOf(s, slot.playerId) - 40)
+  for (
+    let guard = 0;
+    guard < 200 &&
+    fa.payroll(s, s.userTeam) > cap &&
+    roster(s, s.userTeam).length > policy.cutMinSize;
+    guard++
+  ) {
     const worst = cutCandidates(s)
       .filter((slot) => netSavings(slot) > 0)
-      .sort((a, b) => savingsPerPoint(b) - savingsPerPoint(a) || a.playerId.localeCompare(b.playerId))[0]
+      .sort(
+        (a, b) => savingsPerPoint(b) - savingsPerPoint(a) || a.playerId.localeCompare(b.playerId),
+      )[0]
     if (!worst) break
     s = fa.release(s, s.userTeam, worst.playerId, ctx)
     log.cut.push(worst.playerId)
@@ -177,7 +202,14 @@ export function userCutdowns(state: LeagueState, ctx: EngineContext, log: Offsea
       const ask = fa.resignAsk(s, id, ctx)
       if (fa.payroll(s, s.userTeam) + ask > cap) continue
       log.faOffers++
-      const result = fa.offer(s, s.userTeam, id, veteranContract(s, id, ask), ctx, fillRng.fork(`${guard}:${id}`))
+      const result = fa.offer(
+        s,
+        s.userTeam,
+        id,
+        veteranContract(s, id, ask),
+        ctx,
+        fillRng.fork(`${guard}:${id}`),
+      )
       if (result.accepted) {
         s = result.state
         log.signed.push(id)
@@ -188,13 +220,21 @@ export function userCutdowns(state: LeagueState, ctx: EngineContext, log: Offsea
     // Capped out and still short: shed the worst contract to make room for minimum-salary bodies.
     const shed = cutCandidates(s)
       .filter((slot) => netSavings(slot) > 0)
-      .sort((a, b) => savingsPerPoint(b) - savingsPerPoint(a) || a.playerId.localeCompare(b.playerId))[0]
+      .sort(
+        (a, b) => savingsPerPoint(b) - savingsPerPoint(a) || a.playerId.localeCompare(b.playerId),
+      )[0]
     if (!shed) break
     s = fa.release(s, s.userTeam, shed.playerId, ctx)
     log.cut.push(shed.playerId)
   }
   const team = s.teams[s.userTeam]!
-  return { ...s, teams: { ...s.teams, [s.userTeam]: { ...team, depthChart: league.autoDepthChart(s, s.userTeam) } } }
+  return {
+    ...s,
+    teams: {
+      ...s.teams,
+      [s.userTeam]: { ...team, depthChart: league.autoDepthChart(s, s.userTeam) },
+    },
+  }
 }
 
 export function emptyLog(): OffseasonLog {

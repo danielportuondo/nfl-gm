@@ -9,12 +9,26 @@
  * and a per-season report is printed.
  */
 import {
-  DIVISIONS, TEAM_IDS, isInHistory, leagueFormat,
-  type EngineContext, type GameResult, type LeagueState, type PlayoffBracket, type TeamId,
+  DIVISIONS,
+  TEAM_IDS,
+  isInHistory,
+  leagueFormat,
+  type EngineContext,
+  type GameResult,
+  type LeagueState,
+  type PlayoffBracket,
+  type TeamId,
 } from '../src/contracts/index'
 import { truthFallbackCount, resetTruthFallbackCount } from '../src/engine/sim/index'
 import { loadRealContext, readManifest, realWinTotals, seasonsForNewGame } from './lib/publicData'
-import { emptyLog, userCutdowns, userDraft, userFreeAgency, userResign, type OffseasonLog } from './lib/scriptedGm'
+import {
+  emptyLog,
+  userCutdowns,
+  userDraft,
+  userFreeAgency,
+  userResign,
+  type OffseasonLog,
+} from './lib/scriptedGm'
 
 interface Args {
   team: TeamId
@@ -26,7 +40,14 @@ interface Args {
 }
 
 function parseArgs(argv: readonly string[]): Args {
-  const args: Args = { team: 'IND', start: 2015, seasons: 1, seed: 'headless', injuries: true, quiet: false }
+  const args: Args = {
+    team: 'IND',
+    start: 2015,
+    seasons: 1,
+    seed: 'headless',
+    injuries: true,
+    quiet: false,
+  }
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]
     if (arg === '--team') args.team = String(argv[++i]).toUpperCase()
@@ -36,7 +57,8 @@ function parseArgs(argv: readonly string[]): Args {
     else if (arg === '--no-injuries') args.injuries = false
     else if (arg === '--quiet') args.quiet = true
   }
-  if (!(TEAM_IDS as readonly string[]).includes(args.team)) throw new Error(`unknown team ${args.team}`)
+  if (!(TEAM_IDS as readonly string[]).includes(args.team))
+    throw new Error(`unknown team ${args.team}`)
   return args
 }
 
@@ -50,7 +72,12 @@ function recordText(r: { wins: number; losses: number; ties: number }): string {
 }
 
 /** Size/uniqueness always; cap and truth coverage only for teams the engine has gated (`teams`). */
-function checkRosterInvariants(state: LeagueState, ctx: EngineContext, label: string, gated: readonly TeamId[] = TEAM_IDS): void {
+function checkRosterInvariants(
+  state: LeagueState,
+  ctx: EngineContext,
+  label: string,
+  gated: readonly TeamId[] = TEAM_IDS,
+): void {
   const seen = new Map<string, TeamId>()
   const freeAgents = new Set(state.freeAgents)
   const cap = ctx.modules.fa.capFor(state.season, ctx)
@@ -58,25 +85,42 @@ function checkRosterInvariants(state: LeagueState, ctx: EngineContext, label: st
   const missingTruth: string[] = []
   for (const teamId of Object.keys(state.teams).sort()) {
     const team = state.teams[teamId]!
-    check(team.roster.length >= 46 && team.roster.length <= 53, `${label}: ${teamId} roster has ${team.roster.length} players`)
+    check(
+      team.roster.length >= 46 && team.roster.length <= 53,
+      `${label}: ${teamId} roster has ${team.roster.length} players`,
+    )
     if (gatedSet.has(teamId)) {
       const pay = ctx.modules.fa.payroll(state, teamId)
-      check(pay <= cap + 1e-6, `${label}: ${teamId} payroll $${pay.toFixed(2)}M over the $${cap.toFixed(2)}M cap`)
+      check(
+        pay <= cap + 1e-6,
+        `${label}: ${teamId} payroll $${pay.toFixed(2)}M over the $${cap.toFixed(2)}M cap`,
+      )
       for (const slot of team.roster) {
         if (state.truth[slot.playerId]?.bySeason[String(state.season)] === undefined) {
-          missingTruth.push(`${nameOf(state, slot.playerId)} on ${teamId}${state.divergence.has(slot.playerId) ? ' [diverged]' : ''}`)
+          missingTruth.push(
+            `${nameOf(state, slot.playerId)} on ${teamId}${state.divergence.has(slot.playerId) ? ' [diverged]' : ''}`,
+          )
         }
       }
     }
     for (const slot of team.roster) {
       const other = seen.get(slot.playerId)
       check(other === undefined, `${label}: ${slot.playerId} is on both ${other} and ${teamId}`)
-      check(!freeAgents.has(slot.playerId), `${label}: ${slot.playerId} is rostered by ${teamId} and a free agent`)
-      check(state.players[slot.playerId] !== undefined, `${label}: ${slot.playerId} on ${teamId} is not in state.players`)
+      check(
+        !freeAgents.has(slot.playerId),
+        `${label}: ${slot.playerId} is rostered by ${teamId} and a free agent`,
+      )
+      check(
+        state.players[slot.playerId] !== undefined,
+        `${label}: ${slot.playerId} on ${teamId} is not in state.players`,
+      )
       seen.set(slot.playerId, teamId)
     }
   }
-  check(missingTruth.length === 0, `${label}: ${missingTruth.length} rostered player(s) without a true value this season: ${missingTruth.slice(0, 6).join('; ')}`)
+  check(
+    missingTruth.length === 0,
+    `${label}: ${missingTruth.length} rostered player(s) without a true value this season: ${missingTruth.slice(0, 6).join('; ')}`,
+  )
 }
 
 function printStandings(state: LeagueState, ctx: EngineContext): void {
@@ -93,8 +137,9 @@ function printStandings(state: LeagueState, ctx: EngineContext): void {
       const mark = row.teamId === state.userTeam ? '*' : ' '
       const diff = row.pointsFor - row.pointsAgainst
       console.log(
-        `  ${mark} ${row.teamId.padEnd(4)} ${recordText(row).padEnd(7)} ${String(row.pointsFor).padStart(4)} ${String(row.pointsAgainst).padStart(4)} ${(diff >= 0 ? '+' : '') + diff}`.padEnd(40) +
-          `${row.clinched ?? ''}`,
+        `  ${mark} ${row.teamId.padEnd(4)} ${recordText(row).padEnd(7)} ${String(row.pointsFor).padStart(4)} ${String(row.pointsAgainst).padStart(4)} ${(diff >= 0 ? '+' : '') + diff}`.padEnd(
+          40,
+        ) + `${row.clinched ?? ''}`,
       )
     }
   }
@@ -117,7 +162,9 @@ function printBracket(state: LeagueState, bracket: PlayoffBracket): void {
 
 function printUserSeason(state: LeagueState): void {
   const games = state.schedule
-    .filter((g) => g.season === state.season && (g.home === state.userTeam || g.away === state.userTeam))
+    .filter(
+      (g) => g.season === state.season && (g.home === state.userTeam || g.away === state.userTeam),
+    )
     .sort((a, b) => a.week - b.week)
   const byId = new Map<string, GameResult>(state.results.map((r) => [r.gameId, r]))
   const lines = games.map((g) => {
@@ -132,7 +179,10 @@ function printUserSeason(state: LeagueState): void {
   console.log(`  ${lines.join('\n  ')}`)
 }
 
-function playSeason(state: LeagueState, ctx: EngineContext): { state: LeagueState; weeks: number; injuries: number; offers: number } {
+function playSeason(
+  state: LeagueState,
+  ctx: EngineContext,
+): { state: LeagueState; weeks: number; injuries: number; offers: number } {
   let s = state
   let weeks = 0
   let injuries = 0
@@ -173,7 +223,10 @@ function nameOf(state: LeagueState, id: string): string {
 }
 
 /** Share of each AI team's real opening-day roster that is on that team in-game; in-history only. */
-function historyOverlap(state: LeagueState, ctx: EngineContext): { mean: number; min: number; minTeam: TeamId } | null {
+function historyOverlap(
+  state: LeagueState,
+  ctx: EngineContext,
+): { mean: number; min: number; minTeam: TeamId } | null {
   if (!isInHistory(ctx, state.season)) return null
   const sd = ctx.seasonData(state.season)
   if (!sd) return null
@@ -230,7 +283,12 @@ function sdOfWins(state: LeagueState): number {
   return Math.sqrt(wins.reduce((s, v) => s + (v - mean) ** 2, 0) / wins.length)
 }
 
-function seasonReport(state: LeagueState, ctx: EngineContext, season: number, offseason: OffseasonLog | null): void {
+function seasonReport(
+  state: LeagueState,
+  ctx: EngineContext,
+  season: number,
+  offseason: OffseasonLog | null,
+): void {
   const { fa } = ctx.modules
   const user = state.teams[state.userTeam]!
   const summary = state.history[state.history.length - 1]
@@ -255,34 +313,64 @@ function seasonReport(state: LeagueState, ctx: EngineContext, season: number, of
     `  league: sd(wins) ${sdOfWins(state).toFixed(2)}${corr !== null ? `, corr with real wins ${corr.toFixed(2)}` : ''}; ` +
       `${generatedLeague} generated players rostered; ${state.divergence.size} diverged; ${state.freeAgents.length} free agents`,
   )
-  if (overlap) console.log(`  history: AI rosters match real opening-day rosters ${(overlap.mean * 100).toFixed(0)}% on average (min ${(overlap.min * 100).toFixed(0)}% ${overlap.minTeam})`)
-  if (snaps.length) console.log(`  snap: ${[...byReason.entries()].sort().map(([k, v]) => `${k} ${v}`).join(', ')}`)
+  if (overlap)
+    console.log(
+      `  history: AI rosters match real opening-day rosters ${(overlap.mean * 100).toFixed(0)}% on average (min ${(overlap.min * 100).toFixed(0)}% ${overlap.minTeam})`,
+    )
+  if (snaps.length)
+    console.log(
+      `  snap: ${[...byReason.entries()]
+        .sort()
+        .map(([k, v]) => `${k} ${v}`)
+        .join(', ')}`,
+    )
   if (offseason) {
-    const picks = offseason.drafted.map((d) => `R${d.round}#${d.pick} ${nameOf(state, d.playerId)}`).join(', ')
+    const picks = offseason.drafted
+      .map((d) => `R${d.round}#${d.pick} ${nameOf(state, d.playerId)}`)
+      .join(', ')
     console.log(
       `  offseason: re-signed ${offseason.resigned.length}, let go ${offseason.expired.length}, drafted ${offseason.drafted.length}, ` +
         `signed ${offseason.signed.length} (${offseason.faOffers} offers to a pool of ${offseason.faPool}), cut ${offseason.cut.length}`,
     )
     if (picks) console.log(`  drafted: ${picks}`)
-    if (offseason.resigned.length) console.log(`  re-signed: ${offseason.resigned.map((id) => nameOf(state, id)).join(', ')}`)
-    if (offseason.signed.length) console.log(`  signed: ${offseason.signed.slice(0, 8).map((id) => nameOf(state, id)).join(', ')}${offseason.signed.length > 8 ? ', …' : ''}`)
+    if (offseason.resigned.length)
+      console.log(`  re-signed: ${offseason.resigned.map((id) => nameOf(state, id)).join(', ')}`)
+    if (offseason.signed.length)
+      console.log(
+        `  signed: ${offseason.signed
+          .slice(0, 8)
+          .map((id) => nameOf(state, id))
+          .join(', ')}${offseason.signed.length > 8 ? ', …' : ''}`,
+      )
   }
 }
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2))
   const manifest = readManifest()
-  if (!manifest.seasons.includes(args.start)) throw new Error(`season ${args.start} is not in app/public/data`)
+  if (!manifest.seasons.includes(args.start))
+    throw new Error(`season ${args.start} is not in app/public/data`)
   const started = performance.now()
 
   const wanted = new Set<number>()
-  for (let s = args.start; s < args.start + args.seasons; s++) for (const x of seasonsForNewGame(s, manifest.latestRealSeason)) wanted.add(x)
+  for (let s = args.start; s < args.start + args.seasons; s++)
+    for (const x of seasonsForNewGame(s, manifest.latestRealSeason)) wanted.add(x)
   const ctx = await loadRealContext([...wanted].sort((a, b) => a - b))
   const loadedAt = performance.now()
 
-  const settings = { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: args.injuries } as const
+  const settings = {
+    tradeStrictness: 'balanced',
+    aiOfferFrequency: 'normal',
+    injuries: args.injuries,
+  } as const
   let state = ctx.modules.league.newGame(
-    { seed: args.seed, startSeason: args.start, userTeam: args.team, horizonSeasons: args.seasons, settings },
+    {
+      seed: args.seed,
+      startSeason: args.start,
+      userTeam: args.team,
+      horizonSeasons: args.seasons,
+      settings,
+    },
     ctx,
   )
   const rosterSizes = Object.values(state.teams).map((t) => t.roster.length)
@@ -304,7 +392,9 @@ async function main(): Promise<void> {
     const played = playSeason(state, ctx)
     state = played.state
 
-    console.log(`\n=== ${season} — ${played.weeks} weeks, ${played.injuries} weeks with injuries, ${played.offers} AI offers ===`)
+    console.log(
+      `\n=== ${season} — ${played.weeks} weeks, ${played.injuries} weeks with injuries, ${played.offers} AI offers ===`,
+    )
     const bracket = ctx.modules.league.seedPlayoffs(state, ctx)
     if (!args.quiet) {
       printStandings(state, ctx)
@@ -320,22 +410,43 @@ async function main(): Promise<void> {
     const seasonResults = state.results.filter((r) => r.gameId.startsWith(`${season}-`))
     const regGames = state.schedule.filter((g) => g.season === season && g.type === 'REG')
     const playoffGames = bracket.rounds.reduce((n, r) => n + r.games.length, 0)
-    check(seasonResults.length === regGames.length + playoffGames, `${season}: ${seasonResults.length} results for ${regGames.length + playoffGames} games`)
+    check(
+      seasonResults.length === regGames.length + playoffGames,
+      `${season}: ${seasonResults.length} results for ${regGames.length + playoffGames} games`,
+    )
     // A real schedule can be one game short (2022's cancelled BUF–CIN game); every scheduled game must be played.
-    check(regGames.length >= fmt.regularSeasonGames * 16 - 1, `${season}: only ${regGames.length} regular-season games scheduled`)
+    check(
+      regGames.length >= fmt.regularSeasonGames * 16 - 1,
+      `${season}: only ${regGames.length} regular-season games scheduled`,
+    )
     for (const teamId of TEAM_IDS) {
       const r = state.teams[teamId]!.record
       const scheduled = regGames.filter((g) => g.home === teamId || g.away === teamId).length
-      check(r.wins + r.losses + r.ties === scheduled, `${season}: ${teamId} played ${r.wins + r.losses + r.ties} of ${scheduled} regular-season games`)
+      check(
+        r.wins + r.losses + r.ties === scheduled,
+        `${season}: ${teamId} played ${r.wins + r.losses + r.ties} of ${scheduled} regular-season games`,
+      )
     }
     check(bracket.champion !== null, `${season}: no champion`)
-    check(state.phase === 'OFFSEASON_RESIGN', `${season}: phase after the Super Bowl is ${state.phase}`)
-    check(truthFallbackCount() === 0, `${season}: ${truthFallbackCount()} truth fallbacks (a player had no true value this season)`)
+    check(
+      state.phase === 'OFFSEASON_RESIGN',
+      `${season}: phase after the Super Bowl is ${state.phase}`,
+    )
+    check(
+      truthFallbackCount() === 0,
+      `${season}: ${truthFallbackCount()} truth fallbacks (a player had no true value this season)`,
+    )
     checkRosterInvariants(state, ctx, String(season))
     const overlap = historyOverlap(state, ctx)
-    if (overlap) check(overlap.mean >= 0.75, `${season}: AI rosters only ${(overlap.mean * 100).toFixed(0)}% anchored to real rosters`)
+    if (overlap)
+      check(
+        overlap.mean >= 0.75,
+        `${season}: AI rosters only ${(overlap.mean * 100).toFixed(0)}% anchored to real rosters`,
+      )
     if (!isInHistory(ctx, season)) {
-      const generated = TEAM_IDS.flatMap((t) => state.teams[t]!.roster).filter((r) => !state.players[r.playerId]?.real).length
+      const generated = TEAM_IDS.flatMap((t) => state.teams[t]!.roster).filter(
+        (r) => !state.players[r.playerId]?.real,
+      ).length
       check(generated > 0, `${season}: past the data but no procedural players are rostered`)
     }
 
@@ -344,14 +455,24 @@ async function main(): Promise<void> {
       state = playOffseason(state, ctx, offseason)
       // AI teams are still at camp size here; the user's team must already be legal.
       const user = state.teams[state.userTeam]!
-      check(user.roster.length >= 46 && user.roster.length <= 53, `${state.season} preseason: user roster has ${user.roster.length} players`)
-      check(ctx.modules.fa.validateRoster(state, state.userTeam, ctx).ok, `${state.season} preseason: user roster invalid — ${ctx.modules.fa.validateRoster(state, state.userTeam, ctx).errors.join(', ')}`)
+      check(
+        user.roster.length >= 46 && user.roster.length <= 53,
+        `${state.season} preseason: user roster has ${user.roster.length} players`,
+      )
+      check(
+        ctx.modules.fa.validateRoster(state, state.userTeam, ctx).ok,
+        `${state.season} preseason: user roster invalid — ${ctx.modules.fa.validateRoster(state, state.userTeam, ctx).errors.join(', ')}`,
+      )
     }
   }
 
-  console.log(`\nfinal: season ${state.season}, phase ${state.phase}, outcome ${state.outcome}, runtime ${((performance.now() - started) / 1000).toFixed(1)}s`)
+  console.log(
+    `\nfinal: season ${state.season}, phase ${state.phase}, outcome ${state.outcome}, runtime ${((performance.now() - started) / 1000).toFixed(1)}s`,
+  )
   if (failures.length) {
-    console.error(`\n${failures.length} invariant failure(s):\n  ${failures.slice(0, 20).join('\n  ')}`)
+    console.error(
+      `\n${failures.length} invariant failure(s):\n  ${failures.slice(0, 20).join('\n  ')}`,
+    )
     process.exitCode = 1
   } else {
     console.log('invariants: ok')
@@ -359,6 +480,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((err: unknown) => {
-  console.error(`headless: ${err instanceof Error ? err.stack ?? err.message : String(err)}`)
+  console.error(`headless: ${err instanceof Error ? (err.stack ?? err.message) : String(err)}`)
   process.exitCode = 1
 })

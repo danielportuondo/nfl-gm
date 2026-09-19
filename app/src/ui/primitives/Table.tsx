@@ -54,14 +54,31 @@ export function Table<T>({
                 <th
                   key={col.key}
                   scope="col"
-                  className={[col.numeric ? 'gg-num' : '', col.frozen ? 'gg-col-frozen' : ''].filter(Boolean).join(' ')}
-                  aria-sort={active ? (sort!.dir === 'asc' ? 'ascending' : 'descending') : sortable ? 'none' : undefined}
+                  className={[col.numeric ? 'gg-num' : '', col.frozen ? 'gg-col-frozen' : '']
+                    .filter(Boolean)
+                    .join(' ')}
+                  aria-sort={
+                    active
+                      ? sort!.dir === 'asc'
+                        ? 'ascending'
+                        : 'descending'
+                      : sortable
+                        ? 'none'
+                        : undefined
+                  }
                 >
                   {sortable ? (
                     <button
                       type="button"
                       className="gg-button gg-button--ghost"
-                      style={{ minHeight: 'auto', padding: 0, gap: 4, font: 'inherit', color: 'inherit', boxShadow: 'none' }}
+                      style={{
+                        minHeight: 'auto',
+                        padding: 0,
+                        gap: 4,
+                        font: 'inherit',
+                        color: 'inherit',
+                        boxShadow: 'none',
+                      }}
                       onClick={() => onSortChange!(col.key)}
                     >
                       {col.header}
@@ -100,7 +117,11 @@ export function Table<T>({
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className={[col.numeric ? 'gg-num' : '', col.rating ? 'gg-rating' : '', col.frozen ? 'gg-col-frozen' : '']
+                    className={[
+                      col.numeric ? 'gg-num' : '',
+                      col.rating ? 'gg-rating' : '',
+                      col.frozen ? 'gg-col-frozen' : '',
+                    ]
                       .filter(Boolean)
                       .join(' ')}
                   >

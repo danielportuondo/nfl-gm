@@ -9,15 +9,37 @@ import { makeCtx } from './harness'
 const ctx = makeCtx()
 const state = mockLeague({ seed: 'box', season: 2021 })
 const games = state.schedule.filter((g) => g.type === 'REG').slice(0, 200)
-const results: GameResult[] = games.map((g) => sim.simulateGame(state, g, ctx, sim.gameRng(state, g, ctx)))
+const results: GameResult[] = games.map((g) =>
+  sim.simulateGame(state, g, ctx, sim.gameRng(state, g, ctx)),
+)
 
 const sum = (lines: readonly PlayerGameLine[], key: keyof PlayerGameLine) =>
   lines.reduce((acc, line) => acc + ((line[key] as number | undefined) ?? 0), 0)
 
 const COUNTS: (keyof PlayerGameLine)[] = [
-  'passAtt', 'passCmp', 'passYds', 'passTd', 'passInt', 'rushAtt', 'rushYds', 'rushTd',
-  'targets', 'rec', 'recYds', 'recTd', 'tackles', 'sacks', 'ints', 'forcedFumbles',
-  'passesDefended', 'fgm', 'fga', 'xpm', 'xpa', 'punts', 'puntYds',
+  'passAtt',
+  'passCmp',
+  'passYds',
+  'passTd',
+  'passInt',
+  'rushAtt',
+  'rushYds',
+  'rushTd',
+  'targets',
+  'rec',
+  'recYds',
+  'recTd',
+  'tackles',
+  'sacks',
+  'ints',
+  'forcedFumbles',
+  'passesDefended',
+  'fgm',
+  'fga',
+  'xpm',
+  'xpa',
+  'punts',
+  'puntYds',
 ]
 
 describe('box score invariants over 200 games', () => {
@@ -36,7 +58,8 @@ describe('box score invariants over 200 games', () => {
     for (const result of results) {
       for (const lines of [result.box!.home, result.box!.away]) {
         for (const line of lines) {
-          for (const key of COUNTS) expect((line[key] as number | undefined) ?? 0).toBeGreaterThanOrEqual(0)
+          for (const key of COUNTS)
+            expect((line[key] as number | undefined) ?? 0).toBeGreaterThanOrEqual(0)
           expect(line.passCmp ?? 0).toBeLessThanOrEqual(line.passAtt ?? 0)
           expect(line.rec ?? 0).toBeLessThanOrEqual(line.targets ?? 0)
           expect(line.recTd ?? 0).toBeLessThanOrEqual(line.rec ?? 0)
@@ -51,7 +74,10 @@ describe('box score invariants over 200 games', () => {
   it('lines belong to the team that played and to its roster', () => {
     results.forEach((result, i) => {
       const game = games[i]!
-      for (const [teamId, lines] of [[game.home, result.box!.home], [game.away, result.box!.away]] as const) {
+      for (const [teamId, lines] of [
+        [game.home, result.box!.home],
+        [game.away, result.box!.away],
+      ] as const) {
         const roster = new Set(state.teams[teamId]!.roster.map((r) => r.playerId))
         for (const line of lines) {
           expect(line.teamId).toBe(teamId)
@@ -72,7 +98,10 @@ describe('box score invariants over 200 games', () => {
         [result.homeScore, result.box!.home],
         [result.awayScore, result.box!.away],
       ] as const) {
-        const scored = 6 * (sum(lines, 'passTd') + sum(lines, 'rushTd')) + sum(lines, 'xpm') + 3 * sum(lines, 'fgm')
+        const scored =
+          6 * (sum(lines, 'passTd') + sum(lines, 'rushTd')) +
+          sum(lines, 'xpm') +
+          3 * sum(lines, 'fgm')
         // The remainder is a two-point conversion or a safety, which no PlayerGameLine field can hold.
         const gap = score - scored
         expect(gap).toBeGreaterThanOrEqual(0)

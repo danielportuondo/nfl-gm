@@ -5,7 +5,14 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import { POSITIONS, type EngineContext, type LeagueState } from '@contracts/index'
 import { draft } from '@engine/draft'
-import { AARON_DONALD, CLASS_SEASON, CLOWNEY, draftContext, historicalShare, stateAtDraft } from './fixture'
+import {
+  AARON_DONALD,
+  CLASS_SEASON,
+  CLOWNEY,
+  draftContext,
+  historicalShare,
+  stateAtDraft,
+} from './fixture'
 
 const HISTORICAL_TARGET = 0.85
 
@@ -22,7 +29,9 @@ describe('2014 redraft', () => {
     const room = done.draftRoom!
     expect(room.status).toBe('COMPLETE')
     expect(room.log.length).toBe(room.order.length)
-    console.log(`2014 redraft: ${(historicalShare(done) * 100).toFixed(1)}% historical (${room.log.length} picks)`)
+    console.log(
+      `2014 redraft: ${(historicalShare(done) * 100).toFixed(1)}% historical (${room.log.length} picks)`,
+    )
     expect(historicalShare(done)).toBeGreaterThanOrEqual(HISTORICAL_TARGET)
   })
 
@@ -32,7 +41,12 @@ describe('2014 redraft', () => {
     expect(drafted.size).toBe(room.log.length)
     for (const entry of room.log) {
       const player = done.players[entry.playerId]!
-      expect(player.draft).toEqual({ season: CLASS_SEASON, round: entry.round, pick: entry.pick, team: entry.team })
+      expect(player.draft).toEqual({
+        season: CLASS_SEASON,
+        round: entry.round,
+        pick: entry.pick,
+        team: entry.team,
+      })
       const slot = done.teams[entry.team]!.roster.find((s) => s.playerId === entry.playerId)
       expect(slot?.contract.rookie).toBe(true)
       expect(room.available).not.toContain(entry.playerId)
@@ -53,7 +67,10 @@ describe('2014 redraft', () => {
     const seen = new Map<string, string>()
     for (const teamId of Object.keys(done.teams).sort()) {
       for (const slot of done.teams[teamId]!.roster) {
-        expect(seen.has(slot.playerId), `${slot.playerId} on ${seen.get(slot.playerId)} and ${teamId}`).toBe(false)
+        expect(
+          seen.has(slot.playerId),
+          `${slot.playerId} on ${seen.get(slot.playerId)} and ${teamId}`,
+        ).toBe(false)
         seen.set(slot.playerId, teamId)
       }
     }
@@ -112,7 +129,9 @@ describe('user takes Aaron Donald at #1', () => {
     for (const team of qbsByTeam.keys()) {
       expect(draft.teamNeeds(beforePick, team).saturated, team).not.toContain('QB')
     }
-    expect(roundOne.filter((e) => done.players[e.playerId]!.pos === 'QB').length).toBeLessThanOrEqual(5)
+    expect(
+      roundOne.filter((e) => done.players[e.playerId]!.pos === 'QB').length,
+    ).toBeLessThanOrEqual(5)
   })
 
   it('still tracks history for the rest of the draft', () => {

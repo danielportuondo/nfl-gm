@@ -61,7 +61,12 @@ export interface TradeModule {
    * need matches the best available prospect), and per settings.aiOfferFrequency in-season. Each has
    * the AI's own p ≥ 0.5 and value within a plausible band.
    */
-  generateAiOffers(state: LeagueState, ctx: EngineContext, rng: Rng, context: 'draft' | 'season'): TradeProposal[]
+  generateAiOffers(
+    state: LeagueState,
+    ctx: EngineContext,
+    rng: Rng,
+    context: 'draft' | 'season',
+  ): TradeProposal[]
 
   /**
    * Proactive suggestions for the user (Phase 6): AI-initiated deals that send the user a player at one

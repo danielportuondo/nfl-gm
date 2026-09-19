@@ -5,14 +5,49 @@
  * never snaps rosters (history) — all of that goes through ctx.modules.
  */
 import {
-  DIVISIONS, PHASES, POSITIONS, SAVE_SCHEMA_VERSION, STARTER_TEMPLATE, TEAM_IDS, canonicalTeamId,
-  leagueFormat, isInHistory, SeasonNotLoadedError,
-  type CanonicalTeamId, type CompactTrajectory, type Conference, type DepthChart, type EngineContext,
-  type Award, type Game, type GameResult, type GameSettings, type GameType, type InjuryEvent, type LeagueModule,
-  type LeagueState, type NewGameOptions, type Phase, type Player, type PlayerId, type PlayoffBracket,
-  type PlayoffExit, type PlayoffFormat, type PlayoffSeed, type RosterSlot, type ScoutingView,
-  type Season, type SeasonPlayer, type SeasonSummary, type StandingRow, type TeamId, type TeamState, type TeamStrength,
-  type TrajectoryTable, type TrueTrajectory, type WeekReport,
+  DIVISIONS,
+  PHASES,
+  POSITIONS,
+  SAVE_SCHEMA_VERSION,
+  STARTER_TEMPLATE,
+  TEAM_IDS,
+  canonicalTeamId,
+  leagueFormat,
+  isInHistory,
+  SeasonNotLoadedError,
+  type CanonicalTeamId,
+  type CompactTrajectory,
+  type Conference,
+  type DepthChart,
+  type EngineContext,
+  type Award,
+  type Game,
+  type GameResult,
+  type GameSettings,
+  type GameType,
+  type InjuryEvent,
+  type LeagueModule,
+  type LeagueState,
+  type NewGameOptions,
+  type Phase,
+  type Player,
+  type PlayerId,
+  type PlayoffBracket,
+  type PlayoffExit,
+  type PlayoffFormat,
+  type PlayoffSeed,
+  type RosterSlot,
+  type ScoutingView,
+  type Season,
+  type SeasonPlayer,
+  type SeasonSummary,
+  type StandingRow,
+  type TeamId,
+  type TeamState,
+  type TeamStrength,
+  type TrajectoryTable,
+  type TrueTrajectory,
+  type WeekReport,
 } from '@contracts/index'
 import { DIVISION_ROUND_TEMPLATE, DIVISION_ROUND_WEEKS } from './constants'
 
@@ -29,7 +64,11 @@ function teamDivision(teamId: TeamId): { conf: Conference; div: string } {
 // Player/roster construction (newGame)
 // -------------------------------------------------------------------------------------------
 
-function compactToTrajectory(compact: CompactTrajectory | undefined, season: Season, fallback: number): TrueTrajectory {
+function compactToTrajectory(
+  compact: CompactTrajectory | undefined,
+  season: Season,
+  fallback: number,
+): TrueTrajectory {
   if (!compact) return { bySeason: { [String(season)]: fallback }, retiresAfter: null }
   const bySeason: Record<string, number> = {}
   compact.values.forEach((v, i) => {
@@ -43,14 +82,26 @@ function buildPlayersFromSeason(
   seasonPlayers: SeasonPlayer[],
   trajectories: TrajectoryTable,
   season: Season,
-): { players: Record<PlayerId, Player>; scouting: Record<PlayerId, ScoutingView>; truth: Record<PlayerId, TrueTrajectory> } {
+): {
+  players: Record<PlayerId, Player>
+  scouting: Record<PlayerId, ScoutingView>
+  truth: Record<PlayerId, TrueTrajectory>
+} {
   const players: Record<PlayerId, Player> = {}
   const scouting: Record<PlayerId, ScoutingView> = {}
   const truth: Record<PlayerId, TrueTrajectory> = {}
   for (const sp of seasonPlayers) {
     const player: Player = {
-      id: sp.id, name: sp.name, pos: sp.pos, birthYear: sp.birthYear, college: sp.college,
-      heightIn: sp.heightIn, weightLb: sp.weightLb, draft: sp.draft, real: sp.real, rookieSeason: sp.rookieSeason,
+      id: sp.id,
+      name: sp.name,
+      pos: sp.pos,
+      birthYear: sp.birthYear,
+      college: sp.college,
+      heightIn: sp.heightIn,
+      weightLb: sp.weightLb,
+      draft: sp.draft,
+      real: sp.real,
+      rookieSeason: sp.rookieSeason,
     }
     players[player.id] = player
     scouting[player.id] = sp.scouting
@@ -59,7 +110,11 @@ function buildPlayersFromSeason(
   return { players, scouting, truth }
 }
 
-function buildDepthChartFrom(roster: RosterSlot[], scouting: Record<PlayerId, ScoutingView>, players: Record<PlayerId, Player>): DepthChart {
+function buildDepthChartFrom(
+  roster: RosterSlot[],
+  scouting: Record<PlayerId, ScoutingView>,
+  players: Record<PlayerId, Player>,
+): DepthChart {
   const chart: DepthChart = {}
   const injured = new Map(roster.map((r) => [r.playerId, Boolean(r.injured)]))
   for (const pos of POSITIONS) {
@@ -110,7 +165,10 @@ function fitPayrollToCap(state: LeagueState, teamId: TeamId, ctx: EngineContext)
   const cap = ctx.modules.fa.capFor(state.season, ctx)
   const payroll = ctx.modules.fa.payroll(state, teamId)
   if (payroll <= cap) return state
-  const veteranSum = team.roster.reduce((sum, slot) => sum + (slot.contract.rookie ? 0 : slot.contract.apy), 0)
+  const veteranSum = team.roster.reduce(
+    (sum, slot) => sum + (slot.contract.rookie ? 0 : slot.contract.apy),
+    0,
+  )
   if (veteranSum <= 0) return state
   const fixed = payroll - veteranSum
   const factor = Math.max(0, (cap * CAP_FIT_TARGET - fixed) / veteranSum)
@@ -118,7 +176,10 @@ function fitPayrollToCap(state: LeagueState, teamId: TeamId, ctx: EngineContext)
   const roster = team.roster.map((slot) =>
     slot.contract.rookie
       ? slot
-      : { ...slot, contract: { ...slot.contract, apy: Math.round(slot.contract.apy * factor * 100) / 100 } },
+      : {
+          ...slot,
+          contract: { ...slot.contract, apy: Math.round(slot.contract.apy * factor * 100) / 100 },
+        },
   )
   return { ...state, teams: { ...state.teams, [teamId]: { ...team, roster } } }
 }
@@ -154,7 +215,10 @@ function fillAiRosters(state: LeagueState, ctx: EngineContext): LeagueState {
     }
     const needs = (pos: string): boolean => (counts[pos] ?? 0) < (STARTER_TEMPLATE[pos] ?? 0)
     const open = pool.filter((id) => !taken.has(id))
-    const candidates = [...open.filter((id) => needs(s.players[id]!.pos)), ...open.filter((id) => !needs(s.players[id]!.pos))]
+    const candidates = [
+      ...open.filter((id) => needs(s.players[id]!.pos)),
+      ...open.filter((id) => !needs(s.players[id]!.pos)),
+    ]
 
     let roster = team.roster
     let payroll = fa.payroll(s, teamId)
@@ -164,14 +228,17 @@ function fillAiRosters(state: LeagueState, ctx: EngineContext): LeagueState {
       // bodies and lets fa.runAiCutdowns swap salary out afterwards.
       const belowFloor = roster.length < AI_CAMP_ROSTER_MIN
       if (!belowFloor && payroll + minApy > cap) break
-      const contract = belowFloor ? fa.rookieContract(null, s.season, ctx) : fa.synthesizeContract(s, id, s.season, ctx)
+      const contract = belowFloor
+        ? fa.rookieContract(null, s.season, ctx)
+        : fa.synthesizeContract(s, id, s.season, ctx)
       if (!belowFloor && payroll + contract.apy > cap) continue
       roster = [...roster, { playerId: id, teamId, contract }]
       payroll += contract.apy
       counts[s.players[id]!.pos] = (counts[s.players[id]!.pos] ?? 0) + 1
       taken.add(id)
     }
-    if (roster.length !== team.roster.length) s = { ...s, teams: { ...s.teams, [teamId]: { ...team, roster } } }
+    if (roster.length !== team.roster.length)
+      s = { ...s, teams: { ...s.teams, [teamId]: { ...team, roster } } }
   }
   if (taken.size === 0) return s
   return { ...s, freeAgents: s.freeAgents.filter((id) => !taken.has(id)) }
@@ -329,7 +396,8 @@ function standingsImpl(state: LeagueState, ctx: EngineContext): StandingRow[] {
   const byTeam = new Map<TeamId, { seed: number; conf: Conference; bye: boolean } | null>()
   if (complete) {
     for (const conf of ['AFC', 'NFC'] as const) {
-      for (const s of computeSeeds(state, ctx, conf)) byTeam.set(s.teamId, { seed: s.seed, conf, bye: s.seed <= fmt.byesPerConf })
+      for (const s of computeSeeds(state, ctx, conf))
+        byTeam.set(s.teamId, { seed: s.seed, conf, bye: s.seed <= fmt.byesPerConf })
     }
   }
   const rows: StandingRow[] = []
@@ -358,9 +426,12 @@ function standingsImpl(state: LeagueState, ctx: EngineContext): StandingRow[] {
         }
         rows.push({
           teamId,
-          wins: record.wins, losses: record.losses, ties: record.ties,
+          wins: record.wins,
+          losses: record.losses,
+          ties: record.ties,
           pct: pct(record),
-          pointsFor: record.pointsFor, pointsAgainst: record.pointsAgainst,
+          pointsFor: record.pointsFor,
+          pointsAgainst: record.pointsAgainst,
           divRank: i + 1,
           confRank: confRankOf.get(teamId)!,
           clinched,
@@ -378,7 +449,8 @@ function standingsImpl(state: LeagueState, ctx: EngineContext): StandingRow[] {
 function pairSeeds(seeds: number[]): [number, number][] {
   const sorted = [...seeds].sort((a, b) => a - b)
   const pairs: [number, number][] = []
-  for (let i = 0; i < sorted.length / 2; i++) pairs.push([sorted[i]!, sorted[sorted.length - 1 - i]!])
+  for (let i = 0; i < sorted.length / 2; i++)
+    pairs.push([sorted[i]!, sorted[sorted.length - 1 - i]!])
   return pairs
 }
 
@@ -399,7 +471,9 @@ function buildBracketImpl(state: LeagueState, ctx: EngineContext): PlayoffBracke
   const teamBySeed = new Map<string, TeamId>()
   for (const s of seeds) teamBySeed.set(`${s.conf}:${s.seed}`, s.teamId)
 
-  const regWeeks = state.schedule.filter((g) => g.season === season && g.type === 'REG').map((g) => g.week)
+  const regWeeks = state.schedule
+    .filter((g) => g.season === season && g.type === 'REG')
+    .map((g) => g.week)
   const lastRegWeek = regWeeks.length ? Math.max(...regWeeks) : 0
   const weekFor = (round: GameType): number => {
     const offset = round === 'WC' ? 1 : round === 'DIV' ? 2 : round === 'CONF' ? 3 : 4
@@ -431,7 +505,8 @@ function buildBracketImpl(state: LeagueState, ctx: EngineContext): PlayoffBracke
   }
   const wcGames = roundGames('WC', wcSeeds)
   rounds.push({ type: 'WC', games: wcGames })
-  if (!wcGames.every((g) => winnerOf(state, g.id) !== null)) return { season, seeds, rounds, champion: null }
+  if (!wcGames.every((g) => winnerOf(state, g.id) !== null))
+    return { season, seeds, rounds, champion: null }
 
   // DIV round: bye seeds + WC winners' seeds.
   const winnerSeed = (conf: Conference, game: Game): number => {
@@ -441,25 +516,35 @@ function buildBracketImpl(state: LeagueState, ctx: EngineContext): PlayoffBracke
   const divSeeds: Record<Conference, number[]> = {
     AFC: [
       ...remainingByConf.AFC.filter((s) => s <= fmt.byesPerConf),
-      ...wcGames.filter((g) => teamDivision(g.home).conf === 'AFC').map((g) => winnerSeed('AFC', g)),
+      ...wcGames
+        .filter((g) => teamDivision(g.home).conf === 'AFC')
+        .map((g) => winnerSeed('AFC', g)),
     ],
     NFC: [
       ...remainingByConf.NFC.filter((s) => s <= fmt.byesPerConf),
-      ...wcGames.filter((g) => teamDivision(g.home).conf === 'NFC').map((g) => winnerSeed('NFC', g)),
+      ...wcGames
+        .filter((g) => teamDivision(g.home).conf === 'NFC')
+        .map((g) => winnerSeed('NFC', g)),
     ],
   }
   const divGames = roundGames('DIV', divSeeds)
   rounds.push({ type: 'DIV', games: divGames })
-  if (!divGames.every((g) => winnerOf(state, g.id) !== null)) return { season, seeds, rounds, champion: null }
+  if (!divGames.every((g) => winnerOf(state, g.id) !== null))
+    return { season, seeds, rounds, champion: null }
 
   // CONF round: DIV winners.
   const confSeeds: Record<Conference, number[]> = {
-    AFC: divGames.filter((g) => teamDivision(g.home).conf === 'AFC').map((g) => winnerSeed('AFC', g)),
-    NFC: divGames.filter((g) => teamDivision(g.home).conf === 'NFC').map((g) => winnerSeed('NFC', g)),
+    AFC: divGames
+      .filter((g) => teamDivision(g.home).conf === 'AFC')
+      .map((g) => winnerSeed('AFC', g)),
+    NFC: divGames
+      .filter((g) => teamDivision(g.home).conf === 'NFC')
+      .map((g) => winnerSeed('NFC', g)),
   }
   const confGames = roundGames('CONF', confSeeds)
   rounds.push({ type: 'CONF', games: confGames })
-  if (!confGames.every((g) => winnerOf(state, g.id) !== null)) return { season, seeds, rounds, champion: null }
+  if (!confGames.every((g) => winnerOf(state, g.id) !== null))
+    return { season, seeds, rounds, champion: null }
 
   // Super Bowl: the two conference champions.
   const afcChamp = winnerOf(state, confGames.find((g) => teamDivision(g.home).conf === 'AFC')!.id)!
@@ -474,7 +559,11 @@ function buildBracketImpl(state: LeagueState, ctx: EngineContext): PlayoffBracke
 // Season summary
 // -------------------------------------------------------------------------------------------
 
-function computeUserExit(state: LeagueState, bracket: PlayoffBracket, champion: TeamId | null): PlayoffExit {
+function computeUserExit(
+  state: LeagueState,
+  bracket: PlayoffBracket,
+  champion: TeamId | null,
+): PlayoffExit {
   if (champion === state.userTeam) return 'CHAMPION'
   const order: GameType[] = ['SB', 'CONF', 'DIV', 'WC']
   for (const type of order) {
@@ -488,16 +577,32 @@ function computeUserExit(state: LeagueState, bracket: PlayoffBracket, champion: 
   return 'MISSED'
 }
 
-type StatTotals = { passYds: number; rushYds: number; recYds: number; sacks: number; ints: number; td: number }
+type StatTotals = {
+  passYds: number
+  rushYds: number
+  recYds: number
+  sacks: number
+  ints: number
+  td: number
+}
 
 /** Statistical leaders from the season's regular-season box scores — visible stats only, never truth. */
 function seasonAwards(state: LeagueState): Award[] {
-  const regular = new Set(state.schedule.filter((g) => g.season === state.season && g.type === 'REG').map((g) => g.id))
+  const regular = new Set(
+    state.schedule.filter((g) => g.season === state.season && g.type === 'REG').map((g) => g.id),
+  )
   const totals = new Map<PlayerId, StatTotals>()
   for (const result of state.results) {
     if (!regular.has(result.gameId) || !result.box) continue
     for (const line of [...result.box.home, ...result.box.away]) {
-      const t = totals.get(line.playerId) ?? { passYds: 0, rushYds: 0, recYds: 0, sacks: 0, ints: 0, td: 0 }
+      const t = totals.get(line.playerId) ?? {
+        passYds: 0,
+        rushYds: 0,
+        recYds: 0,
+        sacks: 0,
+        ints: 0,
+        td: 0,
+      }
       t.passYds += line.passYds ?? 0
       t.rushYds += line.rushYds ?? 0
       t.recYds += line.recYds ?? 0
@@ -517,7 +622,9 @@ function seasonAwards(state: LeagueState): Award[] {
       if (t[key] > 0 && (best === null || t[key] > best.value)) best = { id, value: t[key] }
     }
     if (!best) return null
-    const shown = Number.isInteger(best.value) ? best.value.toLocaleString('en-US') : best.value.toFixed(1)
+    const shown = Number.isInteger(best.value)
+      ? best.value.toLocaleString('en-US')
+      : best.value.toFixed(1)
     return { name, playerId: best.id, teamId: teamOf.get(best.id), note: `${shown} ${unit}` }
   }
   return [
@@ -599,14 +706,21 @@ function applyRegResults(state: LeagueState, games: Game[], results: GameResult[
 
 function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
   if (state.phase !== 'REGULAR' && state.phase !== 'PLAYOFFS') {
-    return { state, gamesPlayed: 0, events: [`simWeek: no-op — phase is ${state.phase}, not REGULAR/PLAYOFFS`] }
+    return {
+      state,
+      gamesPlayed: 0,
+      events: [`simWeek: no-op — phase is ${state.phase}, not REGULAR/PLAYOFFS`],
+    }
   }
-  const gamesThisWeek = state.schedule.filter((g) => g.season === state.season && g.week === state.week)
+  const gamesThisWeek = state.schedule.filter(
+    (g) => g.season === state.season && g.week === state.week,
+  )
   const events: string[] = []
   const results = gamesThisWeek.map((game) => {
     const rng = ctx.modules.sim.gameRng(state, game, ctx)
     const result = ctx.modules.sim.simulateGame(state, game, ctx, rng)
-    if (result.injuries.length) events.push(`${game.away} @ ${game.home}: ${result.injuries.length} injury event(s)`)
+    if (result.injuries.length)
+      events.push(`${game.away} @ ${game.home}: ${result.injuries.length} injury event(s)`)
     return result
   })
 
@@ -615,10 +729,20 @@ function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
 
   const allInjuries: InjuryEvent[] = results.flatMap((r) => r.injuries)
   newState = ctx.modules.lifecycle.applyInjuryEvents(newState, allInjuries)
-  const injuryRng = ctx.modules.rng.fromSeed(newState.seed, newState.season, newState.week, 'injuries')
+  const injuryRng = ctx.modules.rng.fromSeed(
+    newState.seed,
+    newState.season,
+    newState.week,
+    'injuries',
+  )
   newState = ctx.modules.lifecycle.tickInjuries(newState, ctx, injuryRng)
 
-  const tradeRng = ctx.modules.rng.fromSeed(newState.seed, newState.season, newState.week, 'aiOffers')
+  const tradeRng = ctx.modules.rng.fromSeed(
+    newState.seed,
+    newState.season,
+    newState.week,
+    'aiOffers',
+  )
   const offers = ctx.modules.trade.generateAiOffers(newState, ctx, tradeRng, 'season')
   for (const o of offers) events.push(`AI trade offer from ${o.offer.teamId}`)
 
@@ -629,23 +753,35 @@ function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
       const summary = summarizeSeasonImpl(newState, ctx)
       newState = { ...newState, history: [...newState.history, summary], phase: 'OFFSEASON_RESIGN' }
       if (summary.champion === newState.userTeam) newState = { ...newState, outcome: 'CHAMPION' }
-      else if (newState.season >= newState.horizonEnd) newState = { ...newState, outcome: 'HORIZON_EXPIRED' }
+      else if (newState.season >= newState.horizonEnd)
+        newState = { ...newState, outcome: 'HORIZON_EXPIRED' }
       events.push(`Super Bowl: ${summary.champion ?? '?'} defeats ${summary.runnerUp ?? '?'}`)
     } else {
       const nextType: GameType = roundType === 'WC' ? 'DIV' : roundType === 'DIV' ? 'CONF' : 'SB'
       const bracket = buildBracketImpl(newState, ctx)
       const nextRound = bracket.rounds.find((r) => r.type === nextType)
       if (nextRound && nextRound.games.length) {
-        newState = { ...newState, schedule: [...newState.schedule, ...nextRound.games], week: nextRound.games[0]!.week }
+        newState = {
+          ...newState,
+          schedule: [...newState.schedule, ...nextRound.games],
+          week: nextRound.games[0]!.week,
+        }
       }
     }
   } else {
-    const regWeeks = newState.schedule.filter((g) => g.season === newState.season && g.type === 'REG').map((g) => g.week)
+    const regWeeks = newState.schedule
+      .filter((g) => g.season === newState.season && g.type === 'REG')
+      .map((g) => g.week)
     const lastRegWeek = regWeeks.length ? Math.max(...regWeeks) : 0
     if (newState.week >= lastRegWeek) {
       const bracket = buildBracketImpl(newState, ctx)
       const wcRound = bracket.rounds.find((r) => r.type === 'WC')!
-      newState = { ...newState, schedule: [...newState.schedule, ...wcRound.games], phase: 'PLAYOFFS', week: wcRound.games[0]!.week }
+      newState = {
+        ...newState,
+        schedule: [...newState.schedule, ...wcRound.games],
+        phase: 'PLAYOFFS',
+        week: wcRound.games[0]!.week,
+      }
       events.push('Regular season complete; playoffs begin.')
     } else {
       newState = { ...newState, week: newState.week + 1 }
@@ -662,7 +798,10 @@ function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
 /** Records and trade annoyance (§6.5: "for the rest of the season") both start fresh each season. */
 function resetSeasonCounters(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
   return Object.fromEntries(
-    Object.entries(teams).map(([id, t]) => [id, { ...t, record: { ...ZERO_RECORD }, tradeAnnoyance: 0 }]),
+    Object.entries(teams).map(([id, t]) => [
+      id,
+      { ...t, record: { ...ZERO_RECORD }, tradeAnnoyance: 0 },
+    ]),
   )
 }
 
@@ -682,7 +821,10 @@ function expireUserContracts(state: LeagueState): LeagueState {
   const gone = new Set(expiring)
   return {
     ...state,
-    teams: { ...state.teams, [state.userTeam]: { ...team, roster: team.roster.filter((r) => !gone.has(r.playerId)) } },
+    teams: {
+      ...state.teams,
+      [state.userTeam]: { ...team, roster: team.roster.filter((r) => !gone.has(r.playerId)) },
+    },
     freeAgents: [...new Set([...state.freeAgents, ...expiring])].sort(),
   }
 }
@@ -691,14 +833,19 @@ function expireUserContracts(state: LeagueState): LeagueState {
 function ensureFuturePicks(state: LeagueState, ctx: EngineContext): LeagueState {
   const season = state.season + 2
   if (state.picks.some((p) => p.season === season)) return state
-  return { ...state, picks: [...state.picks, ...ctx.modules.draft.buildDraftOrder(state, season, ctx)] }
+  return {
+    ...state,
+    picks: [...state.picks, ...ctx.modules.draft.buildDraftOrder(state, season, ctx)],
+  }
 }
 
 function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
   switch (state.phase) {
     case 'REGULAR':
     case 'PLAYOFFS':
-      throw new Error(`advancePhase: phase ${state.phase} advances week-by-week via simWeek, not advancePhase`)
+      throw new Error(
+        `advancePhase: phase ${state.phase} advances week-by-week via simWeek, not advancePhase`,
+      )
 
     case 'OFFSEASON_RESIGN': {
       const rng = ctx.modules.rng.fromSeed(state.seed, state.season, 'resign')
@@ -737,7 +884,8 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       s = ctx.modules.lifecycle.refreshScouting(s, ctx)
       if (isInHistory(ctx, newSeason)) {
         s = ctx.modules.history.snapToHistory(s, ctx)
-        for (const teamId of TEAM_IDS) if (teamId !== s.userTeam) s = fitPayrollToCap(s, teamId, ctx)
+        for (const teamId of TEAM_IDS)
+          if (teamId !== s.userTeam) s = fitPayrollToCap(s, teamId, ctx)
       }
       s = { ...s, teams: resetSeasonCounters(s.teams) }
       s = ensureFuturePicks(s, ctx)
@@ -752,7 +900,10 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       const updatedTeams: Record<TeamId, TeamState> = { ...s.teams }
       for (const teamId of Object.keys(updatedTeams)) {
         if (teamId === s.userTeam) continue
-        updatedTeams[teamId] = { ...updatedTeams[teamId]!, depthChart: autoDepthChartImpl(s, teamId) }
+        updatedTeams[teamId] = {
+          ...updatedTeams[teamId]!,
+          depthChart: autoDepthChartImpl(s, teamId),
+        }
       }
       s = { ...s, teams: updatedTeams }
       const problems: string[] = []
@@ -779,7 +930,11 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
   const sd = ctx.seasonData(opts.startSeason)
   if (!sd) throw new SeasonNotLoadedError(opts.startSeason)
 
-  const { players, scouting, truth } = buildPlayersFromSeason(sd.players.players, ctx.trajectories, opts.startSeason)
+  const { players, scouting, truth } = buildPlayersFromSeason(
+    sd.players.players,
+    ctx.trajectories,
+    opts.startSeason,
+  )
 
   let draft: LeagueState = {
     schemaVersion: SAVE_SCHEMA_VERSION,
@@ -792,12 +947,17 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
     startSeason: opts.startSeason,
     settings: opts.settings,
     teams: {},
-    players, scouting, truth,
+    players,
+    scouting,
+    truth,
     picks: [],
-    schedule: [], results: [], history: [],
+    schedule: [],
+    results: [],
+    history: [],
     divergence: new Set<PlayerId>(),
     freeAgents: sd.players.players.filter((p) => p.team === null).map((p) => p.id),
-    draftRoom: null, snapLog: [],
+    draftRoom: null,
+    snapLog: [],
     outcome: 'IN_PROGRESS',
     savedAt: EPOCH,
   }
@@ -808,7 +968,13 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
     const roster: RosterSlot[] = entries.map((e) => ({
       playerId: e.playerId,
       teamId,
-      contract: ctx.modules.fa.synthesizeContract({ ...draft, teams }, e.playerId, opts.startSeason, ctx, { apy: e.apy, years: e.years }),
+      contract: ctx.modules.fa.synthesizeContract(
+        { ...draft, teams },
+        e.playerId,
+        opts.startSeason,
+        ctx,
+        { apy: e.apy, years: e.years },
+      ),
     }))
     teams[teamId] = {
       id: teamId,
@@ -848,12 +1014,17 @@ export const league: LeagueModule = {
   standings: standingsImpl,
   playoffFormat: (season: Season): PlayoffFormat => {
     const fmt = leagueFormat(season)
-    return { teams: fmt.playoffTeams, byesPerConf: fmt.byesPerConf, regularSeasonGames: fmt.regularSeasonGames }
+    return {
+      teams: fmt.playoffTeams,
+      byesPerConf: fmt.byesPerConf,
+      regularSeasonGames: fmt.regularSeasonGames,
+    }
   },
   seedPlayoffs: buildBracketImpl,
   buildSchedule: buildScheduleImpl,
   autoDepthChart: autoDepthChartImpl,
-  teamStrength: (state: LeagueState, teamId: TeamId, ctx: EngineContext): TeamStrength => ctx.modules.sim.teamStrength(state, teamId, ctx),
+  teamStrength: (state: LeagueState, teamId: TeamId, ctx: EngineContext): TeamStrength =>
+    ctx.modules.sim.teamStrength(state, teamId, ctx),
   summarizeSeason: summarizeSeasonImpl,
 }
 

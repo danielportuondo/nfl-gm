@@ -40,14 +40,23 @@ export function Rail({ items, current, onSelect }: RailProps) {
     }
   }, [moreOpen])
 
-  function move(refs: RefObject<Array<HTMLButtonElement | null>>, list: NavItem[], e: KeyboardEvent, forwardKey: string, backwardKey: string) {
+  function move(
+    refs: RefObject<Array<HTMLButtonElement | null>>,
+    list: NavItem[],
+    e: KeyboardEvent,
+    forwardKey: string,
+    backwardKey: string,
+  ) {
     if (e.key !== forwardKey && e.key !== backwardKey) return
     e.preventDefault()
     const enabled = list.map((it, i) => ({ it, i })).filter((x) => !x.it.disabled)
     if (enabled.length === 0) return
     const curIdx = enabled.findIndex((x) => x.it.id === current)
     const dir = e.key === forwardKey ? 1 : -1
-    const next = enabled[(((curIdx === -1 ? 0 : curIdx) + dir) % enabled.length + enabled.length) % enabled.length]!
+    const next =
+      enabled[
+        ((((curIdx === -1 ? 0 : curIdx) + dir) % enabled.length) + enabled.length) % enabled.length
+      ]!
     onSelect(next.it.id)
     refs.current[next.i]?.focus()
   }

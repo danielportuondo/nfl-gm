@@ -7,7 +7,8 @@ import type { AgingCurve, CurvesFile, OutcomeTable, Position } from '@contracts/
 import { DEFAULT_AGING_SD, RETIREMENT_PROB_EPSILON, RETIREMENT_VALUE_BASELINE } from './constants'
 
 /** Ratings live on the 40–99 scale at one decimal, like the shipped consensus data. */
-export const clampRating = (x: number): number => Math.round(Math.min(99, Math.max(40, x)) * 10) / 10
+export const clampRating = (x: number): number =>
+  Math.round(Math.min(99, Math.max(40, x)) * 10) / 10
 
 function agingCurveFor(curves: CurvesFile, pos: Position): AgingCurve | undefined {
   return curves.aging.find((c) => c.pos === pos)
@@ -34,7 +35,10 @@ export function agingSd(curves: CurvesFile, pos: Position): number {
 }
 
 /** Linear interpolation between the sparse `slotGrade` sample points; clamps outside the fitted range. */
-export function interpolateSlotGrade(curves: CurvesFile, pick: number): { ovr: number; pot: number; sd: number } {
+export function interpolateSlotGrade(
+  curves: CurvesFile,
+  pick: number,
+): { ovr: number; pot: number; sd: number } {
   const pts = curves.slotGrade
   const first = pts[0]
   const last = pts[pts.length - 1]
@@ -57,7 +61,12 @@ function lerp(a: number, b: number, t: number): number {
 }
 
 /** P(retire after this season), per HANDOFF §6.7: logistic in age (from the fitted curve) and value. */
-export function retireProbability(curves: CurvesFile, pos: Position, age: number, value: number): number {
+export function retireProbability(
+  curves: CurvesFile,
+  pos: Position,
+  age: number,
+  value: number,
+): number {
   const curve = curves.retirement.find((c) => c.pos === pos)
   if (!curve) return 0
   const key = clampToKeys(curve.byAge, age)
@@ -72,7 +81,11 @@ function clamp01(p: number): number {
 }
 
 /** Best-matching pick→outcome row: position-specific bucket row, falling back to the bucket's 'ALL' row. */
-export function findOutcomeTable(curves: CurvesFile, bucket: string, pos: Position): OutcomeTable | undefined {
+export function findOutcomeTable(
+  curves: CurvesFile,
+  bucket: string,
+  pos: Position,
+): OutcomeTable | undefined {
   return (
     curves.outcomes.find((o) => o.bucket === bucket && o.pos === pos) ??
     curves.outcomes.find((o) => o.bucket === bucket && o.pos === 'ALL')
@@ -99,7 +112,11 @@ export function outcomeValueAt(table: OutcomeTable, yearIdx: number, u: number):
 }
 
 /** Interpolate `values[i]` (aligned to `levels[i]`) at an arbitrary level in [0,1], clamped at the ends. */
-export function interpolateAtLevel(levels: readonly number[], values: readonly number[], level: number): number {
+export function interpolateAtLevel(
+  levels: readonly number[],
+  values: readonly number[],
+  level: number,
+): number {
   const first = values[0]
   const last = values[values.length - 1]
   if (first === undefined || last === undefined) return RETIREMENT_VALUE_BASELINE
@@ -118,7 +135,12 @@ export function interpolateAtLevel(levels: readonly number[], values: readonly n
 
 /** Ceiling estimate for refreshScouting's pot: accumulate the aging curve's positive deltas from `age`
  * until it turns non-positive (development room left before decline sets in). */
-export function projectedCeiling(curves: CurvesFile, pos: Position, age: number, ovr: number): number {
+export function projectedCeiling(
+  curves: CurvesFile,
+  pos: Position,
+  age: number,
+  ovr: number,
+): number {
   const curve = agingCurveFor(curves, pos)
   if (!curve) return ovr
   const keys = Object.keys(curve.byAge).map(Number)

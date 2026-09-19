@@ -45,8 +45,20 @@ interface PalettePlain {
 /** Free agents render in neutral surface colors instead of team colors (§7). */
 export function paletteFor(isFreeAgent: boolean): PalettePlain {
   return isFreeAgent
-    ? { primary: 'var(--surface-3)', secondary: 'var(--text-3)', line: 'var(--text-3)', highlight: 'var(--surface-2)', neutral: 'var(--surface-2)' }
-    : { primary: 'var(--team-primary)', secondary: 'var(--team-secondary)', line: 'var(--line)', highlight: HIGHLIGHT, neutral: 'var(--surface-2)' }
+    ? {
+        primary: 'var(--surface-3)',
+        secondary: 'var(--text-3)',
+        line: 'var(--text-3)',
+        highlight: 'var(--surface-2)',
+        neutral: 'var(--surface-2)',
+      }
+    : {
+        primary: 'var(--team-primary)',
+        secondary: 'var(--team-secondary)',
+        line: 'var(--line)',
+        highlight: HIGHLIGHT,
+        neutral: 'var(--surface-2)',
+      }
 }
 
 /** Side-profile helmet shell, shared across body types; the facemask differs only for SPECIAL. */

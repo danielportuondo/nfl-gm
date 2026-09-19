@@ -38,19 +38,43 @@ function formatPhase(phase: string): string {
 }
 
 export function App() {
-  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, alerts, savedGame, tradeOffers, suggestedTrades, busy, actions } = useGameStore()
+  const {
+    state,
+    data,
+    dataStatus,
+    dataError,
+    screen,
+    selectedPlayerId,
+    theme,
+    toasts,
+    alerts,
+    savedGame,
+    tradeOffers,
+    suggestedTrades,
+    busy,
+    actions,
+  } = useGameStore()
   void alerts // surfaced by the Dashboard alerts panel; kept in the store per docs/HANDOFF.md Phase 3E follow-up.
 
   if (!state || !data) {
     return (
       <div className="gg-board">
-        <div className="gg-col-12" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-3)' }}>Gridiron GM</h1>
+        <div
+          className="gg-col-12"
+          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-3)' }}>
+            Gridiron GM
+          </h1>
           <div style={{ display: 'flex', gap: 'var(--sp-2)' }}>
             <Button type="button" variant="ghost" onClick={() => actions.goTo('about')}>
               About
             </Button>
-            <Button type="button" variant="ghost" onClick={() => actions.setTheme(theme === 'light' ? 'dark' : 'light')}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => actions.setTheme(theme === 'light' ? 'dark' : 'light')}
+            >
               {theme === 'light' ? 'Dark theme' : 'Light theme'}
             </Button>
           </div>
@@ -58,7 +82,13 @@ export function App() {
         {screen === 'about' ? (
           <About />
         ) : data ? (
-          <NewGame data={data} onStart={actions.newGame} savedGame={savedGame} onContinue={actions.continueGame} continueBusy={busy.newGame} />
+          <NewGame
+            data={data}
+            onStart={actions.newGame}
+            savedGame={savedGame}
+            onContinue={actions.continueGame}
+            continueBusy={busy.newGame}
+          />
         ) : dataStatus === 'error' ? (
           <p className="gg-col-12" role="alert">
             Could not load league data. {dataError}
@@ -76,13 +106,16 @@ export function App() {
   const teamInfo = data.teams[state.userTeam]
   const record = team?.record ?? { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
   const cap = actions.capThisSeason() ?? data.cap.bySeason[String(state.season)] ?? 0
-  const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0) + (team?.deadMoney ?? 0)
+  const payroll =
+    (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0) + (team?.deadMoney ?? 0)
   const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
   const horizonElapsed = Math.min(horizonTotal, Math.max(0, state.season - state.startSeason))
 
   const room = state.draftRoom
   const onClock = Boolean(
-    state.phase === 'DRAFT' && room?.status === 'ON_CLOCK' && room.order[room.currentPickIndex]?.owner === state.userTeam,
+    state.phase === 'DRAFT' &&
+    room?.status === 'ON_CLOCK' &&
+    room.order[room.currentPickIndex]?.owner === state.userTeam,
   )
   const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
 
@@ -94,19 +127,32 @@ export function App() {
         season: state.season,
         week: state.week,
         phaseLabel: formatPhase(state.phase),
-        record: record.ties > 0 ? `${record.wins}-${record.losses}-${record.ties}` : `${record.wins}-${record.losses}`,
+        record:
+          record.ties > 0
+            ? `${record.wins}-${record.losses}-${record.ties}`
+            : `${record.wins}-${record.losses}`,
         capSpaceText: `$${(cap - payroll).toFixed(1)}M free`,
         horizonText: `${horizonElapsed + 1}/${horizonTotal} seasons`,
         inSeason,
         onClock,
         end: (
-          <Button type="button" variant="ghost" onClick={() => actions.setTheme(theme === 'light' ? 'dark' : 'light')}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => actions.setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
             {theme === 'light' ? 'Dark theme' : 'Light theme'}
           </Button>
         ),
       }}
       navItems={NAV_ITEMS}
-      currentScreen={screen === 'player' ? 'roster' : screen === 'new-game' || screen === 'end-game' ? 'dashboard' : screen}
+      currentScreen={
+        screen === 'player'
+          ? 'roster'
+          : screen === 'new-game' || screen === 'end-game'
+            ? 'dashboard'
+            : screen
+      }
       onSelectScreen={(id) => actions.goTo(id as Parameters<typeof actions.goTo>[0])}
       toasts={toasts}
       onDismissToast={actions.dismissToast}
@@ -122,7 +168,12 @@ export function App() {
         />
       )}
       {screen === 'player' && selectedPlayerId && (
-        <PlayerCard state={state} data={data} playerId={selectedPlayerId} onBack={() => actions.goTo('roster')} />
+        <PlayerCard
+          state={state}
+          data={data}
+          playerId={selectedPlayerId}
+          onBack={() => actions.goTo('roster')}
+        />
       )}
       {screen === 'about' && <About />}
       {(screen === 'dashboard' || screen === 'new-game') && (
@@ -137,7 +188,14 @@ export function App() {
           onNavigate={actions.goTo}
         />
       )}
-      {screen === 'end-game' && <EndGame state={state} data={data} cap={cap} onKeepPlaying={state.outcome === 'HORIZON_EXPIRED' ? actions.keepPlaying : undefined} />}
+      {screen === 'end-game' && (
+        <EndGame
+          state={state}
+          data={data}
+          cap={cap}
+          onKeepPlaying={state.outcome === 'HORIZON_EXPIRED' ? actions.keepPlaying : undefined}
+        />
+      )}
       {screen === 'season-recap' && <SeasonRecap state={state} data={data} />}
       {screen === 'finances' && (
         <Finances
@@ -196,14 +254,20 @@ export function App() {
         <Schedule
           state={state}
           data={data}
-          busy={{ simWeek: busy.simWeek, simToNextEvent: busy.simToNextEvent, simSeason: busy.simSeason }}
+          busy={{
+            simWeek: busy.simWeek,
+            simToNextEvent: busy.simToNextEvent,
+            simSeason: busy.simSeason,
+          }}
           onSimWeek={actions.simWeek}
           onSimToNextEvent={actions.simToNextEvent}
           onSimSeason={actions.simSeason}
         />
       )}
       {screen === 'standings' && <Standings data={data} rows={actions.standings()} />}
-      {screen === 'league' && <LeagueBrowser state={state} data={data} onSelectPlayer={actions.selectPlayer} />}
+      {screen === 'league' && (
+        <LeagueBrowser state={state} data={data} onSelectPlayer={actions.selectPlayer} />
+      )}
     </AppFrame>
   )
 }

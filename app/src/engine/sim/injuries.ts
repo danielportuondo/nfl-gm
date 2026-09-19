@@ -2,7 +2,15 @@
  * Per-game injury sampling (HANDOFF §6.3). One roll per dressed player per game against the fitted
  * position rate; duration and kind come straight from the empirical distributions in the data file.
  */
-import type { EngineContext, InjuryEvent, LeagueState, PlayerId, Position, Rng, TeamId } from '@contracts/index'
+import type {
+  EngineContext,
+  InjuryEvent,
+  LeagueState,
+  PlayerId,
+  Position,
+  Rng,
+  TeamId,
+} from '@contracts/index'
 import { POSITIONS } from '@contracts/index'
 import { injuryConstants } from './constants'
 
@@ -19,7 +27,9 @@ function pickWeighted<T>(items: readonly { p: number }[], rng: Rng, map: (i: num
 }
 
 /** Dressed players, depth-chart order, capped at the active roster size. */
-export function activePlayers(byPos: Record<Position, PlayerId[]>): { id: PlayerId; pos: Position }[] {
+export function activePlayers(
+  byPos: Record<Position, PlayerId[]>,
+): { id: PlayerId; pos: Position }[] {
   const active: { id: PlayerId; pos: Position }[] = []
   let depth = 0
   // Round-robin down the chart so the dressed squad is spread across positions, not all of one group.

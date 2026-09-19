@@ -29,19 +29,34 @@ export function EndGame({ state, data, cap, onKeepPlaying }: EndGameProps) {
   const titles = state.history.filter((h) => h.champion === state.userTeam).length
 
   const roster = team?.roster ?? []
-  const avgAge = roster.length ? roster.reduce((sum, s) => sum + (state.season - (state.players[s.playerId]?.birthYear ?? state.season)), 0) / roster.length : 0
-  const avgOvr = roster.length ? roster.reduce((sum, s) => sum + (state.scouting[s.playerId]?.ovr ?? 0), 0) / roster.length : 0
+  const avgAge = roster.length
+    ? roster.reduce(
+        (sum, s) => sum + (state.season - (state.players[s.playerId]?.birthYear ?? state.season)),
+        0,
+      ) / roster.length
+    : 0
+  const avgOvr = roster.length
+    ? roster.reduce((sum, s) => sum + (state.scouting[s.playerId]?.ovr ?? 0), 0) / roster.length
+    : 0
   const payroll = roster.reduce((sum, s) => sum + s.contract.apy, 0) + (team?.deadMoney ?? 0)
   const capSpace = cap - payroll
-  const futurePicks = state.picks.filter((p) => p.owner === state.userTeam && p.playerId === null).length
+  const futurePicks = state.picks.filter(
+    (p) => p.owner === state.userTeam && p.playerId === null,
+  ).length
 
   return (
-    <TeamScope colors={teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }} as="div" style={{ display: 'contents' }}>
+    <TeamScope
+      colors={teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' }}
+      as="div"
+      style={{ display: 'contents' }}
+    >
       <div className="gg-col-12">
         <Panel variant="attention" revealIndex={0} className="gg-yardlines">
           <div style={{ textAlign: 'center' }}>
             {teamInfo && (
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'var(--sp-3)' }}>
+              <div
+                style={{ display: 'flex', justifyContent: 'center', marginBottom: 'var(--sp-3)' }}
+              >
                 <TeamScope colors={teamInfo.colors}>
                   <HelmetSprite pos="QB" size={6} />
                 </TeamScope>
@@ -69,9 +84,19 @@ export function EndGame({ state, data, cap, onKeepPlaying }: EndGameProps) {
 
       <div className="gg-col-8">
         <Panel title="GM report card" revealIndex={1}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--sp-4)' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: 'var(--sp-4)',
+            }}
+          >
             <StatTile value={titles} label="Titles won" />
-            <StatTile value={formatMoney(capSpace)} label="Cap space" tone={capSpace < 0 ? 'danger' : 'default'} />
+            <StatTile
+              value={formatMoney(capSpace)}
+              label="Cap space"
+              tone={capSpace < 0 ? 'danger' : 'default'}
+            />
             <StatTile value={avgOvr.toFixed(1)} label="Roster consensus overall" />
             <StatTile value={avgAge.toFixed(1)} label="Roster average age" />
             <StatTile value={futurePicks} label="Draft picks owned" />
@@ -98,10 +123,14 @@ export function EndGame({ state, data, cap, onKeepPlaying }: EndGameProps) {
       <div className="gg-col-4">
         <Panel title="What's next" revealIndex={3}>
           {champion ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>The mandate is fulfilled. Thanks for playing.</p>
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>
+              The mandate is fulfilled. Thanks for playing.
+            </p>
           ) : onKeepPlaying ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
-              <p style={{ margin: 0, color: 'var(--text-2)' }}>You can keep running this front office with no horizon.</p>
+              <p style={{ margin: 0, color: 'var(--text-2)' }}>
+                You can keep running this front office with no horizon.
+              </p>
               <Button type="button" variant="primary" onClick={onKeepPlaying}>
                 Keep playing
               </Button>

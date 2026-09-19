@@ -8,8 +8,8 @@ export interface StandingsProps {
   rows: StandingRow[]
 }
 
-const GROUPS: Array<{ conf: Conference; div: Division }> = (['AFC', 'NFC'] as Conference[]).flatMap((conf) =>
-  (['East', 'North', 'South', 'West'] as Division[]).map((div) => ({ conf, div })),
+const GROUPS: Array<{ conf: Conference; div: Division }> = (['AFC', 'NFC'] as Conference[]).flatMap(
+  (conf) => (['East', 'North', 'South', 'West'] as Division[]).map((div) => ({ conf, div })),
 )
 
 function clinchBadge(row: StandingRow) {
@@ -73,10 +73,34 @@ export function Standings({ data, rows }: StandingsProps) {
         )
       },
     },
-    { key: 'record', header: 'W-L-T', numeric: true, sortValue: (r) => r.wins, render: (r) => `${r.wins}-${r.losses}-${r.ties}` },
-    { key: 'pct', header: 'Pct', numeric: true, sortValue: (r) => r.pct, render: (r) => r.pct.toFixed(3) },
-    { key: 'pf', header: 'PF', numeric: true, sortValue: (r) => r.pointsFor, render: (r) => r.pointsFor },
-    { key: 'pa', header: 'PA', numeric: true, sortValue: (r) => r.pointsAgainst, render: (r) => r.pointsAgainst },
+    {
+      key: 'record',
+      header: 'W-L-T',
+      numeric: true,
+      sortValue: (r) => r.wins,
+      render: (r) => `${r.wins}-${r.losses}-${r.ties}`,
+    },
+    {
+      key: 'pct',
+      header: 'Pct',
+      numeric: true,
+      sortValue: (r) => r.pct,
+      render: (r) => r.pct.toFixed(3),
+    },
+    {
+      key: 'pf',
+      header: 'PF',
+      numeric: true,
+      sortValue: (r) => r.pointsFor,
+      render: (r) => r.pointsFor,
+    },
+    {
+      key: 'pa',
+      header: 'PA',
+      numeric: true,
+      sortValue: (r) => r.pointsAgainst,
+      render: (r) => r.pointsAgainst,
+    },
     { key: 'clinch', header: 'Clinched', render: clinchBadge },
   ]
 
@@ -114,7 +138,9 @@ export function Standings({ data, rows }: StandingsProps) {
               caption={`${g.conf} ${g.div} standings`}
               dense
               sort={sort}
-              onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
+              onSortChange={(key) =>
+                setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
+              }
             />
           </Panel>
         </div>

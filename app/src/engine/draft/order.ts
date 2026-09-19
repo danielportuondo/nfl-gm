@@ -5,8 +5,16 @@
  * actually starts, because the previous season's standings are what settle it.
  */
 import {
-  TEAM_IDS, isInHistory, SeasonNotLoadedError,
-  type DraftPick, type EngineContext, type LeagueState, type PlayerId, type Season, type StandingRow, type TeamId,
+  TEAM_IDS,
+  isInHistory,
+  SeasonNotLoadedError,
+  type DraftPick,
+  type EngineContext,
+  type LeagueState,
+  type PlayerId,
+  type Season,
+  type StandingRow,
+  type TeamId,
 } from '@contracts/index'
 import { draftConstants } from './constants'
 
@@ -38,7 +46,9 @@ const ownerKey = (round: number, originalTeam: TeamId): string => `${round}:${or
 
 export function buildOrder(state: LeagueState, season: Season, ctx: EngineContext): DraftPick[] {
   const owned = new Map(
-    state.picks.filter((p) => p.season === season).map((p) => [ownerKey(p.round, p.originalTeam), p]),
+    state.picks
+      .filter((p) => p.season === season)
+      .map((p) => [ownerKey(p.round, p.originalTeam), p]),
   )
   const ownerOf = (round: number, originalTeam: TeamId, fallback: TeamId): TeamId =>
     owned.get(ownerKey(round, originalTeam))?.owner ?? fallback
@@ -87,7 +97,8 @@ export function settleOrder(picks: readonly DraftPick[], state: LeagueState): Dr
     const byRound = [...unsettled].sort(
       (a, b) =>
         a.round - b.round ||
-        (slot.get(a.originalTeam) ?? TEAM_IDS.length) - (slot.get(b.originalTeam) ?? TEAM_IDS.length) ||
+        (slot.get(a.originalTeam) ?? TEAM_IDS.length) -
+          (slot.get(b.originalTeam) ?? TEAM_IDS.length) ||
         a.originalTeam.localeCompare(b.originalTeam),
     )
     let next = settled.length > 0 ? Math.max(...settled.map((p) => p.pick ?? 0)) + 1 : 1

@@ -13,6 +13,15 @@ import { rng } from './rng'
 import { sim } from './sim'
 import { trade } from './trade'
 
-export const engineModules: EngineModules = { rng, league, sim, draft, trade, fa, lifecycle, history }
+export const engineModules: EngineModules = {
+  rng,
+  league,
+  sim,
+  draft,
+  trade,
+  fa,
+  lifecycle,
+  history,
+}
 
 export { persistence } from './persistence'

@@ -8,7 +8,15 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /** Buttons say what happens: a verb, sentence case (docs/DESIGN.md §8, §9). */
-export function Button({ variant = 'secondary', busy, busyLabel, className, children, disabled, ...rest }: ButtonProps) {
+export function Button({
+  variant = 'secondary',
+  busy,
+  busyLabel,
+  className,
+  children,
+  disabled,
+  ...rest
+}: ButtonProps) {
   const classes = ['gg-button', `gg-button--${variant}`]
   if (className) classes.push(className)
   return (

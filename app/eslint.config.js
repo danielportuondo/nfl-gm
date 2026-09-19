@@ -23,8 +23,16 @@ export default tseslint.config(
     rules: {
       'no-restricted-properties': [
         'error',
-        { object: 'Math', property: 'random', message: 'Use engine/rng (seeded) instead of Math.random.' },
-        { object: 'Date', property: 'now', message: 'Engine must be deterministic; no wall-clock reads.' },
+        {
+          object: 'Math',
+          property: 'random',
+          message: 'Use engine/rng (seeded) instead of Math.random.',
+        },
+        {
+          object: 'Date',
+          property: 'now',
+          message: 'Engine must be deterministic; no wall-clock reads.',
+        },
       ],
     },
   },

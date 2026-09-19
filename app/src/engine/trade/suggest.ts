@@ -5,7 +5,15 @@
  * sweeteners until the AI's own p clears `offerConstants.minAiP`. The same plausibility band as AI
  * offers applies from the user's side. AI-initiated, so accepting one always executes. Consensus only.
  */
-import type { EngineContext, LeagueState, PlayerId, Position, Rng, TeamId, TradeProposal } from '@contracts/index'
+import type {
+  EngineContext,
+  LeagueState,
+  PlayerId,
+  Position,
+  Rng,
+  TeamId,
+  TradeProposal,
+} from '@contracts/index'
 import { offerConstants, suggestionConstants } from './constants'
 import { acceptableToAi, aiTeams, assemble, propose, tradeablePicks } from './offers'
 import { incomingValue, needsFor, outgoingValue } from './value'
@@ -16,7 +24,11 @@ interface Valued {
 }
 
 /** The user's need positions worth suggesting for: deficit order, specialists excluded. */
-export function suggestionNeeds(state: LeagueState, teamId: TeamId, ctx: EngineContext): Position[] {
+export function suggestionNeeds(
+  state: LeagueState,
+  teamId: TeamId,
+  ctx: EngineContext,
+): Position[] {
   const needs = needsFor(state, teamId, ctx)
   const skip = new Set(suggestionConstants.skipPositions)
   return (Object.keys(needs.byPos) as Position[])
@@ -54,7 +66,9 @@ function suggestionFor(
   const posOf = (id: PlayerId) => state.players[id]?.pos
 
   const surplus: Valued[] = (state.teams[aiTeam]?.roster ?? [])
-    .filter((slot) => posOf(slot.playerId) === pos && !slot.injured && !usedIncoming.has(slot.playerId))
+    .filter(
+      (slot) => posOf(slot.playerId) === pos && !slot.injured && !usedIncoming.has(slot.playerId),
+    )
     .map((slot) => ({ id: slot.playerId, value: outgoingValue(state, slot.playerId, ctx) }))
     .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id))
     .slice(1, 1 + suggestionConstants.candidatesScanned)
@@ -62,7 +76,9 @@ function suggestionFor(
   const userBest = bestOvrAt(state, state.userTeam, pos)
   const userRoster = state.teams[state.userTeam]?.roster ?? []
   const skip = new Set(suggestionConstants.skipPositions)
-  const payRatio = offerConstants.payRatioMin + rng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
+  const payRatio =
+    offerConstants.payRatioMin +
+    rng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
 
   for (const give of surplus) {
     if ((state.scouting[give.id]?.ovr ?? 0) <= userBest) continue
@@ -70,7 +86,13 @@ function suggestionFor(
     const sendable = userRoster
       .filter((slot) => {
         const p = posOf(slot.playerId)
-        return p !== undefined && !userWanted.has(p) && !skip.has(p) && !slot.injured && !usedOutgoing.has(slot.playerId)
+        return (
+          p !== undefined &&
+          !userWanted.has(p) &&
+          !skip.has(p) &&
+          !slot.injured &&
+          !usedOutgoing.has(slot.playerId)
+        )
       })
       .map((slot) => ({
         id: slot.playerId,
@@ -90,7 +112,11 @@ function suggestionFor(
       const shortfall = ask - send.value
       const sweetener =
         shortfall > 0
-          ? assemble(tradeablePicks(state, state.userTeam, new Set(), ctx), shortfall, offerConstants.maxAssetsPerSide - 1)
+          ? assemble(
+              tradeablePicks(state, state.userTeam, new Set(), ctx),
+              shortfall,
+              offerConstants.maxAssetsPerSide - 1,
+            )
           : { refs: [], total: 0 }
       const proposal = propose(
         state,
@@ -105,7 +131,11 @@ function suggestionFor(
   return null
 }
 
-export function suggestTradesImpl(state: LeagueState, ctx: EngineContext, rng: Rng): TradeProposal[] {
+export function suggestTradesImpl(
+  state: LeagueState,
+  ctx: EngineContext,
+  rng: Rng,
+): TradeProposal[] {
   if (!state.teams[state.userTeam]) return []
   const wanted = suggestionNeeds(state, state.userTeam, ctx)
   if (wanted.length === 0) return []
@@ -118,7 +148,16 @@ export function suggestTradesImpl(state: LeagueState, ctx: EngineContext, rng: R
     let count = 0
     for (const teamId of rng.shuffle(aiTeams(state))) {
       if (count >= suggestionConstants.perNeed || out.length >= suggestionConstants.max) break
-      const proposal = suggestionFor(state, teamId, pos, userWanted, usedIncoming, usedOutgoing, ctx, rng.fork(`${pos}:${teamId}`))
+      const proposal = suggestionFor(
+        state,
+        teamId,
+        pos,
+        userWanted,
+        usedIncoming,
+        usedOutgoing,
+        ctx,
+        rng.fork(`${pos}:${teamId}`),
+      )
       if (!proposal) continue
       out.push(proposal)
       count++

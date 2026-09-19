@@ -7,8 +7,17 @@
  * synthesizes a contract (fa), never changes a rating (lifecycle), never snaps rosters (history).
  */
 import type {
-  DepthChart, Game, GameSettings, LeagueState, PlayoffBracket, PlayoffFormat, Season, SeasonSummary,
-  StandingRow, TeamId, TeamStrength,
+  DepthChart,
+  Game,
+  GameSettings,
+  LeagueState,
+  PlayoffBracket,
+  PlayoffFormat,
+  Season,
+  SeasonSummary,
+  StandingRow,
+  TeamId,
+  TeamStrength,
 } from '../types'
 import type { EngineContext } from './context'
 import { notImplemented } from './context'

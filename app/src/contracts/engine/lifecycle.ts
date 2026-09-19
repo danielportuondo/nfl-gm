@@ -29,7 +29,11 @@ export interface LifecycleModule {
    * (truth.retiresAfter). Otherwise logistic in age and value from curves.retirement. Removes them from
    * rosters/freeAgents, returns the ids.
    */
-  retirements(state: LeagueState, ctx: EngineContext, rng: Rng): { state: LeagueState; retired: PlayerId[] }
+  retirements(
+    state: LeagueState,
+    ctx: EngineContext,
+    rng: Rng,
+  ): { state: LeagueState; retired: PlayerId[] }
 
   /**
    * Recompute consensus at season start: veterans ovr = last completed season's true value, pot from

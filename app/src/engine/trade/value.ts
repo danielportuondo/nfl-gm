@@ -6,11 +6,26 @@
  * functions stay pure and deterministic while `generateAiOffers` can value thousands of assets.
  */
 import {
-  POSITIONS, STARTER_TEMPLATE,
-  type DraftPick, type EngineContext, type LeagueState, type NeedProfile, type PickRef,
-  type PlayerId, type Position, type RosterSlot, type ScoutingView, type TeamId,
+  POSITIONS,
+  STARTER_TEMPLATE,
+  type DraftPick,
+  type EngineContext,
+  type LeagueState,
+  type NeedProfile,
+  type PickRef,
+  type PlayerId,
+  type Position,
+  type RosterSlot,
+  type ScoutingView,
+  type TeamId,
 } from '@contracts/index'
-import { dropConstants, needConstants, pickConstants, tradeConstants, valueConstants } from './constants'
+import {
+  dropConstants,
+  needConstants,
+  pickConstants,
+  tradeConstants,
+  valueConstants,
+} from './constants'
 
 const rosterIndexCache = new WeakMap<object, Map<PlayerId, RosterSlot>>()
 const startOvrCache = new WeakMap<object, Map<PlayerId, number>>()
@@ -91,15 +106,24 @@ function injuryMultiplier(weeks: number): number {
  * Talent-and-cost value of a player from consensus alone. `asView` values the same player under a
  * different consensus (used for the season-start re-valuation) without cloning the league.
  */
-export function playerValueImpl(state: LeagueState, playerId: PlayerId, ctx: EngineContext, asView?: ScoutingView): number {
+export function playerValueImpl(
+  state: LeagueState,
+  playerId: PlayerId,
+  ctx: EngineContext,
+  asView?: ScoutingView,
+): number {
   const player = state.players[playerId]
   const view = asView ?? state.scouting[playerId]
   if (!player || !view) return 0
   const age = ageOf(state, playerId, ctx)
   const effectiveOvr = view.ovr + Math.max(0, view.pot - view.ovr) * potShare(age)
-  const talent = ratingCurve(effectiveOvr) * ageMultiplier(player.pos, age) * valueConstants.posMultiplier[player.pos]
+  const talent =
+    ratingCurve(effectiveOvr) *
+    ageMultiplier(player.pos, age) *
+    valueConstants.posMultiplier[player.pos]
   const slot = rosterIndex(state).get(playerId)
-  const value = talent * injuryMultiplier(slot?.injured?.weeksOut ?? 0) - contractCost(slot, capFor(state, ctx))
+  const value =
+    talent * injuryMultiplier(slot?.injured?.weeksOut ?? 0) - contractCost(slot, capFor(state, ctx))
   return Math.max(valueConstants.minPlayerValue, value)
 }
 
@@ -138,7 +162,12 @@ export function outgoingValue(state: LeagueState, playerId: PlayerId, ctx: Engin
 // --- picks ------------------------------------------------------------------------------------
 
 export function refOf(pick: DraftPick): PickRef {
-  return { season: pick.season, round: pick.round, originalTeam: pick.originalTeam, pick: pick.pick }
+  return {
+    season: pick.season,
+    round: pick.round,
+    originalTeam: pick.originalTeam,
+    pick: pick.pick,
+  }
 }
 
 export function refKey(ref: PickRef): string {
@@ -146,7 +175,10 @@ export function refKey(ref: PickRef): string {
 }
 
 /** Pick numbers only disambiguate when both sides know them (future seasons carry null). */
-export function matchesRef(ref: PickRef, pick: Pick<DraftPick, 'season' | 'round' | 'originalTeam' | 'pick'>): boolean {
+export function matchesRef(
+  ref: PickRef,
+  pick: Pick<DraftPick, 'season' | 'round' | 'originalTeam' | 'pick'>,
+): boolean {
   return (
     pick.season === ref.season &&
     pick.round === ref.round &&
@@ -165,7 +197,8 @@ export function chartPoints(overall: number): number {
   const first = chart[0]
   const last = chart[chart.length - 1]!
   if (overall <= first.pick) return first.points
-  if (overall >= last.pick) return Math.max(minChartPoints, last.points * Math.pow(tailDecayPerPick, overall - last.pick))
+  if (overall >= last.pick)
+    return Math.max(minChartPoints, last.points * Math.pow(tailDecayPerPick, overall - last.pick))
   for (let i = 1; i < chart.length; i++) {
     const hi = chart[i]!
     if (overall > hi.pick) continue
@@ -251,7 +284,11 @@ function fallbackNeeds(state: LeagueState, teamId: TeamId): NeedProfile {
       .map((r) => state.scouting[r.playerId]?.ovr ?? pickConstants.replacementOvr)
       .sort((a, b) => b - a)
     let deficit = 0
-    for (let i = 0; i < want; i++) deficit += Math.max(0, needConstants.starterTarget - (ovrs[i] ?? pickConstants.replacementOvr))
+    for (let i = 0; i < want; i++)
+      deficit += Math.max(
+        0,
+        needConstants.starterTarget - (ovrs[i] ?? pickConstants.replacementOvr),
+      )
     byPos[pos] = want === 0 ? 0 : deficit / want
     surplus[pos] = ovrs.filter((o) => o >= needConstants.starterTarget).length - want
   }

@@ -5,8 +5,19 @@
  * `ctx.trajectories`. All randomness is the `rng` the caller passes. Every function is pure.
  */
 import type {
-  DepthChart, DraftPick, EngineContext, LeagueState, PickRef, PlayerId, Position, Rng, TeamId,
-  TeamState, TradeModule, TradeOutcome, TradeProposal,
+  DepthChart,
+  DraftPick,
+  EngineContext,
+  LeagueState,
+  PickRef,
+  PlayerId,
+  Position,
+  Rng,
+  TeamId,
+  TeamState,
+  TradeModule,
+  TradeOutcome,
+  TradeProposal,
 } from '@contracts/index'
 import { acceptanceConstants, tradeConstants } from './constants'
 import { evaluateImpl, mirror } from './evaluate'
@@ -23,13 +34,24 @@ function withoutFromChart(chart: DepthChart, pos: Position, playerId: PlayerId):
   return { ...chart, [pos]: ids.filter((id) => id !== playerId) }
 }
 
-function withInChart(chart: DepthChart, pos: Position, playerId: PlayerId, ovrOf: (id: PlayerId) => number): DepthChart {
+function withInChart(
+  chart: DepthChart,
+  pos: Position,
+  playerId: PlayerId,
+  ovrOf: (id: PlayerId) => number,
+): DepthChart {
   const ids = [...(chart[pos] ?? []).filter((id) => id !== playerId), playerId]
   ids.sort((a, b) => ovrOf(b) - ovrOf(a) || a.localeCompare(b))
   return { ...chart, [pos]: ids }
 }
 
-function movePlayer(teams: Record<TeamId, TeamState>, state: LeagueState, playerId: PlayerId, from: TeamId, to: TeamId): void {
+function movePlayer(
+  teams: Record<TeamId, TeamState>,
+  state: LeagueState,
+  playerId: PlayerId,
+  from: TeamId,
+  to: TeamId,
+): void {
   const fromTeam = teams[from]
   const toTeam = teams[to]
   const pos = state.players[playerId]?.pos
@@ -57,8 +79,10 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
   for (const id of proposal.request.players) movePlayer(teams, state, id, b, a)
 
   const reowned = <T extends DraftPick>(pick: T): T => {
-    if (pick.owner === a && proposal.offer.picks.some((ref) => matchesRef(ref, pick))) return { ...pick, owner: b }
-    if (pick.owner === b && proposal.request.picks.some((ref) => matchesRef(ref, pick))) return { ...pick, owner: a }
+    if (pick.owner === a && proposal.offer.picks.some((ref) => matchesRef(ref, pick)))
+      return { ...pick, owner: b }
+    if (pick.owner === b && proposal.request.picks.some((ref) => matchesRef(ref, pick)))
+      return { ...pick, owner: a }
     return pick
   }
 
@@ -66,7 +90,9 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
     ...state,
     teams,
     picks: state.picks.map(reowned),
-    draftRoom: state.draftRoom ? { ...state.draftRoom, order: state.draftRoom.order.map(reowned) } : state.draftRoom,
+    draftRoom: state.draftRoom
+      ? { ...state.draftRoom, order: state.draftRoom.order.map(reowned) }
+      : state.draftRoom,
   }
 
   const involved = [...proposal.offer.players, ...proposal.request.players].sort()
@@ -77,7 +103,10 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
 function raiseAnnoyance(state: LeagueState, teamId: TeamId): LeagueState {
   const team = state.teams[teamId]
   if (!team) return state
-  const next = Math.min(acceptanceConstants.maxAnnoyance, team.tradeAnnoyance + tradeConstants.annoyancePerLowball)
+  const next = Math.min(
+    acceptanceConstants.maxAnnoyance,
+    team.tradeAnnoyance + tradeConstants.annoyancePerLowball,
+  )
   return { ...state, teams: { ...state.teams, [teamId]: { ...team, tradeAnnoyance: next } } }
 }
 
@@ -85,12 +114,18 @@ function raiseAnnoyance(state: LeagueState, teamId: TeamId): LeagueState {
  * On a decline, the AI may ask for one more asset from the proposer's side — the cheapest single
  * asset that closes the gap, so the counter is the least insulting one available.
  */
-function counterFor(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): TradeProposal | null {
+function counterFor(
+  state: LeagueState,
+  proposal: TradeProposal,
+  ctx: EngineContext,
+): TradeProposal | null {
   const evaluation = evaluateImpl(state, proposal, ctx)
   if (!evaluation.valid) return null
-  const shortfall = evaluation.valueOut + evaluation.needAdj + evaluation.margin - evaluation.valueIn
+  const shortfall =
+    evaluation.valueOut + evaluation.needAdj + evaluation.margin - evaluation.valueIn
   if (shortfall <= 0) return null
-  if (shortfall > acceptanceConstants.counterMaxShortfallPct * Math.max(1, evaluation.valueOut)) return null
+  if (shortfall > acceptanceConstants.counterMaxShortfallPct * Math.max(1, evaluation.valueOut))
+    return null
 
   const proposer = proposal.offer.teamId
   const ai = proposal.request.teamId
@@ -99,7 +134,10 @@ function counterFor(state: LeagueState, proposal: TradeProposal, ctx: EngineCont
   const candidates: { extra: { player?: PlayerId; pick?: PickRef }; value: number }[] = []
   for (const slot of state.teams[proposer]?.roster ?? []) {
     if (alreadyOffered.has(slot.playerId)) continue
-    candidates.push({ extra: { player: slot.playerId }, value: outgoingValue(state, slot.playerId, ctx) })
+    candidates.push({
+      extra: { player: slot.playerId },
+      value: outgoingValue(state, slot.playerId, ctx),
+    })
   }
   for (const pick of state.picks) {
     if (pick.owner !== proposer || pick.playerId) continue
@@ -118,8 +156,12 @@ function counterFor(state: LeagueState, proposal: TradeProposal, ctx: EngineCont
       offer: { teamId: ai, players: proposal.request.players, picks: proposal.request.picks },
       request: {
         teamId: proposer,
-        players: candidate.extra.player ? [...proposal.offer.players, candidate.extra.player] : [...proposal.offer.players],
-        picks: candidate.extra.pick ? [...proposal.offer.picks, candidate.extra.pick] : [...proposal.offer.picks],
+        players: candidate.extra.player
+          ? [...proposal.offer.players, candidate.extra.player]
+          : [...proposal.offer.players],
+        picks: candidate.extra.pick
+          ? [...proposal.offer.picks, candidate.extra.pick]
+          : [...proposal.offer.picks],
       },
       initiatedBy: 'AI',
       season: proposal.season,
@@ -131,7 +173,12 @@ function counterFor(state: LeagueState, proposal: TradeProposal, ctx: EngineCont
   return null
 }
 
-function submitImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineContext, rng: Rng): TradeOutcome {
+function submitImpl(
+  state: LeagueState,
+  proposal: TradeProposal,
+  ctx: EngineContext,
+  rng: Rng,
+): TradeOutcome {
   const evaluation = evaluateImpl(state, proposal, ctx)
 
   // The AI stands behind its own offers; the bar on those shows fairness, not doubt.
@@ -148,7 +195,12 @@ function submitImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCont
 
   const lowball = evaluation.valueIn < evaluation.valueOut * (1 - acceptanceConstants.lowballGap)
   const declinedState = lowball ? raiseAnnoyance(state, proposal.request.teamId) : state
-  return { accepted: false, evaluation, counter: counterFor(state, proposal, ctx), state: declinedState }
+  return {
+    accepted: false,
+    evaluation,
+    counter: counterFor(state, proposal, ctx),
+    state: declinedState,
+  }
 }
 
 export const trade: TradeModule = {

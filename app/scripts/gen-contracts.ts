@@ -7,6 +7,9 @@ const schemaDir = `${appRoot}src/contracts/schemas/`
 mkdirSync(schemaDir, { recursive: true })
 
 const schemas = generateJsonSchemas()
-for (const [name, json] of Object.entries(schemas)) writeFileSync(`${schemaDir}${name}.schema.json`, json)
+for (const [name, json] of Object.entries(schemas))
+  writeFileSync(`${schemaDir}${name}.schema.json`, json)
 writeFileSync(`${appRoot}../docs/ENGINE_CONTRACT.md`, generateEngineContractDoc())
-console.log(`wrote ${Object.keys(schemas).length} JSON schemas to src/contracts/schemas/ and docs/ENGINE_CONTRACT.md`)
+console.log(
+  `wrote ${Object.keys(schemas).length} JSON schemas to src/contracts/schemas/ and docs/ENGINE_CONTRACT.md`,
+)

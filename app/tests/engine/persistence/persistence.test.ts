@@ -51,7 +51,9 @@ describe('engine/persistence', () => {
   it('migrate throws a readable error on garbage input', () => {
     expect(() => persistence.migrate('not an object')).toThrow(/persistence\.migrate/)
     expect(() => persistence.migrate({ nope: true })).toThrow(/schemaVersion/)
-    expect(() => persistence.migrate({ schemaVersion: 1, garbage: true })).toThrow(/persistence\.migrate/)
+    expect(() => persistence.migrate({ schemaVersion: 1, garbage: true })).toThrow(
+      /persistence\.migrate/,
+    )
   })
 
   it('load throws a readable error for a missing slot', async () => {

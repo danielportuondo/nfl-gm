@@ -48,14 +48,32 @@ describe('lifecycle.progressSeason — inside real data (2015 -> 2016)', () => {
 
 // -------------------------------------------------------------------------------------------
 
-function syntheticState(season: number, players: Record<PlayerId, Player>, truth: Record<PlayerId, TrueTrajectory>): LeagueState {
+function syntheticState(
+  season: number,
+  players: Record<PlayerId, Player>,
+  truth: Record<PlayerId, TrueTrajectory>,
+): LeagueState {
   const base = mockLeague({ season })
   return { ...base, players, truth, scouting: {} }
 }
 
-function makeSyntheticPlayer(id: PlayerId, pos: Player['pos'], age: number, season: number, value: number): { player: Player; truth: TrueTrajectory } {
+function makeSyntheticPlayer(
+  id: PlayerId,
+  pos: Player['pos'],
+  age: number,
+  season: number,
+  value: number,
+): { player: Player; truth: TrueTrajectory } {
   return {
-    player: { id, name: id, pos, birthYear: season - age, draft: null, real: false, rookieSeason: season - age + 21 },
+    player: {
+      id,
+      name: id,
+      pos,
+      birthYear: season - age,
+      draft: null,
+      real: false,
+      rookieSeason: season - age + 21,
+    },
     truth: { bySeason: { [String(season)]: value }, retiresAfter: null },
   }
 }

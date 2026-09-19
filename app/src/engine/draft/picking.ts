@@ -21,7 +21,13 @@ export interface PickContext {
   anchor: PlayerId | null
 }
 
-function ageAdjustment(state: LeagueState, ctx: EngineContext, id: PlayerId, season: Season, c: DraftConstants): number {
+function ageAdjustment(
+  state: LeagueState,
+  ctx: EngineContext,
+  id: PlayerId,
+  season: Season,
+  c: DraftConstants,
+): number {
   const age = ctx.modules.lifecycle.age(state, id, season)
   return Math.max(0.5, 1 - c.agePenalty * Math.max(0, age - c.ageBaseline))
 }
@@ -40,7 +46,8 @@ export function chooseProspect(
 
   if (pick.anchor !== null && pick.available.includes(pick.anchor)) {
     const pos = state.players[pick.anchor]?.pos
-    const vetoed = pos !== undefined && pick.round <= c.anchorVetoMaxRound && needs.saturated.includes(pos)
+    const vetoed =
+      pos !== undefined && pick.round <= c.anchorVetoMaxRound && needs.saturated.includes(pos)
     if (pos !== undefined && !vetoed) return pick.anchor
   }
 

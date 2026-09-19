@@ -62,6 +62,7 @@ class TestRng implements Rng {
 }
 
 export const testRng: RngModule = {
-  fromSeed: (seed: string, ...scope: (string | number)[]) => new TestRng(hash([seed, ...scope].join('|'))),
+  fromSeed: (seed: string, ...scope: (string | number)[]) =>
+    new TestRng(hash([seed, ...scope].join('|'))),
   hash,
 }

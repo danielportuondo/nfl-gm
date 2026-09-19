@@ -5,7 +5,13 @@
  * construct the best offer a cheating user could make. Nothing here runs in the app — it lives under
  * scripts/ precisely so the truth-isolation rule that binds src/screens and src/ui does not apply.
  */
-import type { EngineContext, LeagueState, PlayerId, Season, TeamId } from '../../src/contracts/index'
+import type {
+  EngineContext,
+  LeagueState,
+  PlayerId,
+  Season,
+  TeamId,
+} from '../../src/contracts/index'
 import { TEAM_IDS } from '../../src/contracts/index'
 import { loadRealContext, readManifest, seasonsForNewGame } from '../lib/publicData'
 
@@ -23,7 +29,9 @@ export interface NewGameOpts {
   strictness?: 'lenient' | 'balanced' | 'strict' | 'ruthless'
 }
 
-export async function newRealGame(opts: NewGameOpts): Promise<{ state: LeagueState; ctx: EngineContext }> {
+export async function newRealGame(
+  opts: NewGameOpts,
+): Promise<{ state: LeagueState; ctx: EngineContext }> {
   const manifest = readManifest()
   const seasons = opts.seasons ?? 1
   const wanted = new Set<Season>()
@@ -97,8 +105,13 @@ export function aiTeams(state: LeagueState): TeamId[] {
 
 export function table(rows: readonly (readonly string[])[]): string {
   const widths: number[] = []
-  for (const row of rows) row.forEach((cell, i) => (widths[i] = Math.max(widths[i] ?? 0, cell.length)))
+  for (const row of rows)
+    row.forEach((cell, i) => (widths[i] = Math.max(widths[i] ?? 0, cell.length)))
   return rows
-    .map((row) => row.map((cell, i) => (i === 0 ? cell.padEnd(widths[i]!) : cell.padStart(widths[i]!))).join('  '))
+    .map((row) =>
+      row
+        .map((cell, i) => (i === 0 ? cell.padEnd(widths[i]!) : cell.padStart(widths[i]!)))
+        .join('  '),
+    )
     .join('\n')
 }

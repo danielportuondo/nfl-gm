@@ -47,7 +47,9 @@ function describeSide(state: LeagueState, data: StaticData, side: TradeSide): st
     if (p) parts.push(p.name)
   }
   for (const pick of side.picks) {
-    parts.push(`${pick.season} R${pick.round} (${data.teams[pick.originalTeam]?.abbr ?? pick.originalTeam})`)
+    parts.push(
+      `${pick.season} R${pick.round} (${data.teams[pick.originalTeam]?.abbr ?? pick.originalTeam})`,
+    )
   }
   return parts.length > 0 ? parts.join(', ') : 'Nothing'
 }
@@ -71,7 +73,14 @@ const ASSET_SORTS = [
   { key: 'age', label: 'Age' },
 ] as const
 
-function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePlayer, onTogglePick }: AssetPickerProps) {
+function AssetPicker({
+  state,
+  teamId,
+  selectedPlayers,
+  selectedPicks,
+  onTogglePlayer,
+  onTogglePick,
+}: AssetPickerProps) {
   const team = state.teams[teamId]
   const picks = state.picks.filter((p) => p.owner === teamId && p.playerId === null)
   const [posFilter, setPosFilter] = useState<Position | 'ALL'>('ALL')
@@ -84,17 +93,41 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
       if (!player || !scouting) return null
       return { slot, player, scouting, age: state.season - player.birthYear }
     })
-    .filter((r): r is { slot: RosterSlot; player: Player; scouting: ScoutingView; age: number } => r !== null)
+    .filter(
+      (r): r is { slot: RosterSlot; player: Player; scouting: ScoutingView; age: number } =>
+        r !== null,
+    )
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
       <div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--sp-2)', marginBottom: 'var(--sp-2)' }}>
-          <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: 0 }}>Players</h4>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 'var(--sp-2)',
+            marginBottom: 'var(--sp-2)',
+          }}
+        >
+          <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: 0 }}>
+            Players
+          </h4>
           <div style={{ display: 'flex', gap: 'var(--sp-2)', flexWrap: 'wrap' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', fontSize: 'var(--fs-1)' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--sp-1)',
+                fontSize: 'var(--fs-1)',
+              }}
+            >
               Position
-              <select value={posFilter} onChange={(e) => setPosFilter(e.target.value as Position | 'ALL')}>
+              <select
+                value={posFilter}
+                onChange={(e) => setPosFilter(e.target.value as Position | 'ALL')}
+              >
                 <option value="ALL">All</option>
                 {POSITIONS.map((p) => (
                   <option key={p} value={p}>
@@ -103,9 +136,19 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
                 ))}
               </select>
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', fontSize: 'var(--fs-1)' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--sp-1)',
+                fontSize: 'var(--fs-1)',
+              }}
+            >
               Sort
-              <select value={sortKey} onChange={(e) => setSortKey(e.target.value as (typeof ASSET_SORTS)[number]['key'])}>
+              <select
+                value={sortKey}
+                onChange={(e) => setSortKey(e.target.value as (typeof ASSET_SORTS)[number]['key'])}
+              >
                 {ASSET_SORTS.map((s) => (
                   <option key={s.key} value={s.key}>
                     {s.label}
@@ -115,7 +158,15 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
             </label>
           </div>
         </div>
-        <div style={{ maxHeight: 220, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
+        <div
+          style={{
+            maxHeight: 220,
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--sp-1)',
+          }}
+        >
           {rosterRows
             .filter((r) => posFilter === 'ALL' || r.player.pos === posFilter)
             .sort((a, b) => {
@@ -124,34 +175,59 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
               return b.scouting.ovr - a.scouting.ovr
             })
             .map(({ slot, player, scouting }) => (
-              <label key={slot.playerId} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+              <label
+                key={slot.playerId}
+                style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}
+              >
                 <input
                   type="checkbox"
                   checked={selectedPlayers.has(slot.playerId)}
                   onChange={() => onTogglePlayer(slot.playerId)}
                 />
-                {player.name} <PositionBadge pos={player.pos} /> <span className="tabular-nums">{scouting.ovr} ovr</span>
+                {player.name} <PositionBadge pos={player.pos} />{' '}
+                <span className="tabular-nums">{scouting.ovr} ovr</span>
               </label>
             ))}
-          {rosterRows.length === 0 && <p style={{ margin: 0, color: 'var(--text-2)' }}>No players on this roster.</p>}
+          {rosterRows.length === 0 && (
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>No players on this roster.</p>
+          )}
         </div>
       </div>
       <div>
-        <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-1)', margin: '0 0 var(--sp-2)' }}>Draft picks</h4>
+        <h4
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'var(--fd-1)',
+            margin: '0 0 var(--sp-2)',
+          }}
+        >
+          Draft picks
+        </h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
           {[...picks]
-            .sort((a, b) => a.season - b.season || a.round - b.round || (a.pick ?? 0) - (b.pick ?? 0))
+            .sort(
+              (a, b) => a.season - b.season || a.round - b.round || (a.pick ?? 0) - (b.pick ?? 0),
+            )
             .map((p) => {
               const key = pickKey(p)
               return (
-                <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-                  <input type="checkbox" checked={selectedPicks.has(key)} onChange={() => onTogglePick(key)} />
+                <label
+                  key={key}
+                  style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedPicks.has(key)}
+                    onChange={() => onTogglePick(key)}
+                  />
                   {p.season} round {p.round}
                   {p.pick != null ? ` (pick ${p.pick})` : ''}
                 </label>
               )
             })}
-          {picks.length === 0 && <p style={{ margin: 0, color: 'var(--text-2)' }}>No picks owned.</p>}
+          {picks.length === 0 && (
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>No picks owned.</p>
+          )}
         </div>
       </div>
     </div>
@@ -193,8 +269,12 @@ export function TradeCenter({
   }
 
   const proposal: TradeProposal = useMemo(() => {
-    const myPickRefs: PickRef[] = state.picks.filter((p) => p.owner === state.userTeam && myPicks.has(pickKey(p))).map(toRef)
-    const theirPickRefs: PickRef[] = state.picks.filter((p) => p.owner === opponent && theirPicks.has(pickKey(p))).map(toRef)
+    const myPickRefs: PickRef[] = state.picks
+      .filter((p) => p.owner === state.userTeam && myPicks.has(pickKey(p)))
+      .map(toRef)
+    const theirPickRefs: PickRef[] = state.picks
+      .filter((p) => p.owner === opponent && theirPicks.has(pickKey(p)))
+      .map(toRef)
     return {
       id: 'live-preview',
       offer: { teamId: state.userTeam, players: [...myPlayers], picks: myPickRefs },
@@ -203,9 +283,24 @@ export function TradeCenter({
       season: state.season,
       week: state.week,
     }
-  }, [state.userTeam, state.picks, state.season, state.week, opponent, myPlayers, myPicks, theirPlayers, theirPicks])
+  }, [
+    state.userTeam,
+    state.picks,
+    state.season,
+    state.week,
+    opponent,
+    myPlayers,
+    myPicks,
+    theirPlayers,
+    theirPicks,
+  ])
 
-  const hasAssets = proposal.offer.players.length + proposal.offer.picks.length + proposal.request.players.length + proposal.request.picks.length > 0
+  const hasAssets =
+    proposal.offer.players.length +
+      proposal.offer.picks.length +
+      proposal.request.players.length +
+      proposal.request.picks.length >
+    0
   const evaluation = hasAssets ? onEvaluate(proposal) : null
 
   function submit() {
@@ -240,7 +335,14 @@ export function TradeCenter({
 
       <div className="gg-col-6">
         <Panel variant="plate" title="Their side" revealIndex={1}>
-          <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)', marginBottom: 'var(--sp-3)' }}>
+          <label
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--sp-1)',
+              marginBottom: 'var(--sp-3)',
+            }}
+          >
             Team
             <select value={opponent} onChange={(e) => setOpponent(e.target.value as TeamId)}>
               {otherTeams.map((id) => (
@@ -271,17 +373,33 @@ export function TradeCenter({
           {evaluation ? (
             <AcceptanceBar p={evaluation.p} valid={evaluation.valid} />
           ) : (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>Add players or picks on both sides to see how they'd respond.</p>
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>
+              Add players or picks on both sides to see how they'd respond.
+            </p>
           )}
           {evaluation && evaluation.reasons.length > 0 && (
-            <ul style={{ margin: 'var(--sp-2) 0 0', paddingLeft: 'var(--sp-4)', color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
+            <ul
+              style={{
+                margin: 'var(--sp-2) 0 0',
+                paddingLeft: 'var(--sp-4)',
+                color: 'var(--text-2)',
+                fontSize: 'var(--fs-1)',
+              }}
+            >
               {evaluation.reasons.map((r, i) => (
                 <li key={i}>{r}</li>
               ))}
             </ul>
           )}
           <div style={{ marginTop: 'var(--sp-3)' }}>
-            <Button type="button" variant="primary" busy={busy} busyLabel="Working…" disabled={!hasAssets} onClick={submit}>
+            <Button
+              type="button"
+              variant="primary"
+              busy={busy}
+              busyLabel="Working…"
+              disabled={!hasAssets}
+              onClick={submit}
+            >
               Offer trade
             </Button>
           </div>
@@ -299,10 +417,13 @@ export function TradeCenter({
           }
         >
           <p style={{ margin: '0 0 var(--sp-3)', color: 'var(--text-2)' }}>
-            Deals other front offices would take today, aimed at your weakest positions. Accept one and it is done.
+            Deals other front offices would take today, aimed at your weakest positions. Accept one
+            and it is done.
           </p>
           {suggestedTrades.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>No suggestions right now. Check back after a week or a roster move.</p>
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>
+              No suggestions right now. Check back after a week or a roster move.
+            </p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
               {suggestedTrades.map((offer, i) => (
@@ -336,7 +457,9 @@ export function TradeCenter({
           }
         >
           {tradeOffers.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>No offers yet. Teams call when your pick lines up with their biggest need.</p>
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>
+              No offers yet. Teams call when your pick lines up with their biggest need.
+            </p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
               {tradeOffers.map((offer, i) => (

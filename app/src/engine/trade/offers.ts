@@ -6,11 +6,18 @@
  * In-season offers are player-for-player (plus pick sweeteners) so neither roster leaves the 46–53
  * window; draft offers are picks-for-picks, which no roster limit touches.
  */
-import type { EngineContext, LeagueState, PickRef, PlayerId, Rng, TeamId, TradeProposal } from '@contracts/index'
+import type {
+  EngineContext,
+  LeagueState,
+  PickRef,
+  PlayerId,
+  Rng,
+  TeamId,
+  TradeProposal,
+} from '@contracts/index'
 import { evaluateImpl, mirror } from './evaluate'
 import { offerConstants } from './constants'
 import { incomingValue, needsFor, outgoingValue, pickValueImpl, refKey, refOf } from './value'
-
 
 interface Valued {
   ref: PickRef
@@ -23,7 +30,12 @@ export function aiTeams(state: LeagueState): TeamId[] {
     .filter((id) => id !== state.userTeam && !state.teams[id]?.userControlled)
 }
 
-export function tradeablePicks(state: LeagueState, teamId: TeamId, exclude: Set<string>, ctx: EngineContext): Valued[] {
+export function tradeablePicks(
+  state: LeagueState,
+  teamId: TeamId,
+  exclude: Set<string>,
+  ctx: EngineContext,
+): Valued[] {
   return state.picks
     .filter((p) => p.owner === teamId && !p.playerId)
     .map((p) => ({ ref: refOf(p), value: 0 }))
@@ -37,7 +49,11 @@ export function tradeablePicks(state: LeagueState, teamId: TeamId, exclude: Set<
  * the most the AI can pay and still rate its own offer at p ≥ 0.5, so an overshoot means the AI
  * proposes a deal it would itself turn down.
  */
-export function assemble(candidates: Valued[], budget: number, maxAssets: number): { refs: PickRef[]; total: number } {
+export function assemble(
+  candidates: Valued[],
+  budget: number,
+  maxAssets: number,
+): { refs: PickRef[]; total: number } {
   const refs: PickRef[] = []
   let total = 0
   for (const candidate of candidates) {
@@ -67,7 +83,11 @@ export function propose(
 }
 
 /** An offer only ships when the AI would take it and the user is not being robbed blind. */
-export function acceptableToAi(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): boolean {
+export function acceptableToAi(
+  state: LeagueState,
+  proposal: TradeProposal,
+  ctx: EngineContext,
+): boolean {
   const own = evaluateImpl(state, mirror(proposal), ctx)
   if (!own.valid || own.p < offerConstants.minAiP) return false
   const userSide = evaluateImpl(state, proposal, ctx)
@@ -87,7 +107,10 @@ function draftOffers(state: LeagueState, ctx: EngineContext, rng: Rng): TradePro
   if (targetValue <= 0) return []
 
   const wantedPositions = new Set(
-    room.available.slice(0, offerConstants.topProspectsConsidered).map((id) => state.players[id]?.pos).filter(Boolean),
+    room.available
+      .slice(0, offerConstants.topProspectsConsidered)
+      .map((id) => state.players[id]?.pos)
+      .filter(Boolean),
   )
   const interested = aiTeams(state).filter((id) =>
     needsFor(state, id, ctx).top.some((pos) => wantedPositions.has(pos)),
@@ -101,20 +124,33 @@ function draftOffers(state: LeagueState, ctx: EngineContext, rng: Rng): TradePro
   for (const teamId of rng.shuffle(interested)) {
     if (offers.length >= wanted) break
     const teamRng = rng.fork(teamId)
-    const payRatio = offerConstants.payRatioMin + teamRng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
+    const payRatio =
+      offerConstants.payRatioMin +
+      teamRng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
     const bundle = assemble(
       tradeablePicks(state, teamId, new Set([refKey(targetRef)]), ctx),
       targetValue * payRatio,
       offerConstants.maxAssetsPerSide,
     )
     if (bundle.refs.length === 0) continue
-    const proposal = propose(state, teamId, { players: [], picks: bundle.refs }, { players: [], picks: [targetRef] }, 'up')
+    const proposal = propose(
+      state,
+      teamId,
+      { players: [], picks: bundle.refs },
+      { players: [], picks: [targetRef] },
+      'up',
+    )
     if (acceptableToAi(state, proposal, ctx)) offers.push(proposal)
   }
   return offers
 }
 
-function seasonOffer(state: LeagueState, teamId: TeamId, ctx: EngineContext, rng: Rng): TradeProposal | null {
+function seasonOffer(
+  state: LeagueState,
+  teamId: TeamId,
+  ctx: EngineContext,
+  rng: Rng,
+): TradeProposal | null {
   const needs = needsFor(state, teamId, ctx)
   if (needs.top.length === 0) return null
   const wanted = new Set(needs.top)
@@ -132,7 +168,9 @@ function seasonOffer(state: LeagueState, teamId: TeamId, ctx: EngineContext, rng
     .slice(0, offerConstants.candidatesScanned)
   if (targets.length === 0) return null
 
-  const payRatio = offerConstants.payRatioMin + rng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
+  const payRatio =
+    offerConstants.payRatioMin +
+    rng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
 
   for (const target of targets) {
     const budget = target.value * payRatio
@@ -143,15 +181,29 @@ function seasonOffer(state: LeagueState, teamId: TeamId, ctx: EngineContext, rng
         return pos !== undefined && !wanted.has(pos)
       })
       .map((slot) => ({ id: slot.playerId, value: outgoingValue(state, slot.playerId, ctx) }))
-      .sort((a, b) => Math.abs(a.value - budget) - Math.abs(b.value - budget) || a.id.localeCompare(b.id))
+      .sort(
+        (a, b) =>
+          Math.abs(a.value - budget) - Math.abs(b.value - budget) || a.id.localeCompare(b.id),
+      )
       .slice(0, offerConstants.candidatesScanned)
 
     for (const send of sendable) {
       const shortfall = budget - send.value
-      const sweetener = shortfall > 0
-        ? assemble(tradeablePicks(state, teamId, new Set(), ctx), shortfall, offerConstants.maxAssetsPerSide - 1)
-        : { refs: [], total: 0 }
-      const proposal = propose(state, teamId, { players: [send.id], picks: sweetener.refs }, { players: [target.id], picks: [] }, target.id)
+      const sweetener =
+        shortfall > 0
+          ? assemble(
+              tradeablePicks(state, teamId, new Set(), ctx),
+              shortfall,
+              offerConstants.maxAssetsPerSide - 1,
+            )
+          : { refs: [], total: 0 }
+      const proposal = propose(
+        state,
+        teamId,
+        { players: [send.id], picks: sweetener.refs },
+        { players: [target.id], picks: [] },
+        target.id,
+      )
       if (acceptableToAi(state, proposal, ctx)) return proposal
     }
   }

@@ -30,7 +30,10 @@ export const ENGINE_CONTRACT_FILES = [
 export function generateJsonSchemas(): Record<DataSchemaName, string> {
   const out = {} as Record<DataSchemaName, string>
   for (const name of Object.keys(DATA_SCHEMAS) as DataSchemaName[]) {
-    const json = z.toJSONSchema(DATA_SCHEMAS[name], { target: 'draft-2020-12' }) as Record<string, unknown>
+    const json = z.toJSONSchema(DATA_SCHEMAS[name], { target: 'draft-2020-12' }) as Record<
+      string,
+      unknown
+    >
     const ordered = {
       $schema: json.$schema,
       $id: `https://gridiron-gm.dev/schemas/${name}.schema.json`,
@@ -48,7 +51,9 @@ export function generateEngineContractDoc(): string {
     const src = readFileSync(`${here}${rel}`, 'utf8').trimEnd()
     return `## \`app/src/contracts/${rel}\`\n\n\`\`\`ts\n${src}\n\`\`\`\n`
   })
-  const toc = ENGINE_CONTRACT_FILES.map((rel) => `- [\`${rel}\`](#appsrccontracts${rel.replace(/[/.]/g, '')})`).join('\n')
+  const toc = ENGINE_CONTRACT_FILES.map(
+    (rel) => `- [\`${rel}\`](#appsrccontracts${rel.replace(/[/.]/g, '')})`,
+  ).join('\n')
   return [
     '# Engine contract',
     '',

@@ -21,7 +21,19 @@ export interface StripProps {
 }
 
 /** Sticky scoreboard strip: team plate, season/week, record, cap space, horizon (docs/DESIGN.md §4). */
-export function Strip({ teamAbbr, teamColors, season, week, phaseLabel, record, capSpaceText, horizonText, inSeason, onClock, end }: StripProps) {
+export function Strip({
+  teamAbbr,
+  teamColors,
+  season,
+  week,
+  phaseLabel,
+  record,
+  capSpaceText,
+  horizonText,
+  inSeason,
+  onClock,
+  end,
+}: StripProps) {
   return (
     <header className={onClock ? 'gg-strip gg-strip--on-clock' : 'gg-strip'}>
       <TeamScope as="span" colors={teamColors} className="gg-strip__item">

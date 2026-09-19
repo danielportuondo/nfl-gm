@@ -54,10 +54,16 @@ export interface SimModule {
 
 export const simStub: SimModule = {
   constants: {
-    k: 0.9, hfa: 2.0, marginSd: 13.5, totalMean: 45, totalSd: 10, tieP: 0.003,
+    k: 0.9,
+    hfa: 2.0,
+    marginSd: 13.5,
+    totalMean: 45,
+    totalSd: 10,
+    tieP: 0.003,
     offenseWeights: { QB: 0.35, OL: 0.25, WRTE: 0.25, RB: 0.15 },
     defenseWeights: { DL: 0.3, LB: 0.2, CB: 0.3, S: 0.2 },
-    stWeight: 0.05, benchFactor: 0.15,
+    stWeight: 0.05,
+    benchFactor: 0.15,
   },
   teamStrength: () => notImplemented('sim.teamStrength'),
   simulateGame: () => notImplemented('sim.simulateGame'),

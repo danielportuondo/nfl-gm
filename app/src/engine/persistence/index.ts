@@ -3,7 +3,13 @@
  * Implements PersistenceModule (contracts/engine/persistence.ts).
  */
 import { openDB, type IDBPDatabase } from 'idb'
-import { SavedLeagueSchema, fromSaved, toSaved, type LeagueState, type SavedLeague } from '@contracts/index'
+import {
+  SavedLeagueSchema,
+  fromSaved,
+  toSaved,
+  type LeagueState,
+  type SavedLeague,
+} from '@contracts/index'
 import type { PersistenceModule, SaveSlotMeta } from '@contracts/index'
 import { DB_NAME, DB_VERSION, SAVES_STORE } from './constants'
 
@@ -51,12 +57,16 @@ export function migrate(saved: unknown): SavedLeague {
     throw new Error('persistence.migrate: save data is missing a numeric schemaVersion')
   }
   if (version > SCHEMA_VERSION) {
-    throw new Error(`persistence.migrate: save schemaVersion ${version} is newer than supported ${SCHEMA_VERSION}`)
+    throw new Error(
+      `persistence.migrate: save schemaVersion ${version} is newer than supported ${SCHEMA_VERSION}`,
+    )
   }
   // No migrations exist yet; `version === SCHEMA_VERSION` is the only supported case and is the identity.
   const parsed = SavedLeagueSchema.safeParse(saved)
   if (!parsed.success) {
-    throw new Error(`persistence.migrate: invalid save data — ${describeIssues(parsed.error.issues)}`)
+    throw new Error(
+      `persistence.migrate: invalid save data — ${describeIssues(parsed.error.issues)}`,
+    )
   }
   return parsed.data
 }
@@ -103,7 +113,9 @@ export const persistence: PersistenceModule = {
     try {
       parsed = JSON.parse(json)
     } catch (err) {
-      throw new Error(`persistence.importJson: invalid JSON — ${(err as Error).message}`, { cause: err })
+      throw new Error(`persistence.importJson: invalid JSON — ${(err as Error).message}`, {
+        cause: err,
+      })
     }
     return fromSaved(migrate(parsed))
   },

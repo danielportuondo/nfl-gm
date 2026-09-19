@@ -7,13 +7,25 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { TEAM_IDS, type EngineContext, type LeagueState } from '@contracts/index'
 import { resetTruthFallbackCount, truthFallbackCount } from '@engine/sim/index'
 import { calibrate } from '../engine/sim/harness'
-import { loadRealContext, readManifest, realWinTotals, seasonsForNewGame } from '../../scripts/lib/publicData'
+import {
+  loadRealContext,
+  readManifest,
+  realWinTotals,
+  seasonsForNewGame,
+} from '../../scripts/lib/publicData'
 
 const SEASON = 2015
-const SETTINGS = { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true } as const
+const SETTINGS = {
+  tradeStrictness: 'balanced',
+  aiOfferFrequency: 'normal',
+  injuries: true,
+} as const
 
 function newGame(ctx: EngineContext, seed: string): LeagueState {
-  return ctx.modules.league.newGame({ seed, startSeason: SEASON, userTeam: 'IND', horizonSeasons: 1, settings: SETTINGS }, ctx)
+  return ctx.modules.league.newGame(
+    { seed, startSeason: SEASON, userTeam: 'IND', horizonSeasons: 1, settings: SETTINGS },
+    ctx,
+  )
 }
 
 function playSeason(state: LeagueState, ctx: EngineContext): LeagueState {
@@ -45,7 +57,10 @@ describe(`real data ${SEASON}`, () => {
       expect(roster.length, teamId).toBeGreaterThanOrEqual(46)
       expect(roster.length, teamId).toBeLessThanOrEqual(53)
       for (const slot of roster) {
-        expect(rostered.has(slot.playerId), `${slot.playerId} on ${rostered.get(slot.playerId)} and ${teamId}`).toBe(false)
+        expect(
+          rostered.has(slot.playerId),
+          `${slot.playerId} on ${rostered.get(slot.playerId)} and ${teamId}`,
+        ).toBe(false)
         rostered.set(slot.playerId, teamId)
         expect(slot.contract.apy).toBeGreaterThan(0)
         expect(slot.contract.years).toBeGreaterThanOrEqual(1)
@@ -59,7 +74,9 @@ describe(`real data ${SEASON}`, () => {
     // Picks for the next two drafts: the 2016 class is real (pick numbers known), owned by the drafting teams.
     const seasons = new Set(state.picks.map((p) => p.season))
     expect([...seasons].sort()).toEqual([SEASON + 1, SEASON + 2])
-    expect(state.picks.filter((p) => p.season === SEASON + 1).every((p) => p.pick !== null)).toBe(true)
+    expect(state.picks.filter((p) => p.season === SEASON + 1).every((p) => p.pick !== null)).toBe(
+      true,
+    )
   })
 
   it('a full season completes deterministically with no truth fallbacks', () => {

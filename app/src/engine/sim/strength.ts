@@ -9,7 +9,8 @@ import type { LeagueState, PlayerId, Position, TeamId, TeamStrength } from '@con
 import { POSITIONS } from '@contracts/index'
 import { simConstants, strengthConstants } from './constants'
 
-const { replacementValue, slotDecay, starters, benchDepth, wrShareOfWrte, ratingMin, ratingMax } = strengthConstants
+const { replacementValue, slotDecay, starters, benchDepth, wrShareOfWrte, ratingMin, ratingMax } =
+  strengthConstants
 
 let truthFallbacks = 0
 
@@ -36,7 +37,10 @@ const emptyByPos = (): Record<Position, PlayerId[]> =>
  * Healthy players per position in depth-chart order. Anyone on the roster the chart forgot is appended
  * by true value, so a missing or stale chart degrades gracefully instead of fielding nobody.
  */
-export function availableByPosition(state: LeagueState, teamId: TeamId): Record<Position, PlayerId[]> {
+export function availableByPosition(
+  state: LeagueState,
+  teamId: TeamId,
+): Record<Position, PlayerId[]> {
   const byPos = emptyByPos()
   const team = state.teams[teamId]
   if (!team) return byPos
@@ -94,17 +98,26 @@ function groupRating(state: LeagueState, ids: readonly PlayerId[], pos: Position
 
 const clampRating = (x: number) => Math.min(ratingMax, Math.max(ratingMin, x))
 
-export function strengthFrom(state: LeagueState, byPos: Record<Position, PlayerId[]>): TeamStrength {
+export function strengthFrom(
+  state: LeagueState,
+  byPos: Record<Position, PlayerId[]>,
+): TeamStrength {
   const rating = (pos: Position) => groupRating(state, byPos[pos], pos)
 
   const { offenseWeights: ow, defenseWeights: dw, stWeight } = simConstants
   const wrte = wrShareOfWrte * rating('WR') + (1 - wrShareOfWrte) * rating('TE')
   const off = ow.QB * rating('QB') + ow.OL * rating('OL') + ow.WRTE * wrte + ow.RB * rating('RB')
-  const def = dw.DL * rating('DL') + dw.LB * rating('LB') + dw.CB * rating('CB') + dw.S * rating('S')
+  const def =
+    dw.DL * rating('DL') + dw.LB * rating('LB') + dw.CB * rating('CB') + dw.S * rating('S')
   const st = 0.5 * rating('K') + 0.5 * rating('P')
   const overall = (1 - stWeight) * ((off + def) / 2) + stWeight * st
 
-  return { off: clampRating(off), def: clampRating(def), st: clampRating(st), overall: clampRating(overall) }
+  return {
+    off: clampRating(off),
+    def: clampRating(def),
+    st: clampRating(st),
+    overall: clampRating(overall),
+  }
 }
 
 export function computeTeamStrength(state: LeagueState, teamId: TeamId): TeamStrength {

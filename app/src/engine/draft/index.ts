@@ -16,8 +16,18 @@
  */
 import {
   draftStub,
-  type DraftLogEntry, type DraftModule, type DraftPick, type DraftRoomState, type EngineContext,
-  type LeagueState, type NeedProfile, type PlayerId, type Rng, type Season, type TeamId, type TradeProposal,
+  type DraftLogEntry,
+  type DraftModule,
+  type DraftPick,
+  type DraftRoomState,
+  type EngineContext,
+  type LeagueState,
+  type NeedProfile,
+  type PlayerId,
+  type Rng,
+  type Season,
+  type TeamId,
+  type TradeProposal,
 } from '@contracts/index'
 import { draftConstants } from './constants'
 import { needProfile } from './needs'
@@ -32,7 +42,10 @@ function roomOf(state: LeagueState, what: string): DraftRoomState {
   return room
 }
 
-const withRoom = (state: LeagueState, room: DraftRoomState): LeagueState => ({ ...state, draftRoom: room })
+const withRoom = (state: LeagueState, room: DraftRoomState): LeagueState => ({
+  ...state,
+  draftRoom: room,
+})
 
 function currentSlot(room: DraftRoomState): DraftPick | undefined {
   return room.order[room.currentPickIndex]
@@ -44,14 +57,17 @@ function stampPickNumbers(picks: readonly DraftPick[], order: readonly DraftPick
   if (season === undefined) return [...picks]
   const numbered = new Map(order.map((slot) => [`${slot.round}:${slot.originalTeam}`, slot.pick]))
   return picks.map((p) =>
-    p.season === season && p.pick === null ? { ...p, pick: numbered.get(`${p.round}:${p.originalTeam}`) ?? null } : p,
+    p.season === season && p.pick === null
+      ? { ...p, pick: numbered.get(`${p.round}:${p.originalTeam}`) ?? null }
+      : p,
   )
 }
 
 /** A mid-draft trade changes state.picks; unmade slots must follow the new owner. */
 function syncOwners(state: LeagueState, room: DraftRoomState): DraftRoomState {
   // Keyed by pick number so a compensatory pick and the team's own pick in that round stay apart.
-  const slotKey = (p: DraftPick): string => (p.pick === null ? `${p.round}:${p.originalTeam}` : `#${p.pick}`)
+  const slotKey = (p: DraftPick): string =>
+    p.pick === null ? `${p.round}:${p.originalTeam}` : `#${p.pick}`
   const owners = new Map<string, TeamId>()
   for (const p of state.picks) {
     if (p.season === room.season) owners.set(slotKey(p), p.owner)
@@ -71,9 +87,17 @@ function syncOwners(state: LeagueState, room: DraftRoomState): DraftRoomState {
  * Stamp the player onto exactly one entry of state.picks — the slot's own pick number when it has one,
  * else the first unmade pick of that round/original team (a compensatory pick shares both).
  */
-function fillPick(picks: readonly DraftPick[], slot: DraftPick, pickNumber: number, playerId: PlayerId): DraftPick[] {
+function fillPick(
+  picks: readonly DraftPick[],
+  slot: DraftPick,
+  pickNumber: number,
+  playerId: PlayerId,
+): DraftPick[] {
   const matches = (p: DraftPick): boolean =>
-    p.season === slot.season && p.round === slot.round && p.originalTeam === slot.originalTeam && p.playerId === null
+    p.season === slot.season &&
+    p.round === slot.round &&
+    p.originalTeam === slot.originalTeam &&
+    p.playerId === null
   let index = picks.findIndex((p) => matches(p) && p.pick === pickNumber)
   if (index < 0) index = picks.findIndex(matches)
   if (index < 0) return [...picks]
@@ -102,8 +126,18 @@ function applySelection(
   const player = state.players[playerId]
   if (!player) throw new Error(`draft.advance: unknown player "${playerId}"`)
 
-  const contract = ctx.modules.fa.rookieContract({ round: slot.round, pick: pickNumber }, room.season, ctx)
-  const entry: DraftLogEntry = { pick: pickNumber, round: slot.round, team: slot.owner, playerId, historical }
+  const contract = ctx.modules.fa.rookieContract(
+    { round: slot.round, pick: pickNumber },
+    room.season,
+    ctx,
+  )
+  const entry: DraftLogEntry = {
+    pick: pickNumber,
+    round: slot.round,
+    team: slot.owner,
+    playerId,
+    historical,
+  }
   const nextIndex = index + 1
 
   const nextRoom: DraftRoomState = {
@@ -119,10 +153,19 @@ function applySelection(
 
   let next: LeagueState = {
     ...state,
-    teams: { ...state.teams, [slot.owner]: { ...team, roster: [...team.roster, { playerId, teamId: slot.owner, contract }] } },
+    teams: {
+      ...state.teams,
+      [slot.owner]: {
+        ...team,
+        roster: [...team.roster, { playerId, teamId: slot.owner, contract }],
+      },
+    },
     players: {
       ...state.players,
-      [playerId]: { ...player, draft: { season: room.season, round: slot.round, pick: pickNumber, team: slot.owner } },
+      [playerId]: {
+        ...player,
+        draft: { season: room.season, round: slot.round, pick: pickNumber, team: slot.owner },
+      },
     },
     picks: fillPick(state.picks, slot, pickNumber, playerId),
     freeAgents: state.freeAgents.filter((id) => id !== playerId),
@@ -141,7 +184,11 @@ function offersFor(state: LeagueState, ctx: EngineContext, rng: Rng): TradePropo
   return ctx.modules.trade.generateAiOffers(state, ctx, rng, 'draft')
 }
 
-function advanceImpl(state: LeagueState, ctx: EngineContext, opts?: { auto?: boolean }): LeagueState {
+function advanceImpl(
+  state: LeagueState,
+  ctx: EngineContext,
+  opts?: { auto?: boolean },
+): LeagueState {
   let s = state
   const season = roomOf(s, 'advance').season
   const anchors = historicalOccupants(season, ctx)
@@ -156,7 +203,12 @@ function advanceImpl(state: LeagueState, ctx: EngineContext, opts?: { auto?: boo
 
     if (slot.owner === s.userTeam && !opts?.auto) {
       if (room.pendingOffers.length > 0) return s
-      const offerRng = ctx.modules.rng.fromSeed(s.seed, season, 'draftOffers', room.currentPickIndex)
+      const offerRng = ctx.modules.rng.fromSeed(
+        s.seed,
+        season,
+        'draftOffers',
+        room.currentPickIndex,
+      )
       return withRoom(s, { ...room, pendingOffers: offersFor(s, ctx, offerRng) })
     }
 
@@ -200,10 +252,17 @@ function userPickImpl(state: LeagueState, playerId: PlayerId, ctx?: EngineContex
   const room = roomOf(state, 'userPick')
   const slot = currentSlot(room)
   if (!slot) throw new Error('draft.userPick: the draft is over')
-  if (slot.owner !== state.userTeam) throw new Error(`draft.userPick: ${slot.owner} is on the clock, not ${state.userTeam}`)
-  if (!room.available.includes(playerId)) throw new Error(`draft.userPick: "${playerId}" is not on the board`)
-  if (!ctx) throw new Error('draft.userPick: needs the EngineContext (rookie contract + divergence); see CONTRACT REQUESTS')
-  return applySelection(state, ctx, playerId, historicalOccupants(room.season, ctx), { explicitUserPick: true })
+  if (slot.owner !== state.userTeam)
+    throw new Error(`draft.userPick: ${slot.owner} is on the clock, not ${state.userTeam}`)
+  if (!room.available.includes(playerId))
+    throw new Error(`draft.userPick: "${playerId}" is not on the board`)
+  if (!ctx)
+    throw new Error(
+      'draft.userPick: needs the EngineContext (rookie contract + divergence); see CONTRACT REQUESTS',
+    )
+  return applySelection(state, ctx, playerId, historicalOccupants(room.season, ctx), {
+    explicitUserPick: true,
+  })
 }
 
 function aiPickImpl(state: LeagueState, ctx: EngineContext, rng: Rng): PlayerId {
@@ -228,7 +287,8 @@ function autoDraftToEndImpl(state: LeagueState, ctx: EngineContext): LeagueState
 /** `userPick` widens the contract's 2-arg signature with the optional EngineContext (see the header). */
 export const draft: DraftModule & { userPick: typeof userPickImpl } = {
   ...draftStub,
-  buildDraftOrder: (state: LeagueState, season: Season, ctx: EngineContext): DraftPick[] => buildOrder(state, season, ctx),
+  buildDraftOrder: (state: LeagueState, season: Season, ctx: EngineContext): DraftPick[] =>
+    buildOrder(state, season, ctx),
   loadProspects: loadClass,
   startDraft: startDraftImpl,
   aiPick: aiPickImpl,

@@ -7,10 +7,21 @@
  * Everything else is a no-op passthrough (return state unchanged / empty collections).
  */
 import {
-  POSITIONS, TEAM_IDS,
-  type DraftModule, type DraftPick, type EngineContext, type EngineModules, type FaModule,
-  type HistoryModule, type LifecycleModule, type MemoryBundle, type NeedProfile, type Position,
-  type Season, type SimModule, type TradeModule,
+  POSITIONS,
+  TEAM_IDS,
+  type DraftModule,
+  type DraftPick,
+  type EngineContext,
+  type EngineModules,
+  type FaModule,
+  type HistoryModule,
+  type LifecycleModule,
+  type MemoryBundle,
+  type NeedProfile,
+  type Position,
+  type Season,
+  type SimModule,
+  type TradeModule,
 } from '@contracts/index'
 import { rng } from '@engine/rng'
 import { league } from '@engine/league'
@@ -19,10 +30,16 @@ import { league } from '@engine/league'
 
 export const fakeSim: SimModule = {
   constants: {
-    k: 0.9, hfa: 2.0, marginSd: 13.5, totalMean: 45, totalSd: 10, tieP: 0,
+    k: 0.9,
+    hfa: 2.0,
+    marginSd: 13.5,
+    totalMean: 45,
+    totalSd: 10,
+    tieP: 0,
     offenseWeights: { QB: 0.35, OL: 0.25, WRTE: 0.25, RB: 0.15 },
     defenseWeights: { DL: 0.3, LB: 0.2, CB: 0.3, S: 0.2 },
-    stWeight: 0.05, benchFactor: 0.15,
+    stWeight: 0.05,
+    benchFactor: 0.15,
   },
   teamStrength: () => ({ off: 70, def: 70, st: 70, overall: 70 }),
   gameRng: (state, game) => rng.fromSeed(state.seed, state.season, state.week, game.id),
@@ -45,7 +62,14 @@ export const fakeDraft: DraftModule = {
     const picks: DraftPick[] = []
     for (let round = 1; round <= 7; round++) {
       TEAM_IDS.forEach((teamId, i) => {
-        picks.push({ season, round, pick: (round - 1) * 32 + i + 1, originalTeam: teamId, owner: teamId, playerId: null })
+        picks.push({
+          season,
+          round,
+          pick: (round - 1) * 32 + i + 1,
+          originalTeam: teamId,
+          owner: teamId,
+          playerId: null,
+        })
       })
     }
     return picks
@@ -80,7 +104,14 @@ export const fakeDraft: DraftModule = {
   advance: (state) => state,
   autoDraftToEnd: (state) => {
     if (!state.draftRoom) return state
-    return { ...state, draftRoom: { ...state.draftRoom, status: 'COMPLETE', currentPickIndex: state.draftRoom.order.length } }
+    return {
+      ...state,
+      draftRoom: {
+        ...state.draftRoom,
+        status: 'COMPLETE',
+        currentPickIndex: state.draftRoom.order.length,
+      },
+    }
   },
   runUdfa: (state) => ({ ...state, draftRoom: null }),
   teamNeeds: (): NeedProfile => ({
@@ -105,7 +136,15 @@ export const fakeTrade: TradeModule = {
   },
   playerValue: () => 0,
   pickValue: () => 0,
-  evaluate: () => ({ valueIn: 0, valueOut: 0, needAdj: 0, margin: 0, p: 0, valid: false, reasons: [] }),
+  evaluate: () => ({
+    valueIn: 0,
+    valueOut: 0,
+    needAdj: 0,
+    margin: 0,
+    p: 0,
+    valid: false,
+    reasons: [],
+  }),
   submit: (state, proposal, ctx, _r) => ({
     accepted: false,
     evaluation: fakeTrade.evaluate(state, proposal, ctx),
@@ -124,10 +163,20 @@ const FLAT_YEARS = 3
 
 export const fakeFa: FaModule = {
   capFor: (season, ctx) => ctx.data.cap.bySeason[String(season)] ?? 200,
-  payroll: (state, teamId) => (state.teams[teamId]?.roster ?? []).reduce((sum, r) => sum + r.contract.apy, 0),
-  capSpace: (state, teamId, ctx) => fakeFa.capFor(state.season, ctx) - fakeFa.payroll(state, teamId) - (state.teams[teamId]?.deadMoney ?? 0),
+  payroll: (state, teamId) =>
+    (state.teams[teamId]?.roster ?? []).reduce((sum, r) => sum + r.contract.apy, 0),
+  capSpace: (state, teamId, ctx) =>
+    fakeFa.capFor(state.season, ctx) -
+    fakeFa.payroll(state, teamId) -
+    (state.teams[teamId]?.deadMoney ?? 0),
   marketApy: () => FLAT_APY,
-  rookieContract: (_pick, season) => ({ years: 4, apy: FLAT_APY, guaranteedPct: 1, signedSeason: season, rookie: true }),
+  rookieContract: (_pick, season) => ({
+    years: 4,
+    apy: FLAT_APY,
+    guaranteedPct: 1,
+    signedSeason: season,
+    rookie: true,
+  }),
   synthesizeContract: (_state, _playerId, season, _ctx, hint) => ({
     years: hint?.years ?? FLAT_YEARS,
     apy: hint?.apy ?? FLAT_APY,
@@ -163,29 +212,43 @@ export const fakeLifecycle: LifecycleModule = {
   tickInjuries: (state) => state,
   applyInjuryEvents: (state) => state,
   generateDraftClass: () => ({ prospects: [], truth: {}, order: [], draftedCount: 0 }),
-  age: (state, playerId, season) => (season ?? state.season) - (state.players[playerId]?.birthYear ?? 0),
+  age: (state, playerId, season) =>
+    (season ?? state.season) - (state.players[playerId]?.birthYear ?? 0),
 }
 
 // --- history: no anchoring ---------------------------------------------------------------------
 
 export const fakeHistory: HistoryModule = {
   snapToHistory: (state) => state,
-  markDiverged: (state, playerIds) => ({ ...state, divergence: new Set([...state.divergence, ...playerIds]) }),
+  markDiverged: (state, playerIds) => ({
+    ...state,
+    divergence: new Set([...state.divergence, ...playerIds]),
+  }),
   isDiverged: (state, playerId) => state.divergence.has(playerId),
-  snapLog: (state, season) => (season === undefined ? state.snapLog : state.snapLog.filter((e) => e.season === season)),
+  snapLog: (state, season) =>
+    season === undefined ? state.snapLog : state.snapLog.filter((e) => e.season === season),
 }
 
 /** Real `rng` and real `league` (the module under test), fakes for everything else. */
 export function makeFakeModules(overrides: Partial<EngineModules> = {}): EngineModules {
   return {
-    rng, league,
-    sim: fakeSim, draft: fakeDraft, trade: fakeTrade, fa: fakeFa, lifecycle: fakeLifecycle, history: fakeHistory,
+    rng,
+    league,
+    sim: fakeSim,
+    draft: fakeDraft,
+    trade: fakeTrade,
+    fa: fakeFa,
+    lifecycle: fakeLifecycle,
+    history: fakeHistory,
     ...overrides,
   }
 }
 
 /** EngineContext over a MemoryBundle, with fakes for every module but rng/league. */
-export function makeFakeContext(bundle: MemoryBundle, overrides: Partial<EngineModules> = {}): EngineContext {
+export function makeFakeContext(
+  bundle: MemoryBundle,
+  overrides: Partial<EngineModules> = {},
+): EngineContext {
   return {
     data: bundle.static,
     trajectories: bundle.trajectories,

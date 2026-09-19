@@ -6,9 +6,21 @@
  * brings every AI team back under cap (and to legal size) before PRESEASON's validateRoster runs.
  */
 import {
-  SeasonNotLoadedError, STARTER_TEMPLATE, faStub, isInHistory,
-  type Contract, type EngineContext, type FaModule, type LeagueState, type PlayerId, type Position,
-  type Rng, type RosterSlot, type RosterValidation, type Season, type TeamId,
+  SeasonNotLoadedError,
+  STARTER_TEMPLATE,
+  faStub,
+  isInHistory,
+  type Contract,
+  type EngineContext,
+  type FaModule,
+  type LeagueState,
+  type PlayerId,
+  type Position,
+  type Rng,
+  type RosterSlot,
+  type RosterValidation,
+  type Season,
+  type TeamId,
 } from '@contracts/index'
 import { faConstants } from './constants'
 
@@ -26,7 +38,9 @@ function capFor(season: Season, ctx: EngineContext): number {
   const table = ctx.data.cap.bySeason
   const exact = table[String(season)]
   if (exact !== undefined) return exact
-  const seasons = Object.keys(table).map(Number).sort((a, b) => a - b)
+  const seasons = Object.keys(table)
+    .map(Number)
+    .sort((a, b) => a - b)
   const first = seasons[0]!
   // Rookie deals for players drafted before the table (a 2007 first-rounder on a 2010 roster) price
   // off the earliest known cap, never the latest one.
@@ -80,10 +94,18 @@ function clampYears(years: number, max = faConstants.contractYearsSchemaMax): nu
 }
 
 function rookieGuaranteedPct(round: number): number {
-  return faConstants.rookieGuaranteedPctByRound[round - 1] ?? faConstants.rookieGuaranteedPctByRound.at(-1) ?? 1
+  return (
+    faConstants.rookieGuaranteedPctByRound[round - 1] ??
+    faConstants.rookieGuaranteedPctByRound.at(-1) ??
+    1
+  )
 }
 
-function rookieContract(pick: { round: number; pick: number } | null, season: Season, ctx: EngineContext): Contract {
+function rookieContract(
+  pick: { round: number; pick: number } | null,
+  season: Season,
+  ctx: EngineContext,
+): Contract {
   const cap = capFor(season, ctx)
   if (!pick) {
     return {
@@ -122,7 +144,8 @@ function synthesizeContract(
   const apyHint = hint?.apy !== undefined && hint.apy > 0 ? hint.apy : undefined
   const marketApyVal = round2(capPctFor(player.pos, ovr, age) * capFor(season, ctx))
   const yearsIn = season - player.rookieSeason
-  const rookieDeal = player.draft !== null && yearsIn >= 0 && yearsIn < faConstants.rookieContractYears
+  const rookieDeal =
+    player.draft !== null && yearsIn >= 0 && yearsIn < faConstants.rookieContractYears
   if (rookieDeal) {
     // Without a recorded salary a rookie is priced off his slot, never the veteran market curve.
     const slot = { round: player.draft!.round, pick: player.draft!.pick }
@@ -136,7 +159,10 @@ function synthesizeContract(
   }
   // No signedSeason hint exists yet on RosterEntry; a veteran re-synthesized from a roster snapshot is
   // assumed to have signed this same season (there is no way to recover the real signing year here).
-  const years = hint?.years !== undefined ? clampYears(hint.years) : clampYears(veteranYears(age), faConstants.maxYears)
+  const years =
+    hint?.years !== undefined
+      ? clampYears(hint.years)
+      : clampYears(veteranYears(age), faConstants.maxYears)
   return {
     years,
     apy: apyHint ?? marketApyVal,
@@ -158,7 +184,8 @@ function freeAgentPool(state: LeagueState): PlayerId[] {
 
 /** Game-legal size applies from PRESEASON through the playoffs; offseason phases allow up to 90. */
 function rosterLimits(state: LeagueState): { min: number; max: number } {
-  const gate = state.phase === 'PRESEASON' || state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
+  const gate =
+    state.phase === 'PRESEASON' || state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
   return gate ? faConstants.gameRoster : { min: 0, max: faConstants.offseasonRosterMax }
 }
 
@@ -188,7 +215,10 @@ function findTeamOf(state: LeagueState, playerId: PlayerId): TeamId | undefined 
     .find((teamId) => state.teams[teamId]!.roster.some((r) => r.playerId === playerId))
 }
 
-function starterCounts(state: LeagueState, roster: readonly RosterSlot[]): Partial<Record<Position, number>> {
+function starterCounts(
+  state: LeagueState,
+  roster: readonly RosterSlot[],
+): Partial<Record<Position, number>> {
   const counts: Partial<Record<Position, number>> = {}
   for (const slot of roster) {
     const pos = state.players[slot.playerId]?.pos
@@ -207,7 +237,11 @@ function cutCandidates(state: LeagueState, roster: readonly RosterSlot[]): Roste
 }
 
 /** Size-driven cuts: prefer players off the real opening-day roster, then lowest consensus value. */
-function cutOrderBySize(state: LeagueState, roster: readonly RosterSlot[], keepSet: Set<PlayerId> | null): PlayerId[] {
+function cutOrderBySize(
+  state: LeagueState,
+  roster: readonly RosterSlot[],
+  keepSet: Set<PlayerId> | null,
+): PlayerId[] {
   return cutCandidates(state, roster)
     .sort((a, b) => {
       const aKeep = keepSet?.has(a.playerId) ? 1 : 0
@@ -220,7 +254,11 @@ function cutOrderBySize(state: LeagueState, roster: readonly RosterSlot[], keepS
 }
 
 /** Cap-driven cuts: prefer players off the real opening-day roster, then most expensive first. */
-function cutOrderByCap(state: LeagueState, roster: readonly RosterSlot[], keepSet: Set<PlayerId> | null): PlayerId[] {
+function cutOrderByCap(
+  state: LeagueState,
+  roster: readonly RosterSlot[],
+  keepSet: Set<PlayerId> | null,
+): PlayerId[] {
   return cutCandidates(state, roster)
     .sort((a, b) => {
       const aKeep = keepSet?.has(a.playerId) ? 1 : 0
@@ -232,7 +270,11 @@ function cutOrderByCap(state: LeagueState, roster: readonly RosterSlot[], keepSe
     .map((s) => s.playerId)
 }
 
-function realOpeningDayRoster(state: LeagueState, ctx: EngineContext, teamId: TeamId): Set<PlayerId> | null {
+function realOpeningDayRoster(
+  state: LeagueState,
+  ctx: EngineContext,
+  teamId: TeamId,
+): Set<PlayerId> | null {
   if (!isInHistory(ctx, state.season)) return null
   try {
     const sd = ctx.seasonData(state.season)
@@ -282,14 +324,22 @@ function releaseFrom(
   const roster = team.roster.filter((r) => r.playerId !== playerId)
   let s: LeagueState = {
     ...state,
-    teams: { ...state.teams, [teamId]: { ...team, roster, deadMoney: round2(team.deadMoney + deadCharge) } },
+    teams: {
+      ...state.teams,
+      [teamId]: { ...team, roster, deadMoney: round2(team.deadMoney + deadCharge) },
+    },
     freeAgents: [...state.freeAgents, playerId].sort(),
   }
   if (opts.diverge) s = ctx.modules.history.markDiverged(s, [playerId])
   return s
 }
 
-function release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState {
+function release(
+  state: LeagueState,
+  teamId: TeamId,
+  playerId: PlayerId,
+  ctx: EngineContext,
+): LeagueState {
   return releaseFrom(state, teamId, playerId, ctx, { diverge: true })
 }
 
@@ -299,7 +349,11 @@ function expireToFreeAgent(state: LeagueState, teamId: TeamId, playerId: PlayerI
   if (!team) return state
   const roster = team.roster.filter((r) => r.playerId !== playerId)
   if (roster.length === team.roster.length) return state
-  return { ...state, teams: { ...state.teams, [teamId]: { ...team, roster } }, freeAgents: [...state.freeAgents, playerId].sort() }
+  return {
+    ...state,
+    teams: { ...state.teams, [teamId]: { ...team, roster } },
+    freeAgents: [...state.freeAgents, playerId].sort(),
+  }
 }
 
 function resignAsk(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number {
@@ -309,17 +363,26 @@ function resignAsk(state: LeagueState, playerId: PlayerId, ctx: EngineContext): 
   return round2(market * (1 + jitter))
 }
 
-function resign(state: LeagueState, playerId: PlayerId, contract: Contract, ctx: EngineContext): LeagueState {
+function resign(
+  state: LeagueState,
+  playerId: PlayerId,
+  contract: Contract,
+  ctx: EngineContext,
+): LeagueState {
   const teamId = findTeamOf(state, playerId)
   if (!teamId) throw new Error(`fa.resign: player "${playerId}" is not on a roster`)
   const ask = resignAsk(state, playerId, ctx)
-  if (contract.apy < ask) throw new Error(`fa.resign: offer $${contract.apy}M is below the ask $${ask}M`)
+  if (contract.apy < ask)
+    throw new Error(`fa.resign: offer $${contract.apy}M is below the ask $${ask}M`)
   const team = state.teams[teamId]!
   const currentApy = team.roster.find((r) => r.playerId === playerId)!.contract.apy
   const projectedPayroll = payroll(state, teamId) - currentApy + contract.apy
-  if (projectedPayroll > capFor(state.season, ctx)) throw new Error(`fa.resign: contract would exceed the salary cap`)
+  if (projectedPayroll > capFor(state.season, ctx))
+    throw new Error(`fa.resign: contract would exceed the salary cap`)
   let s = ctx.modules.history.markDiverged(state, [playerId])
-  const roster = s.teams[teamId]!.roster.map((r) => (r.playerId === playerId ? { ...r, contract } : r))
+  const roster = s.teams[teamId]!.roster.map((r) =>
+    r.playerId === playerId ? { ...r, contract } : r,
+  )
   s = { ...s, teams: { ...s.teams, [teamId]: { ...s.teams[teamId]!, roster } } }
   return s
 }
@@ -330,7 +393,10 @@ function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueSt
   for (const teamId of Object.keys(s.teams).sort()) {
     const team = s.teams[teamId]
     if (!team || team.userControlled) continue
-    const expiringIds = team.roster.filter((slot) => slot.contract.years === 1).map((slot) => slot.playerId).sort()
+    const expiringIds = team.roster
+      .filter((slot) => slot.contract.years === 1)
+      .map((slot) => slot.playerId)
+      .sort()
     for (const playerId of expiringIds) {
       const player = s.players[playerId]
       const slot = s.teams[teamId]!.roster.find((r) => r.playerId === playerId)
@@ -343,11 +409,16 @@ function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueSt
         const marketVal = marketApy(s, playerId, ctx)
         const spaceAfter = capSpace(s, teamId, ctx) + slot.contract.apy - marketVal
         const decide = rng.fork(`resign:${teamId}:${playerId}`)
-        keep = ovr >= faConstants.aiResignOvrThreshold && spaceAfter >= 0 && decide.chance(faConstants.aiResignBaseChance)
+        keep =
+          ovr >= faConstants.aiResignOvrThreshold &&
+          spaceAfter >= 0 &&
+          decide.chance(faConstants.aiResignBaseChance)
       }
       if (keep) {
         const contract = synthesizeContract(s, playerId, s.season, ctx)
-        const roster = s.teams[teamId]!.roster.map((r) => (r.playerId === playerId ? { ...r, contract } : r))
+        const roster = s.teams[teamId]!.roster.map((r) =>
+          r.playerId === playerId ? { ...r, contract } : r,
+        )
         s = { ...s, teams: { ...s.teams, [teamId]: { ...s.teams[teamId]!, roster } } }
       } else {
         s = expireToFreeAgent(s, teamId, playerId)
@@ -364,7 +435,8 @@ function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueSt
 function teamQuality(state: LeagueState, teamId: TeamId): number {
   const roster = state.teams[teamId]?.roster ?? []
   if (roster.length === 0) return 0.5
-  const avg = roster.reduce((sum, r) => sum + (state.scouting[r.playerId]?.ovr ?? 60), 0) / roster.length
+  const avg =
+    roster.reduce((sum, r) => sum + (state.scouting[r.playerId]?.ovr ?? 60), 0) / roster.length
   return Math.min(1, Math.max(0, (avg - 55) / 30))
 }
 
@@ -412,14 +484,23 @@ function offer(
   return { accepted: true, state: s }
 }
 
-function pickFallbackTeam(state: LeagueState, ctx: EngineContext, playerId: PlayerId, rng: Rng): TeamId | undefined {
+function pickFallbackTeam(
+  state: LeagueState,
+  ctx: EngineContext,
+  playerId: PlayerId,
+  rng: Rng,
+): TeamId | undefined {
   const player = state.players[playerId]!
   const cost = marketApy(state, playerId, ctx)
   const candidates = Object.keys(state.teams)
     .sort()
     .filter((id) => {
       const t = state.teams[id]!
-      return !t.userControlled && t.roster.length < faConstants.offseasonRosterMax && capSpace(state, id, ctx) >= cost
+      return (
+        !t.userControlled &&
+        t.roster.length < faConstants.offseasonRosterMax &&
+        capSpace(state, id, ctx) >= cost
+      )
     })
   if (candidates.length === 0) return undefined
   const scored = candidates.map((id) => {
@@ -481,7 +562,11 @@ function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
     }
 
     guard = 0
-    while (payroll(s, teamId) > capFor(s.season, ctx) && (s.teams[teamId]?.roster.length ?? 0) > min && guard++ < 200) {
+    while (
+      payroll(s, teamId) > capFor(s.season, ctx) &&
+      (s.teams[teamId]?.roster.length ?? 0) > min &&
+      guard++ < 200
+    ) {
       const roster = s.teams[teamId]!.roster
       const cutId = cutOrderByCap(s, roster, keepSet)[0]
       if (cutId === undefined) break
@@ -507,7 +592,13 @@ function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
       const team = s.teams[teamId]!
       s = {
         ...s,
-        teams: { ...s.teams, [teamId]: { ...team, roster: [...team.roster, { playerId: body, teamId, contract: minBody }] } },
+        teams: {
+          ...s.teams,
+          [teamId]: {
+            ...team,
+            roster: [...team.roster, { playerId: body, teamId, contract: minBody }],
+          },
+        },
         freeAgents: s.freeAgents.filter((id) => id !== body),
       }
     }
@@ -515,7 +606,10 @@ function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
   return s
 }
 
-function rolloverContracts(state: LeagueState, _ctx: EngineContext): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> } {
+function rolloverContracts(
+  state: LeagueState,
+  _ctx: EngineContext,
+): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> } {
   let teams = state.teams
   let freeAgents = state.freeAgents
   const expiring: Record<TeamId, PlayerId[]> = {}

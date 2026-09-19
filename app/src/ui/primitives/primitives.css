@@ -84,7 +84,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--sp-2);
-  transition: transform var(--t-quick) var(--ease-out), box-shadow var(--t-quick) var(--ease-out);
+  transition:
+    transform var(--t-quick) var(--ease-out),
+    box-shadow var(--t-quick) var(--ease-out);
 }
 .gg-button:hover:not(:disabled) {
   box-shadow: var(--shadow-hover);

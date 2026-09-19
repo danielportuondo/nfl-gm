@@ -5,15 +5,33 @@
  * entry is a scouting-based fallback, not a copy of the hidden trajectory.
  */
 import {
-  SeasonNotLoadedError, historyStub,
-  type EngineContext, type HistoryModule, type LeagueState, type Player, type PlayerId, type RosterSlot,
-  type Season, type SeasonPlayer, type SnapEvent, type TeamId, type TrueTrajectory,
+  SeasonNotLoadedError,
+  historyStub,
+  type EngineContext,
+  type HistoryModule,
+  type LeagueState,
+  type Player,
+  type PlayerId,
+  type RosterSlot,
+  type Season,
+  type SeasonPlayer,
+  type SnapEvent,
+  type TeamId,
+  type TrueTrajectory,
 } from '@contracts/index'
 
 function toPlayer(sp: SeasonPlayer): Player {
   return {
-    id: sp.id, name: sp.name, pos: sp.pos, birthYear: sp.birthYear, college: sp.college,
-    heightIn: sp.heightIn, weightLb: sp.weightLb, draft: sp.draft, real: sp.real, rookieSeason: sp.rookieSeason,
+    id: sp.id,
+    name: sp.name,
+    pos: sp.pos,
+    birthYear: sp.birthYear,
+    college: sp.college,
+    heightIn: sp.heightIn,
+    weightLb: sp.weightLb,
+    draft: sp.draft,
+    real: sp.real,
+    rookieSeason: sp.rookieSeason,
   }
 }
 
@@ -64,10 +82,17 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
       // still around; one already gone (retired earlier, or sitting out a year) is left alone so he can
       // come back when a later season lists him again.
       const active = currentTeam !== null || freeAgentSet.has(id)
-      if (active) placements.push({ id, from: currentTeam, to: null, reason: 'RETIRED', isNewArrival: false })
+      if (active)
+        placements.push({ id, from: currentTeam, to: null, reason: 'RETIRED', isNewArrival: false })
       continue
     }
-    placements.push({ id, from: currentTeam, to: sp.team, reason: isNewArrival ? 'NEW_ARRIVAL' : 'HISTORY', isNewArrival })
+    placements.push({
+      id,
+      from: currentTeam,
+      to: sp.team,
+      reason: isNewArrival ? 'NEW_ARRIVAL' : 'HISTORY',
+      isNewArrival,
+    })
   }
 
   let players = state.players
@@ -85,7 +110,8 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
   let teams = state.teams
   for (const [teamId, team] of Object.entries(teams)) {
     const filtered = team.roster.filter((slot) => !placedIds.has(slot.playerId))
-    if (filtered.length !== team.roster.length) teams = { ...teams, [teamId]: { ...team, roster: filtered } }
+    if (filtered.length !== team.roster.length)
+      teams = { ...teams, [teamId]: { ...team, roster: filtered } }
   }
 
   let freeAgents = state.freeAgents.filter((id) => !placedIds.has(id))
@@ -119,9 +145,18 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
   freeAgents = [...new Set(freeAgents)].sort()
 
   const events: SnapEvent[] = [
-    ...placements.map((pl) => ({ season, playerId: pl.id, fromTeam: pl.from, toTeam: pl.reason === 'RETIRED' ? null : pl.to, reason: pl.reason })),
+    ...placements.map((pl) => ({
+      season,
+      playerId: pl.id,
+      fromTeam: pl.from,
+      toTeam: pl.reason === 'RETIRED' ? null : pl.to,
+      reason: pl.reason,
+    })),
     ...divergedKept.sort().map((id) => ({
-      season, playerId: id, fromTeam: currentTeamOf.get(id) ?? null, toTeam: currentTeamOf.get(id) ?? null,
+      season,
+      playerId: id,
+      fromTeam: currentTeamOf.get(id) ?? null,
+      toTeam: currentTeamOf.get(id) ?? null,
       reason: 'DIVERGED_KEPT' as const,
     })),
   ]
@@ -133,7 +168,10 @@ export const history: HistoryModule = {
   ...historyStub,
   snapToHistory: snapToHistoryImpl,
   markDiverged: (state, playerIds) =>
-    playerIds.every((id) => state.divergence.has(id)) ? state : { ...state, divergence: new Set([...state.divergence, ...playerIds]) },
+    playerIds.every((id) => state.divergence.has(id))
+      ? state
+      : { ...state, divergence: new Set([...state.divergence, ...playerIds]) },
   isDiverged: (state, playerId) => state.divergence.has(playerId),
-  snapLog: (state, season) => (season === undefined ? state.snapLog : state.snapLog.filter((e) => e.season === season)),
+  snapLog: (state, season) =>
+    season === undefined ? state.snapLog : state.snapLog.filter((e) => e.season === season),
 }

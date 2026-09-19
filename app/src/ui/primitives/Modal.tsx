@@ -46,7 +46,10 @@ export function Modal({ title, onClose, children, footer }: ModalProps) {
   }, [onClose])
 
   return (
-    <div className="gg-modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className="gg-modal-backdrop"
+      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
+    >
       <div
         className="gg-modal"
         role="dialog"

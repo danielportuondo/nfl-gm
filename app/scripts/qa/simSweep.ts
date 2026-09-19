@@ -53,7 +53,14 @@ function correlation(xs: readonly number[], ys: readonly number[]): number {
 async function seasonsMode(): Promise<void> {
   const manifest = readManifest()
   const rows: string[][] = [
-    ['season', 'corr(strength, real W)', 'corr(mean consensus, real W)', 'sd(strength)', 'free agents', 'rostered real'],
+    [
+      'season',
+      'corr(strength, real W)',
+      'corr(mean consensus, real W)',
+      'sd(strength)',
+      'free agents',
+      'rostered real',
+    ],
   ]
   for (const season of manifest.seasons.filter((s) => s <= manifest.latestRealSeason - 1)) {
     const { state, ctx, realWins } = await loadSeason(season)
@@ -72,7 +79,9 @@ async function seasonsMode(): Promise<void> {
       String(TEAM_IDS.reduce((n, t) => n + state.teams[t]!.roster.length, 0)),
     ])
   }
-  console.log('\ncorr(team strength, real wins) by season — the ceiling on what the sim can report\n')
+  console.log(
+    '\ncorr(team strength, real wins) by season — the ceiling on what the sim can report\n',
+  )
   console.log(table(rows))
 }
 
@@ -83,7 +92,13 @@ async function kMode(sims: number): Promise<void> {
     const loaded = await loadSeason(season)
     for (const k of [2.5, 2.3, 2.1, 1.9]) {
       simConstants.k = k
-      const r = calibrate({ sims, seed: 'ksweep', state: loaded.state, ctx: loaded.ctx, realWins: loaded.realWins })
+      const r = calibrate({
+        sims,
+        seed: 'ksweep',
+        state: loaded.state,
+        ctx: loaded.ctx,
+        realWins: loaded.realWins,
+      })
       rows.push([
         k.toFixed(2),
         String(season),
@@ -102,10 +117,18 @@ async function kMode(sims: number): Promise<void> {
 async function injuriesMode(sims: number): Promise<void> {
   const base = injuryConstants.rateScale
   const loaded = await loadSeason(2015)
-  const rows: string[][] = [['rateScale', 'inj / team-game', 'multi-week / team-game', 'sd(wins)', 'corr(real)']]
+  const rows: string[][] = [
+    ['rateScale', 'inj / team-game', 'multi-week / team-game', 'sd(wins)', 'corr(real)'],
+  ]
   for (const scale of [2.8, 1.8, 1.7, 1.6, 1.5, 1.0]) {
     injuryConstants.rateScale = scale
-    const r = calibrate({ sims, seed: 'injsweep', state: loaded.state, ctx: loaded.ctx, realWins: loaded.realWins })
+    const r = calibrate({
+      sims,
+      seed: 'injsweep',
+      state: loaded.state,
+      ctx: loaded.ctx,
+      realWins: loaded.realWins,
+    })
     rows.push([
       scale.toFixed(1),
       r.injuriesPerTeamGame.toFixed(2),
@@ -115,7 +138,9 @@ async function injuriesMode(sims: number): Promise<void> {
     ])
   }
   injuryConstants.rateScale = base
-  console.log('\ninjuries against injuryConstants.rateScale (2015) — §6.3 wants 1.0–1.5 MULTI-WEEK per team-game\n')
+  console.log(
+    '\ninjuries against injuryConstants.rateScale (2015) — §6.3 wants 1.0–1.5 MULTI-WEEK per team-game\n',
+  )
   console.log(table(rows))
 }
 
@@ -123,7 +148,9 @@ async function overtimeMode(sims: number): Promise<void> {
   const baseWindow = scoreConstants.otWindow
   const baseFix = scoreConstants.oneMarginFixP
   const loaded = await loadSeason(2023)
-  const rows: string[][] = [['otWindow', 'oneMarginFixP', 'OT %', '1-pt games %', 'tie %', 'sd(wins)']]
+  const rows: string[][] = [
+    ['otWindow', 'oneMarginFixP', 'OT %', '1-pt games %', 'tie %', 'sd(wins)'],
+  ]
   for (const [w, f] of [
     [1, 0.72],
     [1.15, 0.55],
@@ -145,7 +172,9 @@ async function overtimeMode(sims: number): Promise<void> {
   }
   scoreConstants.otWindow = baseWindow
   scoreConstants.oneMarginFixP = baseFix
-  console.log('\novertime / 1-point games (2023) — real NFL is ≈ 6 % OT and ≈ 2 % one-point games\n')
+  console.log(
+    '\novertime / 1-point games (2023) — real NFL is ≈ 6 % OT and ≈ 2 % one-point games\n',
+  )
   console.log(table(rows))
 }
 

@@ -30,7 +30,12 @@ describe('simSeason auto-navigation', () => {
       modules: { league: { ...defaultEngineModules.league, simWeek: fakeSimWeek } },
     })
 
-    await store.getState().actions.newGame({ startSeason: base.season, userTeam: base.userTeam, horizonSeasons: 3, settings: base.settings })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
     store.setState((s) => ({ state: { ...s.state!, phase: 'REGULAR' } }))
 
     await store.getState().actions.simSeason()

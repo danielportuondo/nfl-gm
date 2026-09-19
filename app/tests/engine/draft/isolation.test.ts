@@ -10,7 +10,8 @@ import { draftContext, stateAtDraft } from './fixture'
 
 const dir = fileURLToPath(new URL('../../../src/engine/draft/', import.meta.url))
 const TRUTH_OWNER = 'prospects.ts'
-const stripComments = (code: string) => code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
+const stripComments = (code: string) =>
+  code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
 
 describe('engine/draft hidden-data isolation', () => {
   it('only prospects.ts mentions truth or trajectories', () => {
@@ -18,7 +19,9 @@ describe('engine/draft hidden-data isolation', () => {
       .filter((f) => f.endsWith('.ts') && f !== TRUTH_OWNER)
       .filter((f) => {
         const code = stripComments(readFileSync(dir + f, 'utf8'))
-        return /\.truth\b/.test(code) || /\btrajectories\b/.test(code) || /\bTrueTrajectory\b/.test(code)
+        return (
+          /\.truth\b/.test(code) || /\btrajectories\b/.test(code) || /\bTrueTrajectory\b/.test(code)
+        )
       })
     expect(offenders).toEqual([])
   })
@@ -44,7 +47,9 @@ describe('engine/draft hidden-data isolation', () => {
       expect(loaded.players[prospect.id], prospect.id).toBeDefined()
       expect(loaded.players[prospect.id]!.draft, prospect.id).toBeNull()
       expect(loaded.scouting[prospect.id], prospect.id).toEqual(prospect.scouting)
-      expect(Object.keys(loaded.truth[prospect.id]!.bySeason).length, prospect.id).toBeGreaterThan(0)
+      expect(Object.keys(loaded.truth[prospect.id]!.bySeason).length, prospect.id).toBeGreaterThan(
+        0,
+      )
     }
   })
 })

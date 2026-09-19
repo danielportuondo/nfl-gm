@@ -48,12 +48,12 @@ function makeRng(streamKey: string): Rng {
 
   const chance = (p: number): boolean => next() < p
 
-  const pick = <T,>(items: readonly T[]): T => {
+  const pick = <T>(items: readonly T[]): T => {
     if (items.length === 0) throw new Error('rng.pick: empty array')
     return items[int(0, items.length - 1)]!
   }
 
-  const shuffle = <T,>(items: readonly T[]): T[] => {
+  const shuffle = <T>(items: readonly T[]): T[] => {
     const out = items.slice()
     for (let i = out.length - 1; i > 0; i--) {
       const j = int(0, i)

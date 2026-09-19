@@ -30,7 +30,14 @@ export function Meter({ value, label, min = 0, max = 1, invert = false }: MeterP
   const tone = toneFor(clamped, invert)
   return (
     <div className="gg-meter">
-      <div className="gg-meter__row" role="meter" aria-valuenow={value} aria-valuemin={min} aria-valuemax={max} aria-label={label}>
+      <div
+        className="gg-meter__row"
+        role="meter"
+        aria-valuenow={value}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-label={label}
+      >
         <div className="gg-meter__track" aria-hidden="true">
           {Array.from({ length: SEGMENTS }, (_, i) => (
             <span

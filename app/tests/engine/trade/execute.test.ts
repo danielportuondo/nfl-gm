@@ -5,7 +5,17 @@
 import { describe, expect, it } from 'vitest'
 import { rng } from '@engine/rng'
 import { trade } from '@engine/trade'
-import { AI, ELITE, SCRUB, STARTER, giftPickAt, putPlayer, scenario, trimRoster, userProposal } from './helpers'
+import {
+  AI,
+  ELITE,
+  SCRUB,
+  STARTER,
+  giftPickAt,
+  putPlayer,
+  scenario,
+  trimRoster,
+  userProposal,
+} from './helpers'
 
 describe('trade.execute', () => {
   it('moves players and picks, marks divergence, and leaves the input untouched', () => {
@@ -20,7 +30,11 @@ describe('trade.execute', () => {
       { players: ['mine'], picks: [mineFirst.ref] },
       { players: ['theirs'], picks: [theirsFirst.ref] },
     )
-    const before = JSON.stringify({ teams: state.teams, picks: state.picks, divergence: [...state.divergence] })
+    const before = JSON.stringify({
+      teams: state.teams,
+      picks: state.picks,
+      divergence: [...state.divergence],
+    })
 
     const after = trade.execute(state, proposal, base.ctx)
 
@@ -35,12 +49,17 @@ describe('trade.execute', () => {
     expect(user.depthChart.WR).not.toContain('mine')
 
     const ownerOf = (ref: { season: number; round: number; originalTeam: string }) =>
-      after.picks.find((p) => p.season === ref.season && p.round === ref.round && p.originalTeam === ref.originalTeam)!.owner
+      after.picks.find(
+        (p) =>
+          p.season === ref.season && p.round === ref.round && p.originalTeam === ref.originalTeam,
+      )!.owner
     expect(ownerOf(mineFirst.ref)).toBe(AI)
     expect(ownerOf(theirsFirst.ref)).toBe(state.userTeam)
 
     expect([...after.divergence].sort()).toEqual(['mine', 'theirs'])
-    expect(JSON.stringify({ teams: state.teams, picks: state.picks, divergence: [...state.divergence] })).toBe(before)
+    expect(
+      JSON.stringify({ teams: state.teams, picks: state.picks, divergence: [...state.divergence] }),
+    ).toBe(before)
   })
 })
 
@@ -62,7 +81,9 @@ describe('trade.submit', () => {
     const proposal = userProposal(state, { players: [SCRUB.id] }, { players: [ELITE.id] })
     const outcome = trade.submit(state, proposal, base.ctx, rng.fromSeed('t', 'submit', 2))
     expect(outcome.accepted).toBe(false)
-    expect(outcome.state.teams[AI]!.tradeAnnoyance).toBe(state.teams[AI]!.tradeAnnoyance + trade.constants.annoyancePerLowball)
+    expect(outcome.state.teams[AI]!.tradeAnnoyance).toBe(
+      state.teams[AI]!.tradeAnnoyance + trade.constants.annoyancePerLowball,
+    )
     expect(outcome.state.teams[AI]!.roster.map((r) => r.playerId)).toContain(ELITE.id)
   })
 
@@ -72,7 +93,9 @@ describe('trade.submit', () => {
     state = putPlayer(state, state.userTeam, { ...STARTER, id: 'mine', ovr: 80, apy: 2 })
     state = putPlayer(state, AI, { ...STARTER, id: 'theirs', ovr: 82, apy: 1 })
     const proposal = userProposal(state, { players: ['mine'] }, { players: ['theirs'] })
-    const outcomes = Array.from({ length: 8 }, (_, i) => trade.submit(state, proposal, base.ctx, rng.fromSeed('t', 'counter', i)))
+    const outcomes = Array.from({ length: 8 }, (_, i) =>
+      trade.submit(state, proposal, base.ctx, rng.fromSeed('t', 'counter', i)),
+    )
     const counter = outcomes.find((o) => o.counter)?.counter
     expect(counter).toBeTruthy()
     expect(counter!.initiatedBy).toBe('AI')
@@ -116,8 +139,9 @@ describe('trade.submit', () => {
     const proposal = userProposal(state, { players: ['mine'] }, { players: ['theirs'] })
     const p = trade.evaluate(state, proposal, base.ctx).p
     const trials = 200
-    const accepted = Array.from({ length: trials }, (_, i) =>
-      trade.submit(state, proposal, base.ctx, rng.fromSeed('roll', i)).accepted,
+    const accepted = Array.from(
+      { length: trials },
+      (_, i) => trade.submit(state, proposal, base.ctx, rng.fromSeed('roll', i)).accepted,
     ).filter(Boolean).length
     expect(Math.abs(accepted / trials - p)).toBeLessThan(0.1)
   })
@@ -130,13 +154,20 @@ describe('compensatory picks', () => {
     // A compensatory pick: same season, round and original team, its own overall number.
     const comp = { ...own, pick: 3 * 32 + 40 }
     const state = { ...base.state, picks: [...base.state.picks, comp] }
-    const compRef = { season: comp.season, round: comp.round, originalTeam: comp.originalTeam, pick: comp.pick }
+    const compRef = {
+      season: comp.season,
+      round: comp.round,
+      originalTeam: comp.originalTeam,
+      pick: comp.pick,
+    }
     const proposal = userProposal(state, { players: [] }, { picks: [compRef] })
 
     const after = trade.execute(state, proposal, base.ctx)
 
     const owners = after.picks
-      .filter((p) => p.season === own.season && p.round === 3 && p.originalTeam === own.originalTeam)
+      .filter(
+        (p) => p.season === own.season && p.round === 3 && p.originalTeam === own.originalTeam,
+      )
       .map((p) => [p.pick, p.owner])
     expect(owners).toContainEqual([comp.pick, state.userTeam])
     expect(owners).toContainEqual([own.pick, AI])

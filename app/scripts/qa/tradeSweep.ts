@@ -78,11 +78,23 @@ async function main(): Promise<void> {
     { label: 'ovrExp 2.4', apply: () => void (valueConstants.ovrExp = 2.4) },
     { label: 'minPlayerValue 2.0', apply: () => void (valueConstants.minPlayerValue = 2.0) },
     { label: 'scale 8', apply: () => void (tradeConstants.scale = 8) },
-    { label: 'strict margin 0.30', apply: () => void (tradeConstants.marginByStrictness.strict = 0.3) },
+    {
+      label: 'strict margin 0.30',
+      apply: () => void (tradeConstants.marginByStrictness.strict = 0.3),
+    },
   ]
 
   const rows: string[][] = [
-    ['setting', 'deals', 'accepted', 'accept%', 'mean p', 'consensus paid', 'true gained', 'total true'],
+    [
+      'setting',
+      'deals',
+      'accepted',
+      'accept%',
+      'mean p',
+      'consensus paid',
+      'true gained',
+      'total true',
+    ],
   ]
   for (const knob of grid) {
     reset()
@@ -91,7 +103,9 @@ async function main(): Promise<void> {
   }
   reset()
 
-  console.log(`\ntrade constant sweep — ${season}, ${attempts} greedy hindsight attempts at "strict"\n`)
+  console.log(
+    `\ntrade constant sweep — ${season}, ${attempts} greedy hindsight attempts at "strict"\n`,
+  )
   console.log(table(rows))
   console.log('')
 }

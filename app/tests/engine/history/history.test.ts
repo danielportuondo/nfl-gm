@@ -14,10 +14,17 @@ import { makeFakeContext, makeFakeModules } from '../fakes'
 import { loadRealContext, readManifest, seasonsForNewGame } from '../../../scripts/lib/publicData'
 
 const SEASON = 2015
-const SETTINGS = { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true } as const
+const SETTINGS = {
+  tradeStrictness: 'balanced',
+  aiOfferFrequency: 'normal',
+  injuries: true,
+} as const
 
 function newGame(ctx: EngineContext, seed: string): LeagueState {
-  return ctx.modules.league.newGame({ seed, startSeason: SEASON, userTeam: 'IND', horizonSeasons: 1, settings: SETTINGS }, ctx)
+  return ctx.modules.league.newGame(
+    { seed, startSeason: SEASON, userTeam: 'IND', horizonSeasons: 1, settings: SETTINGS },
+    ctx,
+  )
 }
 
 describe('history.snapToHistory (real 2015 -> 2016)', () => {

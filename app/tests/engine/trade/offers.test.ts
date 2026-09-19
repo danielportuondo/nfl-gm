@@ -8,10 +8,19 @@ import { rng } from '@engine/rng'
 import { trade } from '@engine/trade'
 import { draftRoomOnUserClock, scenario } from './helpers'
 
-const mirror = (proposal: TradeProposal): TradeProposal => ({ ...proposal, offer: proposal.request, request: proposal.offer })
+const mirror = (proposal: TradeProposal): TradeProposal => ({
+  ...proposal,
+  offer: proposal.request,
+  request: proposal.offer,
+})
 
 function inSeason(state: LeagueState, frequency: GameSettings['aiOfferFrequency']): LeagueState {
-  return { ...state, phase: 'REGULAR', week: 6, settings: { ...state.settings, aiOfferFrequency: frequency } }
+  return {
+    ...state,
+    phase: 'REGULAR',
+    week: 6,
+    settings: { ...state.settings, aiOfferFrequency: frequency },
+  }
 }
 
 describe('trade.generateAiOffers — in season', () => {
@@ -19,7 +28,9 @@ describe('trade.generateAiOffers — in season', () => {
     const base = scenario()
     const state = inSeason(base.state, 'aggressive')
     const seeds = Array.from({ length: 12 }, (_, i) => i)
-    const all = seeds.flatMap((i) => trade.generateAiOffers(state, base.ctx, rng.fromSeed('offers', i), 'season'))
+    const all = seeds.flatMap((i) =>
+      trade.generateAiOffers(state, base.ctx, rng.fromSeed('offers', i), 'season'),
+    )
     expect(all.length).toBeGreaterThan(0)
     for (const proposal of all) {
       expect(proposal.initiatedBy).toBe('AI')
@@ -35,8 +46,15 @@ describe('trade.generateAiOffers — in season', () => {
   it('respects aiOfferFrequency', () => {
     const base = scenario()
     const counts = (frequency: GameSettings['aiOfferFrequency']) =>
-      Array.from({ length: 20 }, (_, i) =>
-        trade.generateAiOffers(inSeason(base.state, frequency), base.ctx, rng.fromSeed('freq', i), 'season').length,
+      Array.from(
+        { length: 20 },
+        (_, i) =>
+          trade.generateAiOffers(
+            inSeason(base.state, frequency),
+            base.ctx,
+            rng.fromSeed('freq', i),
+            'season',
+          ).length,
       )
     expect(Math.max(...counts('rare'))).toBeLessThanOrEqual(1)
     expect(Math.max(...counts('normal'))).toBeLessThanOrEqual(2)
@@ -46,8 +64,18 @@ describe('trade.generateAiOffers — in season', () => {
   it('is deterministic for a given seed', () => {
     const base = scenario()
     const state = inSeason(base.state, 'aggressive')
-    const once = trade.generateAiOffers(state, base.ctx, rng.fromSeed(state.seed, 2015, 6, 'aiOffers'), 'season')
-    const twice = trade.generateAiOffers(state, base.ctx, rng.fromSeed(state.seed, 2015, 6, 'aiOffers'), 'season')
+    const once = trade.generateAiOffers(
+      state,
+      base.ctx,
+      rng.fromSeed(state.seed, 2015, 6, 'aiOffers'),
+      'season',
+    )
+    const twice = trade.generateAiOffers(
+      state,
+      base.ctx,
+      rng.fromSeed(state.seed, 2015, 6, 'aiOffers'),
+      'season',
+    )
     expect(JSON.stringify(once)).toBe(JSON.stringify(twice))
   })
 })
@@ -67,7 +95,14 @@ describe('trade.generateAiOffers — draft', () => {
     const flat = all.flat()
     expect(flat.length).toBeGreaterThan(0)
     for (const proposal of flat) {
-      expect(proposal.request.picks).toEqual([{ season: target.season, round: target.round, originalTeam: target.originalTeam, pick: target.pick }])
+      expect(proposal.request.picks).toEqual([
+        {
+          season: target.season,
+          round: target.round,
+          originalTeam: target.originalTeam,
+          pick: target.pick,
+        },
+      ])
       expect(proposal.request.players).toEqual([])
       expect(proposal.offer.picks.length).toBeGreaterThan(0)
       const own = trade.evaluate(state, mirror(proposal), base.ctx)
@@ -82,9 +117,16 @@ describe('trade.generateAiOffers — draft', () => {
     const room = state.draftRoom!
     const elsewhere: LeagueState = {
       ...state,
-      draftRoom: { ...room, currentPickIndex: room.order.findIndex((pick) => pick.owner !== state.userTeam) },
+      draftRoom: {
+        ...room,
+        currentPickIndex: room.order.findIndex((pick) => pick.owner !== state.userTeam),
+      },
     }
-    expect(trade.generateAiOffers(elsewhere, base.ctx, rng.fromSeed('none', 1), 'draft')).toEqual([])
-    expect(trade.generateAiOffers(base.state, base.ctx, rng.fromSeed('none', 1), 'draft')).toEqual([])
+    expect(trade.generateAiOffers(elsewhere, base.ctx, rng.fromSeed('none', 1), 'draft')).toEqual(
+      [],
+    )
+    expect(trade.generateAiOffers(base.state, base.ctx, rng.fromSeed('none', 1), 'draft')).toEqual(
+      [],
+    )
   })
 })

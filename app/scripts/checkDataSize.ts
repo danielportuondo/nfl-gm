@@ -12,7 +12,14 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
 const DATA_ROOT = join(import.meta.dirname, '..', 'public', 'data')
-const INITIAL_LOAD_FILES = ['manifest.json', 'teams.json', 'cap.json', 'curves.json', 'injuryModel.json', 'trajectories.json']
+const INITIAL_LOAD_FILES = [
+  'manifest.json',
+  'teams.json',
+  'cap.json',
+  'curves.json',
+  'injuryModel.json',
+  'trajectories.json',
+]
 const INITIAL_LOAD_BUDGET_BYTES = 1.5 * 1024 * 1024
 const SEASON_FILE_BUDGET_BYTES = 1 * 1024 * 1024
 
@@ -47,7 +54,9 @@ function printTable(rows: FileSize[]): void {
   const nameWidth = Math.max(4, ...rows.map((r) => r.path.length))
   console.log(`${'file'.padEnd(nameWidth)}  raw        gzip`)
   for (const r of rows) {
-    console.log(`${r.path.padEnd(nameWidth)}  ${fmtKB(r.rawBytes).padStart(9)}  ${fmtKB(r.gzipBytes).padStart(9)}`)
+    console.log(
+      `${r.path.padEnd(nameWidth)}  ${fmtKB(r.rawBytes).padStart(9)}  ${fmtKB(r.gzipBytes).padStart(9)}`,
+    )
   }
 }
 
@@ -59,9 +68,13 @@ function main(): void {
 
   console.log('Initial load files:')
   printTable(initialRows)
-  console.log(`Initial load total (gzip): ${fmtKB(initialTotal)} / budget ${fmtKB(INITIAL_LOAD_BUDGET_BYTES)}`)
+  console.log(
+    `Initial load total (gzip): ${fmtKB(initialTotal)} / budget ${fmtKB(INITIAL_LOAD_BUDGET_BYTES)}`,
+  )
   if (initialTotal > INITIAL_LOAD_BUDGET_BYTES) {
-    console.error(`FAIL: initial load exceeds budget by ${fmtKB(initialTotal - INITIAL_LOAD_BUDGET_BYTES)}`)
+    console.error(
+      `FAIL: initial load exceeds budget by ${fmtKB(initialTotal - INITIAL_LOAD_BUDGET_BYTES)}`,
+    )
     failed = true
   }
   console.log('')
@@ -77,7 +90,9 @@ function main(): void {
   const oversized = seasonRows.filter((r) => r.gzipBytes > SEASON_FILE_BUDGET_BYTES)
   if (oversized.length > 0) {
     console.error('')
-    console.error(`FAIL: ${oversized.length} season file(s) exceed the ${fmtKB(SEASON_FILE_BUDGET_BYTES)} gzip budget:`)
+    console.error(
+      `FAIL: ${oversized.length} season file(s) exceed the ${fmtKB(SEASON_FILE_BUDGET_BYTES)} gzip budget:`,
+    )
     for (const r of oversized) console.error(`  ${r.path}: ${fmtKB(r.gzipBytes)}`)
     failed = true
   }

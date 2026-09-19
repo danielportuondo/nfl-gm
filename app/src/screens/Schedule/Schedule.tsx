@@ -28,7 +28,14 @@ function resultText(row: UserGameRow): string {
 }
 
 /** Week-by-week for the user's team plus league scores for the selected week (docs/DESIGN.md §11). */
-export function Schedule({ state, data, busy, onSimWeek, onSimToNextEvent, onSimSeason }: ScheduleProps) {
+export function Schedule({
+  state,
+  data,
+  busy,
+  onSimWeek,
+  onSimToNextEvent,
+  onSimSeason,
+}: ScheduleProps) {
   const userGames = useMemo(() => {
     const rows: UserGameRow[] = []
     for (const g of state.schedule) {
@@ -43,9 +50,17 @@ export function Schedule({ state, data, busy, onSimWeek, onSimToNextEvent, onSim
   }, [state.schedule, state.results, state.season, state.userTeam])
 
   const [selectedWeek, setSelectedWeek] = useState<number>(state.week || 1)
-  const weeks = useMemo(() => [...new Set(state.schedule.filter((g) => g.season === state.season).map((g) => g.week))].sort((a, b) => a - b), [state.schedule, state.season])
+  const weeks = useMemo(
+    () =>
+      [...new Set(state.schedule.filter((g) => g.season === state.season).map((g) => g.week))].sort(
+        (a, b) => a - b,
+      ),
+    [state.schedule, state.season],
+  )
 
-  const weekGames = state.schedule.filter((g) => g.season === state.season && g.week === selectedWeek)
+  const weekGames = state.schedule.filter(
+    (g) => g.season === state.season && g.week === selectedWeek,
+  )
 
   const columns: Column<UserGameRow>[] = [
     { key: 'week', header: 'Week', numeric: true, render: (r) => r.week },
@@ -71,13 +86,31 @@ export function Schedule({ state, data, busy, onSimWeek, onSimToNextEvent, onSim
       <div className="gg-col-12">
         <Panel title="Sim controls" revealIndex={0}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-3)' }}>
-            <Button type="button" variant="primary" busy={busy?.simWeek} busyLabel="Simming…" onClick={onSimWeek}>
+            <Button
+              type="button"
+              variant="primary"
+              busy={busy?.simWeek}
+              busyLabel="Simming…"
+              onClick={onSimWeek}
+            >
               Sim week
             </Button>
-            <Button type="button" variant="secondary" busy={busy?.simToNextEvent} busyLabel="Simming…" onClick={onSimToNextEvent}>
+            <Button
+              type="button"
+              variant="secondary"
+              busy={busy?.simToNextEvent}
+              busyLabel="Simming…"
+              onClick={onSimToNextEvent}
+            >
               Sim to next event
             </Button>
-            <Button type="button" variant="secondary" busy={busy?.simSeason} busyLabel="Simming…" onClick={onSimSeason}>
+            <Button
+              type="button"
+              variant="secondary"
+              busy={busy?.simSeason}
+              busyLabel="Simming…"
+              onClick={onSimSeason}
+            >
               Sim season
             </Button>
           </div>
@@ -86,7 +119,13 @@ export function Schedule({ state, data, busy, onSimWeek, onSimToNextEvent, onSim
 
       <div className="gg-col-6">
         <Panel title="Your schedule" variant="sunken" revealIndex={1}>
-          <Table columns={columns} rows={userGames} rowKey={(r) => `${r.week}`} caption={`${state.userTeam} ${state.season} schedule`} dense />
+          <Table
+            columns={columns}
+            rows={userGames}
+            rowKey={(r) => `${r.week}`}
+            caption={`${state.userTeam} ${state.season} schedule`}
+            dense
+          />
         </Panel>
       </div>
 
@@ -98,7 +137,10 @@ export function Schedule({ state, data, busy, onSimWeek, onSimToNextEvent, onSim
           action={
             <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
               Week
-              <select value={selectedWeek} onChange={(e) => setSelectedWeek(Number(e.target.value))}>
+              <select
+                value={selectedWeek}
+                onChange={(e) => setSelectedWeek(Number(e.target.value))}
+              >
                 {weeks.map((w) => (
                   <option key={w} value={w}>
                     {w}
@@ -111,13 +153,24 @@ export function Schedule({ state, data, busy, onSimWeek, onSimToNextEvent, onSim
           {weekGames.length === 0 ? (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>No games scheduled this week.</p>
           ) : (
-            <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+            <ul
+              style={{
+                margin: 0,
+                paddingLeft: 0,
+                listStyle: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--sp-2)',
+              }}
+            >
               {weekGames.map((g) => {
                 const result = state.results.find((r) => r.gameId === g.id)
                 return (
                   <li key={g.id} className="tabular-nums">
                     {data.teams[g.away]?.abbr ?? g.away} @ {data.teams[g.home]?.abbr ?? g.home}
-                    {result ? ` — ${result.awayScore}-${result.homeScore}${result.overtime ? ' OT' : ''}` : ' — not played'}
+                    {result
+                      ? ` — ${result.awayScore}-${result.homeScore}${result.overtime ? ' OT' : ''}`
+                      : ' — not played'}
                   </li>
                 )
               })}

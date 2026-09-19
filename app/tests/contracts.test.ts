@@ -1,6 +1,12 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { DATA_SCHEMAS, SavedLeagueSchema, TEAM_IDS, toSaved, type DataSchemaName } from '@contracts/index'
+import {
+  DATA_SCHEMAS,
+  SavedLeagueSchema,
+  TEAM_IDS,
+  toSaved,
+  type DataSchemaName,
+} from '@contracts/index'
 import { generateEngineContractDoc, generateJsonSchemas } from '../src/contracts/generate'
 import { mockBundle, mockLeague } from '@fixtures/mockLeague'
 
@@ -19,8 +25,10 @@ describe('mock league fixture', () => {
     const home = new Map<string, number>()
     for (const g of league.schedule) home.set(g.home, (home.get(g.home) ?? 0) + 1)
     const weeks = league.schedule.length / 16
-    for (const id of TEAM_IDS) expect(home.get(id) ?? 0, id).toBeGreaterThanOrEqual(Math.floor(weeks / 2) - 1)
-    for (const id of TEAM_IDS) expect(home.get(id) ?? 0, id).toBeLessThanOrEqual(Math.ceil(weeks / 2) + 1)
+    for (const id of TEAM_IDS)
+      expect(home.get(id) ?? 0, id).toBeGreaterThanOrEqual(Math.floor(weeks / 2) - 1)
+    for (const id of TEAM_IDS)
+      expect(home.get(id) ?? 0, id).toBeLessThanOrEqual(Math.ceil(weeks / 2) + 1)
   })
 
   it('is deterministic for the same seed and differs across seeds', () => {
@@ -48,7 +56,13 @@ describe('mock league fixture', () => {
     const season = bundle.seasons[2015]!
     const cases: [DataSchemaName, unknown][] = [
       ['manifest', bundle.static.manifest],
-      ['teams', { attribution: bundle.static.manifest.attribution, teams: Object.values(bundle.static.teams) }],
+      [
+        'teams',
+        {
+          attribution: bundle.static.manifest.attribution,
+          teams: Object.values(bundle.static.teams),
+        },
+      ],
       ['cap', bundle.static.cap],
       ['curves', bundle.static.curves],
       ['injuryModel', bundle.static.injuryModel],
@@ -56,7 +70,14 @@ describe('mock league fixture', () => {
       ['seasonRosters', season.rosters],
       ['seasonDraft', season.draft],
       ['seasonSchedule', season.schedule],
-      ['trajectories', { attribution: bundle.static.manifest.attribution, seasons: [2015, 2023], byPlayer: bundle.trajectories }],
+      [
+        'trajectories',
+        {
+          attribution: bundle.static.manifest.attribution,
+          seasons: [2015, 2023],
+          byPlayer: bundle.trajectories,
+        },
+      ],
     ]
     for (const [name, value] of cases) {
       const r = DATA_SCHEMAS[name].safeParse(value)
@@ -69,7 +90,10 @@ describe('generated contract artifacts are committed and in sync', () => {
   const schemas = generateJsonSchemas()
   for (const name of Object.keys(schemas) as DataSchemaName[]) {
     it(`src/contracts/schemas/${name}.schema.json matches schemas.ts`, () => {
-      const onDisk = readFileSync(new URL(`../src/contracts/schemas/${name}.schema.json`, import.meta.url), 'utf8')
+      const onDisk = readFileSync(
+        new URL(`../src/contracts/schemas/${name}.schema.json`, import.meta.url),
+        'utf8',
+      )
       expect(onDisk).toBe(schemas[name])
     })
   }

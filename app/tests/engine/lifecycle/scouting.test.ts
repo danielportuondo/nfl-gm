@@ -15,13 +15,20 @@ describe('lifecycle.refreshScouting — in history', () => {
     const bundle = mockBundle({ season: SEASON })
     const ctx = makeFakeContext(bundle, { lifecycle })
     // Pick a clear veteran (not a rookieSeason-adjacent edge case) so refreshScouting doesn't skip it.
-    const chunkPlayer = bundle.seasons[SEASON]!.players.players.find((p) => p.rookieSeason <= SEASON - 3)!
+    const chunkPlayer = bundle.seasons[SEASON]!.players.players.find(
+      (p) => p.rookieSeason <= SEASON - 3,
+    )!
 
     const base = mockLeague({ season: SEASON })
     const state: LeagueState = {
       ...base,
       players: { [chunkPlayer.id]: base.players[chunkPlayer.id] ?? { ...chunkPlayer } },
-      truth: { [chunkPlayer.id]: { bySeason: { [String(SEASON - 1)]: chunkPlayer.trueValue }, retiresAfter: null } },
+      truth: {
+        [chunkPlayer.id]: {
+          bySeason: { [String(SEASON - 1)]: chunkPlayer.trueValue },
+          retiresAfter: null,
+        },
+      },
       scouting: {},
     }
 
@@ -36,13 +43,27 @@ describe('lifecycle.refreshScouting — beyond data / procedural', () => {
   function veteranState(): { ctx: ReturnType<typeof makeFakeContext>; state: LeagueState } {
     const bundle = mockBundle({ season: 2015 })
     const ctx = makeFakeContext(bundle, { lifecycle })
-    const player: Player = { id: 'vet-1', name: 'vet-1', pos: 'WR', birthYear: SEASON - 27, draft: null, real: false, rookieSeason: 2010 }
+    const player: Player = {
+      id: 'vet-1',
+      name: 'vet-1',
+      pos: 'WR',
+      birthYear: SEASON - 27,
+      draft: null,
+      real: false,
+      rookieSeason: 2010,
+    }
     const truth: TrueTrajectory = {
       bySeason: { '2016': 50, '2017': 70, '2019': 99 }, // 2019 is beyond SEASON=2018 and must never be read
       retiresAfter: null,
     }
     const base = mockLeague({ season: SEASON })
-    const state: LeagueState = { ...base, season: SEASON, players: { 'vet-1': player }, truth: { 'vet-1': truth }, scouting: {} }
+    const state: LeagueState = {
+      ...base,
+      season: SEASON,
+      players: { 'vet-1': player },
+      truth: { 'vet-1': truth },
+      scouting: {},
+    }
     return { ctx, state }
   }
 
@@ -67,7 +88,15 @@ describe('lifecycle.refreshScouting — beyond data / procedural', () => {
 
   it('leaves a rookie (rookieSeason === state.season) scouting untouched', () => {
     const { ctx, state } = veteranState()
-    const rookie: Player = { id: 'rookie-1', name: 'rookie-1', pos: 'QB', birthYear: SEASON - 22, draft: null, real: false, rookieSeason: SEASON }
+    const rookie: Player = {
+      id: 'rookie-1',
+      name: 'rookie-1',
+      pos: 'QB',
+      birthYear: SEASON - 22,
+      draft: null,
+      real: false,
+      rookieSeason: SEASON,
+    }
     const preDraftView = { ovr: 55, pot: 80, confidence: 0.2 }
     const withRookie: LeagueState = {
       ...state,

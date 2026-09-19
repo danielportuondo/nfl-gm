@@ -26,7 +26,17 @@ export const tradeConstants: TradeConstants = {
 
 /** Age at which each position group stops gaining and starts costing value. */
 const PEAK_AGE = {
-  QB: 31, RB: 25, WR: 27, TE: 28, OL: 29, DL: 27, LB: 27, CB: 26, S: 27, K: 33, P: 33,
+  QB: 31,
+  RB: 25,
+  WR: 27,
+  TE: 28,
+  OL: 29,
+  DL: 27,
+  LB: 27,
+  CB: 26,
+  S: 27,
+  K: 33,
+  P: 33,
 } satisfies Record<Position, number>
 
 /**
@@ -34,7 +44,17 @@ const PEAK_AGE = {
  * outlier; kickers and punters are nearly free.
  */
 const POS_MULTIPLIER = {
-  QB: 1.45, RB: 0.8, WR: 1.05, TE: 0.9, OL: 1.0, DL: 1.05, LB: 0.85, CB: 1.05, S: 0.85, K: 0.35, P: 0.3,
+  QB: 1.45,
+  RB: 0.8,
+  WR: 1.05,
+  TE: 0.9,
+  OL: 1.0,
+  DL: 1.05,
+  LB: 0.85,
+  CB: 1.05,
+  S: 0.85,
+  K: 0.35,
+  P: 0.3,
 } satisfies Record<Position, number>
 
 export const valueConstants = {
@@ -77,12 +97,23 @@ export const dropConstants = {
  */
 export const pickConstants = {
   chart: [
-    { pick: 1, points: 1000 }, { pick: 5, points: 730 }, { pick: 10, points: 570 },
-    { pick: 16, points: 470 }, { pick: 20, points: 430 }, { pick: 26, points: 370 },
-    { pick: 32, points: 320 }, { pick: 40, points: 275 }, { pick: 50, points: 225 },
-    { pick: 64, points: 180 }, { pick: 80, points: 140 }, { pick: 100, points: 108 },
-    { pick: 128, points: 78 }, { pick: 160, points: 52 }, { pick: 192, points: 34 },
-    { pick: 224, points: 21 }, { pick: 256, points: 12 },
+    { pick: 1, points: 1000 },
+    { pick: 5, points: 730 },
+    { pick: 10, points: 570 },
+    { pick: 16, points: 470 },
+    { pick: 20, points: 430 },
+    { pick: 26, points: 370 },
+    { pick: 32, points: 320 },
+    { pick: 40, points: 275 },
+    { pick: 50, points: 225 },
+    { pick: 64, points: 180 },
+    { pick: 80, points: 140 },
+    { pick: 100, points: 108 },
+    { pick: 128, points: 78 },
+    { pick: 160, points: 52 },
+    { pick: 192, points: 34 },
+    { pick: 224, points: 21 },
+    { pick: 256, points: 12 },
   ] as const,
   /** Value units per 1000 chart points, i.e. pick #1 ≈ 95 — a shade under a proven superstar. */
   scalePerThousand: 95,
@@ -132,7 +163,10 @@ export const acceptanceConstants = {
 }
 
 export const offerConstants = {
-  countByFrequency: { rare: [0, 1], normal: [1, 2], aggressive: [2, 3] } satisfies Record<string, [number, number]>,
+  countByFrequency: { rare: [0, 1], normal: [1, 2], aggressive: [2, 3] } satisfies Record<
+    string,
+    [number, number]
+  >,
   draftOfferMax: 3,
   /** Prospects at the top of the board whose position defines "who wants this pick". */
   topProspectsConsidered: 3,

@@ -28,11 +28,31 @@ export const faConstants = {
   topCapPct: 0.16,
   /** Relative market price by position at equal ovr (QB premium, RB/specialist discount). */
   positionMultiplier: {
-    QB: 1.4, RB: 0.55, WR: 0.95, TE: 0.7, OL: 0.85, DL: 1.0, LB: 0.75, CB: 0.9, S: 0.65, K: 0.35, P: 0.3,
+    QB: 1.4,
+    RB: 0.55,
+    WR: 0.95,
+    TE: 0.7,
+    OL: 0.85,
+    DL: 1.0,
+    LB: 0.75,
+    CB: 0.9,
+    S: 0.65,
+    K: 0.35,
+    P: 0.3,
   } as Record<Position, number>,
   /** Age a position typically peaks at (mirrors HANDOFF §6.7's curve description). */
   peakAge: {
-    QB: 31, RB: 25, WR: 27, TE: 28, OL: 29, DL: 27, LB: 27, CB: 26, S: 27, K: 33, P: 33,
+    QB: 31,
+    RB: 25,
+    WR: 27,
+    TE: 28,
+    OL: 29,
+    DL: 27,
+    LB: 27,
+    CB: 26,
+    S: 27,
+    K: 33,
+    P: 33,
   } as Record<Position, number>,
   /** Years past peak before the market starts discounting a veteran's price. */
   declineGraceYears: 3,

@@ -10,7 +10,11 @@ import { mirror } from '@engine/trade/evaluate'
 import { suggestionNeeds } from '@engine/trade/suggest'
 import { loadRealContext } from '../../../scripts/lib/publicData'
 
-const SETTINGS = { tradeStrictness: 'balanced' as const, aiOfferFrequency: 'normal' as const, injuries: true }
+const SETTINGS = {
+  tradeStrictness: 'balanced' as const,
+  aiOfferFrequency: 'normal' as const,
+  injuries: true,
+}
 const TEAMS: TeamId[] = ['IND', 'CLE', 'SF', 'TEN', 'JAX']
 
 describe('trade.suggestTrades (real 2015 league)', () => {
@@ -21,15 +25,18 @@ describe('trade.suggestTrades (real 2015 league)', () => {
   }, 30000)
 
   function league(userTeam: TeamId, seed = 'suggest'): LeagueState {
-    return ctx.modules.league.newGame({ seed, startSeason: 2015, userTeam, horizonSeasons: 3, settings: SETTINGS }, ctx)
+    return ctx.modules.league.newGame(
+      { seed, startSeason: 2015, userTeam, horizonSeasons: 3, settings: SETTINGS },
+      ctx,
+    )
   }
 
   function bestOvrAt(state: LeagueState, teamId: TeamId, pos: string): number {
     return Math.max(
       0,
-      ...state.teams[teamId]!.roster
-        .filter((r) => state.players[r.playerId]!.pos === pos)
-        .map((r) => state.scouting[r.playerId]!.ovr),
+      ...state.teams[teamId]!.roster.filter((r) => state.players[r.playerId]!.pos === pos).map(
+        (r) => state.scouting[r.playerId]!.ovr,
+      ),
     )
   }
 
@@ -37,7 +44,11 @@ describe('trade.suggestTrades (real 2015 league)', () => {
     let total = 0
     for (const team of TEAMS) {
       const state = league(team)
-      const suggestions = trade.suggestTrades(state, ctx, ctx.modules.rng.fromSeed(state.seed, 2015, 0, 'suggest'))
+      const suggestions = trade.suggestTrades(
+        state,
+        ctx,
+        ctx.modules.rng.fromSeed(state.seed, 2015, 0, 'suggest'),
+      )
       const needs = new Set(suggestionNeeds(state, team, ctx))
       expect(suggestions.length).toBeLessThanOrEqual(4)
       for (const s of suggestions) {
@@ -55,7 +66,12 @@ describe('trade.suggestTrades (real 2015 league)', () => {
         expect(user.valid).toBe(true)
         expect(user.valueIn / user.valueOut).toBeGreaterThanOrEqual(0.85)
 
-        const outcome = trade.submit(state, s, ctx, ctx.modules.rng.fromSeed('other', 2015, 0, 'roll'))
+        const outcome = trade.submit(
+          state,
+          s,
+          ctx,
+          ctx.modules.rng.fromSeed('other', 2015, 0, 'roll'),
+        )
         expect(outcome.accepted).toBe(true)
         expect(outcome.state.teams[team]!.roster.some((r) => r.playerId === incoming)).toBe(true)
       }

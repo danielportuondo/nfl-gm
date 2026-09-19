@@ -18,16 +18,31 @@ export interface FaModule {
   marketApy(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number
 
   /** 4 years, apy from slot table (fit to real rookie scale % of cap); UDFA = minimum, 3 years. */
-  rookieContract(pick: { round: number; pick: number } | null, season: Season, ctx: EngineContext): Contract
+  rookieContract(
+    pick: { round: number; pick: number } | null,
+    season: Season,
+    ctx: EngineContext,
+  ): Contract
 
   /** Veteran contract synthesized from market apy; length by age (younger → longer, max 5). */
-  synthesizeContract(state: LeagueState, playerId: PlayerId, season: Season, ctx: EngineContext, hint?: { apy?: number; years?: number }): Contract
+  synthesizeContract(
+    state: LeagueState,
+    playerId: PlayerId,
+    season: Season,
+    ctx: EngineContext,
+    hint?: { apy?: number; years?: number },
+  ): Contract
 
   /** Expiring players' asks for the OFFSEASON_RESIGN phase: marketApy × (1 ± 10%), seeded per player. */
   resignAsk(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number
 
   /** User re-signs at `apy` ≥ ask. Throws if below ask or over cap. */
-  resign(state: LeagueState, playerId: PlayerId, contract: Contract, ctx: EngineContext): LeagueState
+  resign(
+    state: LeagueState,
+    playerId: PlayerId,
+    contract: Contract,
+    ctx: EngineContext,
+  ): LeagueState
 
   /** AI teams re-sign: history-anchored when the player is on their real next-season roster, else by value/need under cap. Unsigned → freeAgents. */
   runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
@@ -39,10 +54,23 @@ export interface FaModule {
    * User offer with 1-day simulated bidding: P(accept) rises with offer/ask and team quality.
    * Hard gates: cap, roster ≤ 90 (offseason) / 53 (in-season). Marks the player diverged on success.
    */
-  offer(state: LeagueState, teamId: TeamId, playerId: PlayerId, contract: Contract, ctx: EngineContext, rng: Rng): { accepted: boolean; state: LeagueState }
+  offer(
+    state: LeagueState,
+    teamId: TeamId,
+    playerId: PlayerId,
+    contract: Contract,
+    ctx: EngineContext,
+    rng: Rng,
+  ): { accepted: boolean; state: LeagueState }
 
   /** P(accept) the offer would face before any hard gate (cap, roster size); pure, for UI previews. */
-  offerOdds(state: LeagueState, teamId: TeamId, playerId: PlayerId, contract: Contract, ctx: EngineContext): number
+  offerOdds(
+    state: LeagueState,
+    teamId: TeamId,
+    playerId: PlayerId,
+    contract: Contract,
+    ctx: EngineContext,
+  ): number
 
   /** AI signings: history-anchored (real team for that season) with value/need fallback under cap. */
   runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
@@ -62,7 +90,10 @@ export interface FaModule {
   validateRoster(state: LeagueState, teamId: TeamId, ctx: EngineContext): RosterValidation
 
   /** Decrement contract years at season rollover; expiring → returned for the re-sign phase. */
-  rolloverContracts(state: LeagueState, ctx: EngineContext): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> }
+  rolloverContracts(
+    state: LeagueState,
+    ctx: EngineContext,
+  ): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> }
 }
 
 export const faStub: FaModule = {

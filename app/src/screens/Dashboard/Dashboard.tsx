@@ -25,7 +25,12 @@ interface Alert {
 
 function nextGame(state: LeagueState): Game | undefined {
   const upcoming = state.schedule
-    .filter((g) => g.season === state.season && (g.home === state.userTeam || g.away === state.userTeam) && g.week >= state.week)
+    .filter(
+      (g) =>
+        g.season === state.season &&
+        (g.home === state.userTeam || g.away === state.userTeam) &&
+        g.week >= state.week,
+    )
     .sort((a, b) => a.week - b.week)
   return upcoming[0]
 }
@@ -47,13 +52,29 @@ const ADVANCE_LABEL: Record<LeagueState['phase'], string> = {
   TRAINING_CAMP: 'Break camp',
 }
 
-export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy, advanceBusy, onNavigate }: DashboardProps) {
+export function Dashboard({
+  state,
+  data,
+  cap,
+  onSimWeek,
+  onAdvancePhase,
+  simBusy,
+  advanceBusy,
+  onNavigate,
+}: DashboardProps) {
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
   const record = team?.record ?? { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
-  const recordText = record.ties > 0 ? `${record.wins}-${record.losses}-${record.ties}` : `${record.wins}-${record.losses}`
+  const recordText =
+    record.ties > 0
+      ? `${record.wins}-${record.losses}-${record.ties}`
+      : `${record.wins}-${record.losses}`
   const upcoming = nextGame(state)
-  const opponentId = upcoming ? (upcoming.home === state.userTeam ? upcoming.away : upcoming.home) : null
+  const opponentId = upcoming
+    ? upcoming.home === state.userTeam
+      ? upcoming.away
+      : upcoming.home
+    : null
   const opponentInfo = opponentId ? data.teams[opponentId] : null
 
   const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
@@ -71,7 +92,10 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
   const alerts: Alert[] = []
   if (injuredSlots.length > 0) {
     const worst = injuredSlots
-      .map((slot) => ({ name: state.players[slot.playerId]?.name ?? slot.playerId, label: injuredWeeksLabel(slot.injured) }))
+      .map((slot) => ({
+        name: state.players[slot.playerId]?.name ?? slot.playerId,
+        label: injuredWeeksLabel(slot.injured),
+      }))
       .sort((a, b) => (b.label ?? '').localeCompare(a.label ?? ''))[0]!
     alerts.push({
       text: `${injuredSlots.length} player${injuredSlots.length === 1 ? '' : 's'} injured.`,
@@ -95,7 +119,11 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
   }
   const rosterSize = team?.roster.length ?? 0
   if ((state.phase === 'PRESEASON' || inSeason) && rosterSize > 53) {
-    alerts.push({ text: `Roster has ${rosterSize} players.`, detail: 'Cut to 53 to continue.', screen: 'roster' })
+    alerts.push({
+      text: `Roster has ${rosterSize} players.`,
+      detail: 'Cut to 53 to continue.',
+      screen: 'roster',
+    })
   }
   if ((state.phase === 'PRESEASON' || inSeason) && rosterSize < 46) {
     alerts.push({
@@ -113,11 +141,20 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
             {teamInfo?.city} {teamInfo?.name} · <span className="tabular-nums">{recordText}</span>
           </p>
           {teamInfo && opponentInfo && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-4)', marginBottom: 'var(--sp-4)' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--sp-4)',
+                marginBottom: 'var(--sp-4)',
+              }}
+            >
               <TeamScope colors={teamInfo.colors}>
                 <HelmetSprite pos="QB" size={4} />
               </TeamScope>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-2)' }}>at week {upcoming?.week}</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--fd-2)' }}>
+                at week {upcoming?.week}
+              </span>
               <TeamScope colors={opponentInfo.colors}>
                 <HelmetSprite pos="QB" size={4} />
               </TeamScope>
@@ -126,18 +163,46 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
               </span>
             </div>
           )}
-          <Meter value={horizonTotal === 0 ? 0 : horizonElapsed / horizonTotal} label={`Season ${horizonElapsed + 1} of ${horizonTotal}`} />
-          <div style={{ display: 'flex', gap: 'var(--sp-3)', marginTop: 'var(--sp-4)', alignItems: 'center', flexWrap: 'wrap' }}>
+          <Meter
+            value={horizonTotal === 0 ? 0 : horizonElapsed / horizonTotal}
+            label={`Season ${horizonElapsed + 1} of ${horizonTotal}`}
+          />
+          <div
+            style={{
+              display: 'flex',
+              gap: 'var(--sp-3)',
+              marginTop: 'var(--sp-4)',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
             {inSeason ? (
-              <Button type="button" variant="primary" busy={simBusy} busyLabel="Simming…" onClick={onSimWeek}>
+              <Button
+                type="button"
+                variant="primary"
+                busy={simBusy}
+                busyLabel="Simming…"
+                onClick={onSimWeek}
+              >
                 Sim week
               </Button>
             ) : (
-              <Button type="button" variant="primary" busy={advanceBusy} busyLabel="Working…" disabled={draftPending} onClick={onAdvancePhase}>
+              <Button
+                type="button"
+                variant="primary"
+                busy={advanceBusy}
+                busyLabel="Working…"
+                disabled={draftPending}
+                onClick={onAdvancePhase}
+              >
                 {advanceLabel}
               </Button>
             )}
-            {draftPending && <span style={{ color: 'var(--text-2)' }}>Finish the draft in the Draft room first.</span>}
+            {draftPending && (
+              <span style={{ color: 'var(--text-2)' }}>
+                Finish the draft in the Draft room first.
+              </span>
+            )}
           </div>
         </Panel>
       </div>
@@ -146,15 +211,32 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
         <Panel title="Cap" variant="default" revealIndex={1}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-4)' }}>
             <StatTile value={formatMoney(cap)} label="Cap this season" />
-            <StatTile value={formatMoney(capSpace)} label="Cap space" tone={capSpace < 0 ? 'danger' : 'default'} />
+            <StatTile
+              value={formatMoney(capSpace)}
+              label="Cap space"
+              tone={capSpace < 0 ? 'danger' : 'default'}
+            />
           </div>
         </Panel>
         <div style={{ height: 'var(--sp-4)' }} />
-        <Panel title={`Alerts${alerts.length > 0 ? ` (${alerts.length})` : ''}`} variant={alerts.length > 0 ? 'attention' : 'default'} revealIndex={2}>
+        <Panel
+          title={`Alerts${alerts.length > 0 ? ` (${alerts.length})` : ''}`}
+          variant={alerts.length > 0 ? 'attention' : 'default'}
+          revealIndex={2}
+        >
           {alerts.length === 0 ? (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>No alerts.</p>
           ) : (
-            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+            <ul
+              style={{
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--sp-2)',
+              }}
+            >
               {alerts.map((a, i) => (
                 <li key={i}>
                   <button
@@ -164,7 +246,9 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
                     onClick={() => onNavigate?.(a.screen)}
                   >
                     <span style={{ fontWeight: 600 }}>{a.text}</span>
-                    <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>{a.detail}</span>
+                    <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
+                      {a.detail}
+                    </span>
                   </button>
                 </li>
               ))}

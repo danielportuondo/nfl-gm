@@ -4,8 +4,13 @@
  */
 import { beforeAll, describe, expect, it } from 'vitest'
 import {
-  POSITIONS, TEAM_IDS,
-  type EngineContext, type LeagueState, type SeasonSummary, type TradeProposal, type TrueTrajectory,
+  POSITIONS,
+  TEAM_IDS,
+  type EngineContext,
+  type LeagueState,
+  type SeasonSummary,
+  type TradeProposal,
+  type TrueTrajectory,
 } from '@contracts/index'
 import { draft } from '@engine/draft'
 import { settleOrder } from '@engine/draft/order'
@@ -39,7 +44,10 @@ describe('teamNeeds', () => {
       ...state,
       teams: {
         ...state.teams,
-        IND: { ...team, roster: team.roster.filter((s) => state.players[s.playerId]?.pos !== 'QB') },
+        IND: {
+          ...team,
+          roster: team.roster.filter((s) => state.players[s.playerId]?.pos !== 'QB'),
+        },
       },
     }
     const needs = draft.teamNeeds(withoutQbs, 'IND')
@@ -74,12 +82,16 @@ describe('mid-draft ownership', () => {
     const traded: LeagueState = {
       ...started,
       picks: started.picks.map((p) =>
-        p.season === CLASS_SEASON && p.round === 1 && p.originalTeam === 'HOU' ? { ...p, owner: 'CLE' } : p,
+        p.season === CLASS_SEASON && p.round === 1 && p.originalTeam === 'HOU'
+          ? { ...p, owner: 'CLE' }
+          : p,
       ),
     }
     const after = draft.advance(traded, ctx)
     expect(after.draftRoom!.log[0]!.team).toBe('CLE')
-    expect(after.teams['CLE']!.roster.some((s) => s.playerId === after.draftRoom!.log[0]!.playerId)).toBe(true)
+    expect(
+      after.teams['CLE']!.roster.some((s) => s.playerId === after.draftRoom!.log[0]!.playerId),
+    ).toBe(true)
     // The AI ran on past the traded slot, so the user is no longer the blocker at index 0.
     expect(after.draftRoom!.currentPickIndex).toBeGreaterThan(0)
   })
@@ -90,8 +102,16 @@ describe('incoming offers', () => {
     const calls: string[] = []
     const proposal: TradeProposal = {
       id: 'offer-1',
-      offer: { teamId: 'CLE', players: [], picks: [{ season: CLASS_SEASON, round: 2, originalTeam: 'CLE' }] },
-      request: { teamId: 'HOU', players: [], picks: [{ season: CLASS_SEASON, round: 1, originalTeam: 'HOU' }] },
+      offer: {
+        teamId: 'CLE',
+        players: [],
+        picks: [{ season: CLASS_SEASON, round: 2, originalTeam: 'CLE' }],
+      },
+      request: {
+        teamId: 'HOU',
+        players: [],
+        picks: [{ season: CLASS_SEASON, round: 1, originalTeam: 'HOU' }],
+      },
       initiatedBy: 'AI',
       season: CLASS_SEASON,
       week: 0,
@@ -109,7 +129,9 @@ describe('incoming offers', () => {
     const started = draft.startDraft(stateAtDraft(ctx, 'HOU'), ctx)
     expect(started.draftRoom!.pendingOffers).toEqual([proposal])
     expect(calls).toEqual(['draft'])
-    expect(draft.offersForCurrentPick(started, ctx, ctx.modules.rng.fromSeed('x', 'y'))).toEqual([proposal])
+    expect(draft.offersForCurrentPick(started, ctx, ctx.modules.rng.fromSeed('x', 'y'))).toEqual([
+      proposal,
+    ])
     // Auto-drafting past the user's slot clears the offers with the pick.
     const done = draft.autoDraftToEnd(started, ctx)
     expect(done.draftRoom!.pendingOffers).toEqual([])
@@ -140,7 +162,8 @@ describe('UDFA phase', () => {
     }
     for (const id of unsigned) {
       expect(rostered.has(id) || freeAgents.has(id), `${id} vanished`).toBe(true)
-      if (rostered.has(id)) expect(freeAgents.has(id), `${id} is rostered and a free agent`).toBe(false)
+      if (rostered.has(id))
+        expect(freeAgents.has(id), `${id} is rostered and a free agent`).toBe(false)
     }
     // Most real UDFAs land back on the team that really signed them.
     const anchored = [...unsigned].filter((id) => {
@@ -170,9 +193,12 @@ describe('generated order (post-history)', () => {
     const base = stateAtDraft(ctx, 'IND')
     const standings = TEAM_IDS.map((teamId, i) => ({
       teamId,
-      wins: i, losses: 16 - i, ties: 0,
+      wins: i,
+      losses: 16 - i,
+      ties: 0,
       pct: i / 16,
-      pointsFor: 300, pointsAgainst: 300,
+      pointsFor: 300,
+      pointsAgainst: 300,
       divRank: 1 as const,
       confRank: 1 as const,
       clinched: i >= 20 ? ('DIV' as const) : null,

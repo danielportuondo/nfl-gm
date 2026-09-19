@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { PHASES, SavedLeagueSchema, TEAM_IDS, toSaved, type LeagueState, type Phase } from '@contracts/index'
+import {
+  PHASES,
+  SavedLeagueSchema,
+  TEAM_IDS,
+  toSaved,
+  type LeagueState,
+  type Phase,
+} from '@contracts/index'
 import { mockBundle } from '@fixtures/mockLeague'
 import { league } from '@engine/league'
 import { makeFakeContext } from '../fakes'
@@ -10,7 +17,11 @@ function newGameOpts(overrides: Partial<Parameters<typeof league.newGame>[0]> = 
     startSeason: 2015,
     userTeam: 'IND',
     horizonSeasons: 3,
-    settings: { tradeStrictness: 'balanced' as const, aiOfferFrequency: 'normal' as const, injuries: true },
+    settings: {
+      tradeStrictness: 'balanced' as const,
+      aiOfferFrequency: 'normal' as const,
+      injuries: true,
+    },
     ...overrides,
   }
 }
@@ -27,7 +38,9 @@ describe('league.newGame', () => {
     expect(Object.keys(state.teams)).toHaveLength(32)
     for (const id of TEAM_IDS) expect(state.teams[id]!.roster).toHaveLength(53)
 
-    expect(state.schedule.length).toBe(bundle.seasons[2015]!.schedule.games.filter((g) => g.type === 'REG').length)
+    expect(state.schedule.length).toBe(
+      bundle.seasons[2015]!.schedule.games.filter((g) => g.type === 'REG').length,
+    )
     expect(state.phase).toBe('PRESEASON')
   })
 })
@@ -98,7 +111,14 @@ describe('league season loop (fakes)', () => {
 
     // playOffseason() already asserts each intermediate phase in PHASES order (DRAFT -> UDFA ->
     // FREE_AGENCY -> TRAINING_CAMP -> PRESEASON -> REGULAR) between the coarse checkpoints below.
-    expect(a.phasesSeen).toEqual(['REGULAR', 'OFFSEASON_RESIGN', 'REGULAR', 'OFFSEASON_RESIGN', 'REGULAR', 'OFFSEASON_RESIGN'])
+    expect(a.phasesSeen).toEqual([
+      'REGULAR',
+      'OFFSEASON_RESIGN',
+      'REGULAR',
+      'OFFSEASON_RESIGN',
+      'REGULAR',
+      'OFFSEASON_RESIGN',
+    ])
     expect(PHASES).toContain(a.state.phase)
   })
 
@@ -140,7 +160,10 @@ describe('league season loop (fakes)', () => {
   it('generated 2027 schedule: every team plays 17 games with exactly one bye', () => {
     const bundle = mockBundle({ season: 2015 })
     const ctx = makeFakeContext(bundle)
-    const state: LeagueState = { ...league.newGame(newGameOpts({ seed: 'sched-2027' }), ctx), season: 2027 }
+    const state: LeagueState = {
+      ...league.newGame(newGameOpts({ seed: 'sched-2027' }), ctx),
+      season: 2027,
+    }
     const games = league.buildSchedule(state, ctx)
     const perTeam = new Map<string, number>()
     for (const g of games) {

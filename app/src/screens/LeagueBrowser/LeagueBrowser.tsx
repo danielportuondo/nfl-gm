@@ -1,6 +1,22 @@
 import { useMemo, useState } from 'react'
-import { POSITIONS, TEAM_IDS, type LeagueState, type Position, type PlayerId, type StaticData, type TeamId } from '@contracts/index'
-import { Panel, PositionBadge, StatTile, Table, TeamBadge, type Column, type SortState } from '@ui/primitives'
+import {
+  POSITIONS,
+  TEAM_IDS,
+  type LeagueState,
+  type Position,
+  type PlayerId,
+  type StaticData,
+  type TeamId,
+} from '@contracts/index'
+import {
+  Panel,
+  PositionBadge,
+  StatTile,
+  Table,
+  TeamBadge,
+  type Column,
+  type SortState,
+} from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
 
 const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
@@ -40,7 +56,15 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
       const player = state.players[slot.playerId]
       const scouting = state.scouting[slot.playerId]
       if (!player || !scouting) return null
-      return { id: slot.playerId, name: player.name, pos: player.pos, ovr: scouting.ovr, pot: scouting.pot, apy: slot.contract.apy, years: slot.contract.years }
+      return {
+        id: slot.playerId,
+        name: player.name,
+        pos: player.pos,
+        ovr: scouting.ovr,
+        pot: scouting.pot,
+        apy: slot.contract.apy,
+        years: slot.contract.years,
+      }
     })
     .filter((r): r is Row => r !== null)
 
@@ -49,8 +73,26 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
     const dir = sort.dir === 'asc' ? 1 : -1
     const sorted = [...filtered]
     sorted.sort((a, b) => {
-      const va = sort.key === 'name' ? a.name : sort.key === 'pot' ? a.pot : sort.key === 'years' ? a.years : sort.key === 'apy' ? a.apy : a.ovr
-      const vb = sort.key === 'name' ? b.name : sort.key === 'pot' ? b.pot : sort.key === 'years' ? b.years : sort.key === 'apy' ? b.apy : b.ovr
+      const va =
+        sort.key === 'name'
+          ? a.name
+          : sort.key === 'pot'
+            ? a.pot
+            : sort.key === 'years'
+              ? a.years
+              : sort.key === 'apy'
+                ? a.apy
+                : a.ovr
+      const vb =
+        sort.key === 'name'
+          ? b.name
+          : sort.key === 'pot'
+            ? b.pot
+            : sort.key === 'years'
+              ? b.years
+              : sort.key === 'apy'
+                ? b.apy
+                : b.ovr
       return va < vb ? -1 * dir : va > vb ? 1 * dir : 0
     })
     return sorted
@@ -69,10 +111,36 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
         </span>
       ),
     },
-    { key: 'ovr', header: 'Ovr', numeric: true, rating: true, sortValue: (r) => r.ovr, render: (r) => r.ovr },
-    { key: 'pot', header: 'Pot', numeric: true, rating: true, sortValue: (r) => r.pot, render: (r) => r.pot },
-    { key: 'years', header: 'Years', numeric: true, sortValue: (r) => r.years, render: (r) => r.years },
-    { key: 'apy', header: 'APY', numeric: true, sortValue: (r) => r.apy, render: (r) => formatMoney(r.apy) },
+    {
+      key: 'ovr',
+      header: 'Ovr',
+      numeric: true,
+      rating: true,
+      sortValue: (r) => r.ovr,
+      render: (r) => r.ovr,
+    },
+    {
+      key: 'pot',
+      header: 'Pot',
+      numeric: true,
+      rating: true,
+      sortValue: (r) => r.pot,
+      render: (r) => r.pot,
+    },
+    {
+      key: 'years',
+      header: 'Years',
+      numeric: true,
+      sortValue: (r) => r.years,
+      render: (r) => r.years,
+    },
+    {
+      key: 'apy',
+      header: 'APY',
+      numeric: true,
+      sortValue: (r) => r.apy,
+      render: (r) => formatMoney(r.apy),
+    },
   ]
 
   const picks = state.picks
@@ -83,7 +151,15 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
     <>
       <div className="gg-col-12">
         <Panel title="Teams" variant="sunken" revealIndex={0}>
-          <div role="grid" aria-label="Teams" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(84px, 1fr))', gap: 'var(--sp-2)' }}>
+          <div
+            role="grid"
+            aria-label="Teams"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(84px, 1fr))',
+              gap: 'var(--sp-2)',
+            }}
+          >
             {TEAM_IDS.map((id) => {
               const t = data.teams[id]
               if (!t) return null
@@ -111,8 +187,15 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
           <div className="gg-col-4">
             <Panel variant="plate" title={`${info.city} ${info.name}`} revealIndex={1}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-4)' }}>
-                <StatTile value={`${team.record.wins}-${team.record.losses}-${team.record.ties}`} label="Record" />
-                <StatTile value={formatMoney(cap - payroll - team.deadMoney)} label="Cap space" tone={cap - payroll - team.deadMoney < 0 ? 'danger' : 'default'} />
+                <StatTile
+                  value={`${team.record.wins}-${team.record.losses}-${team.record.ties}`}
+                  label="Record"
+                />
+                <StatTile
+                  value={formatMoney(cap - payroll - team.deadMoney)}
+                  label="Cap space"
+                  tone={cap - payroll - team.deadMoney < 0 ? 'danger' : 'default'}
+                />
               </div>
             </Panel>
 
@@ -126,7 +209,9 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
                   {picks.map((p, i) => (
                     <li key={`${p.season}-${p.round}-${p.originalTeam}-${p.pick ?? i}`}>
                       {p.season} round {p.round}
-                      {p.originalTeam !== selectedTeam ? ` (via ${data.teams[p.originalTeam]?.abbr ?? p.originalTeam})` : ''}
+                      {p.originalTeam !== selectedTeam
+                        ? ` (via ${data.teams[p.originalTeam]?.abbr ?? p.originalTeam})`
+                        : ''}
                     </li>
                   ))}
                 </ul>
@@ -136,7 +221,16 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
 
           <div className="gg-col-8">
             <Panel title="Roster" variant="sunken" revealIndex={3}>
-              <div role="group" aria-label="Filter by position" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)', marginBottom: 'var(--sp-3)' }}>
+              <div
+                role="group"
+                aria-label="Filter by position"
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 'var(--sp-2)',
+                  marginBottom: 'var(--sp-3)',
+                }}
+              >
                 {FILTERS.map((f) => (
                   <button
                     key={f}
@@ -158,7 +252,9 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
                 dense
                 onRowClick={(r) => onSelectPlayer(r.id)}
                 sort={sort}
-                onSortChange={(key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))}
+                onSortChange={(key) =>
+                  setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
+                }
               />
             </Panel>
           </div>

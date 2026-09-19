@@ -12,12 +12,21 @@ export interface PanelProps {
 }
 
 /** The magnet-tile panel: raised, hard-shadowed, header + body (docs/DESIGN.md §8). */
-export function Panel({ title, action, variant = 'default', revealIndex, className, children, id }: PanelProps) {
+export function Panel({
+  title,
+  action,
+  variant = 'default',
+  revealIndex,
+  className,
+  children,
+  id,
+}: PanelProps) {
   const classes = ['gg-panel']
   if (variant !== 'default') classes.push(`gg-panel--${variant}`)
   if (revealIndex != null) classes.push('gg-reveal')
   if (className) classes.push(className)
-  const style: CSSProperties | undefined = revealIndex != null ? { ['--i' as string]: revealIndex } : undefined
+  const style: CSSProperties | undefined =
+    revealIndex != null ? { ['--i' as string]: revealIndex } : undefined
   return (
     <section className={classes.join(' ')} style={style} id={id}>
       {title && (
