@@ -29,7 +29,8 @@ DEPTH_URL = _RELEASES + "/depth_charts/depth_charts_{season}.csv"
 COMBINE_URL = _RELEASES + "/combine/combine.csv"
 DRAFT_URL = _RELEASES + "/draft_picks/draft_picks.csv"
 PLAYERS_URL = _RELEASES + "/players/players.csv"
-CONTRACTS_URL = _RELEASES + "/contracts/historical_contracts.csv.gz"
+# The csv.gz release froze on 2022-05-29; the parquet is refreshed and carries a direct gsis_id.
+CONTRACTS_URL = _RELEASES + "/contracts/historical_contracts.parquet"
 GAMES_URL = _NFLDATA + "/games.csv"
 
 SNAPS_FIRST_SEASON = 2012
@@ -247,11 +248,17 @@ def load_combine() -> pd.DataFrame:
 
 @cache
 def load_contracts() -> pd.DataFrame:
-    df = _read(CONTRACTS_URL, compression="gzip")
-    df["gsis_id"] = pd.to_numeric(df["otc_id"], errors="coerce").map(otc_to_gsis())
+    df = pd.read_parquet(fetch(CONTRACTS_URL))
+    via_otc = pd.to_numeric(df["otc_id"], errors="coerce").map(otc_to_gsis())
+    direct = df["gsis_id"] if "gsis_id" in df.columns else pd.Series(pd.NA, index=df.index)
+    df["gsis_id"] = direct.where(direct.notna(), via_otc)
     df = df.dropna(subset=["gsis_id", "year_signed", "years", "apy_cap_pct"])
+    # A handful of rows carry the otc_id in the gsis column; they match no player.
+    df = df[df["gsis_id"].astype(str).str.startswith("00-")]
     df["year_signed"] = df["year_signed"].astype(int)
     df["years"] = df["years"].clip(lower=1).astype(int)
+    # The frozen CSV carried APY in dollars, the parquet carries $M; no salary is under $1,000/yr.
+    df["apy"] = df["apy"].where(df["apy"] < 1_000, df["apy"] / 1_000_000)
     return df[["gsis_id", "year_signed", "years", "apy_cap_pct", "apy"]]
 
 

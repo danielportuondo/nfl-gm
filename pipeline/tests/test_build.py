@@ -9,11 +9,13 @@ from __future__ import annotations
 import pytest
 
 from gridiron_pipeline.build.draft import build_season_draft
+from gridiron_pipeline.build.injury import _episodes
 from gridiron_pipeline.build.players import build_player_master
 from gridiron_pipeline.build.positions import map_position_group
 from gridiron_pipeline.build.ratings import Ratings
 from gridiron_pipeline.build.rosters import (
     _contract_index,
+    _contract_ties_to_season,
     _has_contract,
     _status_priority,
     build_season_rosters_and_players,
@@ -175,13 +177,49 @@ def test_season_membership_keeps_contracted_or_drafted_despite_bad_status(master
     bad_status = start[(start["status"].map(_status_priority) == 1) & has_pos_group]
     tied = bad_status[
         bad_status["gsis_id"].map(drafted_this_season)
-        | bad_status["gsis_id"].map(lambda g: _has_contract(contract_idx, g, season))
+        | bad_status["gsis_id"].map(lambda g: _contract_ties_to_season(contract_idx, g, season))
     ]
     assert len(tied) > 0
 
     _, players_obj = build_season_rosters_and_players(season, master, ratings)
     kept_ids = {p["id"] for p in players_obj["players"]}
     assert set(tied["gsis_id"]).issubset(kept_ids)
+
+
+def test_season_membership_drops_camp_bodies_on_minimum_one_year_deals(master, ratings):
+    """From 2016 the contracts release covers practice-squad, futures and minimum tenders for nearly
+    every camp body, so a one-year deal under MIN_TIE_CAP_PCT of the cap is no longer a tie to the
+    season on its own (docs/DECISIONS.md, v1.2 follow-up closure).
+    """
+    season = 2016
+    start = season_start_roster(season_roster_stints(season))
+    contract_idx = _contract_index(master)
+
+    def drafted_this_season(g: str) -> bool:
+        return (master.draft_by_gsis.get(g) or {}).get("season") == season
+
+    bad_status = start[start["status"].map(_status_priority) == 1]
+    camp_bodies = bad_status[
+        ~bad_status["gsis_id"].map(drafted_this_season)
+        & bad_status["gsis_id"].map(lambda g: _has_contract(contract_idx, g, season))
+        & ~bad_status["gsis_id"].map(lambda g: _contract_ties_to_season(contract_idx, g, season))
+    ]
+    assert len(camp_bodies) > 50, "2016 fixture assumption: dozens of CUT/DEV rows on minimum deals"
+
+    _, players_obj = build_season_rosters_and_players(season, master, ratings)
+    kept_ids = {p["id"] for p in players_obj["players"]}
+    assert not (set(camp_bodies["gsis_id"]) & kept_ids)
+
+
+def test_injury_episodes_take_safeties_from_the_roster():
+    """injuries_{season}.csv labels every defensive back "DB" from 2016; the model keys position on
+    the season roster's depth-chart slot instead, so safeties are fit as safeties."""
+    by_pos = {}
+    for ep in _episodes(2023):
+        by_pos[ep["pos"]] = by_pos.get(ep["pos"], 0) + 1
+    assert by_pos.get("S", 0) > 0
+    share = by_pos["S"] / (by_pos["S"] + by_pos.get("CB", 0))
+    assert 0.25 < share < 0.6, by_pos
 
 
 def test_contract_hint_accepts_dollars_and_millions() -> None:

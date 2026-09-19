@@ -11,7 +11,8 @@ import logging
 
 import pandas as pd
 
-from gridiron_pipeline.build.positions import POSITION_GROUPS, map_position_group
+from gridiron_pipeline.build.positions import POSITION_GROUPS, map_position_group, resolve_position
+from gridiron_pipeline.build.rosters import season_roster_stints, season_start_roster
 from gridiron_pipeline.build.teams import ATTRIBUTION
 from gridiron_pipeline.ingest.load import load_injuries
 from gridiron_pipeline.schemas import validate
@@ -37,6 +38,21 @@ DURATION_CAP_WEEKS = 8
 PERMANENT_LOSS_MIN_WEEKS = 8
 
 
+def _position_by_player(season: int) -> dict[str, str]:
+    """gsis_id -> position group from the season roster's fine `depth_chart_position`.
+
+    The injury report only carries the coarse `position`, which from 2016 is "DB" for every safety
+    and corner; keyed on the roster, safeties are fit as safeties.
+    """
+    start = season_start_roster(season_roster_stints(season))
+    groups: dict[str, str] = {}
+    for row in start.itertuples(index=False):
+        group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
+        if group is not None:
+            groups[row.gsis_id] = group
+    return groups
+
+
 def _episodes(season: int) -> list[dict]:
     df = load_injuries(season)
     if df is None:
@@ -44,7 +60,8 @@ def _episodes(season: int) -> list[dict]:
     out = df[df["report_status"] == "Out"].copy()
     if out.empty:
         return []
-    out["pos_group"] = out["position"].map(map_position_group)
+    fine = _position_by_player(season)
+    out["pos_group"] = out["gsis_id"].map(fine).fillna(out["position"].map(map_position_group))
     out = out[out["pos_group"].notna()]
 
     def kind_at(group: pd.DataFrame, week: int) -> object:

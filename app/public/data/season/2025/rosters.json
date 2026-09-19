@@ -301,16 +301,16 @@
         "years": 3
       },
       {
+        "apy": 0.905,
+        "depth": 9,
+        "playerId": "00-0038663",
+        "years": 3
+      },
+      {
         "apy": 1.255,
         "depth": 10,
         "playerId": "00-0028946",
         "years": 1
-      },
-      {
-        "apy": 0.905,
-        "depth": 10,
-        "playerId": "00-0038663",
-        "years": 3
       },
       {
         "apy": 1.083,
@@ -331,6 +331,12 @@
         "depth": 1,
         "playerId": "00-0033051",
         "years": 3
+      },
+      {
+        "apy": 1.423,
+        "depth": 1,
+        "playerId": "00-0033676",
+        "years": 1
       },
       {
         "apy": 1.17,
@@ -415,6 +421,12 @@
         "years": 4
       },
       {
+        "apy": 1.093,
+        "depth": 2,
+        "playerId": "00-0039370",
+        "years": 4
+      },
+      {
         "apy": 2.479,
         "depth": 2,
         "playerId": "00-0039733",
@@ -457,16 +469,16 @@
         "years": 1
       },
       {
-        "apy": 0.9,
-        "depth": 3,
-        "playerId": "00-0038930",
-        "years": 3
-      },
-      {
         "apy": 1.211,
         "depth": 3,
         "playerId": "00-0039859",
         "years": 4
+      },
+      {
+        "apy": 0.993,
+        "depth": 3,
+        "playerId": "00-0040547",
+        "years": 3
       },
       {
         "apy": 10.0,
@@ -499,6 +511,12 @@
         "years": 4
       },
       {
+        "apy": 1.17,
+        "depth": 5,
+        "playerId": "00-0035995",
+        "years": 1
+      },
+      {
         "apy": 1.392,
         "depth": 5,
         "playerId": "00-0038980",
@@ -511,22 +529,10 @@
         "years": 4
       },
       {
-        "apy": 0.993,
-        "depth": 5,
-        "playerId": "00-0040547",
-        "years": 3
-      },
-      {
         "apy": 5.141,
         "depth": 5,
         "playerId": "00-0040577",
         "years": 4
-      },
-      {
-        "apy": 2.875,
-        "depth": 6,
-        "playerId": "00-0036354",
-        "years": 2
       },
       {
         "apy": 1.053,
@@ -544,12 +550,6 @@
         "apy": 0.396,
         "depth": 7,
         "playerId": "00-0034320",
-        "years": 1
-      },
-      {
-        "apy": 1.17,
-        "depth": 7,
-        "playerId": "00-0035995",
         "years": 1
       },
       {
@@ -575,6 +575,12 @@
         "depth": 8,
         "playerId": "00-0037808",
         "years": 4
+      },
+      {
+        "apy": 0.901,
+        "depth": 8,
+        "playerId": "00-0038465",
+        "years": 3
       },
       {
         "apy": 0.315,
@@ -607,10 +613,10 @@
         "years": 2
       },
       {
-        "apy": 0.901,
+        "apy": 1.526,
         "depth": 10,
-        "playerId": "00-0038465",
-        "years": 3
+        "playerId": "00-0037810",
+        "years": 4
       },
       {
         "apy": 1.045,
@@ -623,12 +629,6 @@
         "depth": 11,
         "playerId": "00-0033752",
         "years": 2
-      },
-      {
-        "apy": 1.526,
-        "depth": 11,
-        "playerId": "00-0037810",
-        "years": 4
       },
       {
         "apy": 11.5,
@@ -907,33 +907,33 @@
         "years": 4
       },
       {
+        "apy": 1.119,
+        "depth": 7,
+        "playerId": "00-0040073",
+        "years": 4
+      },
+      {
         "apy": 17.177,
         "depth": 8,
         "playerId": "00-0035678",
         "years": 3
       },
       {
-        "apy": 1.119,
+        "apy": 0.898,
         "depth": 8,
-        "playerId": "00-0040073",
-        "years": 4
+        "playerId": "00-0039176",
+        "years": 3
       },
       {
-        "apy": 0.315,
-        "depth": 9,
-        "playerId": "00-0033463",
-        "years": 1
+        "apy": 1.094,
+        "depth": 8,
+        "playerId": "00-0040077",
+        "years": 4
       },
       {
         "apy": 1.167,
         "depth": 9,
         "playerId": "00-0040070",
-        "years": 4
-      },
-      {
-        "apy": 1.094,
-        "depth": 9,
-        "playerId": "00-0040077",
         "years": 4
       },
       {
@@ -943,15 +943,15 @@
         "years": 4
       },
       {
-        "apy": 0.898,
-        "depth": 10,
-        "playerId": "00-0039176",
-        "years": 3
-      },
-      {
         "apy": 1.568,
         "depth": 10,
         "playerId": "00-0040068",
+        "years": 4
+      },
+      {
+        "apy": 1.412,
+        "depth": 12,
+        "playerId": "00-0039791",
         "years": 4
       }
     ],
@@ -1071,10 +1071,10 @@
         "years": 2
       },
       {
-        "apy": 0.234,
+        "apy": 5.1,
         "depth": 3,
-        "playerId": "00-0036679",
-        "years": 1
+        "playerId": "00-0036162",
+        "years": 4
       },
       {
         "apy": 20.0,
@@ -1111,12 +1111,6 @@
         "depth": 4,
         "playerId": "00-0035679",
         "years": 3
-      },
-      {
-        "apy": 5.1,
-        "depth": 4,
-        "playerId": "00-0036162",
-        "years": 4
       },
       {
         "apy": 6.0,
@@ -1203,10 +1197,22 @@
         "years": 1
       },
       {
+        "apy": 13.0,
+        "depth": 7,
+        "playerId": "00-0030062",
+        "years": 3
+      },
+      {
         "apy": 1.625,
         "depth": 7,
         "playerId": "00-0032497",
         "years": 4
+      },
+      {
+        "apy": 7.0,
+        "depth": 7,
+        "playerId": "00-0035933",
+        "years": 3
       },
       {
         "apy": 2.661,
@@ -1215,22 +1221,10 @@
         "years": 4
       },
       {
-        "apy": 13.0,
-        "depth": 8,
-        "playerId": "00-0030062",
-        "years": 3
-      },
-      {
         "apy": 0.315,
         "depth": 8,
         "playerId": "00-0035140",
         "years": 1
-      },
-      {
-        "apy": 7.0,
-        "depth": 8,
-        "playerId": "00-0035933",
-        "years": 3
       },
       {
         "apy": 2.0,
@@ -1251,26 +1245,32 @@
         "years": 3
       },
       {
+        "apy": 1.047,
+        "depth": 9,
+        "playerId": "00-0039882",
+        "years": 4
+      },
+      {
+        "apy": 17.0,
+        "depth": 11,
+        "playerId": "00-0035230",
+        "years": 4
+      },
+      {
         "apy": 1.03,
         "depth": 11,
         "playerId": "00-0037428",
         "years": 1
       },
       {
-        "apy": 17.0,
-        "depth": 12,
-        "playerId": "00-0035230",
-        "years": 4
-      },
-      {
         "apy": 1.655,
-        "depth": 14,
+        "depth": 12,
         "playerId": "00-0040132",
         "years": 4
       },
       {
         "apy": 1.405,
-        "depth": 18,
+        "depth": 14,
         "playerId": "00-0039873",
         "years": 4
       }
@@ -1391,12 +1391,6 @@
         "years": 4
       },
       {
-        "apy": 1.16,
-        "depth": 3,
-        "playerId": "00-0034401",
-        "years": 2
-      },
-      {
         "apy": 7.0,
         "depth": 3,
         "playerId": "00-0036903",
@@ -1457,9 +1451,21 @@
         "years": 4
       },
       {
+        "apy": 0.396,
+        "depth": 4,
+        "playerId": "00-0037332",
+        "years": 1
+      },
+      {
         "apy": 1.105,
         "depth": 4,
         "playerId": "00-0038101",
+        "years": 4
+      },
+      {
+        "apy": 2.104,
+        "depth": 4,
+        "playerId": "00-0039344",
         "years": 4
       },
       {
@@ -1478,18 +1484,6 @@
         "apy": 0.958,
         "depth": 5,
         "playerId": "00-0037297",
-        "years": 4
-      },
-      {
-        "apy": 0.396,
-        "depth": 5,
-        "playerId": "00-0037332",
-        "years": 1
-      },
-      {
-        "apy": 2.104,
-        "depth": 5,
-        "playerId": "00-0039344",
         "years": 4
       },
       {
@@ -1541,6 +1535,12 @@
         "years": 1
       },
       {
+        "apy": 1.11,
+        "depth": 7,
+        "playerId": "00-0038105",
+        "years": 4
+      },
+      {
         "apy": 1.49,
         "depth": 7,
         "playerId": "00-0039347",
@@ -1554,7 +1554,7 @@
       },
       {
         "apy": 0.948,
-        "depth": 9,
+        "depth": 8,
         "playerId": "00-0039490",
         "years": 3
       },
@@ -1565,16 +1565,16 @@
         "years": 4
       },
       {
-        "apy": 1.11,
-        "depth": 10,
-        "playerId": "00-0038105",
-        "years": 4
-      },
-      {
         "apy": 0.234,
-        "depth": 10,
+        "depth": 9,
         "playerId": "00-0040283",
         "years": 1
+      },
+      {
+        "apy": 1.153,
+        "depth": 10,
+        "playerId": "00-0038536",
+        "years": 4
       },
       {
         "apy": 0.396,
@@ -1672,6 +1672,12 @@
         "apy": 2.5,
         "depth": 2,
         "playerId": "00-0034798",
+        "years": 1
+      },
+      {
+        "apy": 1.32,
+        "depth": 2,
+        "playerId": "00-0036589",
         "years": 1
       },
       {
@@ -1881,16 +1887,16 @@
         "years": 1
       },
       {
+        "apy": 1.029,
+        "depth": 9,
+        "playerId": "00-0038395",
+        "years": 4
+      },
+      {
         "apy": 4.75,
         "depth": 10,
         "playerId": "00-0036967",
         "years": 1
-      },
-      {
-        "apy": 1.029,
-        "depth": 11,
-        "playerId": "00-0038395",
-        "years": 4
       },
       {
         "apy": 1.108,
@@ -1902,12 +1908,6 @@
         "apy": 1.805,
         "depth": 11,
         "playerId": "00-0040741",
-        "years": 4
-      },
-      {
-        "apy": 1.13,
-        "depth": 14,
-        "playerId": "00-0040191",
         "years": 4
       }
     ],
@@ -2039,6 +2039,12 @@
         "years": 2
       },
       {
+        "apy": 10.5,
+        "depth": 3,
+        "playerId": "00-0035644",
+        "years": 2
+      },
+      {
         "apy": 26.179,
         "depth": 3,
         "playerId": "00-0036410",
@@ -2129,12 +2135,6 @@
         "years": 4
       },
       {
-        "apy": 0.877,
-        "depth": 5,
-        "playerId": "00-0039266",
-        "years": 2
-      },
-      {
         "apy": 1.034,
         "depth": 5,
         "playerId": "00-0039414",
@@ -2189,10 +2189,10 @@
         "years": 1
       },
       {
-        "apy": 0.944,
+        "apy": 0.234,
         "depth": 7,
-        "playerId": "00-0037314",
-        "years": 4
+        "playerId": "00-0040018",
+        "years": 1
       },
       {
         "apy": 3.0,
@@ -2499,6 +2499,18 @@
         "years": 4
       },
       {
+        "apy": 12.5,
+        "depth": 8,
+        "playerId": "00-0036915",
+        "years": 3
+      },
+      {
+        "apy": 1.368,
+        "depth": 8,
+        "playerId": "00-0037250",
+        "years": 4
+      },
+      {
         "apy": 3.25,
         "depth": 9,
         "playerId": "00-0030725",
@@ -2523,28 +2535,16 @@
         "years": 2
       },
       {
-        "apy": 1.368,
-        "depth": 10,
-        "playerId": "00-0037250",
-        "years": 4
-      },
-      {
-        "apy": 12.5,
-        "depth": 11,
-        "playerId": "00-0036915",
-        "years": 3
-      },
-      {
-        "apy": 0.315,
-        "depth": 13,
-        "playerId": "00-0036983",
-        "years": 1
-      },
-      {
         "apy": 0.948,
-        "depth": 15,
+        "depth": 10,
         "playerId": "00-0039515",
         "years": 3
+      },
+      {
+        "apy": 1.158,
+        "depth": 11,
+        "playerId": "00-0039014",
+        "years": 4
       }
     ],
     "DAL": [
@@ -2667,12 +2667,6 @@
         "depth": 3,
         "playerId": "00-0033877",
         "years": 3
-      },
-      {
-        "apy": 0.396,
-        "depth": 3,
-        "playerId": "00-0035251",
-        "years": 1
       },
       {
         "apy": 4.5,
@@ -2831,6 +2825,12 @@
         "years": 2
       },
       {
+        "apy": 0.898,
+        "depth": 8,
+        "playerId": "00-0038348",
+        "years": 3
+      },
+      {
         "apy": 6.0,
         "depth": 9,
         "playerId": "00-0032052",
@@ -2843,10 +2843,10 @@
         "years": 3
       },
       {
-        "apy": 0.898,
-        "depth": 9,
-        "playerId": "00-0038348",
-        "years": 3
+        "apy": 1.118,
+        "depth": 12,
+        "playerId": "00-0038126",
+        "years": 4
       },
       {
         "apy": 1.103,
@@ -2855,15 +2855,15 @@
         "years": 4
       },
       {
-        "apy": 3.75,
-        "depth": 15,
-        "playerId": "00-0036596",
+        "apy": 2.5,
+        "depth": 13,
+        "playerId": "00-0036926",
         "years": 1
       },
       {
-        "apy": 2.5,
-        "depth": 15,
-        "playerId": "00-0036926",
+        "apy": 3.75,
+        "depth": 14,
+        "playerId": "00-0036596",
         "years": 1
       }
     ],
@@ -2989,6 +2989,12 @@
         "years": 3
       },
       {
+        "apy": 0.315,
+        "depth": 3,
+        "playerId": "00-0036879",
+        "years": 1
+      },
+      {
         "apy": 1.03,
         "depth": 3,
         "playerId": "00-0037384",
@@ -3040,12 +3046,6 @@
         "apy": 2.788,
         "depth": 4,
         "playerId": "00-0036428",
-        "years": 1
-      },
-      {
-        "apy": 0.315,
-        "depth": 4,
-        "playerId": "00-0036879",
         "years": 1
       },
       {
@@ -3157,34 +3157,34 @@
         "years": 4
       },
       {
+        "apy": 0.956,
+        "depth": 8,
+        "playerId": "00-0037303",
+        "years": 4
+      },
+      {
         "apy": 0.979,
         "depth": 8,
         "playerId": "00-0038649",
         "years": 4
       },
       {
-        "apy": 0.956,
+        "apy": 0.995,
         "depth": 9,
-        "playerId": "00-0037303",
-        "years": 4
+        "playerId": "00-0040452",
+        "years": 3
       },
       {
         "apy": 3.5,
-        "depth": 11,
+        "depth": 10,
         "playerId": "00-0036392",
         "years": 2
       },
       {
         "apy": 1.434,
-        "depth": 12,
+        "depth": 11,
         "playerId": "00-0039003",
         "years": 4
-      },
-      {
-        "apy": 0.995,
-        "depth": 12,
-        "playerId": "00-0040452",
-        "years": 3
       }
     ],
     "DET": [
@@ -3301,12 +3301,6 @@
         "years": 3
       },
       {
-        "apy": 0.315,
-        "depth": 3,
-        "playerId": "00-0033936",
-        "years": 1
-      },
-      {
         "apy": 16.0,
         "depth": 3,
         "playerId": "00-0034384",
@@ -3323,6 +3317,12 @@
         "depth": 3,
         "playerId": "00-0039364",
         "years": 4
+      },
+      {
+        "apy": 0.947,
+        "depth": 3,
+        "playerId": "00-0039660",
+        "years": 3
       },
       {
         "apy": 1.666,
@@ -3415,6 +3415,12 @@
         "years": 4
       },
       {
+        "apy": 0.99,
+        "depth": 5,
+        "playerId": "00-0040393",
+        "years": 3
+      },
+      {
         "apy": 0.396,
         "depth": 6,
         "playerId": "00-0032803",
@@ -3457,12 +3463,6 @@
         "years": 1
       },
       {
-        "apy": 0.99,
-        "depth": 7,
-        "playerId": "00-0040393",
-        "years": 3
-      },
-      {
         "apy": 4.12,
         "depth": 7,
         "playerId": "00-0040672",
@@ -3470,7 +3470,7 @@
       },
       {
         "apy": 2.5,
-        "depth": 9,
+        "depth": 8,
         "playerId": "00-0034344",
         "years": 1
       },
@@ -3481,26 +3481,26 @@
         "years": 1
       },
       {
+        "apy": 1.621,
+        "depth": 9,
+        "playerId": "00-0039862",
+        "years": 4
+      },
+      {
+        "apy": 4.0,
+        "depth": 11,
+        "playerId": "00-0036954",
+        "years": 1
+      },
+      {
         "apy": 1.13,
         "depth": 11,
         "playerId": "00-0040193",
         "years": 4
       },
       {
-        "apy": 1.621,
-        "depth": 13,
-        "playerId": "00-0039862",
-        "years": 4
-      },
-      {
-        "apy": 4.0,
-        "depth": 14,
-        "playerId": "00-0036954",
-        "years": 1
-      },
-      {
         "apy": 1.934,
-        "depth": 15,
+        "depth": 12,
         "playerId": "00-0038096",
         "years": 4
       }
@@ -3639,6 +3639,12 @@
         "years": 4
       },
       {
+        "apy": 1.341,
+        "depth": 3,
+        "playerId": "00-0038122",
+        "years": 4
+      },
+      {
         "apy": 2.31,
         "depth": 3,
         "playerId": "00-0038124",
@@ -3687,12 +3693,6 @@
         "years": 4
       },
       {
-        "apy": 1.341,
-        "depth": 4,
-        "playerId": "00-0038122",
-        "years": 4
-      },
-      {
         "apy": 1.036,
         "depth": 4,
         "playerId": "00-0038393",
@@ -3702,6 +3702,12 @@
         "apy": 1.041,
         "depth": 4,
         "playerId": "00-0038589",
+        "years": 4
+      },
+      {
+        "apy": 1.422,
+        "depth": 4,
+        "playerId": "00-0039811",
         "years": 4
       },
       {
@@ -3759,12 +3765,6 @@
         "years": 4
       },
       {
-        "apy": 1.422,
-        "depth": 6,
-        "playerId": "00-0039811",
-        "years": 4
-      },
-      {
         "apy": 1.573,
         "depth": 6,
         "playerId": "00-0040009",
@@ -3799,6 +3799,12 @@
         "years": 4
       },
       {
+        "apy": 1.151,
+        "depth": 8,
+        "playerId": "00-0040012",
+        "years": 4
+      },
+      {
         "apy": 1.125,
         "depth": 9,
         "playerId": "00-0035118",
@@ -3808,12 +3814,6 @@
         "apy": 1.285,
         "depth": 9,
         "playerId": "00-0040010",
-        "years": 4
-      },
-      {
-        "apy": 1.151,
-        "depth": 9,
-        "playerId": "00-0040012",
         "years": 4
       },
       {
@@ -4009,6 +4009,12 @@
         "years": 4
       },
       {
+        "apy": 1.72,
+        "depth": 5,
+        "playerId": "00-0036556",
+        "years": 1
+      },
+      {
         "apy": 1.202,
         "depth": 5,
         "playerId": "00-0036883",
@@ -4033,10 +4039,20 @@
         "years": 4
       },
       {
+        "depth": 6,
+        "playerId": "00-0031298"
+      },
+      {
         "apy": 0.396,
         "depth": 6,
         "playerId": "00-0032071",
         "years": 1
+      },
+      {
+        "apy": 9.875,
+        "depth": 6,
+        "playerId": "00-0033897",
+        "years": 2
       },
       {
         "apy": 2.5,
@@ -4051,28 +4067,22 @@
         "years": 2
       },
       {
-        "apy": 1.72,
-        "depth": 6,
-        "playerId": "00-0036556",
-        "years": 1
-      },
-      {
         "apy": 1.337,
         "depth": 6,
         "playerId": "00-0037823",
         "years": 4
       },
       {
+        "apy": 0.234,
+        "depth": 6,
+        "playerId": "00-0040770",
+        "years": 1
+      },
+      {
         "apy": 4.0,
         "depth": 7,
         "playerId": "00-0033876",
         "years": 1
-      },
-      {
-        "apy": 9.875,
-        "depth": 7,
-        "playerId": "00-0033897",
-        "years": 2
       },
       {
         "apy": 0.976,
@@ -4087,10 +4097,6 @@
         "years": 4
       },
       {
-        "depth": 8,
-        "playerId": "00-0031298"
-      },
-      {
         "apy": 4.75,
         "depth": 8,
         "playerId": "00-0032265",
@@ -4103,10 +4109,10 @@
         "years": 4
       },
       {
-        "apy": 0.234,
+        "apy": 1.422,
         "depth": 8,
-        "playerId": "00-0040770",
-        "years": 1
+        "playerId": "00-0038977",
+        "years": 4
       },
       {
         "apy": 10.0,
@@ -4131,12 +4137,6 @@
         "depth": 11,
         "playerId": "00-0034275",
         "years": 1
-      },
-      {
-        "apy": 1.422,
-        "depth": 11,
-        "playerId": "00-0038977",
-        "years": 4
       }
     ],
     "IND": [
@@ -4337,6 +4337,12 @@
         "years": 1
       },
       {
+        "apy": 3.75,
+        "depth": 5,
+        "playerId": "00-0034091",
+        "years": 2
+      },
+      {
         "apy": 18.0,
         "depth": 5,
         "playerId": "00-0034573",
@@ -4364,12 +4370,6 @@
         "apy": 23.0,
         "depth": 6,
         "playerId": "00-0032378",
-        "years": 2
-      },
-      {
-        "apy": 3.75,
-        "depth": 6,
-        "playerId": "00-0034091",
         "years": 2
       },
       {
@@ -4445,14 +4445,14 @@
         "years": 4
       },
       {
-        "apy": 0.315,
-        "depth": 11,
-        "playerId": "00-0033913",
-        "years": 1
+        "apy": 0.995,
+        "depth": 10,
+        "playerId": "00-0037269",
+        "years": 4
       },
       {
         "apy": 1.611,
-        "depth": 14,
+        "depth": 10,
         "playerId": "00-0040139",
         "years": 4
       }
@@ -4601,12 +4601,6 @@
         "years": 4
       },
       {
-        "apy": 0.877,
-        "depth": 3,
-        "playerId": "00-0039534",
-        "years": 2
-      },
-      {
         "apy": 1.106,
         "depth": 3,
         "playerId": "00-0040213",
@@ -4719,15 +4713,21 @@
         "years": 1
       },
       {
-        "apy": 0.234,
+        "apy": 1.57,
         "depth": 6,
-        "playerId": "00-0040326",
+        "playerId": "00-0040145",
+        "years": 4
+      },
+      {
+        "apy": 0.315,
+        "depth": 7,
+        "playerId": "00-0036497",
         "years": 1
       },
       {
-        "apy": 1.57,
+        "apy": 1.051,
         "depth": 7,
-        "playerId": "00-0040145",
+        "playerId": "00-0038580",
         "years": 4
       },
       {
@@ -4949,6 +4949,12 @@
         "years": 1
       },
       {
+        "apy": 1.125,
+        "depth": 4,
+        "playerId": "00-0037258",
+        "years": 4
+      },
+      {
         "apy": 1.082,
         "depth": 4,
         "playerId": "00-0038043",
@@ -4979,9 +4985,9 @@
         "years": 2
       },
       {
-        "apy": 1.125,
+        "apy": 0.958,
         "depth": 5,
-        "playerId": "00-0037258",
+        "playerId": "00-0037299",
         "years": 4
       },
       {
@@ -5001,12 +5007,6 @@
         "depth": 6,
         "playerId": "00-0036416",
         "years": 2
-      },
-      {
-        "apy": 0.958,
-        "depth": 6,
-        "playerId": "00-0037299",
-        "years": 4
       },
       {
         "apy": 0.903,
@@ -5081,15 +5081,15 @@
         "years": 4
       },
       {
-        "apy": 1.026,
+        "apy": 2.954,
         "depth": 13,
-        "playerId": "00-0039833",
+        "playerId": "00-0039006",
         "years": 4
       },
       {
-        "apy": 2.954,
-        "depth": 16,
-        "playerId": "00-0039006",
+        "apy": 1.026,
+        "depth": 13,
+        "playerId": "00-0039833",
         "years": 4
       }
     ],
@@ -5188,6 +5188,12 @@
         "apy": 1.096,
         "depth": 2,
         "playerId": "00-0039369",
+        "years": 4
+      },
+      {
+        "apy": 1.057,
+        "depth": 2,
+        "playerId": "00-0039391",
         "years": 4
       },
       {
@@ -5305,12 +5311,6 @@
         "years": 4
       },
       {
-        "apy": 0.959,
-        "depth": 5,
-        "playerId": "00-0037295",
-        "years": 4
-      },
-      {
         "apy": 0.94,
         "depth": 5,
         "playerId": "00-0037320",
@@ -5329,16 +5329,16 @@
         "years": 5
       },
       {
-        "apy": 0.315,
-        "depth": 6,
-        "playerId": "00-0032463",
-        "years": 1
-      },
-      {
         "apy": 5.25,
         "depth": 6,
         "playerId": "00-0036893",
         "years": 1
+      },
+      {
+        "apy": 0.992,
+        "depth": 6,
+        "playerId": "00-0040459",
+        "years": 3
       },
       {
         "apy": 18.0,
@@ -5357,16 +5357,16 @@
         "playerId": "00-0036940"
       },
       {
-        "apy": 0.985,
-        "depth": 8,
-        "playerId": "00-0038634",
-        "years": 4
-      },
-      {
         "apy": 8.29,
         "depth": 8,
         "playerId": "00-0039897",
         "years": 4
+      },
+      {
+        "apy": 0.995,
+        "depth": 8,
+        "playerId": "00-0040468",
+        "years": 3
       },
       {
         "apy": 2.655,
@@ -5381,32 +5381,32 @@
         "years": 4
       },
       {
-        "apy": 0.234,
-        "depth": 9,
-        "playerId": "00-0040458",
-        "years": 1
-      },
-      {
-        "apy": 0.995,
-        "depth": 9,
-        "playerId": "00-0040468",
-        "years": 3
-      },
-      {
-        "apy": 0.992,
+        "apy": 8.0,
         "depth": 10,
-        "playerId": "00-0040459",
+        "playerId": "00-0035127",
         "years": 3
+      },
+      {
+        "apy": 1.283,
+        "depth": 10,
+        "playerId": "00-0040161",
+        "years": 4
       },
       {
         "apy": 1.4,
-        "depth": 12,
+        "depth": 11,
         "playerId": "00-0028845",
         "years": 4
       },
       {
+        "apy": 1.507,
+        "depth": 11,
+        "playerId": "00-0039346",
+        "years": 4
+      },
+      {
         "apy": 28.5,
-        "depth": 17,
+        "depth": 13,
         "playerId": "00-0037009",
         "years": 4
       }
@@ -5551,6 +5551,12 @@
         "years": 4
       },
       {
+        "apy": 1.135,
+        "depth": 3,
+        "playerId": "00-0039107",
+        "years": 4
+      },
+      {
         "apy": 0.963,
         "depth": 3,
         "playerId": "00-0039772",
@@ -5609,12 +5615,6 @@
         "years": 3
       },
       {
-        "apy": 1.135,
-        "depth": 4,
-        "playerId": "00-0039107",
-        "years": 4
-      },
-      {
         "apy": 1.051,
         "depth": 4,
         "playerId": "00-0039749",
@@ -5625,6 +5625,12 @@
         "depth": 4,
         "playerId": "00-0040692",
         "years": 4
+      },
+      {
+        "apy": 0.396,
+        "depth": 5,
+        "playerId": "00-0032394",
+        "years": 1
       },
       {
         "apy": 2.291,
@@ -5697,32 +5703,26 @@
         "years": 4
       },
       {
-        "apy": 0.234,
+        "apy": 1.33,
         "depth": 9,
-        "playerId": "00-0040595",
+        "playerId": "00-0030097",
         "years": 1
       },
       {
-        "apy": 0.991,
-        "depth": 10,
-        "playerId": "00-0040657",
-        "years": 3
-      },
-      {
         "apy": 2.5,
-        "depth": 11,
+        "depth": 10,
         "playerId": "00-0032222",
         "years": 1
       },
       {
         "apy": 1.03,
-        "depth": 12,
+        "depth": 10,
         "playerId": "00-0037057",
         "years": 1
       },
       {
         "apy": 1.04,
-        "depth": 12,
+        "depth": 11,
         "playerId": "00-0039753",
         "years": 4
       }
@@ -5883,6 +5883,12 @@
         "years": 4
       },
       {
+        "apy": 0.234,
+        "depth": 3,
+        "playerId": "00-0040488",
+        "years": 1
+      },
+      {
         "apy": 1.313,
         "depth": 3,
         "playerId": "00-0040581",
@@ -5899,12 +5905,6 @@
         "depth": 4,
         "playerId": "00-0033381",
         "years": 3
-      },
-      {
-        "apy": 1.524,
-        "depth": 4,
-        "playerId": "00-0034365",
-        "years": 1
       },
       {
         "apy": 0.234,
@@ -5967,6 +5967,12 @@
         "years": 4
       },
       {
+        "apy": 0.901,
+        "depth": 6,
+        "playerId": "00-0038891",
+        "years": 3
+      },
+      {
         "apy": 0.877,
         "depth": 6,
         "playerId": "00-0039676",
@@ -5983,12 +5989,6 @@
         "depth": 7,
         "playerId": "00-0036711",
         "years": 1
-      },
-      {
-        "apy": 0.901,
-        "depth": 7,
-        "playerId": "00-0038891",
-        "years": 3
       },
       {
         "apy": 1.087,
@@ -6227,10 +6227,22 @@
         "years": 4
       },
       {
+        "apy": 1.156,
+        "depth": 4,
+        "playerId": "00-0040178",
+        "years": 4
+      },
+      {
         "apy": 0.234,
         "depth": 4,
         "playerId": "00-0040222",
         "years": 1
+      },
+      {
+        "apy": 0.993,
+        "depth": 4,
+        "playerId": "00-0040301",
+        "years": 3
       },
       {
         "apy": 0.315,
@@ -6239,16 +6251,16 @@
         "years": 1
       },
       {
+        "apy": 1.9,
+        "depth": 5,
+        "playerId": "00-0034248",
+        "years": 1
+      },
+      {
         "apy": 2.875,
         "depth": 5,
         "playerId": "00-0034418",
         "years": 2
-      },
-      {
-        "apy": 2.5,
-        "depth": 5,
-        "playerId": "00-0036905",
-        "years": 1
       },
       {
         "apy": 2.049,
@@ -6261,12 +6273,6 @@
         "depth": 5,
         "playerId": "00-0040248",
         "years": 4
-      },
-      {
-        "apy": 0.993,
-        "depth": 5,
-        "playerId": "00-0040301",
-        "years": 3
       },
       {
         "apy": 30.0,
@@ -6293,16 +6299,16 @@
         "years": 4
       },
       {
+        "apy": 0.95,
+        "depth": 6,
+        "playerId": "00-0039481",
+        "years": 3
+      },
+      {
         "apy": 1.17,
         "depth": 7,
         "playerId": "00-0033221",
         "years": 1
-      },
-      {
-        "apy": 0.95,
-        "depth": 7,
-        "playerId": "00-0039481",
-        "years": 3
       },
       {
         "apy": 0.945,
@@ -6329,38 +6335,32 @@
         "years": 1
       },
       {
-        "apy": 0.234,
-        "depth": 8,
-        "playerId": "00-0040304",
-        "years": 1
-      },
-      {
-        "apy": 0.234,
+        "apy": 1.425,
         "depth": 9,
-        "playerId": "00-0040545",
+        "playerId": "00-0031921",
         "years": 1
       },
       {
         "apy": 1.355,
-        "depth": 11,
+        "depth": 9,
         "playerId": "00-0033103",
         "years": 1
       },
       {
-        "apy": 8.0,
-        "depth": 12,
-        "playerId": "00-0034347",
-        "years": 3
-      },
-      {
         "apy": 3.263,
-        "depth": 13,
+        "depth": 10,
         "playerId": "00-0037353",
         "years": 1
       },
       {
+        "apy": 8.0,
+        "depth": 11,
+        "playerId": "00-0034347",
+        "years": 3
+      },
+      {
         "apy": 2.225,
-        "depth": 17,
+        "depth": 15,
         "playerId": "00-0037010",
         "years": 1
       }
@@ -6422,6 +6422,12 @@
         "apy": 1.048,
         "depth": 1,
         "playerId": "00-0039404",
+        "years": 4
+      },
+      {
+        "apy": 5.464,
+        "depth": 1,
+        "playerId": "00-0039923",
         "years": 4
       },
       {
@@ -6563,12 +6569,6 @@
         "years": 2
       },
       {
-        "apy": 0.315,
-        "depth": 5,
-        "playerId": "00-0034955",
-        "years": 1
-      },
-      {
         "apy": 7.5,
         "depth": 5,
         "playerId": "00-0035276",
@@ -6605,6 +6605,12 @@
         "years": 4
       },
       {
+        "apy": 1.104,
+        "depth": 5,
+        "playerId": "00-0040215",
+        "years": 4
+      },
+      {
         "apy": 0.988,
         "depth": 5,
         "playerId": "00-0040506",
@@ -6635,6 +6641,12 @@
         "years": 2
       },
       {
+        "apy": 2.0,
+        "depth": 7,
+        "playerId": "00-0036936",
+        "years": 1
+      },
+      {
         "apy": 0.945,
         "depth": 7,
         "playerId": "00-0039720",
@@ -6647,22 +6659,10 @@
         "years": 2
       },
       {
-        "apy": 0.315,
-        "depth": 8,
-        "playerId": "00-0035073",
-        "years": 1
-      },
-      {
         "apy": 19.0,
         "depth": 8,
         "playerId": "00-0036224",
         "years": 4
-      },
-      {
-        "apy": 2.0,
-        "depth": 8,
-        "playerId": "00-0036936",
-        "years": 1
       },
       {
         "apy": 1.342,
@@ -6671,15 +6671,15 @@
         "years": 3
       },
       {
+        "apy": 3.322,
+        "depth": 10,
+        "playerId": "00-0035646",
+        "years": 2
+      },
+      {
         "apy": 0.992,
         "depth": 10,
         "playerId": "00-0040500",
-        "years": 3
-      },
-      {
-        "apy": 0.99,
-        "depth": 10,
-        "playerId": "00-0040508",
         "years": 3
       }
     ],
@@ -6925,6 +6925,12 @@
         "years": 1
       },
       {
+        "apy": 0.234,
+        "depth": 6,
+        "playerId": "00-0040252",
+        "years": 1
+      },
+      {
         "apy": 0.998,
         "depth": 6,
         "playerId": "00-0040371",
@@ -6955,10 +6961,10 @@
         "years": 3
       },
       {
-        "apy": 0.234,
+        "apy": 1.058,
         "depth": 7,
-        "playerId": "00-0040252",
-        "years": 1
+        "playerId": "00-0039390",
+        "years": 4
       },
       {
         "apy": 4.0,
@@ -6979,28 +6985,22 @@
         "years": 5
       },
       {
-        "apy": 1.058,
+        "apy": 1.045,
         "depth": 9,
-        "playerId": "00-0039390",
+        "playerId": "00-0038584",
         "years": 4
       },
       {
-        "apy": 1.045,
+        "apy": 0.948,
         "depth": 10,
-        "playerId": "00-0038584",
-        "years": 4
+        "playerId": "00-0039644",
+        "years": 3
       },
       {
         "apy": 1.087,
         "depth": 10,
         "playerId": "00-0040226",
         "years": 4
-      },
-      {
-        "apy": 0.948,
-        "depth": 12,
-        "playerId": "00-0039644",
-        "years": 3
       }
     ],
     "NO": [
@@ -7044,6 +7044,12 @@
         "apy": 6.933,
         "depth": 1,
         "playerId": "00-0040125",
+        "years": 4
+      },
+      {
+        "apy": 1.561,
+        "depth": 1,
+        "playerId": "00-0040643",
         "years": 4
       },
       {
@@ -7104,12 +7110,6 @@
         "apy": 1.031,
         "depth": 2,
         "playerId": "00-0039424",
-        "years": 4
-      },
-      {
-        "apy": 1.113,
-        "depth": 2,
-        "playerId": "00-0040202",
         "years": 4
       },
       {
@@ -7213,6 +7213,12 @@
         "years": 1
       },
       {
+        "apy": 1.021,
+        "depth": 5,
+        "playerId": "00-0038397",
+        "years": 4
+      },
+      {
         "apy": 1.307,
         "depth": 5,
         "playerId": "00-0040155",
@@ -7267,6 +7273,12 @@
         "years": 4
       },
       {
+        "apy": 1.005,
+        "depth": 8,
+        "playerId": "00-0039052",
+        "years": 4
+      },
+      {
         "apy": 1.659,
         "depth": 8,
         "playerId": "00-0040642",
@@ -7279,20 +7291,8 @@
         "years": 3
       },
       {
-        "apy": 0.877,
-        "depth": 9,
-        "playerId": "00-0037603",
-        "years": 2
-      },
-      {
-        "apy": 1.005,
-        "depth": 9,
-        "playerId": "00-0039052",
-        "years": 4
-      },
-      {
         "apy": 1.069,
-        "depth": 10,
+        "depth": 9,
         "playerId": "00-0039386",
         "years": 4
       },
@@ -7310,13 +7310,13 @@
       },
       {
         "apy": 2.328,
-        "depth": 15,
+        "depth": 14,
         "playerId": "00-0036930",
         "years": 1
       },
       {
         "apy": 1.186,
-        "depth": 17,
+        "depth": 15,
         "playerId": "00-0038566",
         "years": 4
       }
@@ -7623,20 +7623,20 @@
         "years": 3
       },
       {
+        "apy": 1.004,
+        "depth": 12,
+        "playerId": "00-0037259",
+        "years": 4
+      },
+      {
         "apy": 6.138,
         "depth": 12,
         "playerId": "00-0037612",
         "years": 4
       },
       {
-        "apy": 1.004,
-        "depth": 13,
-        "playerId": "00-0037259",
-        "years": 4
-      },
-      {
         "apy": 0.902,
-        "depth": 14,
+        "depth": 12,
         "playerId": "00-0038824",
         "years": 3
       }
@@ -7694,12 +7694,6 @@
         "apy": 2.5,
         "depth": 2,
         "playerId": "00-0034357",
-        "years": 1
-      },
-      {
-        "apy": 0.315,
-        "depth": 2,
-        "playerId": "00-0036300",
         "years": 1
       },
       {
@@ -7772,6 +7766,12 @@
         "apy": 5.128,
         "depth": 3,
         "playerId": "00-0039790",
+        "years": 4
+      },
+      {
+        "apy": 1.648,
+        "depth": 3,
+        "playerId": "00-0040133",
         "years": 4
       },
       {
@@ -7901,10 +7901,10 @@
         "years": 3
       },
       {
-        "apy": 0.315,
+        "apy": 0.898,
         "depth": 7,
-        "playerId": "00-0036885",
-        "years": 1
+        "playerId": "00-0037526",
+        "years": 3
       },
       {
         "apy": 0.902,
@@ -7938,7 +7938,7 @@
       },
       {
         "apy": 1.6,
-        "depth": 10,
+        "depth": 9,
         "playerId": "00-0035150",
         "years": 1
       },
@@ -8013,6 +8013,12 @@
         "playerId": "00-0037130"
       },
       {
+        "apy": 1.438,
+        "depth": 1,
+        "playerId": "00-0039001",
+        "years": 4
+      },
+      {
         "apy": 2.321,
         "depth": 1,
         "playerId": "00-0039841",
@@ -8061,6 +8067,12 @@
         "years": 4
       },
       {
+        "apy": 1.408,
+        "depth": 2,
+        "playerId": "00-0039740",
+        "years": 4
+      },
+      {
         "apy": 1.184,
         "depth": 2,
         "playerId": "00-0039746",
@@ -8100,6 +8112,12 @@
         "apy": 1.348,
         "depth": 3,
         "playerId": "00-0038555",
+        "years": 4
+      },
+      {
+        "apy": 1.087,
+        "depth": 3,
+        "playerId": "00-0039826",
         "years": 4
       },
       {
@@ -8187,6 +8205,12 @@
         "years": 4
       },
       {
+        "apy": 1.054,
+        "depth": 6,
+        "playerId": "00-0039236",
+        "years": 4
+      },
+      {
         "apy": 1.309,
         "depth": 6,
         "playerId": "00-0040662",
@@ -8223,12 +8247,6 @@
         "years": 4
       },
       {
-        "apy": 0.993,
-        "depth": 8,
-        "playerId": "00-0038404",
-        "years": 4
-      },
-      {
         "apy": 1.429,
         "depth": 9,
         "playerId": "00-0029008",
@@ -8237,12 +8255,6 @@
       {
         "depth": 9,
         "playerId": "00-0036934"
-      },
-      {
-        "apy": 1.054,
-        "depth": 9,
-        "playerId": "00-0039236",
-        "years": 4
       },
       {
         "apy": 1.139,
@@ -8257,22 +8269,10 @@
         "years": 1
       },
       {
-        "apy": 1.113,
-        "depth": 11,
-        "playerId": "00-0040687",
-        "years": 4
-      },
-      {
         "apy": 6.333,
         "depth": 12,
         "playerId": "00-0034807",
         "years": 3
-      },
-      {
-        "apy": 0.84,
-        "depth": 12,
-        "playerId": "00-0040276",
-        "years": 1
       }
     ],
     "PIT": [
@@ -8373,6 +8373,12 @@
         "years": 1
       },
       {
+        "apy": 0.954,
+        "depth": 2,
+        "playerId": "00-0037304",
+        "years": 4
+      },
+      {
         "apy": 1.833,
         "depth": 2,
         "playerId": "00-0039110",
@@ -8409,12 +8415,6 @@
         "years": 4
       },
       {
-        "apy": 0.396,
-        "depth": 3,
-        "playerId": "00-0036984",
-        "years": 1
-      },
-      {
         "apy": 1.041,
         "depth": 3,
         "playerId": "00-0037837",
@@ -8424,6 +8424,12 @@
         "apy": 1.886,
         "depth": 3,
         "playerId": "00-0039896",
+        "years": 4
+      },
+      {
+        "apy": 1.593,
+        "depth": 3,
+        "playerId": "00-0040142",
         "years": 4
       },
       {
@@ -8466,12 +8472,6 @@
         "apy": 1.128,
         "depth": 4,
         "playerId": "00-0038577",
-        "years": 4
-      },
-      {
-        "apy": 1.593,
-        "depth": 4,
-        "playerId": "00-0040142",
         "years": 4
       },
       {
@@ -8571,16 +8571,16 @@
         "years": 1
       },
       {
+        "apy": 0.981,
+        "depth": 8,
+        "playerId": "00-0038639",
+        "years": 4
+      },
+      {
         "apy": 2.5,
         "depth": 9,
         "playerId": "00-0032412",
         "years": 2
-      },
-      {
-        "apy": 0.981,
-        "depth": 9,
-        "playerId": "00-0038639",
-        "years": 4
       },
       {
         "apy": 1.423,
@@ -8590,7 +8590,7 @@
       },
       {
         "apy": 0.315,
-        "depth": 14,
+        "depth": 13,
         "playerId": "00-0036396",
         "years": 1
       }
@@ -8807,6 +8807,18 @@
         "years": 3
       },
       {
+        "apy": 0.805,
+        "depth": 5,
+        "playerId": "00-0038866",
+        "years": 3
+      },
+      {
+        "apy": 1.13,
+        "depth": 5,
+        "playerId": "00-0040649",
+        "years": 4
+      },
+      {
         "apy": 15.0,
         "depth": 6,
         "playerId": "00-0034350",
@@ -8823,12 +8835,6 @@
         "depth": 6,
         "playerId": "00-0037745",
         "years": 4
-      },
-      {
-        "apy": 0.805,
-        "depth": 6,
-        "playerId": "00-0038866",
-        "years": 3
       },
       {
         "apy": 1.167,
@@ -8851,7 +8857,7 @@
       {
         "apy": 0.315,
         "depth": 7,
-        "playerId": "00-0036645",
+        "playerId": "00-0036414",
         "years": 1
       },
       {
@@ -8873,6 +8879,18 @@
         "years": 4
       },
       {
+        "apy": 0.983,
+        "depth": 8,
+        "playerId": "00-0038636",
+        "years": 4
+      },
+      {
+        "apy": 0.899,
+        "depth": 8,
+        "playerId": "00-0038764",
+        "years": 3
+      },
+      {
         "apy": 1.15,
         "depth": 9,
         "playerId": "00-0037003",
@@ -8883,24 +8901,6 @@
         "depth": 9,
         "playerId": "00-0039839",
         "years": 4
-      },
-      {
-        "apy": 0.234,
-        "depth": 9,
-        "playerId": "00-0040063",
-        "years": 1
-      },
-      {
-        "apy": 0.983,
-        "depth": 10,
-        "playerId": "00-0038636",
-        "years": 4
-      },
-      {
-        "apy": 0.234,
-        "depth": 10,
-        "playerId": "00-0040064",
-        "years": 1
       },
       {
         "apy": 1.108,
@@ -9025,6 +9025,12 @@
         "years": 4
       },
       {
+        "apy": 1.151,
+        "depth": 2,
+        "playerId": "00-0040185",
+        "years": 4
+      },
+      {
         "apy": 2.577,
         "depth": 2,
         "playerId": "00-0040721",
@@ -9043,12 +9049,6 @@
         "years": 4
       },
       {
-        "apy": 2.0,
-        "depth": 3,
-        "playerId": "00-0034391",
-        "years": 2
-      },
-      {
         "apy": 0.234,
         "depth": 3,
         "playerId": "00-0036728",
@@ -9064,6 +9064,12 @@
         "apy": 1.181,
         "depth": 3,
         "playerId": "00-0039363",
+        "years": 4
+      },
+      {
+        "apy": 1.084,
+        "depth": 3,
+        "playerId": "00-0040589",
         "years": 4
       },
       {
@@ -9139,12 +9145,6 @@
         "years": 4
       },
       {
-        "apy": 1.084,
-        "depth": 5,
-        "playerId": "00-0040589",
-        "years": 4
-      },
-      {
         "apy": 1.948,
         "depth": 6,
         "playerId": "00-0039148",
@@ -9169,9 +9169,21 @@
         "years": 2
       },
       {
+        "apy": 0.995,
+        "depth": 7,
+        "playerId": "00-0040559",
+        "years": 3
+      },
+      {
         "apy": 6.236,
         "depth": 7,
         "playerId": "00-0040660",
+        "years": 4
+      },
+      {
+        "apy": 30.0,
+        "depth": 8,
+        "playerId": "00-0036261",
         "years": 4
       },
       {
@@ -9187,28 +9199,22 @@
         "years": 1
       },
       {
-        "apy": 0.995,
-        "depth": 9,
-        "playerId": "00-0040559",
-        "years": 3
-      },
-      {
         "apy": 0.315,
         "depth": 10,
         "playerId": "00-0035692",
         "years": 1
       },
       {
-        "apy": 30.0,
-        "depth": 10,
-        "playerId": "00-0036261",
-        "years": 4
-      },
-      {
         "apy": 1.337,
         "depth": 10,
         "playerId": "00-0036272",
         "years": 1
+      },
+      {
+        "apy": 1.137,
+        "depth": 10,
+        "playerId": "00-0039365",
+        "years": 4
       },
       {
         "apy": 9.0,
@@ -9221,12 +9227,6 @@
         "depth": 12,
         "playerId": "00-0035717",
         "years": 5
-      },
-      {
-        "apy": 1.137,
-        "depth": 12,
-        "playerId": "00-0039365",
-        "years": 4
       },
       {
         "apy": 2.05,
@@ -9343,6 +9343,12 @@
         "years": 4
       },
       {
+        "apy": 0.947,
+        "depth": 2,
+        "playerId": "00-0039589",
+        "years": 3
+      },
+      {
         "apy": 1.422,
         "depth": 2,
         "playerId": "00-0039846",
@@ -9421,6 +9427,12 @@
         "years": 4
       },
       {
+        "apy": 0.948,
+        "depth": 4,
+        "playerId": "00-0037311",
+        "years": 4
+      },
+      {
         "apy": 1.545,
         "depth": 4,
         "playerId": "00-0037835",
@@ -9481,12 +9493,6 @@
         "years": 1
       },
       {
-        "apy": 1.054,
-        "depth": 6,
-        "playerId": "00-0039393",
-        "years": 4
-      },
-      {
         "apy": 0.234,
         "depth": 6,
         "playerId": "00-0040384",
@@ -9511,22 +9517,16 @@
         "years": 4
       },
       {
-        "apy": 0.396,
-        "depth": 8,
-        "playerId": "00-0033064",
-        "years": 1
-      },
-      {
         "apy": 14.0,
-        "depth": 9,
+        "depth": 8,
         "playerId": "00-0033875",
         "years": 1
       },
       {
-        "apy": 0.877,
+        "apy": 0.315,
         "depth": 9,
-        "playerId": "00-0037662",
-        "years": 2
+        "playerId": "00-0033570",
+        "years": 1
       },
       {
         "apy": 0.899,
@@ -9535,16 +9535,16 @@
         "years": 3
       },
       {
+        "apy": 1.291,
+        "depth": 10,
+        "playerId": "00-0040158",
+        "years": 4
+      },
+      {
         "apy": 1.04,
         "depth": 11,
         "playerId": "00-0039411",
         "years": 4
-      },
-      {
-        "apy": 0.315,
-        "depth": 12,
-        "playerId": "00-0033570",
-        "years": 1
       },
       {
         "apy": 1.871,
@@ -9645,6 +9645,12 @@
         "years": 3
       },
       {
+        "apy": 0.902,
+        "depth": 2,
+        "playerId": "00-0038703",
+        "years": 3
+      },
+      {
         "apy": 1.216,
         "depth": 2,
         "playerId": "00-0040170",
@@ -9699,6 +9705,12 @@
         "years": 4
       },
       {
+        "apy": 2.386,
+        "depth": 3,
+        "playerId": "00-0039152",
+        "years": 4
+      },
+      {
         "apy": 1.025,
         "depth": 3,
         "playerId": "00-0039436",
@@ -9726,12 +9738,6 @@
         "apy": 12.5,
         "depth": 4,
         "playerId": "00-0036391",
-        "years": 4
-      },
-      {
-        "apy": 2.386,
-        "depth": 4,
-        "playerId": "00-0039152",
         "years": 4
       },
       {
@@ -9795,15 +9801,21 @@
         "years": 1
       },
       {
-        "apy": 0.315,
-        "depth": 6,
-        "playerId": "00-0033563",
-        "years": 1
-      },
-      {
         "apy": 1.17,
         "depth": 6,
         "playerId": "00-0034994",
+        "years": 1
+      },
+      {
+        "apy": 0.315,
+        "depth": 6,
+        "playerId": "00-0036133",
+        "years": 1
+      },
+      {
+        "apy": 0.234,
+        "depth": 6,
+        "playerId": "00-0040517",
         "years": 1
       },
       {
@@ -9823,12 +9835,6 @@
         "depth": 7,
         "playerId": "00-0039650",
         "years": 2
-      },
-      {
-        "apy": 0.234,
-        "depth": 7,
-        "playerId": "00-0040517",
-        "years": 1
       },
       {
         "apy": 1.423,
@@ -9856,21 +9862,15 @@
       },
       {
         "apy": 0.902,
-        "depth": 12,
+        "depth": 11,
         "playerId": "00-0038724",
         "years": 3
       },
       {
-        "apy": 0.992,
+        "apy": 0.902,
         "depth": 12,
-        "playerId": "00-0040513",
+        "playerId": "00-0038908",
         "years": 3
-      },
-      {
-        "apy": 0.234,
-        "depth": 13,
-        "playerId": "00-0040521",
-        "years": 1
       }
     ],
     "WAS": [
@@ -10113,12 +10113,6 @@
         "years": 4
       },
       {
-        "apy": 1.255,
-        "depth": 6,
-        "playerId": "00-0031551",
-        "years": 1
-      },
-      {
         "apy": 8.0,
         "depth": 6,
         "playerId": "00-0033831",
@@ -10143,6 +10137,12 @@
         "years": 4
       },
       {
+        "apy": 3.25,
+        "depth": 7,
+        "playerId": "00-0033591",
+        "years": 1
+      },
+      {
         "apy": 1.515,
         "depth": 7,
         "playerId": "00-0039913",
@@ -10155,9 +10155,9 @@
         "years": 3
       },
       {
-        "apy": 3.25,
+        "apy": 0.315,
         "depth": 8,
-        "playerId": "00-0033591",
+        "playerId": "00-0034054",
         "years": 1
       },
       {
@@ -10185,10 +10185,10 @@
         "years": 1
       },
       {
-        "apy": 0.315,
-        "depth": 11,
-        "playerId": "00-0034054",
-        "years": 1
+        "apy": 6.5,
+        "depth": 14,
+        "playerId": "00-0035409",
+        "years": 3
       }
     ]
   },

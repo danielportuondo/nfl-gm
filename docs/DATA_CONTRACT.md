@@ -71,7 +71,13 @@ Fit from `fitSeasons` (2010–2023 unless noted). Produced by `ratings-model`.
 ## Per-season chunks — `season/{yyyy}/`
 
 ### `players.json` — schema `seasonPlayers`
-Every player on any roster that season. `Player` fields (`id`, `name`, `pos`, `birthYear`, `college`,
+Every player with a real tie to that season: a season-start stint with an active-adjacent status
+(`ACT`/`RES`/`INA`), a draft slot that season, or a covering contract paying at least 0.6 % of the cap
+(`build/rosters.py#MIN_TIE_CAP_PCT`, ≈ $1.1M in 2019). From 2016 the nflverse roster snapshot and the
+contracts release both include practice-squad, futures and minimum-tender churn (and the three-year
+minimum every undrafted rookie signs), so a `CUT`/`DEV`-only row on a minimum deal is dropped rather than
+exported as a day-one free agent: the 2019 pool fell from 1,326 to 494 unsigned players and 2023 from 1,337
+to 482; pre-2016 pools are 240–275. `Player` fields (`id`, `name`, `pos`, `birthYear`, `college`,
 `heightIn`, `weightLb`, `draft` = `{season, round, pick, team}` or `null` for UDFA, `real: true`,
 `rookieSeason`) plus:
 - `scouting` — consensus **at season start**, computed only from information public at that point.

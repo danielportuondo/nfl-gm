@@ -195,3 +195,18 @@ Daniel: "a lot of good players in the draft in my first year that were not rooki
 - **No safeties 2016–2025.** `position` = `DB` for every safety and corner from 2016; mapped to CB. Fixed via
   `depth_chart_position`. 2023 rostered S: 0 → 128.
 - **Suggested trades coverage** (fresh start, per team): 2015: 29 of 32 teams get at least one, 2.9 on average; 2023: 25 of 32, 2.4 on average (the rest have no fillable need at a non-specialist position).
+
+## v1.2.0 addendum — follow-up closure (2026-09-19)
+
+Day-one free-agent pool after `_season_membership_mask` stopped counting minimum-salary camp deals as a tie to the season (`MIN_TIE_CAP_PCT` 0.006), with the roster's safety and corner counts after the injury model moved to `resolve_position`:
+
+| start | players.json | unsigned before | unsigned after | unsigned 70+ | S / CB on rosters |
+| ----- | ------------ | --------------- | -------------- | ------------ | ----------------- |
+| 2010  | 1,945        | 254             | 249            | 1            | 135 / 185         |
+| 2012  | 1,934        | 254             | 238            | 3            | 134 / 187         |
+| 2015  | 1,970        | 330             | 274            | 7            | 132 / 187         |
+| 2019  | 2,190        | 1,326           | 494            | 18           | 115 / 203         |
+| 2023  | 2,178        | 1,337           | 482            | 12           | 130 / 195         |
+| 2025  | 2,240        | —               | 544            | 15           | 132 / 192         |
+
+Of 2019's 840 camp-body rows, 160 paid under $0.25M (practice squad), 489 paid $0.5–0.75M (futures / rookie minimum) and 92 paid $0.75–1.0M; the survivors above $1.13M are released veterans on real deals. Injury model after the rebuild: S 0.0250, CB 0.0279 per player-game (was 0.0261 / 0.0274). Calibration 2015: corr 0.855, sd 3.13; 2023: corr 0.856, sd 3.44 — unchanged from v1.1.0.

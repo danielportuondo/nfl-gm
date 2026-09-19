@@ -14,7 +14,7 @@ import pytest
 
 from gridiron_pipeline import DATA_OUT_DIR
 from gridiron_pipeline.model.build import build_model
-from gridiron_pipeline.model.data import MODEL_CACHE_DIR, load_players
+from gridiron_pipeline.model.data import MODEL_CACHE_DIR, load_contracts, load_players
 from gridiron_pipeline.model.names import generate_name_lists, real_full_names
 from gridiron_pipeline.model.validate import starter_value_correlations
 from gridiron_pipeline.schemas import validate
@@ -171,3 +171,13 @@ def test_aging_curves_have_the_expected_shape(artifacts) -> None:
     # Everyone improves early and declines late.
     for pos in ("RB", "WR", "TE", "DL", "LB", "CB", "S"):
         assert aging[pos]["23"] > aging[pos]["33"], pos
+
+
+def test_contracts_come_from_the_refreshed_parquet_in_millions() -> None:
+    """The csv.gz release froze in May 2022; the parquet carries deals through the current season
+    and APY in $M (the CSV was in dollars), which the salary components of the model rely on."""
+    contracts = load_contracts()
+    assert contracts["year_signed"].max() >= 2024
+    assert contracts["apy"].max() < 1_000
+    assert 0.3 < contracts["apy"].median() < 5
+    assert contracts["gsis_id"].str.startswith("00-").all()

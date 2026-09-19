@@ -8,6 +8,7 @@ import logging
 import pandas as pd
 
 from gridiron_pipeline import CACHE_DIR
+from gridiron_pipeline.build.cap import CAP_BY_SEASON
 from gridiron_pipeline.build.players import (
     PlayerMaster,
     birth_year,
@@ -273,6 +274,27 @@ def _has_contract(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, se
     return any(year_signed <= season < year_signed + years for year_signed, years, _ in contracts)
 
 
+# From 2016 the contracts release records a deal for nearly every camp body (practice squad,
+# futures, minimum tenders, the three-year minimum every undrafted rookie signs), so "has a
+# contract" stopped separating a season participant from preseason churn: 840 of 2019's 1,326
+# season-start free agents were CUT/DEV rows kept only by such a deal. A contract below this share
+# of the cap (0.006 ≈ $1.1M in 2019, $1.35M in 2023 — a little above the veteran minimum) is not
+# on its own a tie to the season, however many years it runs.
+MIN_TIE_CAP_PCT = 0.006
+
+
+def _contract_ties_to_season(
+    idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, season: int
+) -> bool:
+    cap_m = CAP_BY_SEASON.get(season, CAP_BY_SEASON[max(CAP_BY_SEASON)])
+    for year_signed, years, apy in idx.get(gsis_id, []):
+        if not year_signed <= season < year_signed + years:
+            continue
+        if _apy_millions(apy) >= MIN_TIE_CAP_PCT * cap_m:
+            return True
+    return False
+
+
 def _season_membership_mask(
     start: pd.DataFrame,
     season: int,
@@ -284,15 +306,16 @@ def _season_membership_mask(
     `start` (season_start_roster) already restricts to players with *some* roster row that season,
     but nflverse's roster snapshot grew substantially from 2016 (practice-squad/tryout churn is now
     reported alongside the 53-man roster), so a `CUT`/`DEV`/etc-only appearance with no other tie to
-    the season (not drafted this season, no contract covering it) is noise rather than a real
-    participant — drop it rather than let it inflate the free-agent pool. A `good` status
-    (ACT/RES/INA, see `_status_priority`) always counts as a real stint.
+    the season (not drafted this season, no above-minimum contract covering it — see
+    `_contract_ties_to_season`) is noise rather than a real participant — drop it rather than let
+    it inflate the free-agent pool. A `good` status (ACT/RES/INA, see `_status_priority`) always
+    counts as a real stint.
     """
     good_status = start["status"].map(_status_priority) == 0
     drafted_this_season = start["gsis_id"].map(
         lambda g: (master.draft_by_gsis.get(g) or {}).get("season") == season
     )
-    contracted = start["gsis_id"].map(lambda g: _has_contract(contract_idx, g, season))
+    contracted = start["gsis_id"].map(lambda g: _contract_ties_to_season(contract_idx, g, season))
     return good_status | drafted_this_season | contracted
 
 
