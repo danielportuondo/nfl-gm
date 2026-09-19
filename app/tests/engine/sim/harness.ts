@@ -4,15 +4,33 @@
  * statistics that tell us whether a simulated season looks like a real one.
  */
 import {
-  draftStub, faStub, historyStub, leagueStub, lifecycleStub, tradeStub,
-  type EngineContext, type GameResult, type LeagueState, type StaticData, type TeamId, type TrajectoryTable,
+  draftStub,
+  faStub,
+  historyStub,
+  leagueStub,
+  lifecycleStub,
+  tradeStub,
+  type EngineContext,
+  type GameResult,
+  type LeagueState,
+  type StaticData,
+  type TeamId,
+  type TrajectoryTable,
 } from '@contracts/index'
 import { mockLeague, mockStatic } from '@fixtures/mockLeague'
+import { lifecycle } from '@engine/lifecycle/index'
 import { sim } from '@engine/sim/index'
-import { computeTeamStrength, resetTruthFallbackCount, truthFallbackCount } from '@engine/sim/strength'
+import {
+  computeTeamStrength,
+  resetTruthFallbackCount,
+  truthFallbackCount,
+} from '@engine/sim/strength'
 import { testRng } from './testRng'
 
-export function makeCtx(data: StaticData = mockStatic(), trajectories: TrajectoryTable = {}): EngineContext {
+export function makeCtx(
+  data: StaticData = mockStatic(),
+  trajectories: TrajectoryTable = {},
+): EngineContext {
   return {
     data,
     trajectories,
@@ -43,8 +61,16 @@ export interface SeasonTotals {
   teamGames: number
 }
 
-/** Simulate every REG game on the schedule once. Nothing is applied to state; sim is pure. */
-export function runSeason(state: LeagueState, ctx: EngineContext, onResult?: (r: GameResult) => void): SeasonTotals {
+/**
+ * Simulate every REG game on the schedule once, week by week. Injuries are applied and ticked between
+ * weeks exactly as `league.simWeek` does, so depleted rosters feed later games and the calibration
+ * table reflects a played season's variance (Phase 5 finding 6). The caller's state is not mutated.
+ */
+export function runSeason(
+  state: LeagueState,
+  ctx: EngineContext,
+  onResult?: (r: GameResult) => void,
+): SeasonTotals {
   const totals: SeasonTotals = {
     wins: {},
     games: 0,
@@ -59,29 +85,54 @@ export function runSeason(state: LeagueState, ctx: EngineContext, onResult?: (r:
   }
   for (const teamId of Object.keys(state.teams).sort()) totals.wins[teamId] = 0
 
-  for (const game of state.schedule) {
-    if (game.type !== 'REG') continue
-    const result = sim.simulateGame(state, game, ctx, sim.gameRng(state, game, ctx))
-    onResult?.(result)
-    totals.games++
-    totals.teamGames += 2
-    totals.points += result.homeScore + result.awayScore
-    if (result.overtime) totals.overtimes++
-    if (Math.abs(result.homeScore - result.awayScore) === 1) totals.oneMarginGames++
-    if (result.homeScore > result.awayScore) {
-      totals.homeWins++
-      totals.wins[game.home] = (totals.wins[game.home] ?? 0) + 1
-    } else if (result.awayScore > result.homeScore) {
-      totals.wins[game.away] = (totals.wins[game.away] ?? 0) + 1
-    } else {
-      totals.ties++
-      totals.wins[game.home] = (totals.wins[game.home] ?? 0) + 0.5
-      totals.wins[game.away] = (totals.wins[game.away] ?? 0) + 0.5
-    }
-    totals.injuries += result.injuries.length
-    totals.multiWeekInjuries += result.injuries.filter((i) => i.weeksOut >= 2).length
+  const regular = state.schedule.filter((g) => g.type === 'REG')
+  const weeks = [...new Set(regular.map((g) => g.week))].sort((a, b) => a - b)
+  let current = state
+  for (const week of weeks) {
+    current = { ...current, week }
+    const results = regular
+      .filter((g) => g.week === week)
+      .map((game) => tally(current, game, ctx, onResult, totals))
+    current = lifecycle.applyInjuryEvents(
+      current,
+      results.flatMap((r) => r.injuries),
+    )
+    current = lifecycle.tickInjuries(
+      current,
+      ctx,
+      ctx.modules.rng.fromSeed(current.seed, current.season, week, 'injuries'),
+    )
   }
   return totals
+}
+
+function tally(
+  state: LeagueState,
+  game: LeagueState['schedule'][number],
+  ctx: EngineContext,
+  onResult: ((r: GameResult) => void) | undefined,
+  totals: SeasonTotals,
+): GameResult {
+  const result = sim.simulateGame(state, game, ctx, sim.gameRng(state, game, ctx))
+  onResult?.(result)
+  totals.games++
+  totals.teamGames += 2
+  totals.points += result.homeScore + result.awayScore
+  if (result.overtime) totals.overtimes++
+  if (Math.abs(result.homeScore - result.awayScore) === 1) totals.oneMarginGames++
+  if (result.homeScore > result.awayScore) {
+    totals.homeWins++
+    totals.wins[game.home] = (totals.wins[game.home] ?? 0) + 1
+  } else if (result.awayScore > result.homeScore) {
+    totals.wins[game.away] = (totals.wins[game.away] ?? 0) + 1
+  } else {
+    totals.ties++
+    totals.wins[game.home] = (totals.wins[game.home] ?? 0) + 0.5
+    totals.wins[game.away] = (totals.wins[game.away] ?? 0) + 0.5
+  }
+  totals.injuries += result.injuries.length
+  totals.multiWeekInjuries += result.injuries.filter((i) => i.weeksOut >= 2).length
+  return result
 }
 
 export interface CalibrationReport {
@@ -185,7 +236,12 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
     teams: teamIds.length,
     gamesPerTeam: (regularGames * 2) / teamIds.length,
     winCorrelation: correlation(overall, meanWins),
-    realWinCorrelation: opts.realWins ? correlation(teamIds.map((id) => opts.realWins![id] ?? 0), meanWins) : null,
+    realWinCorrelation: opts.realWins
+      ? correlation(
+          teamIds.map((id) => opts.realWins![id] ?? 0),
+          meanWins,
+        )
+      : null,
     winSd: winSds.reduce((a, b) => a + b, 0) / Math.max(1, winSds.length),
     homeWinPct: (100 * (homeWins + ties / 2)) / games,
     meanTotalPoints: points / games,
