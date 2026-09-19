@@ -138,10 +138,18 @@ n 389–396, p10 47 / med 60 / p90 67. Roster turnover ≈ 20 %/season, plausibl
 4. `acceptProbability` had no tunable. Fixed (`faConstants.acceptance`).
 5. The trade AI never counters — 0 counters across 400 submitted deals and the draft probes, though §6.5
    promises one. Gate is presumably `counterMinP 0.5` / `counterMaxShortfallPct 0.6` / `counterCandidatesScanned 6`;
-   trace before assuming the numbers are wrong. **Open for Phase 6.**
+   trace before assuming the numbers are wrong. **Closed in Phase 6:** `scripts/qa/counterTrace.ts` submits
+   ~1,150 one-for-one deals across 16 teams in 2015; of the 283 declined deals with p < 0.5 and a shortfall
+   inside `counterMaxShortfallPct`, the AI countered 239 (84%). The zero here was methodological — this
+   script only submits deals with p ≥ 0.5, where the shortfall is ≤ 0 and no counter is owed, and the
+   lowball probe exceeds the 60% shortfall cap. The real gap was the store: `proposeTrade` discarded
+   `outcome.counter`, so no user ever saw one. Counters now land in the Trade Center's incoming offers.
 6. `tests/engine/sim/harness.ts#runSeason` never applies the injury events it counts — every game is simulated
    off the week-0 roster, so `rateScale` has no effect on the calibration table's sd(wins). Calibration
-   understates a played season's variance. **Open for Phase 6.**
+   understates a played season's variance. **Closed in Phase 6:** `runSeason` now simulates week by week
+   and runs `lifecycle.applyInjuryEvents` + `tickInjuries` between weeks, as `league.simWeek` does.
+   Effect on the 2015 table: sd(wins) 3.09 → 3.07, win corr (real) 0.86 unchanged — injuries hit
+   every team about equally, so they add noise per season, not spread across teams.
 7. `scripts/calibrate.ts` printed the 0.6–1.6 target on both injury rows; the multi-week row now prints its own.
 
 ## Open questions

@@ -82,8 +82,8 @@ export function Dashboard({ state, data, cap, onSimWeek, onAdvancePhase, simBusy
   if (expiring > 0) {
     alerts.push({
       text: `${expiring} contract${expiring === 1 ? '' : 's'} expiring after this season.`,
-      detail: 'Re-sign or let them walk in Finances.',
-      screen: 'finances',
+      detail: 'Re-sign them in Free agency or let them walk.',
+      screen: 'free-agency',
     })
   }
   if (capSpace < 0) {

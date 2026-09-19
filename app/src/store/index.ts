@@ -48,6 +48,12 @@ function makeSeed(startSeason: number, userTeam: string): string {
   return `${startSeason}-${userTeam}-${Math.random().toString(36).slice(2, 10)}`
 }
 
+function packageKey(proposal: TradeProposal): string {
+  const side = (s: TradeProposal['offer']) =>
+    [...s.players, ...s.picks.map((p) => `${p.season}r${p.round}${p.originalTeam}`)].sort().join(',')
+  return `${proposal.offer.teamId}:${side(proposal.offer)}>${proposal.request.teamId}:${side(proposal.request)}`
+}
+
 /**
  * Docs/HANDOFF.md Phase 3E follow-up: WeekReport events are free-text, so this is a best-effort
  * heuristic (team id or a user-roster player's name appears in the text) — good enough to keep the
@@ -475,10 +481,20 @@ export function createGameStore(config: StoreConfig = {}) {
           set((s) => ({ busy: { ...s.busy, trade: true } }))
           try {
             const ctx = buildCtx()
-            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'userTrade', proposal.id)
+            // Seeded by the package, not the proposal id: re-offering the same deal in the same week
+            // gets the same answer, so a coin-flip decline cannot be re-rolled until accepted.
+            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'userTrade', packageKey(proposal))
             const outcome = modules.trade.submit(league, proposal, ctx, rng)
-            set({ state: outcome.state })
-            addToast(outcome.accepted ? 'Trade accepted' : 'They passed on that trade', outcome.accepted ? 'success' : 'warn')
+            const counter = outcome.counter
+            // A counter is an AI-initiated proposal; it joins the incoming offers so the user can
+            // accept it from the same card as any other offer.
+            set((s) => ({
+              state: outcome.state,
+              tradeOffers: counter ? [counter, ...s.tradeOffers.filter((o) => o.id !== counter.id)] : s.tradeOffers,
+            }))
+            if (outcome.accepted) addToast('Trade accepted', 'success')
+            else if (counter) addToast(`${counter.offer.teamId} passed but sent a counter — see incoming offers`, 'warn')
+            else addToast('They passed on that trade', 'warn')
           } catch (err) {
             reportNotBuilt('Could not offer the trade.', err)
           } finally {

@@ -8,7 +8,7 @@ import {
   DIVISIONS, PHASES, POSITIONS, SAVE_SCHEMA_VERSION, STARTER_TEMPLATE, TEAM_IDS, canonicalTeamId,
   leagueFormat, isInHistory, SeasonNotLoadedError,
   type CanonicalTeamId, type CompactTrajectory, type Conference, type DepthChart, type EngineContext,
-  type Game, type GameResult, type GameSettings, type GameType, type InjuryEvent, type LeagueModule,
+  type Award, type Game, type GameResult, type GameSettings, type GameType, type InjuryEvent, type LeagueModule,
   type LeagueState, type NewGameOptions, type Phase, type Player, type PlayerId, type PlayoffBracket,
   type PlayoffExit, type PlayoffFormat, type PlayoffSeed, type RosterSlot, type ScoutingView,
   type Season, type SeasonPlayer, type SeasonSummary, type StandingRow, type TeamId, type TeamState, type TeamStrength,
@@ -488,6 +488,48 @@ function computeUserExit(state: LeagueState, bracket: PlayoffBracket, champion: 
   return 'MISSED'
 }
 
+type StatTotals = { passYds: number; rushYds: number; recYds: number; sacks: number; ints: number; td: number }
+
+/** Statistical leaders from the season's regular-season box scores — visible stats only, never truth. */
+function seasonAwards(state: LeagueState): Award[] {
+  const regular = new Set(state.schedule.filter((g) => g.season === state.season && g.type === 'REG').map((g) => g.id))
+  const totals = new Map<PlayerId, StatTotals>()
+  for (const result of state.results) {
+    if (!regular.has(result.gameId) || !result.box) continue
+    for (const line of [...result.box.home, ...result.box.away]) {
+      const t = totals.get(line.playerId) ?? { passYds: 0, rushYds: 0, recYds: 0, sacks: 0, ints: 0, td: 0 }
+      t.passYds += line.passYds ?? 0
+      t.rushYds += line.rushYds ?? 0
+      t.recYds += line.recYds ?? 0
+      t.sacks += line.sacks ?? 0
+      t.ints += line.ints ?? 0
+      t.td += (line.passTd ?? 0) + (line.rushTd ?? 0) + (line.recTd ?? 0)
+      totals.set(line.playerId, t)
+    }
+  }
+  const teamOf = new Map<PlayerId, TeamId>()
+  for (const teamId of Object.keys(state.teams).sort()) {
+    for (const slot of state.teams[teamId]!.roster) teamOf.set(slot.playerId, teamId)
+  }
+  const leader = (name: string, key: keyof StatTotals, unit: string): Award | null => {
+    let best: { id: PlayerId; value: number } | null = null
+    for (const [id, t] of [...totals.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+      if (t[key] > 0 && (best === null || t[key] > best.value)) best = { id, value: t[key] }
+    }
+    if (!best) return null
+    const shown = Number.isInteger(best.value) ? best.value.toLocaleString('en-US') : best.value.toFixed(1)
+    return { name, playerId: best.id, teamId: teamOf.get(best.id), note: `${shown} ${unit}` }
+  }
+  return [
+    leader('Passing leader', 'passYds', 'yards'),
+    leader('Rushing leader', 'rushYds', 'yards'),
+    leader('Receiving leader', 'recYds', 'yards'),
+    leader('Touchdowns leader', 'td', 'touchdowns'),
+    leader('Sack leader', 'sacks', 'sacks'),
+    leader('Interceptions leader', 'ints', 'interceptions'),
+  ].filter((a): a is Award => a !== null)
+}
+
 function summarizeSeasonImpl(state: LeagueState, ctx: EngineContext): SeasonSummary {
   const rows = standingsImpl(state, ctx)
   const bracket = buildBracketImpl(state, ctx)
@@ -507,7 +549,7 @@ function summarizeSeasonImpl(state: LeagueState, ctx: EngineContext): SeasonSumm
     champion,
     runnerUp,
     standings: rows,
-    awards: [],
+    awards: seasonAwards(state),
     userTeam: state.userTeam,
     userRecord: state.teams[state.userTeam]?.record ?? ZERO_RECORD,
     userPlayoffExit: computeUserExit(state, bracket, champion),
