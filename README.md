@@ -106,8 +106,14 @@ See `docs/HANDOFF.md` §8 for the full list and the v2 backlog.
 
 ## Screenshots
 
+From the Phase 6 QA playthrough (IND, 2010 start, three-season horizon):
+
+![Dashboard](docs/screenshots/dashboard.png)
+![Trade Center — a sixth-round pick and a bench receiver for a rookie Antonio Brown](docs/screenshots/trade-center-2010.png)
 ![Draft room](docs/screenshots/draft-room.png)
 ![Trade Center](docs/screenshots/trade-center.png)
+![Season recap](docs/screenshots/season-recap.png)
+![End game report card](docs/screenshots/end-game.png)
 
 ## Repository
 
