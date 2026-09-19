@@ -182,3 +182,13 @@ def test_season_membership_keeps_contracted_or_drafted_despite_bad_status(master
     _, players_obj = build_season_rosters_and_players(season, master, ratings)
     kept_ids = {p["id"] for p in players_obj["players"]}
     assert set(tied["gsis_id"]).issubset(kept_ids)
+
+
+def test_contract_hint_accepts_dollars_and_millions() -> None:
+    """The frozen CSV carried APY in dollars, the parquet release in $M; both must land as $M."""
+    from gridiron_pipeline.build.rosters import _contract_hint
+
+    idx = {"a": [(2007, 6, 9_666_667.0)], "b": [(2007, 6, 9.666667)]}
+    assert _contract_hint(idx, "a", 2010) == {"apy": 9.667, "years": 6}
+    assert _contract_hint(idx, "b", 2010) == {"apy": 9.667, "years": 6}
+    assert _contract_hint(idx, "b", 2013) == {}

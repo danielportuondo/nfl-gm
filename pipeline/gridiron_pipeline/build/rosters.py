@@ -245,10 +245,16 @@ def _contract_hint(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, s
     hints = {}
     for year_signed, years, apy in idx.get(gsis_id, []):
         if year_signed <= season < year_signed + years:
-            hints["apy"] = round(apy / 1_000_000, 3)
+            hints["apy"] = round(_apy_millions(apy), 3)
             hints["years"] = years
             break
     return hints
+
+
+def _apy_millions(apy: float) -> float:
+    """The frozen CSV carried APY in dollars; the parquet release carries $M. No NFL salary is
+    under $1,000/yr or over $1,000M/yr, so the magnitude alone tells the unit apart."""
+    return apy / 1_000_000 if apy >= 1_000 else apy
 
 
 def _has_contract(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, season: int) -> bool:
