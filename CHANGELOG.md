@@ -3,6 +3,21 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## 1.2.0 — 2026-09-19
+
+### Added
+- New Game: the mandate plate leads in your team's colors, with the helmet, the year and the goal, and
+  updates as you choose. Teams are picked from a helmet wall grouped by division.
+
+### Changed
+- Practice-squad, futures and minimum-tender camp bodies no longer start the game as free agents from
+  2016 on. Unsigned players on day one: 2019 1,326 → 494, 2023 1,337 → 482. League data 2.3 → 2.1 MB.
+- The ratings model reads the refreshed contracts data (deals through 2026 instead of May 2022) and the
+  injury model keys position on the roster, so safeties are fit as safeties from 2016 on.
+
+### Fixed
+- The injury target in the brief now states the band the calibration harness enforces.
+
 ## 1.1.0 — 2026-09-19
 
 ### Added
