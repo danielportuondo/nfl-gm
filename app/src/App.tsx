@@ -87,7 +87,7 @@ export function App() {
             onStart={actions.newGame}
             savedGame={savedGame}
             onContinue={actions.continueGame}
-            continueBusy={busy.newGame}
+            busy={busy.newGame}
           />
         ) : dataStatus === 'error' ? (
           <p className="gg-col-12" role="alert">

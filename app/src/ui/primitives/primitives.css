@@ -452,3 +452,99 @@ button.gg-nameplate:hover {
   flex-direction: column;
   gap: 2px;
 }
+
+/* New Game (docs/DESIGN.md §11): the mandate plate and the helmet wall. */
+.gg-continue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+.gg-mandate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--sp-5);
+}
+.gg-mandate__text {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+.gg-mandate__team {
+  font-family: var(--font-display);
+  font-size: var(--fd-4);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  margin: 0 0 var(--sp-2);
+}
+.gg-mandate__lead {
+  font-size: var(--fs-3);
+  max-width: 60ch;
+  margin: 0 0 var(--sp-2);
+}
+.gg-mandate__note {
+  color: var(--text-2);
+  max-width: 60ch;
+  margin: 0 0 var(--sp-4);
+}
+.gg-team-wall {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-4) var(--sp-3);
+}
+@media (max-width: 900px) {
+  .gg-team-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .gg-team-wall {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.gg-team-wall__label {
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  font-weight: 600;
+  color: var(--text-2);
+  margin: 0 0 var(--sp-2);
+}
+.gg-team-wall__tiles {
+  display: grid;
+  gap: var(--sp-2);
+}
+.gg-team-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface-1);
+  border: var(--bw) solid var(--line);
+  border-left-width: var(--bw-plate);
+  border-left-color: var(--team-primary);
+  border-radius: var(--r-0);
+  box-shadow: var(--shadow-none);
+  color: var(--text-1);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform var(--t-quick) var(--ease-out),
+    box-shadow var(--t-quick) var(--ease-out);
+}
+.gg-team-tile:hover {
+  background: var(--surface-3);
+}
+.gg-team-tile[aria-pressed='true'] {
+  background: var(--surface-2);
+  border-color: var(--team-primary);
+  box-shadow: var(--shadow-raise);
+}
+.gg-team-tile__name {
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  letter-spacing: var(--ls-display);
+}

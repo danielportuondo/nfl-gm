@@ -5,9 +5,10 @@ import {
   type SaveSlotMeta,
   type StaticData,
   type TeamId,
+  type TeamInfo,
 } from '@contracts/index'
-import { Button, Panel, TeamBadge } from '@ui/primitives'
-import { TeamScope } from '@ui/sprites'
+import { Button, Panel } from '@ui/primitives'
+import { HelmetSprite, TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
 
 export interface NewGameProps {
@@ -16,17 +17,48 @@ export interface NewGameProps {
   /** The 'default' save slot's metadata, when one exists (docs/DECISIONS.md Phase 5 follow-up). */
   savedGame?: SaveSlotMeta | null
   onContinue?: () => void
-  continueBusy?: boolean
+  /** True while a game is being built or restored; Start and Continue wait for it. */
+  busy?: boolean
 }
 
 const MIN_START_SEASON = 2010
 const HORIZON_MIN = 1
 const HORIZON_MAX = 10
+const DEFAULT_TEAM: TeamId = 'IND'
+const CONFERENCES = ['AFC', 'NFC'] as const
+const DIVISIONS = ['East', 'North', 'South', 'West'] as const
+
+const PHASE_LABEL: Record<string, string> = {
+  PRESEASON: 'preseason',
+  REGULAR: 'regular season',
+  PLAYOFFS: 'playoffs',
+  OFFSEASON_RESIGN: 're-signing period',
+  FREE_AGENCY: 'free agency',
+  DRAFT: 'draft',
+}
 
 function yearRange(latest: number): number[] {
   const years: number[] = []
   for (let y = MIN_START_SEASON; y <= latest; y++) years.push(y)
   return years
+}
+
+/** The wall is ordered the way a war-room board is: conference, then division, then city. */
+function divisionGroups(teams: StaticData['teams']): { label: string; teams: TeamInfo[] }[] {
+  const groups: { label: string; teams: TeamInfo[] }[] = []
+  for (const conf of CONFERENCES) {
+    for (const div of DIVISIONS) {
+      const members = TEAM_IDS.map((id) => teams[id])
+        .filter((t): t is TeamInfo => t !== undefined && t.conf === conf && t.div === div)
+        .sort((a, b) => a.city.localeCompare(b.city))
+      groups.push({ label: `${conf} ${div}`, teams: members })
+    }
+  }
+  return groups
+}
+
+function phaseLabel(phase: string): string {
+  return PHASE_LABEL[phase] ?? phase.replace(/_/g, ' ').toLowerCase()
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
@@ -35,42 +67,39 @@ const DEFAULT_SETTINGS: GameSettings = {
   injuries: true,
 }
 
-/** Year → team → horizon + settings, as a single column of panels, then "Your mandate" (docs/DESIGN.md §11). */
-export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: NewGameProps) {
+/**
+ * The mandate plate leads and re-dresses in the chosen team's colors; below it, year → team → horizon
+ * as a single column of panels, the team step a helmet wall by division (docs/DESIGN.md §11).
+ */
+export function NewGame({ data, onStart, savedGame, onContinue, busy }: NewGameProps) {
   const years = yearRange(data.manifest.latestRealSeason)
   const [startSeason, setStartSeason] = useState<number>(data.manifest.latestRealSeason)
-  const [userTeam, setUserTeam] = useState<TeamId>(TEAM_IDS[13]) // IND — a reasonable, always-valid default
+  const [userTeam, setUserTeam] = useState<TeamId>(DEFAULT_TEAM)
   const [horizonSeasons, setHorizonSeasons] = useState(3)
   const [settings, setSettings] = useState<GameSettings>(DEFAULT_SETTINGS)
 
   const team = data.teams[userTeam]
   const endYear = startSeason + horizonSeasons - 1
   const seasonsWord = horizonSeasons === 1 ? 'season' : 'seasons'
+  const savedTeam = savedGame ? data.teams[savedGame.userTeam] : undefined
   const showContinue = Boolean(savedGame && onContinue)
   const base = showContinue ? 1 : 0
+  const groups = divisionGroups(data.teams)
 
   return (
     <>
       {savedGame && onContinue && (
         <div className="gg-col-12">
           <Panel variant="attention" revealIndex={0}>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 'var(--sp-3)',
-              }}
-            >
+            <div className="gg-continue">
               <p style={{ margin: 0 }}>
-                Continue as {savedGame.userTeam}, {savedGame.season} ·{' '}
-                {savedGame.phase.replace(/_/g, ' ').toLowerCase()}.
+                Continue as the {savedTeam?.name ?? savedGame.userTeam}: {savedGame.season},{' '}
+                {phaseLabel(savedGame.phase)}.
               </p>
               <Button
                 type="button"
                 variant="primary"
-                busy={continueBusy}
+                busy={busy}
                 busyLabel="Loading…"
                 onClick={onContinue}
               >
@@ -81,8 +110,42 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
         </div>
       )}
 
+      {team && (
+        <div className="gg-col-12">
+          <TeamScope colors={team.colors}>
+            <Panel variant="plate" revealIndex={base}>
+              <div className="gg-mandate">
+                <HelmetSprite pos="QB" size={6} />
+                <div className="gg-mandate__text">
+                  <h2 className="gg-mandate__team">
+                    {team.city} {team.name}, {startSeason}
+                  </h2>
+                  <p className="gg-mandate__lead">
+                    Your mandate: win the Super Bowl by {endYear}. That's {horizonSeasons}{' '}
+                    {seasonsWord}.
+                  </p>
+                  <p className="gg-mandate__note">
+                    You take over the roster as it stood at the start of {startSeason}. Every rating
+                    is what scouts believed then. You may know better.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    busy={busy}
+                    busyLabel="Starting…"
+                    onClick={() => onStart({ startSeason, userTeam, horizonSeasons, settings })}
+                  >
+                    Start
+                  </Button>
+                </div>
+              </div>
+            </Panel>
+          </TeamScope>
+        </div>
+      )}
+
       <div className="gg-col-12">
-        <Panel title="Pick your start year" variant="sunken" revealIndex={base}>
+        <Panel title="Pick your start year" variant="sunken" revealIndex={base + 1}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-2)' }}>
             {years.map((y) => (
               <Button
@@ -100,49 +163,35 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
       </div>
 
       <div className="gg-col-12">
-        <Panel title="Pick your team" variant="sunken" revealIndex={base + 1}>
-          <div
-            role="grid"
-            aria-label="Teams"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
-              gap: 'var(--sp-2)',
-            }}
-          >
-            {TEAM_IDS.map((id) => {
-              const info = data.teams[id]
-              if (!info) return null
-              return (
-                <TeamScope key={id} colors={info.colors}>
-                  <button
-                    type="button"
-                    className="gg-nameplate"
-                    aria-selected={id === userTeam}
-                    aria-label={`${info.city} ${info.name}`}
-                    onClick={() => setUserTeam(id)}
-                    style={{
-                      flexDirection: 'column',
-                      gap: 'var(--sp-1)',
-                      alignItems: 'flex-start',
-                      textAlign: 'left',
-                      width: '100%',
-                    }}
-                  >
-                    <TeamBadge abbr={info.abbr} />
-                    <span className="gg-nameplate__name" style={{ width: '100%' }}>
-                      {info.city} {info.name}
-                    </span>
-                  </button>
-                </TeamScope>
-              )
-            })}
+        <Panel title="Pick your team" variant="sunken" revealIndex={base + 2}>
+          <div className="gg-team-wall" role="group" aria-label="Teams by division">
+            {groups.map((group) => (
+              <section key={group.label} className="gg-team-wall__division">
+                <h4 className="gg-team-wall__label">{group.label}</h4>
+                <div className="gg-team-wall__tiles">
+                  {group.teams.map((t) => (
+                    <TeamScope key={t.id} colors={t.colors}>
+                      <button
+                        type="button"
+                        className="gg-team-tile"
+                        aria-pressed={t.id === userTeam}
+                        aria-label={`${t.city} ${t.name}`}
+                        onClick={() => setUserTeam(t.id)}
+                      >
+                        <HelmetSprite pos="QB" size={4} />
+                        <span className="gg-team-tile__name">{t.name}</span>
+                      </button>
+                    </TeamScope>
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         </Panel>
       </div>
 
       <div className="gg-col-12">
-        <Panel title="Set your horizon" variant="sunken" revealIndex={base + 2}>
+        <Panel title="Set your horizon" variant="sunken" revealIndex={base + 3}>
           <div
             style={{
               display: 'flex',
@@ -232,26 +281,6 @@ export function NewGame({ data, onStart, savedGame, onContinue, continueBusy }: 
           </div>
         </Panel>
       </div>
-
-      {team && (
-        <div className="gg-col-12">
-          <TeamScope colors={team.colors}>
-            <Panel variant="plate" revealIndex={base + 3}>
-              <p style={{ fontSize: 'var(--fs-3)', margin: '0 0 var(--sp-4)' }}>
-                Your mandate: win the Super Bowl by {endYear}. That's {horizonSeasons} {seasonsWord}
-                .
-              </p>
-              <Button
-                type="button"
-                variant="primary"
-                onClick={() => onStart({ startSeason, userTeam, horizonSeasons, settings })}
-              >
-                Start
-              </Button>
-            </Panel>
-          </TeamScope>
-        </div>
-      )}
     </>
   )
 }

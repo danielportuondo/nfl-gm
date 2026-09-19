@@ -290,9 +290,12 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
 
 ## 11. Screen notes (build order per HANDOFF §6.11)
 
-- **New Game** — a three-step board (year → team → horizon + settings) as a single column of panels;
-  the team step is a 32-plate grid keyed by team colors; the "Your mandate" card is a `plate` panel
-  in the chosen team's colors and is the first thing that ever wears them.
+- **New Game** — the mandate plate leads: a `plate` panel in the chosen team's colors with a 6× helmet,
+  "Indianapolis Colts, 2012" in Pixelify 32, the mandate sentence, one quiet line on the hindsight
+  premise and the Start button. It is the first thing that ever wears team colors and re-dresses as
+  you choose. Below it, year → team → horizon as a single column of panels; the team step is a helmet
+  wall — 32 team-colored 4× helmets in eight division columns (AFC row, then NFC), each tile a plate
+  with the team's bar, the chosen one raised and bordered in its own primary.
 - **Dashboard** — hero panel with the yard-line motif: record, next opponent (two helmet sprites facing
   each other), horizon meter. Beside it: cap StatTiles, alerts list, "Sim week" / "Sim to next event".
 - **Roster & Depth Chart** — table (dense) with position filter; depth chart as columns of NamePlates

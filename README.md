@@ -108,6 +108,7 @@ See `docs/HANDOFF.md` §8 for the full list and the v2 backlog.
 
 From the Phase 6 QA playthrough (IND, 2010 start, three-season horizon):
 
+![New game — the mandate plate in your team's colors, and a helmet wall by division to pick from](docs/screenshots/new-game.png)
 ![Dashboard](docs/screenshots/dashboard.png)
 ![Trade Center — a sixth-round pick and a bench receiver for a rookie Antonio Brown](docs/screenshots/trade-center-2010.png)
 ![Draft room](docs/screenshots/draft-room.png)
