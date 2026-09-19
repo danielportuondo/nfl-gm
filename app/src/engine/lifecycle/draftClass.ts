@@ -59,7 +59,8 @@ function sampleTrajectory(
 function draftedConsensus(curves: CurvesFile, pick: number, rng: Rng, id: string): ScoutingView {
   const slot = interpolateSlotGrade(curves, pick)
   const ovr = clampRating(slot.ovr + rng.fork(`${id}:ovrNoise`).normal(0, slot.sd * DRAFT_SLOT_NOISE_SCALE))
-  const pot = clampRating(slot.pot + rng.fork(`${id}:potNoise`).normal(0, slot.sd * DRAFT_SLOT_NOISE_SCALE))
+  // Independent noise on ovr and pot could invert them; a prospect's ceiling is never below his floor.
+  const pot = clampRating(Math.max(ovr, slot.pot + rng.fork(`${id}:potNoise`).normal(0, slot.sd * DRAFT_SLOT_NOISE_SCALE)))
   return { ovr, pot, confidence: ROOKIE_CONFIDENCE_DRAFTED }
 }
 
@@ -67,7 +68,7 @@ function udfaConsensus(curves: CurvesFile, rng: Rng, id: string): ScoutingView {
   const ovr = clampRating(rng.fork(`${id}:ovrNoise`).normal(curves.udfaGrade.ovrMean, curves.udfaGrade.ovrSd))
   const u = rng.fork(`${id}:potPct`).next()
   const potBase = interpolateAtLevel(UDFA_POT_QUANTILE_LEVELS, curves.udfaGrade.potQuantiles, u)
-  const pot = clampRating(potBase + rng.fork(`${id}:potNoise`).normal(0, UDFA_POT_NOISE_SD))
+  const pot = clampRating(Math.max(ovr, potBase + rng.fork(`${id}:potNoise`).normal(0, UDFA_POT_NOISE_SD)))
   return { ovr, pot, confidence: ROOKIE_CONFIDENCE_UDFA }
 }
 

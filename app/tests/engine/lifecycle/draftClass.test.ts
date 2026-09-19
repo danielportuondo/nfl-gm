@@ -68,6 +68,10 @@ describe('lifecycle.generateDraftClass vs. a real class', () => {
     expect(l1).toBeLessThanOrEqual(0.15)
   })
 
+  it('never grades a prospect with a ceiling below his floor', () => {
+    for (const p of generated.prospects) expect(p.scouting.pot).toBeGreaterThanOrEqual(p.scouting.ovr)
+  })
+
   it('consensus-pot quantiles roughly match the real class (p50/p90 within 4, p10 within 8)', () => {
     const realPots = real.prospects.map((p) => p.scouting.pot).sort((a, b) => a - b)
     const genPots = generated.prospects.map((p) => p.scouting.pot).sort((a, b) => a - b)
