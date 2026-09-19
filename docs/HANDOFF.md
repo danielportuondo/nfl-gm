@@ -316,7 +316,7 @@ Rule enforced by lint/test: nothing under `app/src/screens/` or `app/src/ui/` im
 
 **Box score:** allocate team passing/rushing/receiving/defensive stats to players by usage weights derived from value and position, with noise. Only needs to be plausible; it feeds player season stats and awards, not ratings.
 
-**Injuries per game:** if enabled, sample injury events per team per game from position-specific rates fit from `injuries_{season}.csv` (expected ~1–1.5 multi-week injuries per team per week league-wide scaling). Duration from an empirical distribution (1–2 wks common, long tail to season-ending).
+**Injuries per game:** if enabled, sample injury events per team per game from position-specific rates fit from `injuries_{season}.csv` (target: 0.6–1.6 injuries per team-game in total, of which 0.35–0.8 last more than a week; the calibration harness enforces both bands — the earlier "1–1.5 multi-week per team per week" wording was withdrawn 2026-09-19 because it is incompatible with the fitted duration mix). Duration from an empirical distribution (1–2 wks common, long tail to season-ending).
 
 **Playoffs:** era-correct format. Seeding rules simplified to record → head-to-head → point differential.
 

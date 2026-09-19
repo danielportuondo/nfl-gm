@@ -153,10 +153,10 @@ export const injuryConstants = {
   activePerGame: 46,
   /**
    * `injuryModel.ratePerPlayerGame` is fit from injuries_2012–2025 and already describes real spells:
-   * unscaled it gives 1.02 injuries per team-game. 2.8 was chosen to hit §6.3's "1–1.5 MULTI-WEEK per
-   * team per week", but that forces the total to 2.9, twice what the data says. 1.6 is the only value
-   * that keeps both rows of the calibration table inside the 0.6–1.6 band (1.64 total, 0.61 multi-week
-   * ≈ 10 multi-week injuries per team-season, which is what NFL IR usage looks like).
+   * unscaled it gives 1.02 injuries per team-game. §6.3's target is the calibration band: 0.6–1.6 total
+   * and 0.35–0.8 multi-week per team-game. 1.6 is the only value that keeps both rows inside it
+   * (1.64 total, 0.61 multi-week ≈ 10 multi-week injuries per team-season, which is what NFL IR usage
+   * looks like). The original "1–1.5 multi-week per team per week" wording forced the total to 2.9.
    */
   rateScale: 1.6,
   maxWeeksOut: 22,

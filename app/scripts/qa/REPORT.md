@@ -162,13 +162,14 @@ n 389–396, p10 47 / med 60 / p90 67. Roster turnover ≈ 20 %/season, plausibl
    every team about equally, so they add noise per season, not spread across teams.
 7. `scripts/calibrate.ts` printed the 0.6–1.6 target on both injury rows; the multi-week row now prints its own.
 
-## Open questions
+## Open questions (resolved 2026-09-19)
 
-- Is §6.3's "~1–1.5 multi-week injuries per team per week" or the harness's 0.6–1.6 total band authoritative?
-  They are mutually exclusive under the fitted duration mix.
-- Is a league-mean payroll of 73–77 % of the cap acceptable for v1? Fixing it is `valueExp 2.1` plus a re-tune
-  of `fitPayrollToCap` and the scripted GM's cap reserve.
-- `futurePickDiscount 0.92` is a compromise: any value below 1.0 is free money for a user with no time pressure.
+- ~~Is §6.3's "~1–1.5 multi-week injuries per team per week" or the harness's 0.6–1.6 total band authoritative?~~
+  **The total band.** HANDOFF §6.3 now states 0.6–1.6 total / 0.35–0.8 multi-week per team-game; `rateScale` 1.6 stays.
+- ~~Is a league-mean payroll of 73–77 % of the cap acceptable for v1?~~ **Moot.** The Phase 6 salary-unit fix
+  moved a fresh start to 89–92 % of the cap without touching `valueExp` or `fitPayrollToCap`.
+- ~~`futurePickDiscount 0.92` is a compromise.~~ **Keep 0.92.** 77 chart points a season is the price of a
+  future-pick market that still discounts "next year"; 1.0 would flatten it.
 
 ## Phase 6 addendum — draft class and free-agent pool audit (2026-09-19)
 
