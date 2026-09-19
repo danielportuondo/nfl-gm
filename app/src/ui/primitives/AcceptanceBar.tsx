@@ -6,9 +6,20 @@ export interface AcceptanceBarProps {
   /** TradeEvaluation.valid — false means a hard gate failed (cap, roster size, unknown asset…). */
   valid: boolean
   label?: string
+  /**
+   * What p means here. `acceptance`: the counterparty's chance of saying yes to the user's proposal.
+   * `fairness`: the same evaluation read from the user's side of an AI-initiated deal, which the AI
+   * already stands behind — the bar says how good the deal is for the user, not whether it goes through.
+   */
+  mode?: 'acceptance' | 'fairness'
 }
 
-function band(p: number): 'Unlikely' | 'Coin flip' | 'Likely' {
+function band(p: number, mode: 'acceptance' | 'fairness'): string {
+  if (mode === 'fairness') {
+    if (p < 0.35) return 'Lopsided'
+    if (p <= 0.65) return 'Fair'
+    return 'Favours you'
+  }
   if (p < 0.35) return 'Unlikely'
   if (p <= 0.65) return 'Coin flip'
   return 'Likely'
@@ -32,7 +43,12 @@ const TONE_VAR: Record<'danger' | 'accent' | 'positive', string> = {
  * gate failed) shows "Invalid" instead of a percentage so the user never mistakes a gated deal for a
  * merely unlikely one.
  */
-export function AcceptanceBar({ p, valid, label = 'Acceptance likelihood' }: AcceptanceBarProps) {
+export function AcceptanceBar({
+  p,
+  valid,
+  mode = 'acceptance',
+  label = mode === 'fairness' ? 'Deal value for you' : 'Acceptance likelihood',
+}: AcceptanceBarProps) {
   const clamped = Math.min(1, Math.max(0, p))
   const filledCount = valid ? Math.round(clamped * SEGMENTS) : 0
   const tone = toneFor(clamped)
@@ -60,7 +76,7 @@ export function AcceptanceBar({ p, valid, label = 'Acceptance likelihood' }: Acc
         </span>
       </div>
       <span className="gg-acceptance-band" style={!valid ? { color: 'var(--danger)' } : undefined}>
-        {valid ? band(clamped) : 'Invalid'}
+        {valid ? band(clamped, mode) : 'Invalid'}
       </span>
       <span className="gg-vh">{label}</span>
     </div>

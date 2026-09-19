@@ -148,3 +148,17 @@ export const offerConstants = {
   maxAssetsPerSide: 3,
   candidatesScanned: 8,
 }
+
+/** Suggested trades (Phase 6): proactive AI-initiated deals that fill the user's top needs. */
+export const suggestionConstants = {
+  max: 4,
+  perNeed: 2,
+  /** Need positions considered, by consensus deficit. Deeper than needConstants.topNeeds so a team whose
+   *  two worst spots are unfillable still gets a deal at its third. */
+  needsConsidered: 3,
+  /** Every team carries exactly one; nobody has a spare to deal. */
+  skipPositions: ['K', 'P'] as readonly string[],
+  candidatesScanned: 6,
+  /** The user is never asked for a player worth more than the deal; a little slack for rounding. */
+  askSlack: 1.05,
+}

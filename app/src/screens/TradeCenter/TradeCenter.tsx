@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import {
   POSITIONS,
   TEAM_IDS,
@@ -23,11 +23,13 @@ export interface TradeCenterProps {
   state: LeagueState
   data: StaticData
   tradeOffers: TradeProposal[]
+  suggestedTrades: TradeProposal[]
   busy?: boolean
   onEvaluate: (proposal: TradeProposal) => TradeEvaluation
   onProposeTrade: (proposal: TradeProposal) => void
   onRespondToOffer: (proposal: TradeProposal, accept: boolean) => void
   onRefreshOffers: () => void
+  onRefreshSuggestions: () => void
 }
 
 function pickKey(p: Pick<DraftPick, 'season' | 'round' | 'originalTeam' | 'pick'>): string {
@@ -157,7 +159,23 @@ function AssetPicker({ state, teamId, selectedPlayers, selectedPicks, onTogglePl
 }
 
 /** Two asset pickers with a live acceptance bar between them (docs/DESIGN.md §11). */
-export function TradeCenter({ state, data, tradeOffers, busy, onEvaluate, onProposeTrade, onRespondToOffer, onRefreshOffers }: TradeCenterProps) {
+export function TradeCenter({
+  state,
+  data,
+  tradeOffers,
+  suggestedTrades,
+  busy,
+  onEvaluate,
+  onProposeTrade,
+  onRespondToOffer,
+  onRefreshOffers,
+  onRefreshSuggestions,
+}: TradeCenterProps) {
+  // Store actions are stable, so this runs once per visit: suggestions follow the roster as it stands.
+  useEffect(() => {
+    onRefreshSuggestions()
+  }, [onRefreshSuggestions])
+
   const otherTeams = TEAM_IDS.filter((id) => id !== state.userTeam)
   const [opponent, setOpponent] = useState<TeamId>(otherTeams[0]!)
   const [myPlayers, setMyPlayers] = useState<Set<PlayerId>>(new Set())
@@ -272,8 +290,45 @@ export function TradeCenter({ state, data, tradeOffers, busy, onEvaluate, onProp
 
       <div className="gg-col-12">
         <Panel
-          title="Incoming offers"
+          title="Suggested trades"
           revealIndex={3}
+          action={
+            <Button type="button" variant="ghost" onClick={onRefreshSuggestions}>
+              Refresh suggestions
+            </Button>
+          }
+        >
+          <p style={{ margin: '0 0 var(--sp-3)', color: 'var(--text-2)' }}>
+            Deals other front offices would take today, aimed at your weakest positions. Accept one and it is done.
+          </p>
+          {suggestedTrades.length === 0 ? (
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>No suggestions right now. Check back after a week or a roster move.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+              {suggestedTrades.map((offer, i) => (
+                <OfferCard
+                  key={offer.id}
+                  title={`Deal with ${data.teams[offer.offer.teamId]?.abbr ?? offer.offer.teamId}`}
+                  youGet={describeSide(state, data, offer.offer)}
+                  youGive={describeSide(state, data, offer.request)}
+                  evaluation={onEvaluate(offer)}
+                  busy={busy}
+                  revealIndex={i}
+                  acceptLabel="Accept deal"
+                  declineLabel="Dismiss"
+                  onAccept={() => onRespondToOffer(offer, true)}
+                  onDecline={() => onRespondToOffer(offer, false)}
+                />
+              ))}
+            </div>
+          )}
+        </Panel>
+      </div>
+
+      <div className="gg-col-12">
+        <Panel
+          title="Incoming offers"
+          revealIndex={4}
           action={
             <Button type="button" variant="ghost" onClick={onRefreshOffers}>
               Check for offers

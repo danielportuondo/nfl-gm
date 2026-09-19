@@ -13,6 +13,8 @@ export interface OfferCardProps {
   onDecline: () => void
   busy?: boolean
   revealIndex?: number
+  acceptLabel?: string
+  declineLabel?: string
 }
 
 /**
@@ -20,7 +22,7 @@ export interface OfferCardProps {
  * (docs/HANDOFF.md Phase 3E; docs/DESIGN.md §11 Draft Room / Trade Center). Used in the draft-room
  * offers panel and the Trade Center's incoming-offers list.
  */
-export function OfferCard({ title, youGet, youGive, evaluation, onAccept, onDecline, busy, revealIndex }: OfferCardProps) {
+export function OfferCard({ title, youGet, youGive, evaluation, onAccept, onDecline, busy, revealIndex, acceptLabel, declineLabel }: OfferCardProps) {
   return (
     <Panel variant="attention" title={title} revealIndex={revealIndex}>
       <p style={{ margin: '0 0 var(--sp-2)' }}>
@@ -29,7 +31,7 @@ export function OfferCard({ title, youGet, youGive, evaluation, onAccept, onDecl
       <p style={{ margin: '0 0 var(--sp-3)' }}>
         <strong>You give:</strong> {youGive}
       </p>
-      <AcceptanceBar p={evaluation.p} valid={evaluation.valid} />
+      <AcceptanceBar p={evaluation.p} valid={evaluation.valid} mode="fairness" />
       {evaluation.reasons.length > 0 && (
         <ul style={{ margin: 'var(--sp-2) 0 0', paddingLeft: 'var(--sp-4)', color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
           {evaluation.reasons.map((r, i) => (
@@ -39,10 +41,10 @@ export function OfferCard({ title, youGet, youGive, evaluation, onAccept, onDecl
       )}
       <div style={{ display: 'flex', gap: 'var(--sp-2)', marginTop: 'var(--sp-3)' }}>
         <Button type="button" variant="primary" busy={busy} busyLabel="Working…" onClick={onAccept}>
-          Accept
+          {acceptLabel ?? 'Accept'}
         </Button>
         <Button type="button" variant="ghost" onClick={onDecline}>
-          Decline
+          {declineLabel ?? 'Decline'}
         </Button>
       </div>
     </Panel>

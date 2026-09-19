@@ -270,6 +270,8 @@ describe('TradeCenter', () => {
         onProposeTrade={vi.fn()}
         onRespondToOffer={vi.fn()}
         onRefreshOffers={vi.fn()}
+        suggestedTrades={[]}
+        onRefreshSuggestions={() => {}}
       />,
     )
     expect(screen.getByText('Your offer')).toBeInTheDocument()

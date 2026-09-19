@@ -11,6 +11,7 @@ import type {
 import { acceptanceConstants, tradeConstants } from './constants'
 import { evaluateImpl, mirror } from './evaluate'
 import { generateAiOffersImpl } from './offers'
+import { suggestTradesImpl } from './suggest'
 import { matchesRef, outgoingValue, pickValueImpl, playerValueImpl, refKey, refOf } from './value'
 
 const keyOfExtra = (extra: { player?: PlayerId; pick?: PickRef }): string =>
@@ -158,4 +159,5 @@ export const trade: TradeModule = {
   submit: submitImpl,
   execute: executeImpl,
   generateAiOffers: generateAiOffersImpl,
+  suggestTrades: suggestTradesImpl,
 }

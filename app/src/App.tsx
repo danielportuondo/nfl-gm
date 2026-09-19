@@ -38,7 +38,7 @@ function formatPhase(phase: string): string {
 }
 
 export function App() {
-  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, alerts, savedGame, tradeOffers, busy, actions } = useGameStore()
+  const { state, data, dataStatus, dataError, screen, selectedPlayerId, theme, toasts, alerts, savedGame, tradeOffers, suggestedTrades, busy, actions } = useGameStore()
   void alerts // surfaced by the Dashboard alerts panel; kept in the store per docs/HANDOFF.md Phase 3E follow-up.
 
   if (!state || !data) {
@@ -170,11 +170,13 @@ export function App() {
           state={state}
           data={data}
           tradeOffers={tradeOffers}
+          suggestedTrades={suggestedTrades}
           busy={busy.trade}
           onEvaluate={actions.evaluateTrade}
           onProposeTrade={actions.proposeTrade}
           onRespondToOffer={actions.respondToOffer}
           onRefreshOffers={actions.refreshTradeOffers}
+          onRefreshSuggestions={actions.refreshSuggestedTrades}
         />
       )}
       {screen === 'free-agency' && (

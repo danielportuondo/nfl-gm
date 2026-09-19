@@ -744,6 +744,14 @@ export interface TradeModule {
    * the AI's own p ≥ 0.5 and value within a plausible band.
    */
   generateAiOffers(state: LeagueState, ctx: EngineContext, rng: Rng, context: 'draft' | 'season'): TradeProposal[]
+
+  /**
+   * Proactive suggestions for the user (Phase 6): AI-initiated deals that send the user a player at one
+   * of their top consensus needs from a team that is not short there, priced so the AI's own p ≥ 0.5
+   * and the user's side sits inside the plausibility band. AI-initiated, so accepting one always
+   * executes while its assets are still in place. Consensus only — never reads truth.
+   */
+  suggestTrades(state: LeagueState, ctx: EngineContext, rng: Rng): TradeProposal[]
 }
 
 export const tradeStub: TradeModule = {
@@ -761,6 +769,7 @@ export const tradeStub: TradeModule = {
   submit: () => notImplemented('trade.submit'),
   execute: () => notImplemented('trade.execute'),
   generateAiOffers: () => notImplemented('trade.generateAiOffers'),
+  suggestTrades: () => notImplemented('trade.suggestTrades'),
 }
 ```
 

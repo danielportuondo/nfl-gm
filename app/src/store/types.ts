@@ -61,6 +61,10 @@ export interface GameStoreState {
   savedGame: SaveSlotMeta | null
   /** Ephemeral AI-initiated season trade offers fetched by the Trade Center; not part of LeagueState. */
   tradeOffers: TradeProposal[]
+  /** Proactive AI-initiated suggestions for the user (trade.suggestTrades); accepting one always executes. */
+  suggestedTrades: TradeProposal[]
+  /** Suggestion ids the user dismissed; suggestions are deterministic per week, so these stay hidden. */
+  dismissedSuggestionIds: string[]
   busy: {
     newGame: boolean
     simWeek: boolean
@@ -108,6 +112,8 @@ export interface GameStoreState {
     respondToOffer: (proposal: TradeProposal, accept: boolean) => Promise<void>
     /** Fetches AI-initiated season trade offers into `tradeOffers`. */
     refreshTradeOffers: () => Promise<void>
+    /** Rebuilds `suggestedTrades` for the current week, minus dismissed ones. */
+    refreshSuggestedTrades: () => Promise<void>
 
     // --- Free Agency ------------------------------------------------------------------------
     offerContract: (playerId: PlayerId, contract: Contract) => Promise<void>

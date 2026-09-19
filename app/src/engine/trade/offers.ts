@@ -17,13 +17,13 @@ interface Valued {
   value: number
 }
 
-function aiTeams(state: LeagueState): TeamId[] {
+export function aiTeams(state: LeagueState): TeamId[] {
   return Object.keys(state.teams)
     .sort()
     .filter((id) => id !== state.userTeam && !state.teams[id]?.userControlled)
 }
 
-function tradeablePicks(state: LeagueState, teamId: TeamId, exclude: Set<string>, ctx: EngineContext): Valued[] {
+export function tradeablePicks(state: LeagueState, teamId: TeamId, exclude: Set<string>, ctx: EngineContext): Valued[] {
   return state.picks
     .filter((p) => p.owner === teamId && !p.playerId)
     .map((p) => ({ ref: refOf(p), value: 0 }))
@@ -37,7 +37,7 @@ function tradeablePicks(state: LeagueState, teamId: TeamId, exclude: Set<string>
  * the most the AI can pay and still rate its own offer at p ≥ 0.5, so an overshoot means the AI
  * proposes a deal it would itself turn down.
  */
-function assemble(candidates: Valued[], budget: number, maxAssets: number): { refs: PickRef[]; total: number } {
+export function assemble(candidates: Valued[], budget: number, maxAssets: number): { refs: PickRef[]; total: number } {
   const refs: PickRef[] = []
   let total = 0
   for (const candidate of candidates) {
@@ -49,7 +49,7 @@ function assemble(candidates: Valued[], budget: number, maxAssets: number): { re
   return { refs, total }
 }
 
-function propose(
+export function propose(
   state: LeagueState,
   aiTeam: TeamId,
   gives: { players: PlayerId[]; picks: PickRef[] },
@@ -67,7 +67,7 @@ function propose(
 }
 
 /** An offer only ships when the AI would take it and the user is not being robbed blind. */
-function acceptableToAi(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): boolean {
+export function acceptableToAi(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): boolean {
   const own = evaluateImpl(state, mirror(proposal), ctx)
   if (!own.valid || own.p < offerConstants.minAiP) return false
   const userSide = evaluateImpl(state, proposal, ctx)

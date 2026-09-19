@@ -114,6 +114,7 @@ export const fakeTrade: TradeModule = {
   }),
   execute: (state) => state,
   generateAiOffers: () => [],
+  suggestTrades: () => [],
 }
 
 // --- fa: flat contracts, passthrough cap/roster bookkeeping ----------------------------------

@@ -214,6 +214,8 @@ export function createGameStore(config: StoreConfig = {}) {
       alerts: [],
       savedGame: null,
       tradeOffers: [],
+      suggestedTrades: [],
+      dismissedSuggestionIds: [],
       busy: {
         newGame: false,
         simWeek: false,
@@ -280,7 +282,7 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             const report = modules.league.simWeek(league, ctx)
-            set({ state: report.state })
+            set({ state: report.state, suggestedTrades: [] })
             routeEvents(report.events, report.state)
             routeAfterSim(league, report.state)
             if (report.state.phase !== league.phase || report.state.week % 4 === 0) autosave(report.state)
@@ -300,7 +302,7 @@ export function createGameStore(config: StoreConfig = {}) {
             await ensureLoaded(league.season + 1, league.season + 1 + DRAFTS_AHEAD)
             const ctx = buildCtx()
             const next = modules.league.advancePhase(league, ctx)
-            set({ state: next })
+            set({ state: next, suggestedTrades: [] })
             autosave(next)
           } catch (err) {
             reportNotBuilt('Could not advance the phase.', err)
@@ -491,6 +493,7 @@ export function createGameStore(config: StoreConfig = {}) {
             set((s) => ({
               state: outcome.state,
               tradeOffers: counter ? [counter, ...s.tradeOffers.filter((o) => o.id !== counter.id)] : s.tradeOffers,
+              suggestedTrades: outcome.accepted ? [] : s.suggestedTrades,
             }))
             if (outcome.accepted) addToast('Trade accepted', 'success')
             else if (counter) addToast(`${counter.offer.teamId} passed but sent a counter — see incoming offers`, 'warn')
@@ -505,6 +508,7 @@ export function createGameStore(config: StoreConfig = {}) {
         async respondToOffer(proposal: TradeProposal, accept: boolean) {
           const league = get().state
           if (!league) return
+          const isSuggestion = get().suggestedTrades.some((o) => o.id === proposal.id)
           if (!accept) {
             set((s) => ({
               state:
@@ -512,8 +516,10 @@ export function createGameStore(config: StoreConfig = {}) {
                   ? { ...s.state, draftRoom: { ...s.state.draftRoom, pendingOffers: s.state.draftRoom.pendingOffers.filter((o) => o.id !== proposal.id) } }
                   : s.state,
               tradeOffers: s.tradeOffers.filter((o) => o.id !== proposal.id),
+              suggestedTrades: s.suggestedTrades.filter((o) => o.id !== proposal.id),
+              dismissedSuggestionIds: isSuggestion ? [...s.dismissedSuggestionIds, proposal.id] : s.dismissedSuggestionIds,
             }))
-            addToast('Declined', 'info')
+            addToast(isSuggestion ? 'Dismissed' : 'Declined', 'info')
             return
           }
           set((s) => ({ busy: { ...s.busy, trade: true } }))
@@ -524,8 +530,13 @@ export function createGameStore(config: StoreConfig = {}) {
             const resultState = outcome.state.draftRoom
               ? { ...outcome.state, draftRoom: { ...outcome.state.draftRoom, pendingOffers: outcome.state.draftRoom.pendingOffers.filter((o) => o.id !== proposal.id) } }
               : outcome.state
-            set((s) => ({ state: resultState, tradeOffers: s.tradeOffers.filter((o) => o.id !== proposal.id) }))
+            set((s) => ({
+              state: resultState,
+              tradeOffers: s.tradeOffers.filter((o) => o.id !== proposal.id),
+              suggestedTrades: outcome.accepted ? [] : s.suggestedTrades.filter((o) => o.id !== proposal.id),
+            }))
             addToast(outcome.accepted ? 'Trade accepted' : 'Trade fell through', outcome.accepted ? 'success' : 'warn')
+            if (outcome.accepted && isSuggestion) await get().actions.refreshSuggestedTrades()
           } catch (err) {
             reportNotBuilt('Could not respond to the offer.', err)
           } finally {
@@ -543,6 +554,19 @@ export function createGameStore(config: StoreConfig = {}) {
             set({ tradeOffers: offers })
           } catch (err) {
             reportNotBuilt('Could not check for offers.', err)
+          }
+        },
+
+        async refreshSuggestedTrades() {
+          const league = get().state
+          if (!league) return
+          try {
+            const ctx = buildCtx()
+            const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'suggestTrades', league.phase)
+            const dismissed = new Set(get().dismissedSuggestionIds)
+            set({ suggestedTrades: modules.trade.suggestTrades(league, ctx, rng).filter((o) => !dismissed.has(o.id)) })
+          } catch (err) {
+            reportNotBuilt('Could not build trade suggestions.', err)
           }
         },
 
