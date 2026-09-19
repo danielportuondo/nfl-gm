@@ -45,7 +45,7 @@
         "ovr": 58.7,
         "pot": 59.8
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 76.0,
       "weightLb": 306.0
     },
@@ -69,7 +69,7 @@
         "ovr": 81.7,
         "pot": 81.7
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 81.3,
       "weightLb": 198.0
     },
@@ -93,7 +93,7 @@
         "ovr": 63.9,
         "pot": 63.9
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 56.5,
       "weightLb": 206.0
     },
@@ -141,7 +141,7 @@
         "ovr": 50.3,
         "pot": 50.3
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 63.7,
       "weightLb": 200.0
     },
@@ -237,7 +237,7 @@
         "ovr": 75.3,
         "pot": 75.3
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 41.5,
       "weightLb": 225.0
     },
@@ -299,7 +299,7 @@
         "ovr": 65.9,
         "pot": 65.9
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 41.3,
       "weightLb": 214.0
     },
@@ -318,7 +318,7 @@
         "ovr": 44.8,
         "pot": 45.9
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 69.9,
       "weightLb": 314.0
     },
@@ -356,7 +356,7 @@
         "ovr": 53.9,
         "pot": 53.9
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 345.0
     },
@@ -375,7 +375,7 @@
         "ovr": 69.3,
         "pot": 70.4
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 53.8,
       "weightLb": 306.0
     },
@@ -394,7 +394,7 @@
         "ovr": 64.3,
         "pot": 64.3
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 67.9,
       "weightLb": 235.0
     },
@@ -413,7 +413,7 @@
         "ovr": 67.0,
         "pot": 68.1
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 40.3,
       "weightLb": 239.0
     },
@@ -537,7 +537,7 @@
         "ovr": 54.9,
         "pot": 56.0
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 57.6,
       "weightLb": 313.0
     },
@@ -723,7 +723,7 @@
         "ovr": 40.6,
         "pot": 44.0
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 57.6,
       "weightLb": 182.0
     },
@@ -734,7 +734,7 @@
       "heightIn": 71.0,
       "id": "00-0028908",
       "name": "Michael Thomas",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -799,7 +799,7 @@
         "ovr": 54.2,
         "pot": 54.2
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 62.7,
       "weightLb": 237.0
     },
@@ -818,7 +818,7 @@
         "ovr": 69.6,
         "pot": 70.7
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 63.0,
       "weightLb": 232.0
     },
@@ -994,7 +994,7 @@
         "ovr": 58.9,
         "pot": 58.9
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 51.3,
       "weightLb": 230.0
     },
@@ -1113,7 +1113,7 @@
         "ovr": 42.3,
         "pot": 43.4
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 50.7,
       "weightLb": 299.0
     },
@@ -1132,7 +1132,7 @@
         "ovr": 43.0,
         "pot": 44.1
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 70.5,
       "weightLb": 248.0
     },
@@ -1156,7 +1156,7 @@
         "ovr": 41.3,
         "pot": 42.4
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 69.4,
       "weightLb": 298.0
     },
@@ -1194,7 +1194,7 @@
         "ovr": 70.1,
         "pot": 70.1
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 50.9,
       "weightLb": 212.0
     },
@@ -1213,7 +1213,7 @@
         "ovr": 61.6,
         "pot": 61.6
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 79.6,
       "weightLb": 209.0
     },
@@ -1251,7 +1251,7 @@
         "ovr": 75.8,
         "pot": 75.8
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 59.3,
       "weightLb": 212.0
     },
@@ -1315,7 +1315,7 @@
       "heightIn": 76.0,
       "id": "00-0029215",
       "name": "George Iloka",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -1342,7 +1342,7 @@
         "ovr": 40.6,
         "pot": 41.1
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 41.3,
       "weightLb": 200.0
     },
@@ -1358,7 +1358,7 @@
       "heightIn": 74.0,
       "id": "00-0029249",
       "name": "Melvin Ingram",
-      "pos": "LB",
+      "pos": "DL",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -1414,7 +1414,7 @@
         "ovr": 49.6,
         "pot": 49.8
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 40.7,
       "weightLb": 305.0
     },
@@ -1774,7 +1774,7 @@
         "ovr": 50.9,
         "pot": 50.9
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 43.0,
       "weightLb": 183.0
     },
@@ -1948,7 +1948,7 @@
       "heightIn": 72.0,
       "id": "00-0029410",
       "name": "Tavon Wilson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -2068,7 +2068,7 @@
       "heightIn": 70.0,
       "id": "00-0029422",
       "name": "Keith Tandy",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -2125,7 +2125,7 @@
       "heightIn": 70.0,
       "id": "00-0029520",
       "name": "Eddie Pleasant",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -2133,7 +2133,7 @@
         "ovr": 66.0,
         "pot": 66.0
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 63.2,
       "weightLb": 200.0
     },
@@ -2224,7 +2224,7 @@
         "ovr": 41.0,
         "pot": 41.0
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 40.6,
       "weightLb": 239.0
     },
@@ -2248,7 +2248,7 @@
         "ovr": 59.7,
         "pot": 60.9
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 57.5,
       "weightLb": 312.0
     },
@@ -2272,7 +2272,7 @@
         "ovr": 73.9,
         "pot": 73.9
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 64.8,
       "weightLb": 245.0
     },
@@ -2464,7 +2464,7 @@
         "ovr": 56.9,
         "pot": 56.9
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 77.0,
       "weightLb": 250.0
     },
@@ -2526,7 +2526,7 @@
         "ovr": 41.8,
         "pot": 42.9
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 68.2,
       "weightLb": 340.0
     },
@@ -2612,7 +2612,7 @@
         "ovr": 91.7,
         "pot": 91.9
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 78.5,
       "weightLb": 190.0
     },
@@ -2700,7 +2700,7 @@
       "heightIn": 70.0,
       "id": "00-0029691",
       "name": "Josh Robinson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -2909,7 +2909,7 @@
         "ovr": 42.5,
         "pot": 43.6
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 63.4,
       "weightLb": 230.0
     },
@@ -3095,7 +3095,7 @@
         "ovr": 50.2,
         "pot": 50.2
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 69.5,
       "weightLb": 245.0
     },
@@ -3106,7 +3106,7 @@
       "heightIn": 73.0,
       "id": "00-0030161",
       "name": "Bradley McDougald",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -3125,7 +3125,7 @@
       "heightIn": 72.0,
       "id": "00-0030170",
       "name": "Rontez Miles",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -3409,7 +3409,7 @@
         "ovr": 47.8,
         "pot": 47.8
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 66.0,
       "weightLb": 235.0
     },
@@ -3481,7 +3481,7 @@
         "ovr": 42.2,
         "pot": 42.2
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 40.3,
       "weightLb": 244.0
     },
@@ -3682,7 +3682,7 @@
         "ovr": 42.8,
         "pot": 42.8
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 72.3,
       "weightLb": 260.0
     },
@@ -3870,7 +3870,7 @@
       "heightIn": 73.0,
       "id": "00-0030196",
       "name": "Jeff Heath",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -3998,7 +3998,7 @@
         "ovr": 49.0,
         "pot": 49.0
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 65.5,
       "weightLb": 192.0
     },
@@ -4094,7 +4094,7 @@
         "ovr": 64.5,
         "pot": 65.6
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 41.1,
       "weightLb": 317.0
     },
@@ -4118,7 +4118,7 @@
         "ovr": 64.1,
         "pot": 65.2
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 43.0,
       "weightLb": 310.0
     },
@@ -4334,7 +4334,7 @@
         "ovr": 56.2,
         "pot": 57.3
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 52.4,
       "weightLb": 295.0
     },
@@ -4449,7 +4449,7 @@
         "ovr": 51.0,
         "pot": 51.5
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 55.1,
       "weightLb": 215.0
     },
@@ -4511,7 +4511,7 @@
         "ovr": 62.2,
         "pot": 62.2
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 40.6,
       "weightLb": 293.0
     },
@@ -4659,7 +4659,7 @@
         "ovr": 41.6,
         "pot": 43.1
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 40.7,
       "weightLb": 290.0
     },
@@ -4812,7 +4812,7 @@
         "ovr": 73.9,
         "pot": 73.9
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 49.2,
       "weightLb": 201.0
     },
@@ -4823,7 +4823,7 @@
       "heightIn": 71.0,
       "id": "00-0030294",
       "name": "Tony Jefferson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -4861,7 +4861,7 @@
       "heightIn": 70.0,
       "id": "00-0030312",
       "name": "Jahleel Addae",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -5050,7 +5050,7 @@
         "ovr": 41.2,
         "pot": 41.5
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 69.9,
       "weightLb": 245.0
     },
@@ -5208,7 +5208,7 @@
         "ovr": 62.4,
         "pot": 62.4
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 41.8,
       "weightLb": 300.0
     },
@@ -5251,7 +5251,7 @@
         "ovr": 62.6,
         "pot": 67.3
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 41.8,
       "weightLb": 320.0
     },
@@ -5275,7 +5275,7 @@
         "ovr": 63.0,
         "pot": 63.6
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 41.6,
       "weightLb": 205.0
     },
@@ -5366,7 +5366,7 @@
         "ovr": 47.7,
         "pot": 50.1
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 48.4,
       "weightLb": 215.0
     },
@@ -5382,7 +5382,7 @@
       "heightIn": 75.0,
       "id": "00-0033059",
       "name": "T.J. Green",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -5390,7 +5390,7 @@
         "ovr": 58.7,
         "pot": 65.6
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 61.8,
       "weightLb": 211.0
     },
@@ -5510,7 +5510,7 @@
         "ovr": 42.3,
         "pot": 43.8
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 221.0
     },
@@ -5550,7 +5550,7 @@
       "heightIn": 72.0,
       "id": "00-0033048",
       "name": "Kavon Frazier",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -5558,7 +5558,7 @@
         "ovr": 53.0,
         "pot": 56.8
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 57.9,
       "weightLb": 215.0
     },
@@ -5866,7 +5866,7 @@
       "heightIn": 74.0,
       "id": "00-0033083",
       "name": "Darian Thompson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -5950,7 +5950,7 @@
         "ovr": 50.9,
         "pot": 50.9
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 41.3,
       "weightLb": 301.0
     },
@@ -6007,7 +6007,7 @@
         "ovr": 47.2,
         "pot": 47.2
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 64.7,
       "weightLb": 256.0
     },
@@ -6064,7 +6064,7 @@
         "ovr": 51.1,
         "pot": 71.0
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 40.8,
       "weightLb": 253.0
     },
@@ -6183,7 +6183,7 @@
         "ovr": 67.3,
         "pot": 70.1
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 41.1,
       "weightLb": 248.0
     },
@@ -6207,7 +6207,7 @@
         "ovr": 74.6,
         "pot": 80.3
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 45.3,
       "weightLb": 190.0
     },
@@ -6237,7 +6237,7 @@
       "heightIn": 71.0,
       "id": "00-0033457",
       "name": "Connor Harris",
-      "pos": "LB",
+      "pos": "RB",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -6397,7 +6397,7 @@
         "ovr": 46.1,
         "pot": 46.6
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 65.6,
       "weightLb": 216.0
     },
@@ -6435,7 +6435,7 @@
         "ovr": 48.1,
         "pot": 48.1
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 60.2,
       "weightLb": 246.0
     },
@@ -6545,7 +6545,7 @@
         "ovr": 41.9,
         "pot": 46.9
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 56.9,
       "weightLb": 306.0
     },
@@ -6569,7 +6569,7 @@
         "ovr": 64.8,
         "pot": 69.5
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 72.7,
       "weightLb": 294.0
     },
@@ -6631,7 +6631,7 @@
         "ovr": 62.7,
         "pot": 69.4
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 41.5,
       "weightLb": 335.0
     },
@@ -6642,7 +6642,7 @@
       "heightIn": 71.0,
       "id": "00-0033001",
       "name": "Trae Elston",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -6669,7 +6669,7 @@
         "ovr": 56.1,
         "pot": 57.8
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 62.4,
       "weightLb": 230.0
     },
@@ -6688,7 +6688,7 @@
         "ovr": 40.7,
         "pot": 43.7
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 41.4,
       "weightLb": 240.0
     },
@@ -6707,7 +6707,7 @@
         "ovr": 43.0,
         "pot": 47.6
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 60.1,
       "weightLb": 235.0
     },
@@ -6774,7 +6774,7 @@
         "ovr": 48.0,
         "pot": 49.8
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 60.7,
       "weightLb": 272.0
     },
@@ -6822,7 +6822,7 @@
         "ovr": 57.4,
         "pot": 59.8
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 58.8,
       "weightLb": 196.0
     },
@@ -6870,7 +6870,7 @@
         "ovr": 43.0,
         "pot": 46.1
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 72.9,
       "weightLb": 310.0
     },
@@ -6889,7 +6889,7 @@
         "ovr": 48.4,
         "pot": 48.4
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 246.0
     },
@@ -6908,7 +6908,7 @@
         "ovr": 44.7,
         "pot": 55.7
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 52.5,
       "weightLb": 299.0
     },
@@ -6927,7 +6927,7 @@
         "ovr": 47.5,
         "pot": 58.5
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 53.0,
       "weightLb": 267.0
     },
@@ -7196,7 +7196,7 @@
       "heightIn": 70.0,
       "id": "00-0033076",
       "name": "Derrick Kindred",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -7295,7 +7295,7 @@
         "ovr": 62.8,
         "pot": 64.8
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 48.1,
       "weightLb": 176.0
     },
@@ -7373,7 +7373,7 @@
       "heightIn": 74.0,
       "id": "00-0032971",
       "name": "Justin Simmons",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -7405,7 +7405,7 @@
         "ovr": 41.3,
         "pot": 47.1
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 66.3,
       "weightLb": 300.0
     },
@@ -7472,7 +7472,7 @@
         "ovr": 49.4,
         "pot": 51.4
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 46.8,
       "weightLb": 201.0
     },
@@ -7512,7 +7512,7 @@
       "heightIn": 73.0,
       "id": "00-0032958",
       "name": "Will Parks",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -7769,7 +7769,7 @@
         "ovr": 50.1,
         "pot": 71.0
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 232.0
     },
@@ -7845,7 +7845,7 @@
         "ovr": 49.6,
         "pot": 49.6
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 55.9,
       "weightLb": 225.0
     },
@@ -7864,7 +7864,7 @@
         "ovr": 48.8,
         "pot": 60.8
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 42.0,
       "weightLb": 181.0
     },
@@ -7978,7 +7978,7 @@
         "ovr": 48.2,
         "pot": 48.2
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 53.9,
       "weightLb": 350.0
     },
@@ -8035,7 +8035,7 @@
         "ovr": 46.7,
         "pot": 60.1
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 75.9,
       "weightLb": 190.0
     },
@@ -8054,7 +8054,7 @@
         "ovr": 50.3,
         "pot": 50.3
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 69.1,
       "weightLb": 203.0
     },
@@ -8073,7 +8073,7 @@
         "ovr": 50.5,
         "pot": 62.0
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 64.1,
       "weightLb": 179.0
     },
@@ -8092,7 +8092,7 @@
         "ovr": 50.1,
         "pot": 50.1
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 55.3,
       "weightLb": 178.0
     },
@@ -8108,7 +8108,7 @@
       "heightIn": 74.0,
       "id": "00-0033302",
       "name": "Adrian Colbert",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -8116,7 +8116,7 @@
         "ovr": 58.6,
         "pot": 61.1
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 66.2,
       "weightLb": 205.0
     },
@@ -8180,7 +8180,7 @@
       "heightIn": 73.0,
       "id": "00-0033298",
       "name": "Pita Taumoepenu",
-      "pos": "LB",
+      "pos": "DL",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -8188,7 +8188,7 @@
         "ovr": 59.2,
         "pot": 62.5
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 42.1,
       "weightLb": 243.0
     },
@@ -8212,7 +8212,7 @@
         "ovr": 59.1,
         "pot": 63.4
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 52.1,
       "weightLb": 321.0
     },
@@ -8252,7 +8252,7 @@
       "heightIn": 72.0,
       "id": "00-0033294",
       "name": "Chuck Clark",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -8260,7 +8260,7 @@
         "ovr": 60.3,
         "pot": 64.5
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 59.5,
       "weightLb": 210.0
     },
@@ -8399,7 +8399,7 @@
         "ovr": 57.4,
         "pot": 59.7
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 52.0,
       "weightLb": 230.0
     },
@@ -8461,7 +8461,7 @@
         "ovr": 75.2,
         "pot": 76.8
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 66.9,
       "weightLb": 300.0
     },
@@ -8518,7 +8518,7 @@
         "ovr": 47.8,
         "pot": 56.5
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 223.0
     },
@@ -8537,7 +8537,7 @@
         "ovr": 50.5,
         "pot": 50.5
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 64.8,
       "weightLb": 219.0
     },
@@ -8613,7 +8613,7 @@
         "ovr": 46.8,
         "pot": 46.8
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 41.8,
       "weightLb": 239.0
     },
@@ -8689,7 +8689,7 @@
         "ovr": 49.7,
         "pot": 49.7
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 58.8,
       "weightLb": 250.0
     },
@@ -8708,7 +8708,7 @@
         "ovr": 48.8,
         "pot": 48.8
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 42.4,
       "weightLb": 315.0
     },
@@ -9012,7 +9012,7 @@
         "ovr": 46.7,
         "pot": 70.4
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 46.0,
       "weightLb": 320.0
     },
@@ -9095,7 +9095,7 @@
       "heightIn": 74.0,
       "id": "00-0033463",
       "name": "Carl Lawson",
-      "pos": "DL",
+      "pos": "LB",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -9146,7 +9146,7 @@
         "ovr": 58.3,
         "pot": 62.0
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 59.4,
       "weightLb": 226.0
     },
@@ -9170,7 +9170,7 @@
         "ovr": 59.6,
         "pot": 63.8
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 42.7,
       "weightLb": 217.0
     },
@@ -9218,7 +9218,7 @@
         "ovr": 59.4,
         "pot": 62.2
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 62.2,
       "weightLb": 252.0
     },
@@ -9234,7 +9234,7 @@
       "heightIn": 74.0,
       "id": "00-0033527",
       "name": "Montae Nicholson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -9290,7 +9290,7 @@
         "ovr": 58.0,
         "pot": 63.5
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 41.4,
       "weightLb": 195.0
     },
@@ -9314,7 +9314,7 @@
         "ovr": 66.9,
         "pot": 69.6
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 58.9,
       "weightLb": 253.0
     },
@@ -9362,7 +9362,7 @@
         "ovr": 60.0,
         "pot": 65.7
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 51.3,
       "weightLb": 220.0
     },
@@ -9443,7 +9443,7 @@
         "ovr": 61.0,
         "pot": 63.2
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 42.2,
       "weightLb": 341.0
     },
@@ -9548,7 +9548,7 @@
         "ovr": 69.3,
         "pot": 73.3
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 62.6,
       "weightLb": 200.0
     },
@@ -9662,7 +9662,7 @@
         "ovr": 49.6,
         "pot": 52.5
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 46.6,
       "weightLb": 241.0
     },
@@ -9681,7 +9681,7 @@
         "ovr": 46.5,
         "pot": 46.5
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 57.3,
       "weightLb": 230.0
     },
@@ -9795,7 +9795,7 @@
         "ovr": 47.2,
         "pot": 67.7
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 63.1,
       "weightLb": 305.0
     },
@@ -10181,7 +10181,7 @@
         "ovr": 55.9,
         "pot": 57.1
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 60.4,
       "weightLb": 300.0
     },
@@ -10229,7 +10229,7 @@
         "ovr": 65.3,
         "pot": 65.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 54.6,
       "weightLb": 190.0
     },
@@ -10430,7 +10430,7 @@
         "ovr": 47.8,
         "pot": 69.6
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 40.9,
       "weightLb": 211.0
     },
@@ -10454,7 +10454,7 @@
         "ovr": 61.8,
         "pot": 62.1
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 55.3,
       "weightLb": 270.0
     },
@@ -10513,7 +10513,7 @@
       "heightIn": 70.0,
       "id": "00-0030566",
       "name": "D.J. Swearinger",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -10636,7 +10636,7 @@
         "ovr": 69.2,
         "pot": 69.9
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 68.5,
       "weightLb": 190.0
     },
@@ -10719,7 +10719,7 @@
       "heightIn": 69.0,
       "id": "00-0030459",
       "name": "Tyrann Mathieu",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -10799,7 +10799,7 @@
         "ovr": 66.1,
         "pot": 66.3
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 61.6,
       "weightLb": 270.0
     },
@@ -10890,7 +10890,7 @@
         "ovr": 67.0,
         "pot": 67.0
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 48.7,
       "weightLb": 278.0
     },
@@ -11115,7 +11115,7 @@
         "ovr": 55.1,
         "pot": 56.2
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 48.8,
       "weightLb": 312.0
     },
@@ -11196,7 +11196,7 @@
         "ovr": 42.0,
         "pot": 42.5
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 40.8,
       "weightLb": 243.0
     },
@@ -11341,7 +11341,7 @@
       "heightIn": 73.0,
       "id": "00-0030548",
       "name": "Eric Reid",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -11373,7 +11373,7 @@
         "ovr": 63.5,
         "pot": 63.6
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 42.4,
       "weightLb": 266.0
     },
@@ -11571,7 +11571,7 @@
       "heightIn": 73.0,
       "id": "00-0027676",
       "name": "Morgan Burnett",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -11651,7 +11651,7 @@
         "ovr": 60.6,
         "pot": 60.6
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 67.6,
       "weightLb": 310.0
     },
@@ -11771,7 +11771,7 @@
         "ovr": 58.7,
         "pot": 58.8
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 74.2,
       "weightLb": 270.0
     },
@@ -11883,7 +11883,7 @@
       "heightIn": 75.0,
       "id": "00-0027733",
       "name": "Kam Chancellor",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -11979,7 +11979,7 @@
       "heightIn": 73.0,
       "id": "00-0027762",
       "name": "Reshad Jones",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -12054,7 +12054,7 @@
         "ovr": 69.1,
         "pot": 69.1
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 42.0,
       "weightLb": 250.0
     },
@@ -12097,7 +12097,7 @@
         "ovr": 67.5,
         "pot": 67.5
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 60.7,
       "weightLb": 187.0
     },
@@ -12113,7 +12113,7 @@
       "heightIn": 70.0,
       "id": "00-0027653",
       "name": "T.J. Ward",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -12121,7 +12121,7 @@
         "ovr": 83.2,
         "pot": 83.3
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 63.0,
       "weightLb": 200.0
     },
@@ -12137,7 +12137,7 @@
       "heightIn": 73.0,
       "id": "00-0027652",
       "name": "Nate Allen",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -12145,7 +12145,7 @@
         "ovr": 68.8,
         "pot": 68.9
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 63.5,
       "weightLb": 214.0
     },
@@ -12193,7 +12193,7 @@
         "ovr": 71.7,
         "pot": 71.7
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 41.2,
       "weightLb": 225.0
     },
@@ -12356,7 +12356,7 @@
         "ovr": 70.5,
         "pot": 72.5
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 57.0,
       "weightLb": 307.0
     },
@@ -12461,7 +12461,7 @@
         "ovr": 62.6,
         "pot": 62.9
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 54.6,
       "weightLb": 260.0
     },
@@ -12496,7 +12496,7 @@
       "heightIn": 72.0,
       "id": "00-0030471",
       "name": "Shawn Williams",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -12552,7 +12552,7 @@
         "ovr": 42.3,
         "pot": 43.4
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 42.4,
       "weightLb": 305.0
     },
@@ -12666,7 +12666,7 @@
         "ovr": 47.4,
         "pot": 49.3
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 60.0,
       "weightLb": 182.0
     },
@@ -12690,7 +12690,7 @@
         "ovr": 67.0,
         "pot": 67.2
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 55.3,
       "weightLb": 245.0
     },
@@ -12752,7 +12752,7 @@
         "ovr": 57.7,
         "pot": 57.7
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 57.5,
       "weightLb": 195.0
     },
@@ -12896,7 +12896,7 @@
         "ovr": 67.2,
         "pot": 67.3
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 57.8,
       "weightLb": 220.0
     },
@@ -12939,7 +12939,7 @@
         "ovr": 65.2,
         "pot": 65.2
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 69.8,
       "weightLb": 195.0
     },
@@ -13006,7 +13006,7 @@
         "ovr": 69.4,
         "pot": 69.4
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 65.3,
       "weightLb": 196.0
     },
@@ -13073,7 +13073,7 @@
         "ovr": 69.6,
         "pot": 70.1
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 62.6,
       "weightLb": 285.0
     },
@@ -13350,7 +13350,7 @@
         "ovr": 45.2,
         "pot": 45.2
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 69.6,
       "weightLb": 236.0
     },
@@ -13369,7 +13369,7 @@
         "ovr": 40.9,
         "pot": 44.3
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 66.3,
       "weightLb": 200.0
     },
@@ -13388,7 +13388,7 @@
         "ovr": 43.0,
         "pot": 44.1
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 60.5,
       "weightLb": 300.0
     },
@@ -13555,7 +13555,7 @@
         "ovr": 84.8,
         "pot": 85.1
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 64.4,
       "weightLb": 205.0
     },
@@ -13571,7 +13571,7 @@
       "heightIn": 74.0,
       "id": "00-0030530",
       "name": "T.J. McDonald",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -13646,7 +13646,7 @@
         "ovr": 42.2,
         "pot": 44.9
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 65.5,
       "weightLb": 253.0
     },
@@ -13751,7 +13751,7 @@
         "ovr": 70.7,
         "pot": 70.9
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 40.6,
       "weightLb": 221.0
     },
@@ -13767,7 +13767,7 @@
       "heightIn": 71.0,
       "id": "00-0031070",
       "name": "Nat Berhe",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -13904,7 +13904,7 @@
         "ovr": 59.1,
         "pot": 59.1
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 61.9,
       "weightLb": 212.0
     },
@@ -13976,7 +13976,7 @@
         "ovr": 41.3,
         "pot": 42.5
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 61.8,
       "weightLb": 320.0
     },
@@ -14129,7 +14129,7 @@
         "ovr": 64.1,
         "pot": 64.1
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 40.5,
       "weightLb": 223.0
     },
@@ -14191,7 +14191,7 @@
         "ovr": 59.1,
         "pot": 59.1
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 40.9,
       "weightLb": 195.0
     },
@@ -14234,7 +14234,7 @@
         "ovr": 41.2,
         "pot": 44.6
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 191.0
     },
@@ -14411,7 +14411,7 @@
         "ovr": 41.0,
         "pot": 41.5
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 40.8,
       "weightLb": 210.0
     },
@@ -14545,7 +14545,7 @@
         "ovr": 75.5,
         "pot": 75.5
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 41.4,
       "weightLb": 270.0
     },
@@ -14665,7 +14665,7 @@
         "ovr": 41.7,
         "pot": 41.7
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 56.6,
       "weightLb": 234.0
     },
@@ -14708,7 +14708,7 @@
         "ovr": 56.5,
         "pot": 56.5
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 63.7,
       "weightLb": 267.0
     },
@@ -14743,7 +14743,7 @@
       "heightIn": 70.0,
       "id": "00-0031087",
       "name": "Andre Hal",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -14837,7 +14837,7 @@
         "ovr": 86.5,
         "pot": 87.5
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 73.2,
       "weightLb": 198.0
     },
@@ -14991,7 +14991,7 @@
       "heightIn": 75.0,
       "id": "00-0031098",
       "name": "Lonnie Ballentine",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -15061,7 +15061,7 @@
         "ovr": 59.2,
         "pot": 59.2
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 63.3,
       "weightLb": 255.0
     },
@@ -15133,7 +15133,7 @@
         "ovr": 55.4,
         "pot": 55.9
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 64.5,
       "weightLb": 219.0
     },
@@ -15229,7 +15229,7 @@
         "ovr": 61.0,
         "pot": 61.0
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 41.0,
       "weightLb": 197.0
     },
@@ -15248,7 +15248,7 @@
         "ovr": 74.5,
         "pot": 74.9
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 40.5,
       "weightLb": 258.0
     },
@@ -15358,7 +15358,7 @@
         "ovr": 63.3,
         "pot": 64.8
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 48.0,
       "weightLb": 255.0
     },
@@ -15417,7 +15417,7 @@
       "heightIn": 71.0,
       "id": "00-0027539",
       "name": "Anthony Levine",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -15425,7 +15425,7 @@
         "ovr": 53.4,
         "pot": 53.4
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 67.1,
       "weightLb": 200.0
     },
@@ -15516,7 +15516,7 @@
         "ovr": 79.8,
         "pot": 79.8
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 66.8,
       "weightLb": 185.0
     },
@@ -15540,7 +15540,7 @@
         "ovr": 58.7,
         "pot": 60.4
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 62.9,
       "weightLb": 190.0
     },
@@ -15799,7 +15799,7 @@
         "ovr": 76.2,
         "pot": 76.2
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 220.0
     },
@@ -16047,7 +16047,7 @@
         "ovr": 42.9,
         "pot": 44.0
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 65.9,
       "weightLb": 256.0
     },
@@ -16144,7 +16144,7 @@
       "heightIn": 71.0,
       "id": "00-0025424",
       "name": "Eric Weddle",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2007,
       "scouting": {
@@ -16176,7 +16176,7 @@
         "ovr": 47.6,
         "pot": 48.1
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 67.1,
       "weightLb": 243.0
     },
@@ -16200,7 +16200,7 @@
         "ovr": 66.3,
         "pot": 66.3
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 62.8,
       "weightLb": 230.0
     },
@@ -16583,7 +16583,7 @@
         "ovr": 41.9,
         "pot": 42.4
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 41.0,
       "weightLb": 217.0
     },
@@ -16623,7 +16623,7 @@
       "heightIn": 70.0,
       "id": "00-0022923",
       "name": "DeAngelo Hall",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2004,
       "scouting": {
@@ -16631,7 +16631,7 @@
         "ovr": 62.8,
         "pot": 62.8
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 63.7,
       "weightLb": 200.0
     },
@@ -16703,7 +16703,7 @@
         "ovr": 42.7,
         "pot": 42.7
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 80.2,
       "weightLb": 251.0
     },
@@ -16760,7 +16760,7 @@
         "ovr": 59.8,
         "pot": 60.9
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 60.8,
       "weightLb": 310.0
     },
@@ -16870,7 +16870,7 @@
         "ovr": 57.6,
         "pot": 58.7
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 49.1,
       "weightLb": 318.0
     },
@@ -16894,7 +16894,7 @@
         "ovr": 64.9,
         "pot": 64.9
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 42.7,
       "weightLb": 299.0
     },
@@ -17038,7 +17038,7 @@
         "ovr": 41.6,
         "pot": 42.1
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 62.5,
       "weightLb": 217.0
     },
@@ -17062,7 +17062,7 @@
         "ovr": 61.3,
         "pot": 61.3
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 72.4,
       "weightLb": 188.0
     },
@@ -17162,7 +17162,7 @@
         "ovr": 63.3,
         "pot": 64.4
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 43.0,
       "weightLb": 324.0
     },
@@ -17295,7 +17295,7 @@
         "ovr": 67.7,
         "pot": 67.7
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 50.4,
       "weightLb": 188.0
     },
@@ -17410,7 +17410,7 @@
         "ovr": 57.7,
         "pot": 57.8
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 47.4,
       "weightLb": 203.0
     },
@@ -17632,7 +17632,7 @@
       "heightIn": 71.0,
       "id": "00-0026257",
       "name": "Quintin Demps",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2008,
       "scouting": {
@@ -17640,7 +17640,7 @@
         "ovr": 78.3,
         "pot": 78.3
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 64.9,
       "weightLb": 216.0
     },
@@ -17656,7 +17656,7 @@
       "heightIn": 71.0,
       "id": "00-0026253",
       "name": "Dwight Lowery",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2008,
       "scouting": {
@@ -17827,7 +17827,7 @@
         "ovr": 43.0,
         "pot": 44.1
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 42.8,
       "weightLb": 255.0
     },
@@ -17960,7 +17960,7 @@
         "ovr": 53.1,
         "pot": 54.8
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 46.7,
       "weightLb": 204.0
     },
@@ -17984,7 +17984,7 @@
         "ovr": 64.3,
         "pot": 64.4
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 59.0,
       "weightLb": 222.0
     },
@@ -18024,7 +18024,7 @@
       "heightIn": 72.0,
       "id": "00-0026240",
       "name": "Tyvon Branch",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2008,
       "scouting": {
@@ -18072,7 +18072,7 @@
       "heightIn": 71.0,
       "id": "00-0025408",
       "name": "Reggie Nelson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2007,
       "scouting": {
@@ -18104,7 +18104,7 @@
         "ovr": 69.9,
         "pot": 70.0
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 54.8,
       "weightLb": 195.0
     },
@@ -18200,7 +18200,7 @@
         "ovr": 65.1,
         "pot": 65.3
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 45.1,
       "weightLb": 255.0
     },
@@ -18296,7 +18296,7 @@
         "ovr": 61.3,
         "pot": 62.5
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 50.9,
       "weightLb": 322.0
     },
@@ -18312,7 +18312,7 @@
       "heightIn": 70.0,
       "id": "00-0027988",
       "name": "Marcus Gilchrist",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
@@ -18600,7 +18600,7 @@
       "heightIn": 74.0,
       "id": "00-0028031",
       "name": "Chris Conte",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
@@ -18696,7 +18696,7 @@
       "heightIn": 73.0,
       "id": "00-0028059",
       "name": "Chris Prosinski",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
@@ -18920,7 +18920,7 @@
         "ovr": 65.9,
         "pot": 66.0
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 62.2,
       "weightLb": 258.0
     },
@@ -18936,7 +18936,7 @@
       "heightIn": 70.0,
       "id": "00-0027017",
       "name": "Darius Butler",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -19056,7 +19056,7 @@
       "heightIn": 70.0,
       "id": "00-0027060",
       "name": "Lardarius Webb",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -19064,7 +19064,7 @@
         "ovr": 78.0,
         "pot": 78.0
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 75.1,
       "weightLb": 185.0
     },
@@ -19128,7 +19128,7 @@
       "heightIn": 72.0,
       "id": "00-0027081",
       "name": "Glover Quin",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -19160,7 +19160,7 @@
         "ovr": 40.9,
         "pot": 40.9
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 67.0,
       "weightLb": 200.0
     },
@@ -19200,7 +19200,7 @@
       "heightIn": 71.0,
       "id": "00-0027124",
       "name": "Don Carey",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -19208,7 +19208,7 @@
         "ovr": 43.0,
         "pot": 43.0
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 50.2,
       "weightLb": 202.0
     },
@@ -19232,7 +19232,7 @@
         "ovr": 79.8,
         "pot": 79.8
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 64.4,
       "weightLb": 245.0
     },
@@ -19275,7 +19275,7 @@
         "ovr": 76.9,
         "pot": 78.0
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 58.7,
       "weightLb": 235.0
     },
@@ -19294,7 +19294,7 @@
         "ovr": 44.5,
         "pot": 44.5
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 47.5,
       "weightLb": 268.0
     },
@@ -19351,7 +19351,7 @@
         "ovr": 42.6,
         "pot": 43.7
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 74.4,
       "weightLb": 237.0
     },
@@ -19370,7 +19370,7 @@
         "ovr": 40.9,
         "pot": 41.4
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 40.7,
       "weightLb": 219.0
     },
@@ -19381,7 +19381,7 @@
       "heightIn": 71.0,
       "id": "00-0027256",
       "name": "Darian Stewart",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -19446,7 +19446,7 @@
         "ovr": 40.6,
         "pot": 40.6
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 48.3,
       "weightLb": 260.0
     },
@@ -19647,7 +19647,7 @@
         "ovr": 64.6,
         "pot": 64.6
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 76.4,
       "weightLb": 192.0
     },
@@ -19834,7 +19834,7 @@
         "ovr": 65.7,
         "pot": 65.9
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 41.1,
       "weightLb": 343.0
     },
@@ -19922,7 +19922,7 @@
       "heightIn": 72.0,
       "id": "00-0024330",
       "name": "Will Blackmon",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2006,
       "scouting": {
@@ -20042,7 +20042,7 @@
       "heightIn": 71.0,
       "id": "00-0024421",
       "name": "Antoine Bethea",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2006,
       "scouting": {
@@ -20117,7 +20117,7 @@
         "ovr": 54.0,
         "pot": 54.1
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 45.2,
       "weightLb": 220.0
     },
@@ -20261,7 +20261,7 @@
         "ovr": 72.8,
         "pot": 73.0
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 79.3,
       "weightLb": 210.0
     },
@@ -20333,7 +20333,7 @@
         "ovr": 58.6,
         "pot": 58.6
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 65.6,
       "weightLb": 195.0
     },
@@ -20445,7 +20445,7 @@
       "heightIn": 70.0,
       "id": "00-0027866",
       "name": "Earl Thomas",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -20501,7 +20501,7 @@
         "ovr": 72.4,
         "pot": 73.7
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 59.1,
       "weightLb": 331.0
     },
@@ -20621,7 +20621,7 @@
         "ovr": 64.2,
         "pot": 64.3
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 41.0,
       "weightLb": 265.0
     },
@@ -21014,7 +21014,7 @@
         "ovr": 47.2,
         "pot": 47.2
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 53.7,
       "weightLb": 205.0
     },
@@ -21145,7 +21145,7 @@
       "heightIn": 71.0,
       "id": "00-0031404",
       "name": "Adrian Phillips",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -21153,7 +21153,7 @@
         "ovr": 65.2,
         "pot": 65.5
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 69.2,
       "weightLb": 210.0
     },
@@ -21172,7 +21172,7 @@
         "ovr": 41.9,
         "pot": 43.4
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 54.7,
       "weightLb": 192.0
     },
@@ -21183,7 +21183,7 @@
       "heightIn": 71.0,
       "id": "00-0031512",
       "name": "Jermaine Whitehead",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -21531,7 +21531,7 @@
         "ovr": 43.1,
         "pot": 45.0
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 67.8,
       "weightLb": 250.0
     },
@@ -21574,7 +21574,7 @@
         "ovr": 41.6,
         "pot": 44.6
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 61.1,
       "weightLb": 301.0
     },
@@ -21622,7 +21622,7 @@
         "ovr": 61.4,
         "pot": 62.8
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 57.8,
       "weightLb": 310.0
     },
@@ -21785,7 +21785,7 @@
         "ovr": 42.4,
         "pot": 45.9
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 45.2,
       "weightLb": 315.0
     },
@@ -21833,7 +21833,7 @@
         "ovr": 66.2,
         "pot": 67.7
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 58.6,
       "weightLb": 245.0
     },
@@ -21857,7 +21857,7 @@
         "ovr": 66.5,
         "pot": 73.2
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 61.4,
       "weightLb": 316.0
     },
@@ -22068,7 +22068,7 @@
         "ovr": 63.1,
         "pot": 64.6
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 61.0,
       "weightLb": 255.0
     },
@@ -22164,7 +22164,7 @@
         "ovr": 68.8,
         "pot": 70.7
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 41.5,
       "weightLb": 259.0
     },
@@ -22455,7 +22455,7 @@
         "ovr": 61.8,
         "pot": 66.3
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 40.6,
       "weightLb": 282.0
     },
@@ -22493,7 +22493,7 @@
         "ovr": 41.7,
         "pot": 45.1
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 56.7,
       "weightLb": 197.0
     },
@@ -22512,7 +22512,7 @@
         "ovr": 41.3,
         "pot": 43.3
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 41.1,
       "weightLb": 230.0
     },
@@ -22607,7 +22607,7 @@
         "ovr": 69.6,
         "pot": 72.6
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 63.2,
       "weightLb": 190.0
     },
@@ -22626,7 +22626,7 @@
         "ovr": 41.7,
         "pot": 45.2
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 66.7,
       "weightLb": 313.0
     },
@@ -22664,7 +22664,7 @@
         "ovr": 60.0,
         "pot": 61.7
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 73.8,
       "weightLb": 217.0
     },
@@ -22759,7 +22759,7 @@
         "ovr": 60.2,
         "pot": 63.2
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 41.4,
       "weightLb": 257.0
     },
@@ -22770,7 +22770,7 @@
       "heightIn": 72.0,
       "id": "00-0032620",
       "name": "A.J. Hendy",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -22816,7 +22816,7 @@
         "ovr": 47.5,
         "pot": 50.5
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 53.5,
       "weightLb": 252.0
     },
@@ -22835,7 +22835,7 @@
         "ovr": 41.2,
         "pot": 44.4
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 74.0,
       "weightLb": 230.0
     },
@@ -22854,7 +22854,7 @@
         "ovr": 57.4,
         "pot": 58.9
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 195.0
     },
@@ -23006,7 +23006,7 @@
         "ovr": 41.5,
         "pot": 43.3
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 51.5,
       "weightLb": 300.0
     },
@@ -23044,7 +23044,7 @@
         "ovr": 41.7,
         "pot": 45.1
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 183.0
     },
@@ -23082,7 +23082,7 @@
         "ovr": 41.6,
         "pot": 43.5
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 52.2,
       "weightLb": 244.0
     },
@@ -23196,7 +23196,7 @@
         "ovr": 47.6,
         "pot": 47.6
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 41.6,
       "weightLb": 240.0
     },
@@ -23405,7 +23405,7 @@
         "ovr": 42.1,
         "pot": 45.1
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 41.3,
       "weightLb": 192.0
     },
@@ -23424,7 +23424,7 @@
         "ovr": 65.3,
         "pot": 67.5
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 65.0,
       "weightLb": 265.0
     },
@@ -23440,7 +23440,7 @@
       "heightIn": 74.0,
       "id": "00-0031571",
       "name": "Clayton Geathers",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -23448,7 +23448,7 @@
         "ovr": 68.2,
         "pot": 70.1
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 49.7,
       "weightLb": 220.0
     },
@@ -23491,7 +23491,7 @@
         "ovr": 58.0,
         "pot": 60.8
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 54.8,
       "weightLb": 309.0
     },
@@ -23507,7 +23507,7 @@
       "heightIn": 76.0,
       "id": "00-0031576",
       "name": "Za'Darius Smith",
-      "pos": "DL",
+      "pos": "LB",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -23539,7 +23539,7 @@
         "ovr": 72.1,
         "pot": 72.3
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 57.6,
       "weightLb": 226.0
     },
@@ -23579,7 +23579,7 @@
       "heightIn": 75.0,
       "id": "00-0031347",
       "name": "Keith McGill",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -23587,7 +23587,7 @@
         "ovr": 56.7,
         "pot": 56.8
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 43.0,
       "weightLb": 211.0
     },
@@ -23699,7 +23699,7 @@
       "heightIn": 71.0,
       "id": "00-0031338",
       "name": "Terrence Brooks",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -23707,7 +23707,7 @@
         "ovr": 60.8,
         "pot": 61.0
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 59.7,
       "weightLb": 200.0
     },
@@ -23731,7 +23731,7 @@
         "ovr": 56.4,
         "pot": 60.1
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 42.5,
       "weightLb": 310.0
     },
@@ -23779,7 +23779,7 @@
         "ovr": 66.6,
         "pot": 70.5
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 59.8,
       "weightLb": 322.0
     },
@@ -23822,7 +23822,7 @@
         "ovr": 54.5,
         "pot": 56.0
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 44.7,
       "weightLb": 185.0
     },
@@ -23838,7 +23838,7 @@
       "heightIn": 73.0,
       "id": "00-0031333",
       "name": "Ha Ha Clinton-Dix",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -23966,7 +23966,7 @@
         "ovr": 41.3,
         "pot": 41.4
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 66.5,
       "weightLb": 200.0
     },
@@ -24158,7 +24158,7 @@
         "ovr": 60.4,
         "pot": 60.5
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 68.0,
       "weightLb": 198.0
     },
@@ -24206,7 +24206,7 @@
         "ovr": 42.1,
         "pot": 43.6
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 43.0,
       "weightLb": 214.0
     },
@@ -24244,7 +24244,7 @@
         "ovr": 65.4,
         "pot": 67.6
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 55.8,
       "weightLb": 222.0
     },
@@ -24282,7 +24282,7 @@
         "ovr": 41.7,
         "pot": 43.6
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 42.6,
       "weightLb": 239.0
     },
@@ -24339,7 +24339,7 @@
         "ovr": 40.5,
         "pot": 42.0
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 258.0
     },
@@ -24516,7 +24516,7 @@
         "ovr": 44.1,
         "pot": 45.7
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 55.6,
       "weightLb": 217.0
     },
@@ -24532,7 +24532,7 @@
       "heightIn": 70.0,
       "id": "00-0032069",
       "name": "Derron Smith",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -24540,7 +24540,7 @@
         "ovr": 54.0,
         "pot": 55.5
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 46.6,
       "weightLb": 200.0
     },
@@ -24719,7 +24719,7 @@
       "heightIn": 73.0,
       "id": "00-0032057",
       "name": "Jaquiski Tartt",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -24786,7 +24786,7 @@
       "heightIn": 74.0,
       "id": "00-0032050",
       "name": "Corey Moore",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -24938,7 +24938,7 @@
         "ovr": 57.5,
         "pot": 57.6
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 56.0,
       "weightLb": 212.0
     },
@@ -25034,7 +25034,7 @@
         "ovr": 78.7,
         "pot": 79.1
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 42.1,
       "weightLb": 259.0
     },
@@ -25050,7 +25050,7 @@
       "heightIn": 71.0,
       "id": "00-0031298",
       "name": "Jimmie Ward",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -25058,7 +25058,7 @@
         "ovr": 73.2,
         "pot": 73.8
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 65.8,
       "weightLb": 193.0
     },
@@ -25293,7 +25293,7 @@
         "ovr": 79.1,
         "pot": 80.6
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 41.2,
       "weightLb": 192.0
     },
@@ -25413,7 +25413,7 @@
         "ovr": 55.0,
         "pot": 57.0
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 57.5,
       "weightLb": 243.0
     },
@@ -25429,7 +25429,7 @@
       "heightIn": 72.0,
       "id": "00-0031584",
       "name": "Adrian Amos",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -25461,7 +25461,7 @@
         "ovr": 75.6,
         "pot": 79.2
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 58.9,
       "weightLb": 310.0
     },
@@ -25549,7 +25549,7 @@
       "heightIn": 73.0,
       "id": "00-0031312",
       "name": "Ed Reynolds",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -25899,7 +25899,7 @@
       "heightIn": 72.0,
       "id": "00-0031267",
       "name": "Antone Exum",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -25979,7 +25979,7 @@
         "ovr": 71.8,
         "pot": 71.8
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 57.1,
       "weightLb": 195.0
     },
@@ -25995,7 +25995,7 @@
       "heightIn": 73.0,
       "id": "00-0031261",
       "name": "Tre Boston",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -26089,7 +26089,7 @@
         "ovr": 40.9,
         "pot": 40.9
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 71.8,
       "weightLb": 183.0
     },
@@ -26180,7 +26180,7 @@
         "ovr": 41.2,
         "pot": 41.2
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 44.3,
       "weightLb": 208.0
     },
@@ -26228,7 +26228,7 @@
         "ovr": 46.6,
         "pot": 46.6
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 50.6,
       "weightLb": 195.0
     },
@@ -26271,7 +26271,7 @@
         "ovr": 47.1,
         "pot": 47.1
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 41.1,
       "weightLb": 231.0
     },
@@ -26376,7 +26376,7 @@
         "ovr": 52.0,
         "pot": 53.5
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 219.0
     },
@@ -26464,7 +26464,7 @@
       "heightIn": 72.0,
       "id": "00-0032239",
       "name": "Byron Jones",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -26568,7 +26568,7 @@
         "ovr": 49.9,
         "pot": 53.6
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 67.5,
       "weightLb": 315.0
     },
@@ -26592,7 +26592,7 @@
         "ovr": 46.7,
         "pot": 48.9
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 62.6,
       "weightLb": 200.0
     },
@@ -26632,7 +26632,7 @@
       "heightIn": 74.0,
       "id": "00-0032399",
       "name": "Miles Killebrew",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -26689,7 +26689,7 @@
       "heightIn": 71.0,
       "id": "00-0032496",
       "name": "Matthias Farley",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -26697,7 +26697,7 @@
         "ovr": 48.5,
         "pot": 50.0
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 70.2,
       "weightLb": 209.0
     },
@@ -26754,7 +26754,7 @@
         "ovr": 42.8,
         "pot": 44.5
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 41.9,
       "weightLb": 256.0
     },
@@ -26773,7 +26773,7 @@
         "ovr": 59.2,
         "pot": 61.8
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 53.2,
       "weightLb": 208.0
     },
@@ -26811,7 +26811,7 @@
         "ovr": 41.1,
         "pot": 42.6
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 67.8,
       "weightLb": 235.0
     },
@@ -26849,7 +26849,7 @@
         "ovr": 50.7,
         "pot": 50.7
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 41.8,
       "weightLb": 245.0
     },
@@ -26868,7 +26868,7 @@
         "ovr": 59.5,
         "pot": 63.0
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 41.2,
       "weightLb": 322.0
     },
@@ -26922,7 +26922,7 @@
       "heightIn": 72.0,
       "id": "00-0032262",
       "name": "Landon Collins",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -26973,7 +26973,7 @@
         "ovr": 47.2,
         "pot": 48.7
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 61.4,
       "weightLb": 200.0
     },
@@ -26992,7 +26992,7 @@
         "ovr": 55.1,
         "pot": 56.6
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 58.0,
       "weightLb": 249.0
     },
@@ -27049,7 +27049,7 @@
         "ovr": 66.5,
         "pot": 68.0
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 40.8,
       "weightLb": 200.0
     },
@@ -27140,7 +27140,7 @@
         "ovr": 51.1,
         "pot": 52.6
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 61.8,
       "weightLb": 200.0
     },
@@ -27276,7 +27276,7 @@
       "heightIn": 71.0,
       "id": "00-0032198",
       "name": "Ibraheim Campbell",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -27332,7 +27332,7 @@
         "ovr": 62.8,
         "pot": 68.3
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 60.2,
       "weightLb": 310.0
     },
@@ -27423,7 +27423,7 @@
         "ovr": 89.0,
         "pot": 90.7
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 63.3,
       "weightLb": 224.0
     },
@@ -27581,7 +27581,7 @@
         "ovr": 49.7,
         "pot": 52.7
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 62.8,
       "weightLb": 160.0
     },
@@ -27667,7 +27667,7 @@
         "ovr": 65.0,
         "pot": 68.6
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 41.9,
       "weightLb": 315.0
     },
@@ -27739,7 +27739,7 @@
         "ovr": 54.3,
         "pot": 56.0
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 61.7,
       "weightLb": 180.0
     },
@@ -27763,7 +27763,7 @@
         "ovr": 64.9,
         "pot": 67.0
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 63.9,
       "weightLb": 202.0
     },
@@ -27979,7 +27979,7 @@
         "ovr": 58.1,
         "pot": 60.1
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 41.7,
       "weightLb": 208.0
     },
@@ -28003,7 +28003,7 @@
         "ovr": 63.1,
         "pot": 66.1
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 68.3,
       "weightLb": 193.0
     },
@@ -28257,7 +28257,7 @@
         "ovr": 52.9,
         "pot": 57.9
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 41.9,
       "weightLb": 299.0
     },
@@ -28281,7 +28281,7 @@
         "ovr": 64.1,
         "pot": 68.9
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 68.1,
       "weightLb": 177.0
     },
@@ -28305,7 +28305,7 @@
         "ovr": 73.7,
         "pot": 75.3
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 41.9,
       "weightLb": 223.0
     },
@@ -28348,7 +28348,7 @@
         "ovr": 46.6,
         "pot": 48.5
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 57.2,
       "weightLb": 250.0
     },
@@ -28410,7 +28410,7 @@
         "ovr": 47.8,
         "pot": 47.8
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 47.7,
       "weightLb": 310.0
     },
@@ -28562,7 +28562,7 @@
         "ovr": 41.5,
         "pot": 43.0
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 210.0
     },
@@ -28619,7 +28619,7 @@
         "ovr": 67.6,
         "pot": 69.4
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 63.3,
       "weightLb": 193.0
     },
@@ -28767,7 +28767,7 @@
         "ovr": 46.6,
         "pot": 48.2
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 43.2,
       "weightLb": 223.0
     },
@@ -28839,7 +28839,7 @@
         "ovr": 55.0,
         "pot": 57.9
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 64.3,
       "weightLb": 291.0
     },
@@ -28935,7 +28935,7 @@
         "ovr": 75.3,
         "pot": 82.4
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 70.3,
       "weightLb": 201.0
     },
@@ -29099,7 +29099,7 @@
       "heightIn": 75.0,
       "id": "00-0032929",
       "name": "James Cowser",
-      "pos": "DL",
+      "pos": "LB",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -29175,7 +29175,7 @@
       "heightIn": 71.0,
       "id": "00-0032922",
       "name": "Marwin Evans",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -29183,7 +29183,7 @@
         "ovr": 47.2,
         "pot": 49.2
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 51.5,
       "weightLb": 211.0
     },
@@ -29283,7 +29283,7 @@
         "ovr": 61.3,
         "pot": 63.0
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 41.8,
       "weightLb": 245.0
     },
@@ -29302,7 +29302,7 @@
         "ovr": 54.8,
         "pot": 56.3
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 41.8,
       "weightLb": 219.0
     },
@@ -29345,7 +29345,7 @@
         "ovr": 41.9,
         "pot": 43.8
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 252.0
     },
@@ -29474,7 +29474,7 @@
         "ovr": 57.0,
         "pot": 62.1
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 54.6,
       "weightLb": 310.0
     },
@@ -29498,7 +29498,7 @@
         "ovr": 58.2,
         "pot": 61.3
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 54.1,
       "weightLb": 206.0
     },
@@ -29514,7 +29514,7 @@
       "heightIn": 72.0,
       "id": "00-0032774",
       "name": "Deon Bush",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -29522,7 +29522,7 @@
         "ovr": 59.0,
         "pot": 61.7
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 53.7,
       "weightLb": 205.0
     },
@@ -29560,7 +29560,7 @@
         "ovr": 50.0,
         "pot": 61.3
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 202.0
     },
@@ -29655,7 +29655,7 @@
         "ovr": 41.6,
         "pot": 44.6
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 54.3,
       "weightLb": 253.0
     },
@@ -29674,7 +29674,7 @@
         "ovr": 46.9,
         "pot": 51.4
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 52.5,
       "weightLb": 318.0
     },
@@ -29693,7 +29693,7 @@
         "ovr": 62.6,
         "pot": 64.6
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 43.9,
       "weightLb": 186.0
     },
@@ -29712,7 +29712,7 @@
         "ovr": 42.2,
         "pot": 44.2
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 55.0,
       "weightLb": 163.0
     },
@@ -29723,7 +29723,7 @@
       "heightIn": 71.0,
       "id": "00-0032637",
       "name": "Andrew Adams",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -29731,7 +29731,7 @@
         "ovr": 70.6,
         "pot": 73.2
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 59.3,
       "weightLb": 202.0
     },
@@ -29750,7 +29750,7 @@
         "ovr": 51.7,
         "pot": 53.2
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 60.1,
       "weightLb": 189.0
     },
@@ -29799,7 +29799,7 @@
       "heightIn": 71.0,
       "id": "00-0032628",
       "name": "Kentrell Brice",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -29807,7 +29807,7 @@
         "ovr": 56.2,
         "pot": 60.0
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 62.8,
       "weightLb": 200.0
     },
@@ -29845,7 +29845,7 @@
         "ovr": 42.3,
         "pot": 44.0
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 42.6,
       "weightLb": 238.0
     },
@@ -30024,7 +30024,7 @@
       "heightIn": 70.0,
       "id": "00-0032888",
       "name": "Karl Joseph",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -30127,7 +30127,7 @@
         "ovr": 57.2,
         "pot": 59.2
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 51.6,
       "weightLb": 188.0
     },
@@ -30189,7 +30189,7 @@
         "ovr": 61.3,
         "pot": 62.8
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 66.4,
       "weightLb": 197.0
     },
@@ -30237,7 +30237,7 @@
         "ovr": 68.2,
         "pot": 70.0
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 59.0,
       "weightLb": 200.0
     },
@@ -30275,7 +30275,7 @@
         "ovr": 58.0,
         "pot": 59.5
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 43.0,
       "weightLb": 196.0
     },
@@ -30419,7 +30419,7 @@
       "heightIn": 76.0,
       "id": "00-0032322",
       "name": "Dexter McCoil",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -30427,7 +30427,7 @@
         "ovr": 63.6,
         "pot": 65.1
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 48.0,
       "weightLb": 220.0
     },
@@ -30438,7 +30438,7 @@
       "heightIn": 75.0,
       "id": "00-0032320",
       "name": "Erik Harris",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -30465,7 +30465,7 @@
         "ovr": 43.0,
         "pot": 44.9
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 235.0
     },
@@ -30484,7 +30484,7 @@
         "ovr": 60.1,
         "pot": 61.6
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 54.0,
       "weightLb": 215.0
     },
@@ -30503,7 +30503,7 @@
         "ovr": 59.4,
         "pot": 60.9
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 65.0,
       "weightLb": 200.0
     },
@@ -30632,7 +30632,7 @@
         "ovr": 78.6,
         "pot": 80.5
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 64.7,
       "weightLb": 225.0
     },
@@ -30680,7 +30680,7 @@
         "ovr": 62.0,
         "pot": 66.2
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 65.4,
       "weightLb": 250.0
     },
@@ -31136,7 +31136,7 @@
       "heightIn": 72.0,
       "id": "00-0032807",
       "name": "Clayton Fejedelem",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -31144,7 +31144,7 @@
         "ovr": 50.4,
         "pot": 53.0
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 64.1,
       "weightLb": 205.0
     },
@@ -31240,7 +31240,7 @@
         "ovr": 80.6,
         "pot": 83.6
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 61.1,
       "weightLb": 182.0
     },
@@ -31288,7 +31288,7 @@
         "ovr": 62.2,
         "pot": 65.2
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 46.0,
       "weightLb": 210.0
     },
@@ -31352,7 +31352,7 @@
       "heightIn": 73.0,
       "id": "00-0032790",
       "name": "DeAndre Houston-Carson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -31408,7 +31408,7 @@
         "ovr": 66.2,
         "pot": 68.2
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 51.0,
       "weightLb": 193.0
     },
@@ -31419,7 +31419,7 @@
       "heightIn": 70.0,
       "id": "00-0032560",
       "name": "Charles Washington",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -31451,7 +31451,7 @@
         "ovr": 75.6,
         "pot": 78.8
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 42.4,
       "weightLb": 177.0
     },
@@ -31613,7 +31613,7 @@
         "ovr": 62.0,
         "pot": 66.0
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 65.7,
       "weightLb": 235.0
     },
@@ -31803,7 +31803,7 @@
         "ovr": 46.7,
         "pot": 46.7
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 241.0
     },
@@ -32122,7 +32122,7 @@
         "ovr": 49.3,
         "pot": 49.3
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 62.1,
       "weightLb": 185.0
     },
@@ -32365,7 +32365,7 @@
         "ovr": 51.3,
         "pot": 51.3
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 42.0,
       "weightLb": 250.0
     },
@@ -32446,7 +32446,7 @@
         "ovr": 63.6,
         "pot": 69.9
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 41.3,
       "weightLb": 198.0
     },
@@ -32470,7 +32470,7 @@
         "ovr": 61.1,
         "pot": 65.1
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 62.8,
       "weightLb": 357.0
     },
@@ -32486,7 +32486,7 @@
       "heightIn": 73.0,
       "id": "00-0033941",
       "name": "Rayshawn Jenkins",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -32494,7 +32494,7 @@
         "ovr": 63.4,
         "pot": 65.6
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 55.3,
       "weightLb": 214.0
     },
@@ -32518,7 +32518,7 @@
         "ovr": 61.8,
         "pot": 66.6
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 53.3,
       "weightLb": 246.0
     },
@@ -32556,7 +32556,7 @@
         "ovr": 46.1,
         "pot": 71.0
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 61.7,
       "weightLb": 243.0
     },
@@ -32694,7 +32694,7 @@
         "ovr": 58.1,
         "pot": 61.7
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 224.0
     },
@@ -32718,7 +32718,7 @@
         "ovr": 58.1,
         "pot": 60.6
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 56.6,
       "weightLb": 205.0
     },
@@ -32895,7 +32895,7 @@
         "ovr": 47.1,
         "pot": 54.7
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 42.0,
       "weightLb": 307.0
     },
@@ -33057,7 +33057,7 @@
         "ovr": 58.7,
         "pot": 62.0
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 49.8,
       "weightLb": 307.0
     },
@@ -33073,7 +33073,7 @@
       "heightIn": 76.0,
       "id": "00-0033782",
       "name": "DeMarcus Walker",
-      "pos": "DL",
+      "pos": "LB",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -33097,7 +33097,7 @@
       "heightIn": 72.0,
       "id": "00-0033784",
       "name": "Eddie Jackson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -33289,7 +33289,7 @@
       "heightIn": 73.0,
       "id": "00-0033931",
       "name": "Delano Hill",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -33297,7 +33297,7 @@
         "ovr": 62.9,
         "pot": 68.1
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 52.3,
       "weightLb": 216.0
     },
@@ -33393,7 +33393,7 @@
         "ovr": 62.5,
         "pot": 64.8
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 74.7,
       "weightLb": 210.0
     },
@@ -33495,7 +33495,7 @@
       "heightIn": 71.0,
       "id": "00-0033982",
       "name": "Jordan Simone",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -33522,7 +33522,7 @@
         "ovr": 47.6,
         "pot": 47.6
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 210.0
     },
@@ -33570,7 +33570,7 @@
         "ovr": 57.5,
         "pot": 61.6
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 230.0
     },
@@ -33642,7 +33642,7 @@
         "ovr": 59.4,
         "pot": 65.1
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 62.4,
       "weightLb": 214.0
     },
@@ -33658,7 +33658,7 @@
       "heightIn": 71.0,
       "id": "00-0033970",
       "name": "Shalom Luani",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -33690,7 +33690,7 @@
         "ovr": 59.0,
         "pot": 62.1
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 71.2,
       "weightLb": 307.0
     },
@@ -33738,7 +33738,7 @@
         "ovr": 60.0,
         "pot": 62.4
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 53.5,
       "weightLb": 248.0
     },
@@ -33862,7 +33862,7 @@
         "ovr": 61.2,
         "pot": 63.3
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 49.3,
       "weightLb": 251.0
     },
@@ -34006,7 +34006,7 @@
         "ovr": 57.5,
         "pot": 59.0
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 55.6,
       "weightLb": 240.0
     },
@@ -34221,7 +34221,7 @@
         "ovr": 41.4,
         "pot": 42.9
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 41.3,
       "weightLb": 240.0
     },
@@ -34321,7 +34321,7 @@
         "ovr": 60.9,
         "pot": 67.3
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 41.7,
       "weightLb": 321.0
     },
@@ -34607,7 +34607,7 @@
         "ovr": 49.8,
         "pot": 49.8
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 67.8,
       "weightLb": 246.0
     },
@@ -34783,7 +34783,7 @@
         "ovr": 49.9,
         "pot": 49.9
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 42.1,
       "weightLb": 282.0
     },
@@ -34840,7 +34840,7 @@
         "ovr": 48.6,
         "pot": 48.6
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 47.1,
       "weightLb": 185.0
     },
@@ -34859,7 +34859,7 @@
         "ovr": 48.0,
         "pot": 64.5
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 56.7,
       "weightLb": 153.0
     },
@@ -35045,7 +35045,7 @@
         "ovr": 66.1,
         "pot": 69.8
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 46.0,
       "weightLb": 224.0
     },
@@ -35085,7 +35085,7 @@
       "heightIn": 72.0,
       "id": "00-0033898",
       "name": "Justin Evans",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -35141,7 +35141,7 @@
         "ovr": 66.8,
         "pot": 70.7
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 70.6,
       "weightLb": 270.0
     },
@@ -35404,7 +35404,7 @@
         "ovr": 60.2,
         "pot": 63.6
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 59.6,
       "weightLb": 204.0
     },
@@ -35420,7 +35420,7 @@
       "heightIn": 70.0,
       "id": "00-0033791",
       "name": "Brandon Wilson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -35428,7 +35428,7 @@
         "ovr": 59.0,
         "pot": 61.8
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 53.0,
       "weightLb": 200.0
     },
@@ -35476,7 +35476,7 @@
         "ovr": 61.7,
         "pot": 62.1
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 40.8,
       "weightLb": 196.0
     },
@@ -35578,7 +35578,7 @@
       "heightIn": 73.0,
       "id": "00-0033819",
       "name": "Jamal Carter",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -35586,7 +35586,7 @@
         "ovr": 49.4,
         "pot": 68.4
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 58.1,
       "weightLb": 218.0
     },
@@ -35605,7 +35605,7 @@
         "ovr": 50.5,
         "pot": 50.5
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 42.4,
       "weightLb": 225.0
     },
@@ -35621,7 +35621,7 @@
       "heightIn": 73.0,
       "id": "00-0033903",
       "name": "Josh Jones",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -35736,7 +35736,7 @@
       "heightIn": 71.0,
       "id": "00-0033883",
       "name": "Jabrill Peppers",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -35768,7 +35768,7 @@
         "ovr": 70.6,
         "pot": 74.0
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 59.4,
       "weightLb": 195.0
     },
@@ -35856,7 +35856,7 @@
       "heightIn": 74.0,
       "id": "00-0033877",
       "name": "Malik Hooker",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -35904,7 +35904,7 @@
       "heightIn": 73.0,
       "id": "00-0033872",
       "name": "Jamal Adams",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -36110,7 +36110,7 @@
       "heightIn": 70.0,
       "id": "00-0033890",
       "name": "Budda Baker",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -36158,7 +36158,7 @@
       "heightIn": 71.0,
       "id": "00-0033892",
       "name": "Marcus Maye",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -36190,7 +36190,7 @@
         "ovr": 64.8,
         "pot": 69.1
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 56.8,
       "weightLb": 198.0
     },
@@ -36262,7 +36262,7 @@
         "ovr": 63.9,
         "pot": 68.6
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 62.9,
       "weightLb": 260.0
     },
@@ -36334,7 +36334,7 @@
         "ovr": 58.3,
         "pot": 62.5
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 53.7,
       "weightLb": 195.0
     },
@@ -36440,7 +36440,7 @@
       "heightIn": 73.0,
       "id": "00-0031919",
       "name": "Kurtis Drummond",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -36467,7 +36467,7 @@
         "ovr": 63.2,
         "pot": 64.9
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 60.6,
       "weightLb": 246.0
     },
@@ -36548,7 +36548,7 @@
         "ovr": 55.7,
         "pot": 59.1
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 204.0
     },
@@ -36605,7 +36605,7 @@
         "ovr": 67.4,
         "pot": 68.9
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 40.5,
       "weightLb": 234.0
     },
@@ -36686,7 +36686,7 @@
         "ovr": 64.0,
         "pot": 65.7
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 61.4,
       "weightLb": 220.0
     },
@@ -36754,7 +36754,7 @@
       "heightIn": 69.0,
       "id": "00-0031680",
       "name": "Robenson Therezie",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -36857,7 +36857,7 @@
         "ovr": 70.1,
         "pot": 71.8
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 42.4,
       "weightLb": 217.0
     },
@@ -36962,7 +36962,7 @@
         "ovr": 69.0,
         "pot": 70.9
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 59.8,
       "weightLb": 195.0
     },
@@ -37038,7 +37038,7 @@
         "ovr": 57.0,
         "pot": 58.5
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 215.0
     },
@@ -37049,7 +37049,7 @@
       "heightIn": 74.0,
       "id": "00-0031895",
       "name": "Ronald Martin",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -37076,7 +37076,7 @@
         "ovr": 41.3,
         "pot": 44.0
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 59.9,
       "weightLb": 321.0
     },
@@ -37133,7 +37133,7 @@
         "ovr": 59.2,
         "pot": 60.9
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 41.1,
       "weightLb": 215.0
     },
@@ -37225,7 +37225,7 @@
       "heightIn": 72.0,
       "id": "00-0031844",
       "name": "Deshazor Everett",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -37290,7 +37290,7 @@
         "ovr": 75.2,
         "pot": 76.7
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 41.5,
       "weightLb": 207.0
     },
@@ -37309,7 +37309,7 @@
         "ovr": 45.5,
         "pot": 47.0
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 42.5,
       "weightLb": 205.0
     },
@@ -37529,7 +37529,7 @@
         "ovr": 64.0,
         "pot": 66.0
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 73.2,
       "weightLb": 190.0
     },
@@ -37567,7 +37567,7 @@
         "ovr": 41.6,
         "pot": 43.5
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 40.8,
       "weightLb": 265.0
     },
@@ -37634,7 +37634,7 @@
         "ovr": 43.8,
         "pot": 46.5
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 49.3,
       "weightLb": 300.0
     },
@@ -37682,7 +37682,7 @@
         "ovr": 46.2,
         "pot": 48.0
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 61.8,
       "weightLb": 240.0
     },
@@ -37835,7 +37835,7 @@
         "ovr": 42.2,
         "pot": 43.9
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 51.5,
       "weightLb": 230.0
     },
@@ -37955,7 +37955,7 @@
         "ovr": 68.2,
         "pot": 70.1
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 66.7,
       "weightLb": 265.0
     },
@@ -38022,7 +38022,7 @@
         "ovr": 50.5,
         "pot": 50.5
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 51.9,
       "weightLb": 249.0
     },
@@ -38079,7 +38079,7 @@
         "ovr": 50.3,
         "pot": 53.8
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 43.7,
       "weightLb": 305.0
     },
@@ -38303,7 +38303,7 @@
         "ovr": 67.6,
         "pot": 69.1
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 41.2,
       "weightLb": 163.0
     },
@@ -38360,7 +38360,7 @@
         "ovr": 41.4,
         "pot": 43.3
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 45.7,
       "weightLb": 261.0
     },
@@ -38390,7 +38390,7 @@
       "heightIn": 74.0,
       "id": "00-0031738",
       "name": "Justin Currie",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -38436,7 +38436,7 @@
         "ovr": 52.3,
         "pot": 54.0
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 235.0
     },
@@ -38743,7 +38743,7 @@
         "ovr": 68.0,
         "pot": 69.8
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 57.7,
       "weightLb": 200.0
     },
@@ -38815,7 +38815,7 @@
         "ovr": 42.1,
         "pot": 42.4
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 66.9,
       "weightLb": 215.0
     },
@@ -38858,7 +38858,7 @@
         "ovr": 69.6,
         "pot": 71.1
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 65.3,
       "weightLb": 257.0
     },
@@ -38925,7 +38925,7 @@
         "ovr": 59.1,
         "pot": 62.5
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 55.2,
       "weightLb": 206.0
     },
@@ -38973,7 +38973,7 @@
         "ovr": 62.0,
         "pot": 63.3
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 55.8,
       "weightLb": 190.0
     },
@@ -38997,7 +38997,7 @@
         "ovr": 61.6,
         "pot": 63.6
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 59.1,
       "weightLb": 242.0
     },
@@ -39021,7 +39021,7 @@
         "ovr": 59.9,
         "pot": 67.1
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 41.5,
       "weightLb": 300.0
     },
@@ -39117,7 +39117,7 @@
         "ovr": 60.2,
         "pot": 62.9
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 41.2,
       "weightLb": 311.0
     },
@@ -39181,7 +39181,7 @@
       "heightIn": 71.0,
       "id": "00-0033579",
       "name": "Xavier Woods",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -39189,7 +39189,7 @@
         "ovr": 60.2,
         "pot": 63.4
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 64.3,
       "weightLb": 205.0
     },
@@ -39284,7 +39284,7 @@
         "ovr": 47.9,
         "pot": 47.9
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 58.0,
       "weightLb": 310.0
     },
@@ -39303,7 +39303,7 @@
         "ovr": 50.4,
         "pot": 65.1
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 53.9,
       "weightLb": 254.0
     },
@@ -39428,7 +39428,7 @@
       "heightIn": 72.0,
       "id": "00-0033649",
       "name": "Kai Nacua",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -39460,7 +39460,7 @@
         "ovr": 58.7,
         "pot": 62.0
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 59.4,
       "weightLb": 208.0
     },
@@ -39565,7 +39565,7 @@
         "ovr": 47.9,
         "pot": 47.9
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 63.3,
       "weightLb": 210.0
     },
@@ -39627,7 +39627,7 @@
         "ovr": 58.9,
         "pot": 62.2
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 61.7,
       "weightLb": 280.0
     },
@@ -39758,7 +39758,7 @@
       "heightIn": 72.0,
       "id": "00-0033554",
       "name": "Tedric Thompson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -39886,7 +39886,7 @@
         "ovr": 65.2,
         "pot": 68.6
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 59.9,
       "weightLb": 201.0
     },
@@ -39910,7 +39910,7 @@
         "ovr": 66.7,
         "pot": 72.8
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 68.4,
       "weightLb": 206.0
     },
@@ -39934,7 +39934,7 @@
         "ovr": 69.0,
         "pot": 73.0
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 42.0,
       "weightLb": 310.0
     },
@@ -40121,7 +40121,7 @@
         "ovr": 45.6,
         "pot": 71.0
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 60.2,
       "weightLb": 231.0
     },
@@ -40164,7 +40164,7 @@
         "ovr": 62.0,
         "pot": 67.1
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 60.5,
       "weightLb": 199.0
     },
@@ -40183,7 +40183,7 @@
         "ovr": 45.7,
         "pot": 45.7
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 66.0,
       "weightLb": 245.0
     },
@@ -40411,7 +40411,7 @@
         "ovr": 48.5,
         "pot": 48.5
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 63.6,
       "weightLb": 199.0
     },
@@ -40449,7 +40449,7 @@
         "ovr": 46.9,
         "pot": 63.7
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 43.1,
       "weightLb": 185.0
     },
@@ -40525,7 +40525,7 @@
         "ovr": 49.8,
         "pot": 68.4
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 41.8,
       "weightLb": 235.0
     },
@@ -40582,7 +40582,7 @@
         "ovr": 46.1,
         "pot": 65.4
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 76.9,
       "weightLb": 195.0
     },
@@ -40601,7 +40601,7 @@
         "ovr": 50.0,
         "pot": 50.0
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 57.3,
       "weightLb": 196.0
     },
@@ -40639,7 +40639,7 @@
         "ovr": 50.8,
         "pot": 50.8
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 63.6,
       "weightLb": 235.0
     },
@@ -40658,7 +40658,7 @@
         "ovr": 45.8,
         "pot": 45.8
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 47.5,
       "weightLb": 190.0
     },
@@ -40753,7 +40753,7 @@
         "ovr": 44.7,
         "pot": 44.7
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 56.3,
       "weightLb": 335.0
     },
@@ -40810,7 +40810,7 @@
         "ovr": 49.2,
         "pot": 49.2
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 69.6,
       "weightLb": 220.0
     },
@@ -40924,7 +40924,7 @@
         "ovr": 47.6,
         "pot": 47.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 41.2,
       "weightLb": 174.0
     },
@@ -40943,7 +40943,7 @@
         "ovr": 50.6,
         "pot": 50.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 41.4,
       "weightLb": 295.0
     },
@@ -41038,7 +41038,7 @@
         "ovr": 46.5,
         "pot": 46.5
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 60.2,
       "weightLb": 275.0
     },
@@ -41095,7 +41095,7 @@
         "ovr": 51.0,
         "pot": 52.4
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 41.5,
       "weightLb": 216.0
     },
@@ -41247,7 +41247,7 @@
         "ovr": 41.1,
         "pot": 44.1
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 70.8,
       "weightLb": 180.0
     },
@@ -41290,7 +41290,7 @@
         "ovr": 51.5,
         "pot": 51.5
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 40.3,
       "weightLb": 303.0
     },
@@ -41309,7 +41309,7 @@
         "ovr": 55.1,
         "pot": 56.6
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 46.6,
       "weightLb": 194.0
     },
@@ -41481,7 +41481,7 @@
         "ovr": 41.0,
         "pot": 41.5
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 225.0
     },
@@ -41631,7 +41631,7 @@
       "heightIn": 72.0,
       "id": "00-0027858",
       "name": "Eric Berry",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -41639,7 +41639,7 @@
         "ovr": 87.0,
         "pot": 87.2
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 66.9,
       "weightLb": 212.0
     },
@@ -41779,7 +41779,7 @@
       "heightIn": 71.0,
       "id": "00-0027835",
       "name": "Kurt Coleman",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -41949,7 +41949,7 @@
         "ovr": 41.8,
         "pot": 43.3
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 59.6,
       "weightLb": 195.0
     },
@@ -42116,7 +42116,7 @@
         "ovr": 49.0,
         "pot": 49.0
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 40.9,
       "weightLb": 323.0
     },
@@ -42197,7 +42197,7 @@
         "ovr": 57.7,
         "pot": 59.5
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 62.2,
       "weightLb": 207.0
     },
@@ -42292,7 +42292,7 @@
         "ovr": 51.9,
         "pot": 51.9
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 58.5,
       "weightLb": 270.0
     },
@@ -42483,7 +42483,7 @@
         "ovr": 47.2,
         "pot": 61.6
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 41.9,
       "weightLb": 315.0
     },
@@ -42507,7 +42507,7 @@
         "ovr": 41.8,
         "pot": 42.3
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 40.9,
       "weightLb": 215.0
     },
@@ -42598,7 +42598,7 @@
         "ovr": 62.1,
         "pot": 62.1
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 41.4,
       "weightLb": 217.0
     },
@@ -42684,7 +42684,7 @@
         "ovr": 49.1,
         "pot": 53.0
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 57.4,
       "weightLb": 185.0
     },
@@ -42708,7 +42708,7 @@
         "ovr": 72.6,
         "pot": 72.6
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 58.2,
       "weightLb": 275.0
     },
@@ -42995,7 +42995,7 @@
         "ovr": 52.7,
         "pot": 53.1
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 255.0
     },
@@ -43035,7 +43035,7 @@
       "heightIn": 72.0,
       "id": "00-0033927",
       "name": "John Johnson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -43163,7 +43163,7 @@
         "ovr": 70.8,
         "pot": 71.0
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 64.7,
       "weightLb": 193.0
     },
@@ -43198,7 +43198,7 @@
       "heightIn": 70.0,
       "id": "00-0029958",
       "name": "Steven Terrell",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -43206,7 +43206,7 @@
         "ovr": 62.4,
         "pot": 62.4
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 56.6,
       "weightLb": 197.0
     },
@@ -43407,7 +43407,7 @@
         "ovr": 41.6,
         "pot": 48.3
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 66.2,
       "weightLb": 244.0
     },
@@ -43455,7 +43455,7 @@
         "ovr": 49.1,
         "pot": 50.8
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 63.5,
       "weightLb": 237.0
     },
@@ -43696,7 +43696,7 @@
       "heightIn": 72.0,
       "id": "00-0030090",
       "name": "Micah Hyde",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -44270,7 +44270,7 @@
       "heightIn": 69.0,
       "id": "00-0030412",
       "name": "Shamarko Thomas",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -44278,7 +44278,7 @@
         "ovr": 52.2,
         "pot": 52.3
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 43.0,
       "weightLb": 217.0
     },
@@ -44465,7 +44465,7 @@
         "ovr": 63.6,
         "pot": 67.3
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 75.3,
       "weightLb": 310.0
     },
@@ -44513,7 +44513,7 @@
         "ovr": 67.2,
         "pot": 67.3
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 70.5,
       "weightLb": 192.0
     },
@@ -44634,7 +44634,7 @@
       "heightIn": 72.0,
       "id": "00-0030114",
       "name": "Jordan Poyer",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -44733,7 +44733,7 @@
         "ovr": 47.4,
         "pot": 47.4
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 41.4,
       "weightLb": 260.0
     },
@@ -44888,7 +44888,7 @@
       "heightIn": 71.0,
       "id": "00-0032786",
       "name": "Marqui Christian",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -44983,7 +44983,7 @@
       "heightIn": 73.0,
       "id": "00-0029764",
       "name": "Cody Davis",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -45002,7 +45002,7 @@
       "heightIn": 71.0,
       "id": "00-0022247",
       "name": "Mike Adams",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2004,
       "scouting": {
@@ -45074,7 +45074,7 @@
       "heightIn": 70.0,
       "id": "00-0032793",
       "name": "Blake Countess",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -45082,7 +45082,7 @@
         "ovr": 63.9,
         "pot": 65.9
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 62.0,
       "weightLb": 185.0
     },
@@ -45235,7 +45235,7 @@
         "ovr": 42.0,
         "pot": 43.1
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 44.3,
       "weightLb": 305.0
     },
@@ -45278,7 +45278,7 @@
         "ovr": 42.3,
         "pot": 42.9
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 66.0,
       "weightLb": 250.0
     },
@@ -45370,7 +45370,7 @@
       "heightIn": 73.0,
       "id": "00-0033470",
       "name": "Leon McQuay III",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -45435,7 +45435,7 @@
         "ovr": 40.5,
         "pot": 42.0
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 238.0
     },
@@ -45473,7 +45473,7 @@
         "ovr": 57.9,
         "pot": 59.4
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 72.5,
       "weightLb": 255.0
     },
@@ -45554,7 +45554,7 @@
         "ovr": 41.7,
         "pot": 45.1
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 52.3,
       "weightLb": 186.0
     },
@@ -45573,7 +45573,7 @@
         "ovr": 45.9,
         "pot": 47.4
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 61.0,
       "weightLb": 227.0
     },
@@ -45592,7 +45592,7 @@
         "ovr": 74.8,
         "pot": 74.8
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 68.5,
       "weightLb": 210.0
     },
@@ -45692,7 +45692,7 @@
         "ovr": 41.3,
         "pot": 44.6
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 63.0,
       "weightLb": 252.0
     },
@@ -45741,7 +45741,7 @@
       "heightIn": 74.0,
       "id": "00-0030665",
       "name": "Daniel Sorensen",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -45863,7 +45863,7 @@
         "ovr": 40.5,
         "pot": 45.4
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 60.6,
       "weightLb": 305.0
     },
@@ -45920,7 +45920,7 @@
         "ovr": 72.2,
         "pot": 73.7
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 55.6,
       "weightLb": 201.0
     },
@@ -45996,7 +45996,7 @@
         "ovr": 50.5,
         "pot": 50.5
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 220.0
     },
@@ -46077,7 +46077,7 @@
         "ovr": 47.9,
         "pot": 69.5
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 56.3,
       "weightLb": 245.0
     },
@@ -46249,7 +46249,7 @@
         "ovr": 53.7,
         "pot": 54.9
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 80.9,
       "weightLb": 328.0
     },
@@ -46292,7 +46292,7 @@
         "ovr": 41.2,
         "pot": 42.7
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 300.0
     },
@@ -46450,7 +46450,7 @@
         "ovr": 60.2,
         "pot": 63.1
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 46.4,
       "weightLb": 305.0
     },
@@ -46517,7 +46517,7 @@
         "ovr": 58.4,
         "pot": 62.9
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 60.6,
       "weightLb": 255.0
     },
@@ -46560,7 +46560,7 @@
         "ovr": 63.7,
         "pot": 66.8
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 53.4,
       "weightLb": 265.0
     },
@@ -46729,7 +46729,7 @@
       "heightIn": 72.0,
       "id": "00-0028128",
       "name": "Colin Jones",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
@@ -46799,7 +46799,7 @@
         "ovr": 63.3,
         "pot": 64.8
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 58.4,
       "weightLb": 185.0
     },
@@ -46909,7 +46909,7 @@
         "ovr": 41.0,
         "pot": 42.3
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 52.7,
       "weightLb": 305.0
     },
@@ -46995,7 +46995,7 @@
         "ovr": 43.0,
         "pot": 47.7
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 50.3,
       "weightLb": 207.0
     },
@@ -47100,7 +47100,7 @@
         "ovr": 43.1,
         "pot": 46.1
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 66.7,
       "weightLb": 195.0
     },
@@ -47143,7 +47143,7 @@
         "ovr": 51.3,
         "pot": 54.3
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 42.0,
       "weightLb": 251.0
     },
@@ -47167,7 +47167,7 @@
         "ovr": 45.7,
         "pot": 47.8
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 74.2,
       "weightLb": 257.0
     },
@@ -47240,7 +47240,7 @@
       "heightIn": 72.0,
       "id": "00-0030682",
       "name": "Shamiel Gary",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -47272,7 +47272,7 @@
         "ovr": 51.6,
         "pot": 55.7
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 42.3,
       "weightLb": 207.0
     },
@@ -47331,7 +47331,7 @@
       "heightIn": 71.0,
       "id": "00-0033038",
       "name": "Eric Murray",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -47350,7 +47350,7 @@
       "heightIn": 72.0,
       "id": "00-0028445",
       "name": "Ron Parker",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
@@ -47382,7 +47382,7 @@
         "ovr": 60.0,
         "pot": 64.3
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 41.8,
       "weightLb": 185.0
     },
@@ -47425,7 +47425,7 @@
         "ovr": 56.8,
         "pot": 58.0
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 41.7,
       "weightLb": 315.0
     },
@@ -47465,7 +47465,7 @@
       "heightIn": 68.0,
       "id": "00-0031389",
       "name": "Lamarcus Joyner",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -47532,7 +47532,7 @@
       "heightIn": 73.0,
       "id": "00-0031393",
       "name": "Maurice Alexander",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -47607,7 +47607,7 @@
         "ovr": 56.1,
         "pot": 56.1
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 51.7,
       "weightLb": 250.0
     },
@@ -47803,7 +47803,7 @@
         "ovr": 80.0,
         "pot": 80.1
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 68.9,
       "weightLb": 198.0
     },
@@ -47841,7 +47841,7 @@
         "ovr": 46.5,
         "pot": 46.5
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 49.8,
       "weightLb": 341.0
     },
@@ -47999,7 +47999,7 @@
         "ovr": 49.3,
         "pot": 49.3
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 41.8,
       "weightLb": 241.0
     },
@@ -48152,7 +48152,7 @@
         "ovr": 48.1,
         "pot": 48.1
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 42.0,
       "weightLb": 198.0
     },
@@ -48195,7 +48195,7 @@
         "ovr": 60.9,
         "pot": 60.9
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 61.3,
       "weightLb": 230.0
     },
@@ -48372,7 +48372,7 @@
         "ovr": 48.4,
         "pot": 48.4
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 54.5,
       "weightLb": 320.0
     },
@@ -48472,7 +48472,7 @@
         "ovr": 46.5,
         "pot": 47.6
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 74.3,
       "weightLb": 320.0
     },
@@ -48534,7 +48534,7 @@
         "ovr": 48.8,
         "pot": 48.8
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 52.7,
       "weightLb": 195.0
     },
@@ -48706,7 +48706,7 @@
         "ovr": 72.1,
         "pot": 72.1
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 66.1,
       "weightLb": 195.0
     },
@@ -48717,7 +48717,7 @@
       "heightIn": 74.0,
       "id": "00-0033674",
       "name": "Orion Stewart",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -48725,7 +48725,7 @@
         "ovr": 46.7,
         "pot": 46.7
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 41.4,
       "weightLb": 205.0
     },
@@ -48811,7 +48811,7 @@
         "ovr": 59.5,
         "pot": 59.5
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 71.2,
       "weightLb": 242.0
     },
@@ -48859,7 +48859,7 @@
         "ovr": 65.5,
         "pot": 69.1
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 55.7,
       "weightLb": 325.0
     },
@@ -49004,7 +49004,7 @@
       "heightIn": 70.0,
       "id": "00-0027018",
       "name": "Jairus Byrd",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -49012,7 +49012,7 @@
         "ovr": 72.1,
         "pot": 72.2
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 62.2,
       "weightLb": 203.0
     },
@@ -49060,7 +49060,7 @@
         "ovr": 65.4,
         "pot": 68.8
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 62.6,
       "weightLb": 280.0
     },
@@ -49341,7 +49341,7 @@
         "ovr": 48.1,
         "pot": 68.6
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 213.0
     },
@@ -49571,7 +49571,7 @@
       "heightIn": 71.0,
       "id": "00-0028954",
       "name": "Robert Golden",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -49603,7 +49603,7 @@
         "ovr": 63.5,
         "pot": 66.5
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 56.8,
       "weightLb": 277.0
     },
@@ -49789,7 +49789,7 @@
         "ovr": 48.0,
         "pot": 70.3
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 252.0
     },
@@ -49827,7 +49827,7 @@
         "ovr": 50.2,
         "pot": 50.2
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 235.0
     },
@@ -49851,7 +49851,7 @@
         "ovr": 58.8,
         "pot": 58.8
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 57.4,
       "weightLb": 243.0
     },
@@ -50094,7 +50094,7 @@
         "ovr": 40.8,
         "pot": 40.8
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 55.1,
       "weightLb": 233.0
     },
@@ -50118,7 +50118,7 @@
         "ovr": 55.6,
         "pot": 57.4
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 68.9,
       "weightLb": 309.0
     },
@@ -50161,7 +50161,7 @@
         "ovr": 50.6,
         "pot": 50.7
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 54.8,
       "weightLb": 320.0
     },
@@ -50199,7 +50199,7 @@
         "ovr": 42.2,
         "pot": 47.0
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 60.7,
       "weightLb": 240.0
     },
@@ -50378,7 +50378,7 @@
       "heightIn": 73.0,
       "id": "00-0033053",
       "name": "Sean Davis",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -50600,7 +50600,7 @@
         "ovr": 53.3,
         "pot": 55.1
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 41.6,
       "weightLb": 318.0
     },
@@ -50678,7 +50678,7 @@
       "heightIn": 71.0,
       "id": "00-0033132",
       "name": "Kevin Byard",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -50726,7 +50726,7 @@
       "heightIn": 69.0,
       "id": "00-0031181",
       "name": "Ricardo Allen",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -50758,7 +50758,7 @@
         "ovr": 62.5,
         "pot": 62.7
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 42.0,
       "weightLb": 190.0
     },
@@ -50777,7 +50777,7 @@
         "ovr": 63.8,
         "pot": 63.8
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 61.7,
       "weightLb": 254.0
     },
@@ -50796,7 +50796,7 @@
         "ovr": 46.9,
         "pot": 52.7
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 41.5,
       "weightLb": 206.0
     },
@@ -50954,7 +50954,7 @@
         "ovr": 41.5,
         "pot": 41.5
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 304.0
     },
@@ -50973,7 +50973,7 @@
         "ovr": 40.6,
         "pot": 41.1
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 40.5,
       "weightLb": 210.0
     },
@@ -50992,7 +50992,7 @@
         "ovr": 41.6,
         "pot": 43.4
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 282.0
     },
@@ -51070,7 +51070,7 @@
       "heightIn": 71.0,
       "id": "00-0032939",
       "name": "Vonn Bell",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -51097,7 +51097,7 @@
         "ovr": 44.7,
         "pot": 44.7
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 54.2,
       "weightLb": 232.0
     },
@@ -51436,7 +51436,7 @@
         "ovr": 52.7,
         "pot": 54.7
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 55.4,
       "weightLb": 192.0
     },
@@ -51565,7 +51565,7 @@
         "ovr": 52.2,
         "pot": 53.7
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 64.2,
       "weightLb": 205.0
     },
@@ -51584,7 +51584,7 @@
         "ovr": 41.8,
         "pot": 43.7
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 265.0
     },
@@ -51694,7 +51694,7 @@
         "ovr": 50.7,
         "pot": 50.7
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 63.8,
       "weightLb": 253.0
     },
@@ -52114,7 +52114,7 @@
         "ovr": 48.6,
         "pot": 48.6
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 64.5,
       "weightLb": 223.0
     },
@@ -52149,7 +52149,7 @@
       "heightIn": 72.0,
       "id": "00-0030543",
       "name": "J.J. Wilcox",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -52157,7 +52157,7 @@
         "ovr": 69.4,
         "pot": 69.5
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 61.2,
       "weightLb": 212.0
     },
@@ -52168,7 +52168,7 @@
       "heightIn": 72.0,
       "id": "00-0032042",
       "name": "Curtis Riley",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -52257,7 +52257,7 @@
         "ovr": 63.9,
         "pot": 65.4
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 48.6,
       "weightLb": 240.0
     },
@@ -52405,7 +52405,7 @@
         "ovr": 54.1,
         "pot": 54.3
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 53.5,
       "weightLb": 190.0
     },
@@ -52478,7 +52478,7 @@
       "heightIn": 71.0,
       "id": "00-0028038",
       "name": "Da'Norris Searcy",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
@@ -52548,7 +52548,7 @@
         "ovr": 41.0,
         "pot": 41.5
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 40.5,
       "weightLb": 220.0
     },
@@ -52639,7 +52639,7 @@
         "ovr": 65.0,
         "pot": 65.0
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 61.6,
       "weightLb": 240.0
     },
@@ -52706,7 +52706,7 @@
         "ovr": 69.1,
         "pot": 72.2
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 41.6,
       "weightLb": 194.0
     },
@@ -52741,7 +52741,7 @@
       "heightIn": 72.0,
       "id": "00-0030538",
       "name": "Johnathan Cyprien",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -52765,7 +52765,7 @@
       "heightIn": 72.0,
       "id": "00-0033894",
       "name": "Marcus Williams",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -53014,7 +53014,7 @@
       "heightIn": 75.0,
       "id": "00-0032056",
       "name": "Hau'oli Kikaha",
-      "pos": "LB",
+      "pos": "DL",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -53022,7 +53022,7 @@
         "ovr": 41.0,
         "pot": 43.3
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 68.5,
       "weightLb": 246.0
     },
@@ -53153,7 +53153,7 @@
       "heightIn": 72.0,
       "id": "00-0032382",
       "name": "Keanu Neal",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -53386,7 +53386,7 @@
         "ovr": 43.7,
         "pot": 45.6
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 40.7,
       "weightLb": 200.0
     },
@@ -53601,7 +53601,7 @@
         "ovr": 62.2,
         "pot": 63.7
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 41.7,
       "weightLb": 210.0
     },
@@ -53893,7 +53893,7 @@
         "ovr": 58.5,
         "pot": 60.3
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 41.6,
       "weightLb": 319.0
     },
@@ -53979,7 +53979,7 @@
         "ovr": 42.4,
         "pot": 47.4
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 75.7,
       "weightLb": 314.0
     },
@@ -54195,7 +54195,7 @@
       "heightIn": 74.0,
       "id": "00-0031255",
       "name": "Kasim Edebali",
-      "pos": "LB",
+      "pos": "DL",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -54227,7 +54227,7 @@
         "ovr": 71.1,
         "pot": 72.9
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 52.7,
       "weightLb": 317.0
     },
@@ -54251,7 +54251,7 @@
         "ovr": 68.4,
         "pot": 68.4
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 54.8,
       "weightLb": 246.0
     },
@@ -54318,7 +54318,7 @@
         "ovr": 71.2,
         "pot": 71.2
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 62.8,
       "weightLb": 190.0
     },
@@ -54404,7 +54404,7 @@
         "ovr": 41.9,
         "pot": 43.9
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 64.0,
       "weightLb": 195.0
     },
@@ -54624,7 +54624,7 @@
         "ovr": 65.9,
         "pot": 65.9
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 51.0,
       "weightLb": 305.0
     },
@@ -54683,7 +54683,7 @@
       "heightIn": 70.0,
       "id": "00-0029747",
       "name": "Chris Banjo",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -54739,7 +54739,7 @@
         "ovr": 58.5,
         "pot": 62.5
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 56.2,
       "weightLb": 215.0
     },
@@ -54817,7 +54817,7 @@
       "heightIn": 73.0,
       "id": "00-0027023",
       "name": "Mike Mitchell",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -54921,7 +54921,7 @@
         "ovr": 61.7,
         "pot": 61.7
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 41.3,
       "weightLb": 260.0
     },
@@ -55215,7 +55215,7 @@
       "heightIn": 71.0,
       "id": "00-0027195",
       "name": "Rafael Bush",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -55223,7 +55223,7 @@
         "ovr": 60.3,
         "pot": 60.3
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 56.4,
       "weightLb": 205.0
     },
@@ -55314,7 +55314,7 @@
         "ovr": 62.3,
         "pot": 67.2
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 61.2,
       "weightLb": 188.0
     },
@@ -55357,7 +55357,7 @@
         "ovr": 41.3,
         "pot": 41.3
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 68.8,
       "weightLb": 265.0
     },
@@ -55381,7 +55381,7 @@
         "ovr": 42.1,
         "pot": 42.1
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 64.2,
       "weightLb": 265.0
     },
@@ -55405,7 +55405,7 @@
         "ovr": 41.5,
         "pot": 43.8
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 41.8,
       "weightLb": 220.0
     },
@@ -55491,7 +55491,7 @@
         "ovr": 51.7,
         "pot": 51.7
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 195.0
     },
@@ -55531,7 +55531,7 @@
       "heightIn": 72.0,
       "id": "00-0030060",
       "name": "Kenny Vaccaro",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -55558,7 +55558,7 @@
         "ovr": 65.3,
         "pot": 68.3
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 223.0
     },
@@ -55702,7 +55702,7 @@
         "ovr": 69.2,
         "pot": 73.5
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 73.3,
       "weightLb": 250.0
     },
@@ -55721,7 +55721,7 @@
         "ovr": 71.5,
         "pot": 73.0
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 65.9,
       "weightLb": 211.0
     },
@@ -55804,7 +55804,7 @@
       "heightIn": 71.0,
       "id": "00-0032592",
       "name": "Sharrod Neasman",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -56127,7 +56127,7 @@
         "ovr": 71.4,
         "pot": 71.4
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 60.4,
       "weightLb": 202.0
     },
@@ -56313,7 +56313,7 @@
         "ovr": 73.1,
         "pot": 73.1
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 65.2,
       "weightLb": 187.0
     },
@@ -56466,7 +56466,7 @@
         "ovr": 41.0,
         "pot": 41.0
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 300.0
     },
@@ -56629,7 +56629,7 @@
         "ovr": 46.7,
         "pot": 71.0
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 41.5,
       "weightLb": 215.0
     },
@@ -56707,7 +56707,7 @@
       "heightIn": 72.0,
       "id": "00-0030427",
       "name": "Kemal Ishmael",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -56796,7 +56796,7 @@
         "ovr": 51.0,
         "pot": 51.0
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 50.3,
       "weightLb": 248.0
     },
@@ -56826,7 +56826,7 @@
       "heightIn": 74.0,
       "id": "00-0030020",
       "name": "Brynden Trawick",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -56834,7 +56834,7 @@
         "ovr": 65.8,
         "pot": 65.8
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 53.4,
       "weightLb": 225.0
     },
@@ -57006,7 +57006,7 @@
         "ovr": 49.1,
         "pot": 60.7
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 56.6,
       "weightLb": 190.0
     },
@@ -57044,7 +57044,7 @@
         "ovr": 47.7,
         "pot": 47.7
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 42.6,
       "weightLb": 300.0
     },
@@ -57151,7 +57151,7 @@
       "heightIn": 70.0,
       "id": "00-0033512",
       "name": "Damontae Kazee",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
@@ -57207,7 +57207,7 @@
         "ovr": 61.9,
         "pot": 64.7
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 42.4,
       "weightLb": 284.0
     },
@@ -57307,7 +57307,7 @@
         "ovr": 66.4,
         "pot": 67.2
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 42.3,
       "weightLb": 265.0
     },
@@ -57565,7 +57565,7 @@
         "ovr": 77.3,
         "pot": 78.4
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 41.6,
       "weightLb": 237.0
     },
@@ -57632,7 +57632,7 @@
         "ovr": 76.9,
         "pot": 76.9
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 60.9,
       "weightLb": 197.0
     },
@@ -57667,7 +57667,7 @@
       "heightIn": 74.0,
       "id": "00-0027416",
       "name": "Barry Church",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -57772,7 +57772,7 @@
       "heightIn": 71.0,
       "id": "00-0028924",
       "name": "Tashaun Gipson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -57804,7 +57804,7 @@
         "ovr": 58.0,
         "pot": 63.8
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 66.5,
       "weightLb": 200.0
     },
@@ -57842,7 +57842,7 @@
         "ovr": 43.8,
         "pot": 47.6
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 42.5,
       "weightLb": 185.0
     },
@@ -57853,7 +57853,7 @@
       "heightIn": 70.0,
       "id": "00-0028846",
       "name": "Peyton Thompson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -57923,7 +57923,7 @@
         "ovr": 68.1,
         "pot": 69.2
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 74.5,
       "weightLb": 243.0
     },
@@ -57966,7 +57966,7 @@
         "ovr": 42.1,
         "pot": 45.1
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 67.5,
       "weightLb": 174.0
     },
@@ -58028,7 +58028,7 @@
         "ovr": 47.8,
         "pot": 71.0
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 42.2,
       "weightLb": 240.0
     },
@@ -58071,7 +58071,7 @@
         "ovr": 41.8,
         "pot": 42.9
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 60.1,
       "weightLb": 215.0
     },
@@ -58233,7 +58233,7 @@
         "ovr": 51.0,
         "pot": 64.8
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 195.0
     },
@@ -58309,7 +58309,7 @@
         "ovr": 40.9,
         "pot": 42.4
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 72.6,
       "weightLb": 235.0
     },
@@ -58344,7 +58344,7 @@
       "heightIn": 74.0,
       "id": "00-0032525",
       "name": "Jarrod Wilson",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -58352,7 +58352,7 @@
         "ovr": 54.7,
         "pot": 57.3
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 58.4,
       "weightLb": 210.0
     },
@@ -58395,7 +58395,7 @@
         "ovr": 46.1,
         "pot": 48.8
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 62.5,
       "weightLb": 309.0
     },
@@ -58457,7 +58457,7 @@
         "ovr": 49.9,
         "pot": 52.1
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 50.8,
       "weightLb": 220.0
     },
@@ -58468,7 +58468,7 @@
       "heightIn": 73.0,
       "id": "00-0027914",
       "name": "Andrew Sendejo",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -58739,7 +58739,7 @@
         "ovr": 75.0,
         "pot": 75.0
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 71.5,
       "weightLb": 197.0
     },
@@ -58758,7 +58758,7 @@
         "ovr": 40.8,
         "pot": 42.7
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 55.3,
       "weightLb": 245.0
     },
@@ -58906,7 +58906,7 @@
         "ovr": 54.0,
         "pot": 54.0
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 42.3,
       "weightLb": 251.0
     },
@@ -59006,7 +59006,7 @@
         "ovr": 50.0,
         "pot": 59.0
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 70.1,
       "weightLb": 194.0
     },
@@ -59073,7 +59073,7 @@
         "ovr": 64.3,
         "pot": 64.4
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 64.4,
       "weightLb": 228.0
     },
@@ -59202,7 +59202,7 @@
         "ovr": 62.1,
         "pot": 65.5
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 60.8,
       "weightLb": 190.0
     },
@@ -59352,7 +59352,7 @@
       "heightIn": 75.0,
       "id": "00-0029799",
       "name": "Lerentee McCray",
-      "pos": "DL",
+      "pos": "LB",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -59395,7 +59395,7 @@
       "heightIn": 76.0,
       "id": "00-0032454",
       "name": "Jayron Kearse",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
@@ -59403,7 +59403,7 @@
         "ovr": 59.4,
         "pot": 62.0
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 59.9,
       "weightLb": 215.0
     },
@@ -59470,7 +59470,7 @@
         "ovr": 48.3,
         "pot": 49.8
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 71.5,
       "weightLb": 245.0
     },
@@ -59542,7 +59542,7 @@
         "ovr": 57.1,
         "pot": 59.3
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 42.2,
       "weightLb": 240.0
     },
@@ -59633,7 +59633,7 @@
         "ovr": 41.9,
         "pot": 41.9
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 66.6,
       "weightLb": 246.0
     },
@@ -59949,7 +59949,7 @@
         "ovr": 62.9,
         "pot": 65.6
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 69.9,
       "weightLb": 192.0
     },
@@ -60006,7 +60006,7 @@
         "ovr": 49.0,
         "pot": 49.0
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 42.5,
       "weightLb": 210.0
     },
@@ -60049,7 +60049,7 @@
         "ovr": 47.9,
         "pot": 62.0
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 59.9,
       "weightLb": 242.0
     },
@@ -60618,7 +60618,7 @@
         "ovr": 54.2,
         "pot": 55.7
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 41.8,
       "weightLb": 168.0
     },
@@ -60637,7 +60637,7 @@
         "ovr": 52.4,
         "pot": 53.5
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 68.7,
       "weightLb": 306.0
     },
@@ -60737,7 +60737,7 @@
         "ovr": 59.4,
         "pot": 59.4
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 42.2,
       "weightLb": 250.0
     },
@@ -60815,7 +60815,7 @@
       "heightIn": 73.0,
       "id": "00-0031799",
       "name": "Anthony Harris",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -61192,7 +61192,7 @@
       "heightIn": 74.0,
       "id": "00-0029606",
       "name": "Harrison Smith",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -61219,7 +61219,7 @@
         "ovr": 58.2,
         "pot": 61.7
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 62.9,
       "weightLb": 310.0
     },
@@ -61238,7 +61238,7 @@
         "ovr": 46.1,
         "pot": 52.0
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 41.0,
       "weightLb": 190.0
     },
@@ -61481,7 +61481,7 @@
         "ovr": 48.8,
         "pot": 57.5
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 42.3,
       "weightLb": 220.0
     },
@@ -61505,7 +61505,7 @@
         "ovr": 81.9,
         "pot": 81.9
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 42.2,
       "weightLb": 200.0
     },
@@ -61588,7 +61588,7 @@
       "heightIn": 71.0,
       "id": "00-0027010",
       "name": "Patrick Chung",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -61717,7 +61717,7 @@
       "heightIn": 72.0,
       "id": "00-0025555",
       "name": "Corey Graham",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2007,
       "scouting": {
@@ -61725,7 +61725,7 @@
         "ovr": 75.8,
         "pot": 75.8
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 69.6,
       "weightLb": 196.0
     },
@@ -61816,7 +61816,7 @@
         "ovr": 61.5,
         "pot": 65.0
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 69.8,
       "weightLb": 167.0
     },
@@ -61902,7 +61902,7 @@
         "ovr": 56.7,
         "pot": 56.7
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 53.8,
       "weightLb": 205.0
     },
@@ -61945,7 +61945,7 @@
         "ovr": 49.7,
         "pot": 49.7
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 194.0
     },
@@ -61969,7 +61969,7 @@
         "ovr": 61.7,
         "pot": 62.9
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 65.7,
       "weightLb": 319.0
     },
@@ -62050,7 +62050,7 @@
         "ovr": 62.0,
         "pot": 64.0
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 63.5,
       "weightLb": 190.0
     },
@@ -62241,7 +62241,7 @@
         "ovr": 51.7,
         "pot": 69.4
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 42.2,
       "weightLb": 190.0
     },
@@ -62333,7 +62333,7 @@
       "heightIn": 72.0,
       "id": "00-0026990",
       "name": "Malcolm Jenkins",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
@@ -62486,7 +62486,7 @@
       "heightIn": 71.0,
       "id": "00-0031559",
       "name": "Jordan Richards",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -62494,7 +62494,7 @@
         "ovr": 51.8,
         "pot": 54.0
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 61.0,
       "weightLb": 210.0
     },
@@ -62510,7 +62510,7 @@
       "heightIn": 70.0,
       "id": "00-0027647",
       "name": "Devin McCourty",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -62662,7 +62662,7 @@
         "ovr": 67.8,
         "pot": 72.7
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 64.3,
       "weightLb": 181.0
     },
@@ -62734,7 +62734,7 @@
         "ovr": 82.6,
         "pot": 84.1
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 66.4,
       "weightLb": 223.0
     },
@@ -62825,7 +62825,7 @@
         "ovr": 67.1,
         "pot": 67.1
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 71.6,
       "weightLb": 255.0
     },
@@ -63011,7 +63011,7 @@
         "ovr": 49.4,
         "pot": 49.4
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 41.6,
       "weightLb": 255.0
     },
@@ -63022,7 +63022,7 @@
       "heightIn": 70.0,
       "id": "00-0027378",
       "name": "Chris Maragos",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
@@ -63073,7 +63073,7 @@
         "ovr": 58.9,
         "pot": 64.3
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 64.3,
       "weightLb": 218.0
     },
@@ -63097,7 +63097,7 @@
         "ovr": 72.3,
         "pot": 74.4
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 61.5,
       "weightLb": 205.0
     },
@@ -63402,7 +63402,7 @@
         "ovr": 52.3,
         "pot": 52.3
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 43.1,
       "weightLb": 239.0
     },
@@ -63421,7 +63421,7 @@
         "ovr": 50.7,
         "pot": 52.4
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 54.4,
       "weightLb": 220.0
     },
@@ -63584,7 +63584,7 @@
         "ovr": 47.4,
         "pot": 47.4
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 61.9,
       "weightLb": 244.0
     },
@@ -63823,7 +63823,7 @@
         "ovr": 41.8,
         "pot": 43.5
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 61.1,
       "weightLb": 236.0
     },
@@ -63866,7 +63866,7 @@
         "ovr": 67.8,
         "pot": 69.3
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 63.5,
       "weightLb": 256.0
     },
@@ -63981,7 +63981,7 @@
         "ovr": 64.2,
         "pot": 69.1
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 41.1,
       "weightLb": 250.0
     },
@@ -64048,7 +64048,7 @@
         "ovr": 51.1,
         "pot": 51.1
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 42.8,
       "weightLb": 305.0
     },
@@ -64072,7 +64072,7 @@
         "ovr": 51.4,
         "pot": 51.4
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 66.8,
       "weightLb": 250.0
     },
@@ -64091,7 +64091,7 @@
         "ovr": 73.2,
         "pot": 73.2
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 66.4,
       "weightLb": 242.0
     },
@@ -64129,7 +64129,7 @@
         "ovr": 48.9,
         "pot": 48.9
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 41.9,
       "weightLb": 250.0
     },
@@ -64260,7 +64260,7 @@
       "heightIn": 71.0,
       "id": "00-0031173",
       "name": "Jaylen Watkins",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
@@ -64268,7 +64268,7 @@
         "ovr": 64.8,
         "pot": 64.9
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 63.9,
       "weightLb": 194.0
     },
@@ -64330,7 +64330,7 @@
         "ovr": 48.5,
         "pot": 50.1
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 218.0
     },
@@ -64449,7 +64449,7 @@
         "ovr": 50.4,
         "pot": 50.4
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 56.5,
       "weightLb": 241.0
     },
@@ -64540,7 +64540,7 @@
         "ovr": 58.3,
         "pot": 60.9
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 41.3,
       "weightLb": 200.0
     },
@@ -64674,7 +64674,7 @@
         "ovr": 60.9,
         "pot": 60.9
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 62.4,
       "weightLb": 263.0
     },
@@ -64690,7 +64690,7 @@
       "heightIn": 73.0,
       "id": "00-0030383",
       "name": "Duron Harmon",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2013,
       "scouting": {
@@ -64909,7 +64909,7 @@
         "ovr": 42.0,
         "pot": 45.2
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 73.2,
       "weightLb": 260.0
     },
@@ -64957,7 +64957,7 @@
         "ovr": 74.6,
         "pot": 76.3
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 42.1,
       "weightLb": 200.0
     },
@@ -65035,7 +65035,7 @@
       "heightIn": 70.0,
       "id": "00-0028899",
       "name": "Rodney McLeod",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
@@ -65054,7 +65054,7 @@
       "heightIn": 74.0,
       "id": "00-0031856",
       "name": "Brandon King",
-      "pos": "CB",
+      "pos": "S",
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
@@ -65062,7 +65062,7 @@
         "ovr": 57.2,
         "pot": 59.4
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 50.6,
       "weightLb": 220.0
     },
@@ -65100,7 +65100,7 @@
         "ovr": 61.6,
         "pot": 61.6
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 58.3,
       "weightLb": 206.0
     },
@@ -65119,7 +65119,7 @@
         "ovr": 42.8,
         "pot": 46.3
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 72.1,
       "weightLb": 249.0
     },
@@ -65162,7 +65162,7 @@
         "ovr": 48.9,
         "pot": 48.9
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 64.9,
       "weightLb": 220.0
     },
@@ -65186,7 +65186,7 @@
         "ovr": 66.6,
         "pot": 67.0
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 41.2,
       "weightLb": 250.0
     },
@@ -65363,7 +65363,7 @@
         "ovr": 53.1,
         "pot": 54.7
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 68.3,
       "weightLb": 208.0
     },

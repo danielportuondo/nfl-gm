@@ -17,7 +17,9 @@ Conventions:
   sim weights, not the ratings.
 - Position groups: `QB RB WR TE OL DL LB CB S K P`. Map `T/G/C → OL`, `DE/DT/NT → DL`,
   `OLB/ILB/MLB → LB`, `FS/SS → S`, `FB → RB`, `HB → RB`, `LS → OL` (long snappers are rare; group them
-  with OL rather than invent a position).
+  with OL rather than invent a position). From 2016 nflverse rosters label whole units in `position`
+  (`DB`, `OL`, `DL`, `LB`); the finer `depth_chart_position` (`FS`/`SS`/`CB`, `T`/`G`/`C`, …) decides the
+  group when it is present, and a bare `DB` falls back to `CB`.
 - No `headshot_url`, no logo/wordmark URLs, anywhere. The `teams` schema has no field for them.
 
 ## Load plan and size budget (HANDOFF §6.10)
@@ -82,8 +84,10 @@ Every player on any roster that season. `Player` fields (`id`, `name`, `pos`, `b
 per team and every player at most once league-wide, so `league.newGame` starts from a legal roster and
 `history.snapToHistory` can place players without cutting. Candidates are each player's season-start
 stint (nflverse `roster_{season}.csv`, earliest-week row per player); the 53 are filled by position from
-`contracts/teams.ts#ROSTER_TEMPLATE_53` in depth order, then the remaining slots by depth rank, roster
-status (`ACT`/`RES`/`INA` before `CUT`/`DEV`), snap share and experience. A team exports fewer than 53
+`contracts/teams.ts#ROSTER_TEMPLATE_53`, then the remaining slots, both ranked by roster status
+(`ACT`/`RES`/`INA` before `CUT`/`DEV`), then consensus `ovr`, then depth rank, snap share and experience.
+Status and rating come before depth so a starter who spent the season on injured reserve stays on the
+team that held his contract instead of surfacing as a day-one free agent. A team exports fewer than 53
 only when the source has fewer. Everyone else that season appears in `players.json` with `team: null`.
 `apy`/`years` are hints from the contracts data when matched (~2011+); the engine synthesizes a contract
 when absent. `depth` is the depth-chart order at the player's position group (1 = starter), from

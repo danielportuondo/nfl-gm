@@ -7,7 +7,7 @@ import logging
 import pandas as pd
 
 from gridiron_pipeline.build.players import PlayerMaster, birth_year, make_player_record
-from gridiron_pipeline.build.positions import map_position_group
+from gridiron_pipeline.build.positions import map_position_group, resolve_position
 from gridiron_pipeline.build.ratings import Ratings
 from gridiron_pipeline.build.teams import ATTRIBUTION, canonical_team_id
 from gridiron_pipeline.ingest.load import load_combine, load_draft_picks
@@ -128,7 +128,7 @@ def build_season_draft(
         for row in udfa_rows.itertuples(index=False):
             if row.gsis_id in seen_ids:
                 continue
-            pos_group = map_position_group(row.position)
+            pos_group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
             rec = make_player_record(
                 gsis_id=row.gsis_id,
                 name=row.full_name,

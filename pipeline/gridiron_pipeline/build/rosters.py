@@ -15,7 +15,7 @@ from gridiron_pipeline.build.players import (
     make_player_record,
     sane_season,
 )
-from gridiron_pipeline.build.positions import map_position_group
+from gridiron_pipeline.build.positions import resolve_position
 from gridiron_pipeline.build.teams import ATTRIBUTION, canonical_team_id
 from gridiron_pipeline.ingest.load import (
     load_contracts,
@@ -127,7 +127,7 @@ def compute_depth_ranks(
 
     by_group: dict[tuple[str, str], list[tuple]] = {}
     for row in start.itertuples(index=False):
-        pos_group = map_position_group(row.position)
+        pos_group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
         if pos_group is None:
             continue
         key = (row.team_canon, pos_group)
@@ -155,12 +155,18 @@ def _select_rosters(
     pos_group_by_id: dict[str, str],
     depth_ranks: dict[tuple[str, str, str], int],
     snaps: dict[tuple[str, str], float],
+    ovr_by_id: dict[str, float] | None = None,
 ) -> dict[str, list[str]]:
-    """Opening-day 53 per team: fill ROSTER_TEMPLATE_53 by depth rank, then top up to 53.
+    """Opening-day 53 per team: fill ROSTER_TEMPLATE_53, then top up to 53.
 
     Candidates are each team's rows in `start` (season-start stint), restricted to
     `pos_group_by_id` (players that made it into players.json). Every player is a candidate for at
     most one team, since `start` has one row per player league-wide.
+
+    Ranking is roster status first (ACT/RES/INA before CUT/DEV), then consensus ovr, then depth.
+    Depth alone put a star who spent the year on injured reserve (no snaps, buried on the depth
+    chart) behind every healthy backup and dropped him into the free-agent pool, where a user could
+    sign him on day one; ovr keeps him on the team he was really under contract with.
     """
     by_team: dict[str, list[dict]] = {}
     for row in start.itertuples(index=False):
@@ -176,6 +182,7 @@ def _select_rosters(
                 "pos_group": pos_group,
                 "depth": depth_ranks.get((row.team_canon, pos_group, row.gsis_id), 10**6),
                 "status_priority": _status_priority(row.status),
+                "ovr": float((ovr_by_id or {}).get(row.gsis_id, 0.0)),
                 "snap": snaps.get(key, 0.0),
                 "years_exp": float(years_exp),
             }
@@ -190,7 +197,10 @@ def _select_rosters(
         selected: list[str] = []
         selected_ids: set[str] = set()
         for pos_group, count in ROSTER_TEMPLATE_53.items():
-            pool = sorted(by_pos.get(pos_group, []), key=lambda c: (c["depth"], c["gsis_id"]))
+            pool = sorted(
+                by_pos.get(pos_group, []),
+                key=lambda c: (c["status_priority"], -c["ovr"], c["depth"], c["gsis_id"]),
+            )
             for c in pool[:count]:
                 selected.append(c["gsis_id"])
                 selected_ids.add(c["gsis_id"])
@@ -198,8 +208,9 @@ def _select_rosters(
         leftover = [c for c in candidates if c["gsis_id"] not in selected_ids]
         leftover.sort(
             key=lambda c: (
-                c["depth"],
                 c["status_priority"],
+                -c["ovr"],
+                c["depth"],
                 -c["snap"],
                 -c["years_exp"],
                 c["gsis_id"],
@@ -307,7 +318,7 @@ def build_season_rosters_and_players(
     players = []
     pos_group_by_id: dict[str, str] = {}
     for row in start.itertuples(index=False):
-        pos_group = map_position_group(row.position)
+        pos_group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
         draft = master.draft_by_gsis.get(row.gsis_id)
         fallback_rookie = draft["season"] if draft else season
         rookie_season = sane_season(row.rookie_year, fallback_rookie)
@@ -336,7 +347,8 @@ def build_season_rosters_and_players(
         players.append(rec)
         pos_group_by_id[row.gsis_id] = rec["pos"]
 
-    team_rosters = _select_rosters(start, pos_group_by_id, depth_ranks, snaps)
+    ovr_by_id = {rec["id"]: float(rec["scouting"]["ovr"]) for rec in players}
+    team_rosters = _select_rosters(start, pos_group_by_id, depth_ranks, snaps, ovr_by_id)
     selected_by_team = {team: set(ids) for team, ids in team_rosters.items()}
 
     rosters: dict[str, list[dict]] = {}

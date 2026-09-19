@@ -192,3 +192,44 @@ def test_contract_hint_accepts_dollars_and_millions() -> None:
     assert _contract_hint(idx, "a", 2010) == {"apy": 9.667, "years": 6}
     assert _contract_hint(idx, "b", 2010) == {"apy": 9.667, "years": 6}
     assert _contract_hint(idx, "b", 2013) == {}
+
+
+def test_select_rosters_keeps_high_consensus_reserve_over_healthy_backup() -> None:
+    """A star on injured reserve (depth 9, no snaps) makes the 53 ahead of a healthy backup."""
+    import pandas as pd
+
+    from gridiron_pipeline.build.rosters import ROSTER_TEMPLATE_53, _select_rosters
+
+    rows = []
+    # 60 CBs on one team: a 90-ovr RES player buried on the depth chart, plus healthy backups.
+    for i in range(60):
+        rows.append(
+            {
+                "team_canon": "DAL",
+                "gsis_id": f"cb{i:02d}",
+                "status": "RES" if i == 0 else "ACT",
+                "years_exp": 3.0,
+            }
+        )
+    start = pd.DataFrame(rows)
+    pos_group_by_id = {r["gsis_id"]: "CB" for r in rows}
+    depth_ranks = {("DAL", "CB", r["gsis_id"]): (9 if i == 0 else i) for i, r in enumerate(rows)}
+    ovr_by_id = {r["gsis_id"]: (90.0 if i == 0 else 60.0 - i * 0.1) for i, r in enumerate(rows)}
+
+    rosters = _select_rosters(start, pos_group_by_id, depth_ranks, {}, ovr_by_id)
+    assert "cb00" in rosters["DAL"]
+    assert len(rosters["DAL"]) == 53
+    assert ROSTER_TEMPLATE_53["CB"] <= 53
+
+
+def test_resolve_position_uses_fine_label_for_coarse_units() -> None:
+    from gridiron_pipeline.build.positions import resolve_position
+
+    assert resolve_position("DB", "FS") == "S"
+    assert resolve_position("DB", "SS") == "S"
+    assert resolve_position("DB", "CB") == "CB"
+    assert resolve_position("DB", None) == "CB"
+    assert resolve_position("DB", float("nan")) == "CB"
+    assert resolve_position("OL", "C") == "OL"
+    assert resolve_position("LB", "ILB") == "LB"
+    assert resolve_position("WR", "CB") == "WR"
