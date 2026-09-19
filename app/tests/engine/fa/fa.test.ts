@@ -182,6 +182,26 @@ describe('fa: cap invariants across 5 simulated offseasons (real 2015-2020 data)
     expect(state.season).toBe(2020)
   }, 30000)
 
+  it('an AI team under the 46-man floor with no cap room still kicks off legal', () => {
+    // Phase 6: real salaries past the data left MIA at 45 players because the filler refused
+    // league-minimum bodies once payroll sat at the cap. The floor is a hard rule; the cap pass swaps.
+    const start = withAiManagedUserTeam(league.newGame(newGameOpts(), ctx))
+    const teamId = TEAM_IDS.find((id) => id !== start.userTeam)!
+    const team = start.teams[teamId]!
+    const cap = fa.capFor(start.season, ctx)
+    const roster = [...team.roster].sort((a, b) => a.contract.apy - b.contract.apy || a.playerId.localeCompare(b.playerId)).slice(0, 45)
+    const base = roster.reduce((sum, r) => sum + r.contract.apy, 0)
+    const state: LeagueState = {
+      ...start,
+      teams: { ...start.teams, [teamId]: { ...team, roster, deadMoney: Math.max(0, cap - base - 0.2) } },
+    }
+    expect(fa.validateRoster(state, teamId, ctx).ok).toBe(false)
+    const next = league.advancePhase(state, ctx)
+    const v = fa.validateRoster(next, teamId, ctx)
+    expect(v.errors).toEqual([])
+    expect(next.teams[teamId]!.roster.length).toBeGreaterThanOrEqual(46)
+  }, 30000)
+
   it('is deterministic for a given seed', () => {
     const run = (seed: string) => {
       let state = withAiManagedUserTeam(league.newGame(newGameOpts({ seed }), ctx))

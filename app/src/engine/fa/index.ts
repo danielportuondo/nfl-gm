@@ -26,9 +26,13 @@ function capFor(season: Season, ctx: EngineContext): number {
   const table = ctx.data.cap.bySeason
   const exact = table[String(season)]
   if (exact !== undefined) return exact
+  const seasons = Object.keys(table).map(Number).sort((a, b) => a - b)
+  const first = seasons[0]!
+  // Rookie deals for players drafted before the table (a 2007 first-rounder on a 2010 roster) price
+  // off the earliest known cap, never the latest one.
+  if (season < first) return table[String(first)]!
   const last = lastRealCapSeason(ctx)
   const base = table[String(last)]!
-  if (season < last) return base
   return base * Math.pow(1 + ctx.data.cap.growthAfterData, season - last)
 }
 
@@ -90,8 +94,9 @@ function rookieContract(pick: { round: number; pick: number } | null, season: Se
       rookie: true,
     }
   }
-  const { topPct, decay } = faConstants.rookieScale
-  const pct = Math.max(faConstants.minCapPct, topPct * Math.exp(-decay * (pick.pick - 1)))
+  const { topPct, topPctFromCbaSeason, cbaSeason, decay } = faConstants.rookieScale
+  const top = season >= cbaSeason ? topPctFromCbaSeason : topPct
+  const pct = Math.max(faConstants.minCapPct, top * Math.exp(-decay * (pick.pick - 1)))
   return {
     years: faConstants.rookieContractYears,
     apy: round2(pct * cap),
@@ -257,6 +262,11 @@ function realTeamsOf(ctx: EngineContext, season: Season): Map<PlayerId, TeamId |
  * Dead money applies to every release; divergence only to the user's (§6.8) — an AI team trimming its
  * camp roster is still on the historical path, and snapToHistory must stay free to place those players.
  */
+/** Dead money a release books this season: the guaranteed remainder, scaled by `deadMoneyPct`. */
+function deadChargeFor(contract: Contract): number {
+  return round2(contract.apy * contract.years * contract.guaranteedPct * faConstants.deadMoneyPct)
+}
+
 function releaseFrom(
   state: LeagueState,
   teamId: TeamId,
@@ -268,8 +278,7 @@ function releaseFrom(
   if (!team) throw new Error(`fa.release: unknown team "${teamId}"`)
   const slot = team.roster.find((r) => r.playerId === playerId)
   if (!slot) throw new Error(`fa.release: player "${playerId}" is not on team "${teamId}"`)
-  const remainingGuaranteed = slot.contract.apy * slot.contract.years * slot.contract.guaranteedPct
-  const deadCharge = round2(remainingGuaranteed * faConstants.deadMoneyPct)
+  const deadCharge = deadChargeFor(slot.contract)
   const roster = team.roster.filter((r) => r.playerId !== playerId)
   let s: LeagueState = {
     ...state,
@@ -477,6 +486,30 @@ function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
       const cutId = cutOrderByCap(s, roster, keepSet)[0]
       if (cutId === undefined) break
       s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
+    }
+
+    // Still over the cap at the floor (real salaries past the data leave some teams there): swap the
+    // most expensive cuttable veteran whose release actually saves room for a league-minimum body,
+    // so the team fields 46 under the cap instead of failing validation. Real teams restructure;
+    // the game trades talent for room.
+    guard = 0
+    while (payroll(s, teamId) > capFor(s.season, ctx) && guard++ < 60) {
+      const roster = s.teams[teamId]!.roster
+      const minBody = rookieContract(null, s.season, ctx)
+      const cutId = cutOrderByCap(s, roster, keepSet).find((id) => {
+        const slot = roster.find((r) => r.playerId === id)!
+        return slot.contract.apy - deadChargeFor(slot.contract) > minBody.apy
+      })
+      if (cutId === undefined) break
+      s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
+      const body = freeAgentPool(s).find((id) => id !== cutId && s.players[id] !== undefined)
+      if (body === undefined) continue
+      const team = s.teams[teamId]!
+      s = {
+        ...s,
+        teams: { ...s.teams, [teamId]: { ...team, roster: [...team.roster, { playerId: body, teamId, contract: minBody }] } },
+        freeAgents: s.freeAgents.filter((id) => id !== body),
+      }
     }
   }
   return s

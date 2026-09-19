@@ -124,6 +124,8 @@ function fitPayrollToCap(state: LeagueState, teamId: TeamId, ctx: EngineContext)
 }
 
 const AI_CAMP_ROSTER = 53
+/** Mirrors faConstants.gameRoster.min: the game-legal floor the filler must reach even when cap-strapped. */
+const AI_CAMP_ROSTER_MIN = 46
 
 /**
  * An AI team that comes out of the offseason short (its expiring deals walked, it had no cap room in
@@ -157,9 +159,13 @@ function fillAiRosters(state: LeagueState, ctx: EngineContext): LeagueState {
     let roster = team.roster
     let payroll = fa.payroll(s, teamId)
     for (const id of candidates) {
-      if (roster.length >= AI_CAMP_ROSTER || payroll + minApy > cap) break
-      const contract = fa.synthesizeContract(s, id, s.season, ctx)
-      if (payroll + contract.apy > cap) continue
+      if (roster.length >= AI_CAMP_ROSTER) break
+      // The 46-man floor is a hard rule: below it a cap-strapped team still signs league-minimum
+      // bodies and lets fa.runAiCutdowns swap salary out afterwards.
+      const belowFloor = roster.length < AI_CAMP_ROSTER_MIN
+      if (!belowFloor && payroll + minApy > cap) break
+      const contract = belowFloor ? fa.rookieContract(null, s.season, ctx) : fa.synthesizeContract(s, id, s.season, ctx)
+      if (!belowFloor && payroll + contract.apy > cap) continue
       roster = [...roster, { playerId: id, teamId, contract }]
       payroll += contract.apy
       counts[s.players[id]!.pos] = (counts[s.players[id]!.pos] ?? 0) + 1
@@ -699,7 +705,8 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
     }
 
     case 'PRESEASON': {
-      let s = fillAiRosters(ctx.modules.fa.runAiCutdowns(state, ctx), ctx)
+      // Fill first so the cap pass in runAiCutdowns sees the floor bodies and can swap salary for them.
+      let s = ctx.modules.fa.runAiCutdowns(fillAiRosters(state, ctx), ctx)
       const updatedTeams: Record<TeamId, TeamState> = { ...s.teams }
       for (const teamId of Object.keys(updatedTeams)) {
         if (teamId === s.userTeam) continue

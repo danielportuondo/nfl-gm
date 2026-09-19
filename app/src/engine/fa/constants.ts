@@ -56,8 +56,12 @@ export const faConstants = {
   udfaGuaranteedPct: 0.1,
   rookieContractYears: 4,
   udfaContractYears: 3,
-  /** Rookie scale: pct(overallPick) = max(minCapPct, topPct * exp(-decay * (pick - 1))). */
-  rookieScale: { topPct: 0.1, decay: 0.045 },
+  /**
+   * Rookie scale: pct(overallPick) = max(minCapPct, topPct * exp(-decay * (pick - 1))). The 2011 CBA
+   * halved the top of the scale (Bradford 2010 ≈ 10% of cap; Luck 2012 ≈ 4.6%), so the top depends on
+   * the draft year.
+   */
+  rookieScale: { topPct: 0.1, topPctFromCbaSeason: 0.047, cbaSeason: 2011, decay: 0.045 },
   /** Share of a rookie deal that is guaranteed, by round; late picks are cheap to cut (5B, dead-money finding). */
   rookieGuaranteedPctByRound: [1, 1, 0.6, 0.35, 0.2, 0.1, 0.1],
   /** Re-sign ask = marketApy × (1 ± jitter), seeded per player. */
