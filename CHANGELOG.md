@@ -3,6 +3,21 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## 1.1.0 — 2026-09-19
+
+### Added
+- Suggested trades on the Trade Center: up to four deals other front offices would take today, each an
+  upgrade at one of your weakest positions. Accepting one is a done deal; dismissing hides it for the week.
+
+### Fixed
+- Stars who spent a season on injured reserve no longer start the game as free agents (the 53-man export
+  ranked by depth chart and snaps only). Players rated 70+ in the day-one pool on a 2023 start: 89 → 33.
+- Safeties exist again from 2016 on. nflverse labels every safety and corner `DB` in those seasons and the
+  pipeline mapped all of them to cornerback; the finer depth-chart position now decides.
+- Generated draft prospects can no longer have a ceiling below their floor.
+- The value bar on AI-initiated offers reads "Fair / Lopsided / Favours you" instead of an acceptance
+  likelihood the deal does not depend on.
+
 ## 1.0.0 — 2026-09-18
 
 First complete release: a browser NFL general-manager sim with a hindsight twist. Start in any season 2010–2025

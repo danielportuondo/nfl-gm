@@ -12,8 +12,8 @@ league — every AI front office — only knows what the scouting consensus beli
 **[danielportuondo.github.io/nfl-gm](https://danielportuondo.github.io/nfl-gm/)**
 
 Pick a start year (2010–present), a team, and a horizon (1–10 seasons) — your mandate is to win the
-Super Bowl before it runs out. Run the draft, sign free agents, make trades, and sim the season week by
-week. You never play the games; you make the calls. Saves live in your browser (IndexedDB) — close the
+Super Bowl before it runs out. Run the draft, sign free agents, make trades (or take one the Trade Center
+suggests), and sim the season week by week. You never play the games; you make the calls. Saves live in your browser (IndexedDB) — close the
 tab and pick up where you left off. Sixty seconds in: New Game → pick a year and team → Start → Draft
 room, on the clock.
 
@@ -112,6 +112,7 @@ From the Phase 6 QA playthrough (IND, 2010 start, three-season horizon):
 ![Trade Center — a sixth-round pick and a bench receiver for a rookie Antonio Brown](docs/screenshots/trade-center-2010.png)
 ![Draft room](docs/screenshots/draft-room.png)
 ![Trade Center](docs/screenshots/trade-center.png)
+![Suggested trades — deals other front offices would take today, aimed at your weakest positions](docs/screenshots/suggested-trades.png)
 ![Season recap](docs/screenshots/season-recap.png)
 ![End game report card](docs/screenshots/end-game.png)
 

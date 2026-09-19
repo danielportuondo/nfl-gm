@@ -158,3 +158,27 @@ n 389–396, p10 47 / med 60 / p90 67. Roster turnover ≈ 20 %/season, plausibl
 - Is a league-mean payroll of 73–77 % of the cap acceptable for v1? Fixing it is `valueExp 2.1` plus a re-tune
   of `fitPayrollToCap` and the scripted GM's cap reserve.
 - `futurePickDiscount 0.92` is a compromise: any value below 1.0 is free money for a user with no time pressure.
+
+## Phase 6 addendum — draft class and free-agent pool audit (2026-09-19)
+
+Daniel: "a lot of good players in the draft in my first year that were not rookies."
+
+- **Draft classes are clean.** 2011 (379 prospects), 2016 (517), 2023 (526) and a generated 2026 class (379):
+  every prospect has `rookieSeason` = draft year, none existed in the league state before the draft, ages 19–23.
+- **The free-agent pool at game start was the leak.** Consensus-70+ players unsigned on day one, before → after
+  ranking the 53-man export by status then consensus ovr:
+
+  | start | unsigned | 70+ before | 70+ after | before examples |
+  |---|---|---|---|---|
+  | 2010 | 250 | 12 | 1 | Russell Okung 75, Jared Gaither 76 |
+  | 2012 | 254 | 11 | 3 | Brandon Jackson 81, Doug Baldwin 77 |
+  | 2015 | 330 | 36 | 13 | Kiko Alonso 89, Shane Vereen 84 |
+  | 2019 | 1,326 | 67 | 24 | Derwin James 84, Janoris Jenkins 85 |
+  | 2023 | 1,337 | 89 | 33 | Trevon Diggs 90, Marlon Humphrey 89, Marshon Lattimore 83 |
+
+  Cause: nflverse lists everyone who touched a team (65–90 per team); the export kept 53 by depth chart,
+  snap share and experience, so a season-long IR stint (Diggs, week-2 ACL) ranked last. A user offer to
+  Jared Gaither during the first re-sign window was accepted at p = 1.00.
+- **No safeties 2016–2025.** `position` = `DB` for every safety and corner from 2016; mapped to CB. Fixed via
+  `depth_chart_position`. 2023 rostered S: 0 → 128.
+- **Suggested trades coverage** (fresh start, per team): 2015: 29 of 32 teams get at least one, 2.9 on average; 2023: 25 of 32, 2.4 on average (the rest have no fillable need at a non-specialist position).
