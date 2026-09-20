@@ -77,6 +77,7 @@ function checkRosterInvariants(
   ctx: EngineContext,
   label: string,
   gated: readonly TeamId[] = TEAM_IDS,
+  sizeRange: readonly [number, number] = [46, 53],
 ): void {
   const seen = new Map<string, TeamId>()
   const freeAgents = new Set(state.freeAgents)
@@ -86,7 +87,7 @@ function checkRosterInvariants(
   for (const teamId of Object.keys(state.teams).sort()) {
     const team = state.teams[teamId]!
     check(
-      team.roster.length >= 46 && team.roster.length <= 53,
+      team.roster.length >= sizeRange[0] && team.roster.length <= sizeRange[1],
       `${label}: ${teamId} roster has ${team.roster.length} players`,
     )
     if (gatedSet.has(teamId)) {
@@ -213,6 +214,24 @@ function playOffseason(state: LeagueState, ctx: EngineContext, log: OffseasonLog
   s = userFreeAgency(s, ctx, log)
   s = league.advancePhase(s, ctx) // FREE_AGENCY → TRAINING_CAMP (AI free agency)
   s = league.advancePhase(s, ctx) // TRAINING_CAMP → PRESEASON (season + 1: rollover, progression, snap)
+  s = userCutdowns(s, ctx, log)
+  return s
+}
+
+/** The opening offseason (newGame default): the start class is on the board; there is no re-signing phase. */
+function playOpeningOffseason(
+  state: LeagueState,
+  ctx: EngineContext,
+  log: OffseasonLog,
+): LeagueState {
+  const { league, draft } = ctx.modules
+  let s = draft.startDraft(state, ctx)
+  s = userDraft(s, ctx, log)
+  s = league.advancePhase(s, ctx) // DRAFT → UDFA
+  s = league.advancePhase(s, ctx) // UDFA → FREE_AGENCY (AI UDFA signings)
+  s = userFreeAgency(s, ctx, log)
+  s = league.advancePhase(s, ctx) // FREE_AGENCY → TRAINING_CAMP (AI free agency)
+  s = league.advancePhase(s, ctx) // TRAINING_CAMP → PRESEASON (opening rollover: no progression, no contract tick)
   s = userCutdowns(s, ctx, log)
   return s
 }
@@ -380,9 +399,26 @@ async function main(): Promise<void> {
       `rosters ${Math.min(...rosterSizes)}–${Math.max(...rosterSizes)}, ${state.picks.length} picks owned, ` +
       `${state.schedule.length} games scheduled (data loaded in ${((loadedAt - started) / 1000).toFixed(1)}s)`,
   )
-  checkRosterInvariants(state, ctx, 'newGame', [])
+  checkRosterInvariants(state, ctx, 'newGame', [], [0, 53])
 
   let offseason: OffseasonLog | null = null
+  if (state.phase === 'DRAFT') {
+    offseason = emptyLog()
+    state = playOpeningOffseason(state, ctx, offseason)
+    const user = state.teams[state.userTeam]!
+    console.log(
+      `opening offseason: drafted ${offseason.drafted.length}, signed ${offseason.signed.length}, cut ${offseason.cut.length} → ` +
+        `${state.season} preseason, user roster ${user.roster.length}`,
+    )
+    check(
+      user.roster.length >= 46 && user.roster.length <= 53,
+      `${state.season} preseason: user roster has ${user.roster.length} players`,
+    )
+    check(
+      ctx.modules.fa.validateRoster(state, state.userTeam, ctx).ok,
+      `${state.season} preseason: user roster invalid — ${ctx.modules.fa.validateRoster(state, state.userTeam, ctx).errors.join(', ')}`,
+    )
+  }
   for (let i = 0; i < args.seasons; i++) {
     const season = state.season
     const fmt = leagueFormat(season)
