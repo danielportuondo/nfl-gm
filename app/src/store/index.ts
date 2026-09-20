@@ -177,12 +177,15 @@ export function createGameStore(config: StoreConfig = {}) {
       }
     }
 
-    /** Loads trajectories once and every in-history chunk in [from, to] that is not cached yet. */
+    /** Loads trajectories once and every in-history chunk in [from, to] that exists and is not cached yet. */
     async function ensureLoaded(from: Season, to: Season): Promise<void> {
       if (!dataSource) return
-      const latest = get().data?.manifest.latestRealSeason ?? to
+      const manifest = get().data?.manifest
+      const latest = manifest?.latestRealSeason ?? to
+      const known = manifest?.seasons
       const wanted: Season[] = []
-      for (let s = from; s <= Math.min(to, latest); s++) if (!chunks.has(s)) wanted.push(s)
+      for (let s = from; s <= Math.min(to, latest); s++)
+        if (!chunks.has(s) && (known === undefined || known.includes(s))) wanted.push(s)
       const loads: Promise<void>[] = wanted.map((s) =>
         dataSource.loadSeason(s).then((chunk) => void chunks.set(s, chunk)),
       )

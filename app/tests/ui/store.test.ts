@@ -12,8 +12,17 @@ import {
 } from '@contracts/index'
 import { createGameStore } from '@store/index'
 import { defaultEngineModules } from '@store/engineDefaults'
-import { mockLeague } from '@fixtures/mockLeague'
+import { MemoryDataSource } from '@data/index'
+import { mockBundle, mockLeague } from '@fixtures/mockLeague'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+
+async function until(pred: () => boolean, ms = 2_000): Promise<void> {
+  const start = Date.now()
+  while (!pred()) {
+    if (Date.now() - start > ms) throw new Error('timed out')
+    await new Promise((r) => setTimeout(r, 10))
+  }
+}
 
 /**
  * Regression for docs/HANDOFF.md Phase 5A brief item 6: Season Recap must appear "when the phase
@@ -434,5 +443,35 @@ describe('cutdownPlan', () => {
       expect.anything(),
       protect,
     )
+  })
+})
+
+describe('engine-mode chunk loading', () => {
+  it('never requests a season chunk the manifest does not list', async () => {
+    const bundle = mockBundle({ season: 2015 })
+    const source = MemoryDataSource(bundle)
+    const loadSeason = vi.fn(source.loadSeason)
+    const opening: LeagueState = {
+      ...mockLeague({ season: 2015 }),
+      season: 2014,
+      startSeason: 2015,
+      phase: 'DRAFT',
+    }
+    const persistence: PersistenceModule = {
+      ...persistenceStub,
+      load: async () => opening,
+      listSaves: async () => [],
+    }
+    const store = createGameStore({
+      mode: 'engine',
+      dataSource: { ...source, loadSeason },
+      persistence,
+    })
+    await until(() => store.getState().dataStatus === 'ready')
+
+    await store.getState().actions.continueGame()
+
+    expect(store.getState().state?.season).toBe(2014)
+    expect(loadSeason.mock.calls.map(([s]) => s)).toEqual([2015])
   })
 })
