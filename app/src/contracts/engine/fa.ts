@@ -1,7 +1,15 @@
 /**
  * engine/fa — free agency, contracts, cap (§6.6). Owned by fa-cap (3C).
  */
-import type { Contract, LeagueState, PlayerId, RosterValidation, Season, TeamId } from '../types'
+import type {
+  Contract,
+  CutdownPlan,
+  LeagueState,
+  PlayerId,
+  RosterValidation,
+  Season,
+  TeamId,
+} from '../types'
 import type { EngineContext } from './context'
 import { notImplemented } from './context'
 import type { Rng } from './rng'
@@ -86,6 +94,20 @@ export interface FaModule {
   /** Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged. */
   release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState
 
+  /**
+   * Pure suggestion for the user's cutdown (docs/DECISIONS.md 2026-09-20): first to the roster limit by
+   * lowest consensus ovr, then under the cap by most net savings per rating point above 40, never
+   * dropping a position below STARTER_TEMPLATE or the roster below the game minimum. `protect` players
+   * are never suggested. Consensus and contracts only — no history anchoring, no truth. Deterministic;
+   * does not mutate state. Empty `cuts` with `ok: true` when the roster is already legal.
+   */
+  suggestCutdown(
+    state: LeagueState,
+    teamId: TeamId,
+    ctx: EngineContext,
+    protect?: readonly PlayerId[],
+  ): CutdownPlan
+
   /** 46–53 to sim a game (≤90 in the offseason), under cap, ≥1 QB/K/P etc. per STARTER_TEMPLATE. */
   validateRoster(state: LeagueState, teamId: TeamId, ctx: EngineContext): RosterValidation
 
@@ -112,6 +134,7 @@ export const faStub: FaModule = {
   runAiFreeAgency: () => notImplemented('fa.runAiFreeAgency'),
   runAiCutdowns: () => notImplemented('fa.runAiCutdowns'),
   release: () => notImplemented('fa.release'),
+  suggestCutdown: () => notImplemented('fa.suggestCutdown'),
   validateRoster: () => notImplemented('fa.validateRoster'),
   rolloverContracts: () => notImplemented('fa.rolloverContracts'),
 }

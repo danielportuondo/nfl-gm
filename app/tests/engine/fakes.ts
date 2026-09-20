@@ -193,6 +193,13 @@ export const fakeFa: FaModule = {
   runAiFreeAgency: (state) => state,
   runAiCutdowns: (state) => state,
   release: (state) => state,
+  suggestCutdown: (state, teamId) => ({
+    cuts: [],
+    sizeAfter: state.teams[teamId]?.roster.length ?? 0,
+    payrollAfter: fakeFa.payroll(state, teamId),
+    capSpaceAfter: 0,
+    ok: true,
+  }),
   validateRoster: (state, teamId) => ({
     ok: true,
     size: state.teams[teamId]?.roster.length ?? 0,

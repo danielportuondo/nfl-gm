@@ -209,3 +209,24 @@ export interface RosterValidation {
   capSpace: number
   errors: string[]
 }
+
+/** One suggested release from fa.suggestCutdown. Money is $M, this season. */
+export interface CutdownSuggestion {
+  playerId: PlayerId
+  /** Why the player is on the list: to reach the roster limit, or to get under the cap. */
+  reason: 'size' | 'cap'
+  /** Dead money charged this season if released. */
+  deadMoney: number
+  /** APY freed minus the dead-money charge; negative for heavily guaranteed deals. */
+  netSavings: number
+}
+
+/** fa.suggestCutdown result: the cuts in order, and where the roster stands once all are made. */
+export interface CutdownPlan {
+  cuts: CutdownSuggestion[]
+  sizeAfter: number
+  payrollAfter: number
+  capSpaceAfter: number
+  /** True when the cuts alone make the roster legal: at or under the limit and under the cap. */
+  ok: boolean
+}
