@@ -90,6 +90,7 @@ export function App() {
             savedGame={savedGame}
             onContinue={actions.continueGame}
             busy={busy.newGame}
+            onImportSave={actions.importSave}
           />
         ) : dataStatus === 'error' ? (
           <p className="gg-col-12" role="alert">
@@ -189,6 +190,9 @@ export function App() {
           onSetTheme={actions.setTheme}
           onUpdateSettings={actions.updateSettings}
           onStartOver={actions.startOver}
+          onExportSave={actions.exportSave}
+          onImportSave={actions.importSave}
+          busy={busy.importSave}
         />
       )}
       {(screen === 'dashboard' || screen === 'new-game') && (

@@ -5,6 +5,7 @@ import {
   type DraftPick,
   type DraftRoomState,
   type LeagueState,
+  type SaveSlotMeta,
   type SeasonSummary,
   type StandingRow,
   type TradeEvaluation,
@@ -27,7 +28,7 @@ import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
 import { AcceptanceBar } from '@ui/primitives'
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -109,6 +110,25 @@ function fixtureSeasonSummary(state: LeagueState): SeasonSummary {
   }
 }
 
+/** A save-file `File` whose `.text()` resolves without depending on jsdom's Blob/File support. */
+function fixtureSaveFile(json: string): File {
+  const file = new File([json], 'save.json', { type: 'application/json' })
+  Object.defineProperty(file, 'text', { value: async () => json })
+  return file
+}
+
+const SAVED_GAME: SaveSlotMeta = {
+  slot: 'default',
+  userTeam: 'IND',
+  season: 2015,
+  week: 0,
+  phase: 'PRESEASON',
+  startSeason: 2015,
+  horizonEnd: 2017,
+  savedAt: '2026-09-20T00:00:00.000Z',
+  schemaVersion: 1,
+}
+
 let errorSpy: ReturnType<typeof vi.spyOn>
 
 beforeEach(() => {
@@ -130,6 +150,47 @@ describe('NewGame', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Start' })).toBeInTheDocument()
   })
+
+  it('imports a save file immediately when there is no saved game to protect', async () => {
+    const onImportSave = vi.fn()
+    render(<NewGame data={mockStatic()} onStart={vi.fn()} onImportSave={onImportSave} />)
+
+    fireEvent.change(screen.getByLabelText('Choose a save file'), {
+      target: { files: [fixtureSaveFile('{"a":1}')] },
+    })
+
+    await waitFor(() => expect(onImportSave).toHaveBeenCalledWith('{"a":1}'))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('confirms before replacing a saved game', async () => {
+    const onImportSave = vi.fn()
+    render(
+      <NewGame
+        data={mockStatic()}
+        onStart={vi.fn()}
+        savedGame={SAVED_GAME}
+        onContinue={vi.fn()}
+        onImportSave={onImportSave}
+      />,
+    )
+
+    fireEvent.change(screen.getByLabelText('Choose a save file'), {
+      target: { files: [fixtureSaveFile('{"a":1}')] },
+    })
+    const dialog = await screen.findByRole('dialog', { name: 'Replace saved game?' })
+    expect(onImportSave).not.toHaveBeenCalled()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Keep saved game' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(onImportSave).not.toHaveBeenCalled()
+
+    fireEvent.change(screen.getByLabelText('Choose a save file'), {
+      target: { files: [fixtureSaveFile('{"a":1}')] },
+    })
+    const dialog2 = await screen.findByRole('dialog', { name: 'Replace saved game?' })
+    fireEvent.click(within(dialog2).getByRole('button', { name: 'Replace' }))
+    expect(onImportSave).toHaveBeenCalledWith('{"a":1}')
+  })
 })
 
 describe('Settings', () => {
@@ -142,6 +203,8 @@ describe('Settings', () => {
       onSetTheme: vi.fn(),
       onUpdateSettings: vi.fn(),
       onStartOver: vi.fn(),
+      onExportSave: vi.fn(),
+      onImportSave: vi.fn(),
       ...overrides,
     }
     render(<Settings {...props} />)
@@ -185,6 +248,33 @@ describe('Settings', () => {
       }),
     )
     expect(onStartOver).toHaveBeenCalledTimes(1)
+  })
+
+  it('exports the save when asked', async () => {
+    const user = userEvent.setup()
+    const { onExportSave } = renderSettings()
+    await user.click(screen.getByRole('button', { name: 'Export save' }))
+    expect(onExportSave).toHaveBeenCalledTimes(1)
+  })
+
+  it('confirms before replacing the game with an imported save', async () => {
+    const { onImportSave } = renderSettings()
+
+    fireEvent.change(screen.getByLabelText('Choose a save file'), {
+      target: { files: [fixtureSaveFile('{"a":1}')] },
+    })
+    const dialog = await screen.findByRole('dialog', { name: 'Replace current game?' })
+    expect(onImportSave).not.toHaveBeenCalled()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Keep current' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(onImportSave).not.toHaveBeenCalled()
+
+    fireEvent.change(screen.getByLabelText('Choose a save file'), {
+      target: { files: [fixtureSaveFile('{"a":1}')] },
+    })
+    const dialog2 = await screen.findByRole('dialog', { name: 'Replace current game?' })
+    fireEvent.click(within(dialog2).getByRole('button', { name: 'Replace' }))
+    expect(onImportSave).toHaveBeenCalledWith('{"a":1}')
   })
 })
 

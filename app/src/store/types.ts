@@ -76,6 +76,7 @@ export interface GameStoreState {
     fa: boolean
     simToNextEvent: boolean
     simSeason: boolean
+    importSave: boolean
   }
   actions: {
     /** Engine mode loads the start season's chunks (and the next two drafts') before building the league. */
@@ -100,6 +101,13 @@ export interface GameStoreState {
      * first; the 'default' save then stays as Continue until a new game overwrites it.
      */
     startOver: () => Promise<void>
+    /**
+     * Downloads the running league as a JSON file (Settings' "Save file" panel). No-op without state;
+     * returns the file name and JSON body so tests (and the E2E download check) can assert on them.
+     */
+    exportSave: () => { fileName: string; json: string } | undefined
+    /** Replaces the running game with an exported save, overwrites the autosave, and routes in. */
+    importSave: (json: string) => Promise<void>
     /** Cap in $M for any season (this or a future one), for Finances' "next season" tile. Null while data is loading. */
     capFor: (season: Season) => number | null
 

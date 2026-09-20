@@ -243,6 +243,7 @@ export function createGameStore(config: StoreConfig = {}) {
         fa: false,
         simToNextEvent: false,
         simSeason: false,
+        importSave: false,
       },
       actions: {
         async newGame(opts: NewGameInput) {
@@ -396,6 +397,65 @@ export function createGameStore(config: StoreConfig = {}) {
           const league = get().state
           if (!league) return
           set({ state: { ...league, settings: { ...league.settings, ...patch } } })
+        },
+
+        exportSave() {
+          const league = get().state
+          if (!league) return
+          const json = persistence.exportJson(league)
+          const data = get().data
+          const abbr = (data?.teams[league.userTeam]?.abbr ?? league.userTeam).toLowerCase()
+          const fileName = `gridiron-gm-${abbr}-${league.season}-w${league.week}.json`
+          if (typeof document !== 'undefined') {
+            const blob = new Blob([json], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = fileName
+            // Attached and revoked late: Firefox ignores download clicks on detached anchors and
+            // can drop a blob URL that is revoked before the download starts.
+            document.body.appendChild(a)
+            a.click()
+            a.remove()
+            setTimeout(() => URL.revokeObjectURL(url), 1000)
+          }
+          addToast('Exported', 'success')
+          return { fileName, json }
+        },
+
+        async importSave(json: string) {
+          set((s) => ({ busy: { ...s.busy, importSave: true } }))
+          try {
+            let league: LeagueState
+            try {
+              league = persistence.importJson(json)
+            } catch (err) {
+              const message = err instanceof Error ? err.message : String(err)
+              addToast(`Could not import the save file: ${message}`, 'error')
+              return
+            }
+            if (mode !== 'mock') {
+              await ensureLoaded(league.season, league.season + 1 + DRAFTS_AHEAD)
+            }
+            // Replacing the old game: cancel its pending debounced autosave without flushing it.
+            if (autosaveTimer !== undefined) {
+              clearTimeout(autosaveTimer)
+              autosaveTimer = undefined
+            }
+            set({
+              state: league,
+              selectedPlayerId: null,
+              tradeOffers: [],
+              suggestedTrades: [],
+              dismissedSuggestionIds: [],
+              alerts: [],
+            })
+            if (mode !== 'mock') await persistence.save('default', league)
+            addToast('Imported', 'success')
+            get().actions.goTo(league.outcome === 'IN_PROGRESS' ? 'dashboard' : 'end-game')
+          } finally {
+            set((s) => ({ busy: { ...s.busy, importSave: false } }))
+          }
         },
 
         async startOver() {

@@ -157,6 +157,13 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
     await expect(page.getByText(/roster · \d+ players/).first()).toHaveText(rosterCaption)
   })
 
+  await test.step('export save downloads a JSON file from Settings', async () => {
+    await goTo(page, 'Settings')
+    const dl = page.waitForEvent('download')
+    await page.getByRole('button', { name: 'Export save' }).click()
+    expect((await dl).suggestedFilename()).toMatch(/^gridiron-gm-.*\.json$/)
+  })
+
   await test.step('start over from Settings returns to New Game with Continue on offer', async () => {
     await goTo(page, 'Settings')
     await page.getByRole('button', { name: 'Start over' }).click()

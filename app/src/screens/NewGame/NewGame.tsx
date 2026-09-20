@@ -7,11 +7,12 @@ import {
   type TeamId,
   type TeamInfo,
 } from '@contracts/index'
-import { Button, Panel } from '@ui/primitives'
+import { Button, Modal, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
 import { phaseLabel } from '../shared/phaseLabel'
+import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
 export interface NewGameProps {
   data: StaticData
@@ -21,6 +22,8 @@ export interface NewGameProps {
   onContinue?: () => void
   /** True while a game is being built or restored; Start and Continue wait for it. */
   busy?: boolean
+  /** Imports an exported save file (Settings' "Save file" panel writes the files this reads). */
+  onImportSave?: (json: string) => void
 }
 
 const MIN_START_SEASON = 2010
@@ -60,23 +63,46 @@ const DEFAULT_SETTINGS: GameSettings = {
  * The mandate plate leads and re-dresses in the chosen team's colors; below it, year → team → horizon
  * as a single column of panels, the team step a helmet wall by division (docs/DESIGN.md §11).
  */
-export function NewGame({ data, onStart, savedGame, onContinue, busy }: NewGameProps) {
+export function NewGame({
+  data,
+  onStart,
+  savedGame,
+  onContinue,
+  busy,
+  onImportSave,
+}: NewGameProps) {
   const years = yearRange(data.manifest.latestRealSeason)
   const [startSeason, setStartSeason] = useState<number>(data.manifest.latestRealSeason)
   const [userTeam, setUserTeam] = useState<TeamId>(DEFAULT_TEAM)
   const [horizonSeasons, setHorizonSeasons] = useState(3)
   const [settings, setSettings] = useState<GameSettings>(DEFAULT_SETTINGS)
+  const [pendingImport, setPendingImport] = useState<string | null>(null)
+
+  function handleFile(json: string) {
+    if (savedGame) setPendingImport(json)
+    else onImportSave?.(json)
+  }
+  const picker = useSaveFilePicker(handleFile)
+
+  function confirmImport() {
+    const json = pendingImport
+    setPendingImport(null)
+    if (json !== null) onImportSave?.(json)
+  }
 
   const team = data.teams[userTeam]
   const endYear = startSeason + horizonSeasons - 1
   const seasonsWord = horizonSeasons === 1 ? 'season' : 'seasons'
   const savedTeam = savedGame ? data.teams[savedGame.userTeam] : undefined
   const showContinue = Boolean(savedGame && onContinue)
-  const base = showContinue ? 1 : 0
+  const showImportPanel = !savedGame
+  const base = showContinue || showImportPanel ? 1 : 0
   const groups = divisionGroups(data.teams)
 
   return (
     <>
+      <input {...picker.inputProps} />
+
       {savedGame && onContinue && (
         <div className="gg-col-12">
           <Panel variant="attention" revealIndex={0}>
@@ -85,16 +111,32 @@ export function NewGame({ data, onStart, savedGame, onContinue, busy }: NewGameP
                 Continue as the {savedTeam?.name ?? savedGame.userTeam}: {savedGame.season},{' '}
                 {phaseLabel(savedGame.phase)}.
               </p>
-              <Button
-                type="button"
-                variant="primary"
-                busy={busy}
-                busyLabel="Loading…"
-                onClick={onContinue}
-              >
-                Continue
-              </Button>
+              <div style={{ display: 'flex', gap: 'var(--sp-2)' }}>
+                <Button
+                  type="button"
+                  variant="primary"
+                  busy={busy}
+                  busyLabel="Loading…"
+                  onClick={onContinue}
+                >
+                  Continue
+                </Button>
+                <Button type="button" variant="ghost" onClick={picker.open}>
+                  Import a save file
+                </Button>
+              </div>
             </div>
+          </Panel>
+        </div>
+      )}
+
+      {showImportPanel && (
+        <div className="gg-col-12">
+          <Panel title="Have a save file?" revealIndex={0}>
+            <p className="gg-field__hint">Import a game exported from Settings.</p>
+            <Button type="button" variant="ghost" onClick={picker.open}>
+              Import a save file
+            </Button>
           </Panel>
         </div>
       )}
@@ -231,6 +273,27 @@ export function NewGame({ data, onStart, savedGame, onContinue, busy }: NewGameP
           </div>
         </Panel>
       </div>
+
+      {pendingImport !== null && (
+        <Modal
+          title="Replace saved game?"
+          onClose={() => setPendingImport(null)}
+          footer={
+            <>
+              <Button type="button" variant="ghost" onClick={() => setPendingImport(null)}>
+                Keep saved game
+              </Button>
+              <Button type="button" variant="danger" onClick={confirmImport}>
+                Replace
+              </Button>
+            </>
+          }
+        >
+          <p style={{ margin: 0 }}>
+            Importing replaces the saved game and its autosave. Export first if you want to keep it.
+          </p>
+        </Modal>
+      )}
     </>
   )
 }

@@ -252,6 +252,151 @@ describe('releaseMany', () => {
   })
 })
 
+describe('exportSave', () => {
+  it('is a no-op without state', () => {
+    const store = createGameStore({ mode: 'mock' })
+    expect(store.getState().actions.exportSave()).toBeUndefined()
+  })
+
+  it('returns the persistence JSON and a file name built from the team and season', async () => {
+    const base = mockLeague()
+    const exportJson = vi.fn(() => '{"a":1}')
+    const persistence: PersistenceModule = { ...persistenceStub, exportJson }
+    const store = createGameStore({ mode: 'engine', persistence })
+    store.setState({ state: base })
+
+    const result = store.getState().actions.exportSave()
+
+    expect(exportJson).toHaveBeenCalledWith(base)
+    expect(result?.json).toBe('{"a":1}')
+    expect(result?.fileName).toMatch(/^gridiron-gm-[a-z]+-\d{4}-w\d+\.json$/)
+  })
+})
+
+describe('importSave', () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('toasts an error and leaves everything untouched on a bad file', async () => {
+    const base = mockLeague()
+    const importJson = vi.fn(() => {
+      throw new Error('not a save file')
+    })
+    const save = vi.fn(async () => SAVED_META)
+    const persistence: PersistenceModule = { ...persistenceStub, importJson, save }
+    const store = createGameStore({ mode: 'engine', persistence })
+    const proposal = fixtureProposal(base)
+    store.setState({ state: base, tradeOffers: [proposal], screen: 'settings' })
+
+    await store.getState().actions.importSave('not json')
+
+    expect(store.getState().state).toBe(base)
+    expect(store.getState().tradeOffers).toEqual([proposal])
+    expect(store.getState().screen).toBe('settings')
+    expect(save).not.toHaveBeenCalled()
+    const toast = store.getState().toasts.at(-1)
+    expect(toast?.tone).toBe('error')
+    expect(toast?.text).toBe('Could not import the save file: not a save file')
+  })
+
+  it('sets state, clears derived slices, saves, and routes to dashboard for an in-progress league', async () => {
+    const base = mockLeague()
+    const imported: LeagueState = { ...mockLeague({ season: 2018 }), outcome: 'IN_PROGRESS' }
+    const importJson = vi.fn(() => imported)
+    const calls: string[] = []
+    const save = vi.fn(async (_slot: string, state: LeagueState) => {
+      calls.push('save')
+      expect(state).toBe(imported)
+      return SAVED_META
+    })
+    const persistence: PersistenceModule = { ...persistenceStub, importJson, save }
+    const store = createGameStore({ mode: 'engine', persistence })
+    const proposal = fixtureProposal(base)
+    store.setState({
+      state: base,
+      tradeOffers: [proposal],
+      suggestedTrades: [proposal],
+      dismissedSuggestionIds: [proposal.id],
+      alerts: ['something happened'],
+      selectedPlayerId: proposal.offer.players[0]!,
+    })
+
+    await store.getState().actions.importSave('{"a":1}')
+
+    expect(store.getState().state).toBe(imported)
+    expect(store.getState().selectedPlayerId).toBeNull()
+    expect(store.getState().tradeOffers).toEqual([])
+    expect(store.getState().suggestedTrades).toEqual([])
+    expect(store.getState().dismissedSuggestionIds).toEqual([])
+    expect(store.getState().alerts).toEqual([])
+    expect(save).toHaveBeenCalledTimes(1)
+    expect(calls).toEqual(['save'])
+    expect(store.getState().screen).toBe('dashboard')
+    const toast = store.getState().toasts.at(-1)
+    expect(toast?.tone).toBe('success')
+    expect(toast?.text).toBe('Imported')
+  })
+
+  it('routes to end-game when the imported league is no longer in progress', async () => {
+    const imported: LeagueState = { ...mockLeague(), outcome: 'HORIZON_EXPIRED' }
+    const persistence: PersistenceModule = {
+      ...persistenceStub,
+      importJson: () => imported,
+      save: async () => SAVED_META,
+    }
+    const store = createGameStore({ mode: 'engine', persistence })
+    store.setState({ state: mockLeague() })
+
+    await store.getState().actions.importSave('{"a":1}')
+
+    expect(store.getState().screen).toBe('end-game')
+  })
+
+  it('cancels a pending debounced autosave from the old game instead of writing it', async () => {
+    vi.useFakeTimers()
+    const imported: LeagueState = { ...mockLeague({ season: 2019 }), outcome: 'IN_PROGRESS' }
+    const save = vi.fn(async (_slot: string, _state: LeagueState) => SAVED_META)
+    const persistence: PersistenceModule = {
+      ...persistenceStub,
+      importJson: () => imported,
+      save,
+    }
+    const store = createGameStore({ mode: 'engine', persistence })
+    const league = mockLeague()
+    store.setState({ state: league })
+    // Trigger the debounced autosave subscription (see `startOver` tests for the pattern) — this
+    // timer belongs to the OLD game and must never fire.
+    const oldState = { ...league, week: 1 }
+    store.setState({ state: oldState })
+    expect(save).not.toHaveBeenCalled()
+
+    await store.getState().actions.importSave('{"a":1}')
+
+    expect(save).toHaveBeenCalledWith('default', imported)
+    expect(save.mock.calls.some(([, s]) => s === oldState)).toBe(false)
+
+    // A fresh debounce may legitimately schedule for the *imported* state; only the old one is banned.
+    await vi.advanceTimersByTimeAsync(5_000)
+    expect(save.mock.calls.some(([, s]) => s === oldState)).toBe(false)
+  })
+
+  it('in mock mode sets state and routes without touching persistence', async () => {
+    const base = mockLeague()
+    const imported: LeagueState = { ...mockLeague({ season: 2020 }), outcome: 'IN_PROGRESS' }
+    const store = createGameStore({
+      mode: 'mock',
+      persistence: { ...persistenceStub, importJson: () => imported },
+    })
+    store.setState({ state: base })
+
+    await store.getState().actions.importSave('{"a":1}')
+
+    expect(store.getState().state).toBe(imported)
+    expect(store.getState().screen).toBe('dashboard')
+  })
+})
+
 describe('cutdownPlan', () => {
   it('returns null with no state', () => {
     const store = createGameStore({ mode: 'mock' })

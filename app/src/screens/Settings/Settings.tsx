@@ -5,6 +5,7 @@ import { Button, Modal, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
 import { phaseLabel } from '../shared/phaseLabel'
+import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
 export interface SettingsProps {
   state: LeagueState
@@ -13,6 +14,10 @@ export interface SettingsProps {
   onSetTheme: (theme: Theme) => void
   onUpdateSettings: (patch: Partial<GameSettings>) => void
   onStartOver: () => void
+  onExportSave: () => void
+  onImportSave: (json: string) => void
+  /** True while an import is in flight; disables both save-file buttons. */
+  busy?: boolean
 }
 
 const THEMES: { id: Theme; label: string }[] = [
@@ -34,8 +39,13 @@ export function Settings({
   onSetTheme,
   onUpdateSettings,
   onStartOver,
+  onExportSave,
+  onImportSave,
+  busy,
 }: SettingsProps) {
   const [confirming, setConfirming] = useState(false)
+  const [pendingImport, setPendingImport] = useState<string | null>(null)
+  const picker = useSaveFilePicker(setPendingImport)
   const team = data.teams[state.userTeam]
   const teamName = team ? `${team.city} ${team.name}` : state.userTeam
   const total = Math.max(1, state.horizonEnd - state.startSeason + 1)
@@ -49,6 +59,12 @@ export function Settings({
   function confirmStartOver() {
     setConfirming(false)
     onStartOver()
+  }
+
+  function confirmImport() {
+    const json = pendingImport
+    setPendingImport(null)
+    if (json !== null) onImportSave(json)
   }
 
   return (
@@ -87,8 +103,26 @@ export function Settings({
       </div>
 
       <div className="gg-col-12">
+        <Panel title="Save file" revealIndex={2}>
+          <p className="gg-field__hint">
+            Your game autosaves in this browser. Export a copy to keep it or move it to another
+            device.
+          </p>
+          <div style={{ display: 'flex', gap: 'var(--sp-2)', flexWrap: 'wrap' }}>
+            <Button type="button" disabled={busy} onClick={onExportSave}>
+              Export save
+            </Button>
+            <Button type="button" variant="ghost" disabled={busy} onClick={picker.open}>
+              Import save
+            </Button>
+          </div>
+          <input {...picker.inputProps} />
+        </Panel>
+      </div>
+
+      <div className="gg-col-12">
         <TeamScope colors={team?.colors ?? FALLBACK_COLORS}>
-          <Panel variant="plate" revealIndex={2}>
+          <Panel variant="plate" revealIndex={3}>
             <div className="gg-mandate">
               <HelmetSprite pos="QB" size={4} />
               <div className="gg-mandate__text">
@@ -129,6 +163,28 @@ export function Settings({
           <p style={{ margin: 0 }}>
             This leaves the {team?.name ?? state.userTeam} and returns to the New Game screen. Your
             saved game stays until you start a new one.
+          </p>
+        </Modal>
+      )}
+
+      {pendingImport !== null && (
+        <Modal
+          title="Replace current game?"
+          onClose={() => setPendingImport(null)}
+          footer={
+            <>
+              <Button type="button" variant="ghost" onClick={() => setPendingImport(null)}>
+                Keep current
+              </Button>
+              <Button type="button" variant="danger" onClick={confirmImport}>
+                Replace
+              </Button>
+            </>
+          }
+        >
+          <p style={{ margin: 0 }}>
+            Importing replaces the game in progress and its autosave. Export first if you want to
+            keep it.
           </p>
         </Modal>
       )}
