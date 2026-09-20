@@ -6,6 +6,7 @@
  * functions stay pure and deterministic while `generateAiOffers` can value thousands of assets.
  */
 import {
+  isOpeningOffseason,
   POSITIONS,
   STARTER_TEMPLATE,
   type DraftPick,
@@ -61,8 +62,12 @@ export function seasonStartOvr(state: LeagueState, ctx: EngineContext): Map<Play
   const cached = startOvrCache.get(state)
   if (cached) return cached
   const map = new Map<PlayerId, number>()
-  const chunk = ctx.seasonData(state.season)
-  for (const p of chunk?.players.players ?? []) map.set(p.id, p.scouting.ovr)
+  // Before the first season there is no in-season drop to detect, and the chunk for `season`
+  // (startSeason − 1) may not exist at all for a 2010 start.
+  if (!isOpeningOffseason(state)) {
+    const chunk = ctx.seasonData(state.season)
+    for (const p of chunk?.players.players ?? []) map.set(p.id, p.scouting.ovr)
+  }
   startOvrCache.set(state, map)
   return map
 }
