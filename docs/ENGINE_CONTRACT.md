@@ -603,6 +603,21 @@ export interface NewGameOptions {
   /** Number of seasons to win it all in (1–10). horizonEnd = startSeason + horizonSeasons − 1. */
   horizonSeasons: number
   settings: GameSettings
+  /**
+   * Where the game opens. 'DRAFT' (default): the offseason before `startSeason`, at the draft of the
+   * startSeason class — `season` is startSeason − 1 until the TRAINING_CAMP rollover. 'PRESEASON':
+   * opening day of `startSeason` with that year's rookies already rostered (calibration harnesses).
+   */
+  startAt?: 'DRAFT' | 'PRESEASON'
+}
+
+/**
+ * True between newGame(startAt: 'DRAFT') and the first TRAINING_CAMP → PRESEASON rollover: the state
+ * describes `startSeason` (rosters, contracts, consensus, truth) while `season` is still startSeason − 1
+ * so the draft-year convention (season X drafts the X+1 class) needs no special case.
+ */
+export function isOpeningOffseason(state: LeagueState): boolean {
+  return state.season < state.startSeason
 }
 
 export interface WeekReport {
@@ -615,10 +630,13 @@ export interface WeekReport {
 export interface LeagueModule {
   /**
    * Build the initial LeagueState for `startSeason`: players + consensus + truth from the season
-   * chunk and trajectories, real opening-day rosters with synthesized contracts (via fa), real pick
-   * ownership for the next 2 drafts (draft.buildDraftOrder for startSeason+1 and +2 — see the draft-year
-   * convention in engine/draft.ts), real schedule, phase PRESEASON. Players with no opening-day team
-   * start in freeAgents. Requires ctx.seasonData for startSeason and for +1/+2 while in history.
+   * chunk and trajectories, real opening-day rosters with synthesized contracts (via fa). By default
+   * (startAt 'DRAFT') the startSeason class is removed from rosters and players, picks are owned for
+   * startSeason, +1 and +2 (draft.buildDraftOrder), `season` is startSeason − 1, phase DRAFT and no
+   * schedule yet — the draft-year convention in engine/draft.ts then drafts the startSeason class.
+   * With startAt 'PRESEASON' the rookies stay rostered, picks are +1 and +2, the real schedule is
+   * built and the phase is PRESEASON. Players with no opening-day team start in freeAgents. Requires
+   * ctx.seasonData for startSeason and for +1/+2 while in history.
    */
   newGame(opts: NewGameOptions, ctx: EngineContext): LeagueState
 
@@ -636,7 +654,10 @@ export interface LeagueModule {
    *  OFFSEASON_RESIGN → fa.runAiResign; DRAFT → requires draftRoom.status === 'COMPLETE';
    *  UDFA → draft.runUdfa for AI teams; FREE_AGENCY → fa.runAiFreeAgency;
    *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements + refreshScouting,
-   *  history.snapToHistory (if in history), schedule for the new season, phase PRESEASON;
+   *  history.snapToHistory (if in history), schedule for the new season, phase PRESEASON — except in
+   *  the opening offseason (`isOpeningOffseason`), where contracts, progression, retirements and the
+   *  consensus refresh are skipped because the state already describes the new season; dead money is
+   *  zeroed and the snap, picks and schedule still run;
    *  PRESEASON → fa.runAiCutdowns, auto depth charts for AI teams, validate rosters
    *  (fa.validateRoster for all 32), phase REGULAR week 1.
    * Throws if the user's roster/cap is invalid for the transition (message lists the problems).
