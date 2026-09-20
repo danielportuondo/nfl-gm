@@ -3,6 +3,19 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## 1.4.0 — 2026-09-20
+
+### Added
+- Season Recap draws the playoff bracket: seeds, byes, scores and 2px connectors, AFC over NFC, the
+  Super Bowl on the right. Recaps saved before this release keep the old text list.
+- Six major awards on the Season Recap: most valuable player, offensive and defensive player of the
+  year, offensive and defensive rookie of the year, coach of the year (the team that beat its
+  consensus expectation by the most). All from box scores, records and consensus; the league
+  leaders list stays underneath.
+- Save file panel on Settings: export the game as JSON, import one back. New Game offers the same
+  import for a fresh browser or another device. Importing replaces the current game and its autosave
+  after a confirm.
+
 ## 1.3.0 — 2026-09-20
 
 ### Added

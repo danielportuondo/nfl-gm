@@ -316,7 +316,20 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
   that updates live, the AI's counter as a toast-styled inline panel.
 - **Free Agency** — pool table with asks; your offers panel; bidding result as a toast.
 - **Finances** — cap table by season (sunken), expiring contracts, dead money as `--danger` rows.
-- **Season Recap** — awards as NamePlates, playoff bracket drawn with 2px `--line` connectors.
+- **Season Recap** — header plate, then the bracket panel at full width, then Awards and Final
+  standings half-width beneath it. The bracket is one CSS grid, four columns (Wild card, Divisional,
+  Conference, Super Bowl) by eight rows, AFC on top, NFC below; cards span 1 / 2 / 4 / 8 rows so every postseason
+  in both eras is the same binary tree with eight leaves (bye seeds are leaves too). Wild card leaves
+  are ordered so each divisional game sits between its two feeders, resolved from results, so the
+  tree never crosses. Connectors are 2px `--line`: a right stub on every non-root card, a vertical
+  bar from 25% to 75% of the cell plus an entry stub on every non-leaf cell. Seed in Pixelify, team
+  abbreviation, score; the winner in `--text`, the loser in `--text-2`. Columns are capped at
+  220 px and centered; below ~670 px the grid scrolls sideways inside its panel (a block wrap, never
+  a flex-centered one, which would clip the left edge). The six major awards (MVP, offensive and defensive player of the year, offensive
+  and defensive rookie of the year, coach of the year) are NamePlates in a wrapping row with the
+  award name as a caption and the stat line as meta; coach of the year is a helmet plate in the
+  team's colors. League leaders stay a compact list underneath. Nothing here reads truth: awards
+  come from box scores, records and consensus.
 - **End Game** — the on-the-clock hero composition reused: gold strip, "Super Bowl champions" or
   "Horizon reached", then the GM report card (StatTiles) and "Keep playing".
 - **Settings** — two quiet panels, then the run plate. Appearance offers Dark / Light / System as
@@ -326,6 +339,11 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
   of 3, preseason." and Start over: the plate you arrived on is the plate you leave from. Start over
   confirms in a Modal ("Keep playing" / "Start over"), writes any pending autosave, clears the league
   and returns to New Game, where the save is offered as Continue until a new game overwrites it.
+  Between This game and the run plate, **Save file** holds Export save and Import save: export
+  downloads the league as `gridiron-gm-<team>-<season>-w<week>.json`; import reads a file, confirms in
+  a Modal ("Keep current" / "Replace") and replaces the game and its autosave at once. New Game offers
+  the same import (confirming only when a saved game would be replaced), since a fresh browser is
+  where a save file is most often needed.
 - **About** — attribution and the disclaimer from HANDOFF §2, verbatim, in Barlow 15.
 
 ## 12. Do not
