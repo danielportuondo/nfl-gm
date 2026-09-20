@@ -8,6 +8,7 @@
 import type { z } from 'zod'
 import type {
   AgingCurveSchema,
+  AwardIdSchema,
   AwardSchema,
   BoxScoreSchema,
   CapFileSchema,
@@ -102,6 +103,7 @@ export type PlayoffFormat = z.infer<typeof PlayoffFormatSchema>
 export type PlayoffSeed = z.infer<typeof PlayoffSeedSchema>
 export type PlayoffBracket = z.infer<typeof PlayoffBracketSchema>
 export type PlayoffExit = z.infer<typeof PlayoffExitSchema>
+export type AwardId = z.infer<typeof AwardIdSchema>
 export type Award = z.infer<typeof AwardSchema>
 export type SeasonSummary = z.infer<typeof SeasonSummarySchema>
 export type Phase = z.infer<typeof PhaseSchema>

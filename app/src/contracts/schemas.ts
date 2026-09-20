@@ -251,9 +251,20 @@ export const PlayoffBracketSchema = z.object({
   champion: TeamIdSchema.nullable(),
 })
 
+export const AWARD_IDS = ['MVP', 'OPOY', 'DPOY', 'OROY', 'DROY', 'COY'] as const
+export const AwardIdSchema = z.enum(AWARD_IDS)
+
 export const AwardSchema = z.object({
+  id: AwardIdSchema.optional().describe(
+    'Set on the major awards (MVP, OPOY, DPOY, OROY, DROY, COY); absent on stat leaders.',
+  ),
   name: z.string(),
   playerId: PlayerIdSchema.optional(),
+  playerName: z
+    .string()
+    .optional()
+    .describe('Name at award time, so past recaps render after the player retires.'),
+  pos: PositionSchema.optional(),
   teamId: TeamIdSchema.optional(),
   note: z.string().optional(),
 })
@@ -266,6 +277,9 @@ export const SeasonSummarySchema = z.object({
   runnerUp: TeamIdSchema.nullable(),
   standings: z.array(StandingRowSchema),
   awards: z.array(AwardSchema),
+  bracket: PlayoffBracketSchema.optional().describe(
+    'Seeds, rounds and champion as played. Absent on summaries saved before v1.4.',
+  ),
   userTeam: TeamIdSchema,
   userRecord: TeamRecordSchema,
   userPlayoffExit: PlayoffExitSchema,

@@ -1143,6 +1143,18 @@
             "items": {
               "type": "object",
               "properties": {
+                "id": {
+                  "description": "Set on the major awards (MVP, OPOY, DPOY, OROY, DROY, COY); absent on stat leaders.",
+                  "type": "string",
+                  "enum": [
+                    "MVP",
+                    "OPOY",
+                    "DPOY",
+                    "OROY",
+                    "DROY",
+                    "COY"
+                  ]
+                },
                 "name": {
                   "type": "string"
                 },
@@ -1150,6 +1162,27 @@
                   "type": "string",
                   "minLength": 1,
                   "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "playerName": {
+                  "description": "Name at award time, so past recaps render after the player retires.",
+                  "type": "string"
+                },
+                "pos": {
+                  "type": "string",
+                  "enum": [
+                    "QB",
+                    "RB",
+                    "WR",
+                    "TE",
+                    "OL",
+                    "DL",
+                    "LB",
+                    "CB",
+                    "S",
+                    "K",
+                    "P"
+                  ],
+                  "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
                 },
                 "teamId": {
                   "type": "string",
@@ -1166,6 +1199,151 @@
               ],
               "additionalProperties": false
             }
+          },
+          "bracket": {
+            "description": "Seeds, rounds and champion as played. Absent on summaries saved before v1.4.",
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "NFL season year, e.g. 2015."
+              },
+              "seeds": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "teamId": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 3,
+                      "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                    },
+                    "conf": {
+                      "type": "string",
+                      "enum": [
+                        "AFC",
+                        "NFC"
+                      ]
+                    },
+                    "seed": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 7
+                    }
+                  },
+                  "required": [
+                    "teamId",
+                    "conf",
+                    "seed"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "rounds": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "REG",
+                        "WC",
+                        "DIV",
+                        "CONF",
+                        "SB"
+                      ]
+                    },
+                    "games": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "\"<season>-<type>-<week>-<away>@<home>\""
+                          },
+                          "season": {
+                            "type": "integer",
+                            "minimum": 1920,
+                            "maximum": 2200,
+                            "description": "NFL season year, e.g. 2015."
+                          },
+                          "week": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 30
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "REG",
+                              "WC",
+                              "DIV",
+                              "CONF",
+                              "SB"
+                            ]
+                          },
+                          "home": {
+                            "type": "string",
+                            "minLength": 2,
+                            "maxLength": 3,
+                            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                          },
+                          "away": {
+                            "type": "string",
+                            "minLength": 2,
+                            "maxLength": 3,
+                            "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                          },
+                          "neutralSite": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "season",
+                          "week",
+                          "type",
+                          "home",
+                          "away"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "games"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "champion": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "season",
+              "seeds",
+              "rounds",
+              "champion"
+            ],
+            "additionalProperties": false
           },
           "userTeam": {
             "type": "string",
