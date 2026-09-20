@@ -209,3 +209,31 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
 - A team-in-year preview on the mandate plate (top consensus players, cap room); needs the store to load a season chunk on selection.
 - Export / import of the save as JSON: `persistence.exportJson` / `importJson` exist, no screen uses them. A natural Settings addition.
 - Refilling a roster left short of 46 by retirements is still a trip to Free agency; the cutdown helper only cuts.
+
+## 2026-09-20 — Opening offseason (v1.5.0)
+
+- **A new game opens at its own draft.** Daniel: "If I take over a team in 2013, before starting the
+  season I should have the 2013 draft." `league.newGame` now defaults to `startAt: 'DRAFT'`: the start
+  class (`draft.prospects` of the start chunk) is filtered out of the chunk before anything is built, picks
+  are owned for S, S+1 and S+2 with the real S numbers, and the state opens at `season = S − 1`,
+  `phase = 'DRAFT'`. The draft-year convention (season X drafts X+1) is unchanged, so draft, trade
+  discounting, anchoring and cutdowns needed no changes. The TRAINING_CAMP rollover into S skips
+  contract ticking, progression, retirements and the consensus refresh when `isOpeningOffseason(state)`
+  (`season < startSeason`); dead money is zeroed, the snap, picks and schedule run as usual. No schema
+  change, no save-version bump. Spec: `docs/superpowers/specs/2026-09-20-opening-offseason-design.md`.
+- `startAt: 'PRESEASON'` is the old opening-day start; calibration, the sim sweep and the 2014 redraft
+  fixture pin it so their measurements do not move (2015 calibration: real-win correlation 0.855, sd of
+  wins 3.13, unchanged).
+- Cap and market age lag one year during the opening offseason, the same convention every later
+  offseason already follows (`capFor` clamps below the table, so a 2010 start prices off the 2010 cap).
+  `trade.seasonStartOvr` is empty before the first season and never reads the S − 1 chunk; the store's
+  chunk loader skips seasons the manifest does not list.
+- **UI:** offseason phases are labelled by the season they prepare ("2013 offseason · Draft"), which
+  also ends the "2013 · draft while the 2014 class is on the board" confusion. New Game copy says you
+  take over before the draft; the Dashboard leads its alerts with "The 2013 draft is waiting / under way";
+  offer text shows pick numbers when the order is set ("2013 R1 #24 (IND)"), only when known.
+- Headless plays the opening offseason first (IND 2012 ×6: the scripted GM drafts at IND's ten real 2012 slots,
+  AI rosters match real 2012 opening day at 100 % mean / 98 % min after the opening rollover, `invariants: ok`;
+  a 2010 start proves nothing needs a 2009 chunk); the E2E smoke drafts before it sims. New realData test:
+  2015 start, scripted GM through the opening offseason, every roster legal on opening day, AI rosters
+  ≥ 90 % real.

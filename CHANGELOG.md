@@ -3,6 +3,18 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## 1.5.0 — 2026-09-20
+
+### Changed
+- A new game opens at the draft of the year you pick: take over the 2013 Colts and you run the 2013
+  draft, sign undrafted rookies, work free agency and break camp before the 2013 season. Saves from
+  earlier versions continue unchanged.
+- The header labels offseason phases by the season they prepare ("2013 offseason · Draft").
+
+### Added
+- Dashboard alert while a draft is waiting or under way.
+- Trade offers name picks with their overall number once the order is set ("2013 R1 #24 (IND)").
+
 ## 1.4.0 — 2026-09-20
 
 ### Added

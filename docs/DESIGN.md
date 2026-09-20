@@ -180,7 +180,8 @@ with the fallback stacks above so text never blocks.
 └──────────┴───────────────────────────────────────────────────────┘
 ```
 
-- **Strip** (top, sticky, `top: env(safe-area-inset-top, 0px)`): team plate, season and week, record,
+- **Strip** (top, sticky, `top: env(safe-area-inset-top, 0px)`): team plate, season and week (offseason
+  phases read as the season they prepare: `2013 offseason · Draft`), record,
   cap space, horizon countdown. Readouts are separated by a 2px `--line` vertical rule with `--sp-3`
   on each side — separate gauges on one scoreboard, which is what they are. Height 48px desktop.
   The Strip's trailing (right) slot holds the theme toggle on every in-game screen; nothing else lives there.
@@ -291,13 +292,14 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
 ## 11. Screen notes (build order per HANDOFF §6.11)
 
 - **New Game** — the mandate plate leads: a `plate` panel in the chosen team's colors with a 6× helmet,
-  "Indianapolis Colts, 2012" in Pixelify 32, the mandate sentence, one quiet line on the hindsight
-  premise and the Start button. It is the first thing that ever wears team colors and re-dresses as
+  "Indianapolis Colts, 2012" in Pixelify 32, the mandate sentence, one quiet line that you take over
+  before that year's draft and on the hindsight premise, and the Start button. It is the first thing that ever wears team colors and re-dresses as
   you choose. Below it, year → team → horizon as a single column of panels; the team step is a helmet
   wall — 32 team-colored 4× helmets in eight division columns (AFC row, then NFC), each tile a plate
   with the team's bar, the chosen one raised and bordered in its own primary.
 - **Dashboard** — hero panel with the yard-line motif: record, next opponent (two helmet sprites facing
-  each other), horizon meter. Beside it: cap StatTiles, alerts list, "Sim week" / "Sim to next event".
+  each other), horizon meter. Beside it: cap StatTiles, alerts list (a draft alert leads it during the
+  DRAFT phase), "Sim week" / "Sim to next event".
 - **Roster & Depth Chart** — table (dense) with position filter; depth chart as columns of NamePlates
   you can reorder by keyboard (move up/down) and pointer. While the team is over 53 or over the cap in
   a cap-gated phase, a `Cutdown` panel (`attention`) leads the screen: the engine's suggested cuts as a
@@ -311,7 +313,8 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
 - **Standings** — eight division tables, clinch badges.
 - **League Browser** — team plate grid → that team's roster/picks/cap in a plate panel.
 - **Draft Room** — the showcase (§5.3). Board grid of NamePlates by round, your picks column, the
-  on-the-clock panel (`attention` variant), offers list with meters, pick log in a sunken well.
+  on-the-clock panel (`attention` variant), offers list with meters (offer text names picks with their
+  overall number once the order is set: "2013 R1 #24 (IND)"), pick log in a sunken well.
 - **Trade Center** — two plate panels (yours / theirs) with asset pickers, a single Meter between them
   that updates live, the AI's counter as a toast-styled inline panel.
 - **Free Agency** — pool table with asks; your offers panel; bidding result as a toast.
