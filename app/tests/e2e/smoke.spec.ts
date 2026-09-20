@@ -35,31 +35,21 @@ async function cutdownForPreseason(page: Page): Promise<void> {
   }
 }
 
-test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', async ({ page }) => {
-  await test.step('new game', async () => {
+test('new game -> opening draft with a trade -> season start -> sim 4 weeks -> reload persists', async ({
+  page,
+}) => {
+  await test.step('new game opens in the offseason before the start year', async () => {
     await page.goto('/')
     await expect(page.getByRole('heading', { name: 'Pick your start year' })).toBeVisible()
     await page.getByRole('button', { name: '2012', exact: true }).click()
     await page.getByRole('button', { name: 'Indianapolis Colts' }).click()
     await page.getByRole('button', { name: 'Start' }).click()
-    await expect(HEADER(page)).toContainText('2012', { timeout: 15_000 })
+    // A 2012 start opens at the 2012 draft (docs/superpowers/specs/2026-09-20-opening-offseason-design.md).
+    await expect(HEADER(page)).toContainText('2012 offseason', { timeout: 15_000 })
+    await expect(HEADER(page)).toContainText('Draft')
   })
 
   let rosterCaption = ''
-
-  await test.step('sim the first season and reach the draft', async () => {
-    // Newly started games begin in PRESEASON with that year's draft already on the roster (HANDOFF §6.7);
-    // the next draft (year + 1) comes after this season and its offseason.
-    await clickAdvance(page, 'Start the season')
-    await expect(page.getByRole('button', { name: 'Sim week' })).toBeVisible({ timeout: 15_000 })
-
-    await goTo(page, 'Schedule')
-    await page.getByRole('button', { name: 'Sim season' }).click()
-    await expect(HEADER(page)).toContainText('Offseason resign', { timeout: 30_000 })
-
-    await clickAdvance(page, 'Close re-signing and go to the draft')
-    await expect(HEADER(page)).toContainText('Draft', { timeout: 15_000 })
-  })
 
   await test.step('draft round one: a pick and a trade', async () => {
     await goTo(page, 'Draft')
@@ -105,7 +95,7 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
     })
   })
 
-  await test.step('finish the draft and start the new season', async () => {
+  await test.step('finish the draft, run the offseason and start the season', async () => {
     await goTo(page, 'Draft')
     const finishButton = page.getByRole('button', { name: 'Finish draft' })
     if (await finishButton.isEnabled()) await finishButton.click()
@@ -114,6 +104,7 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
     await clickAdvance(page, 'Close UDFA signings')
     await clickAdvance(page, 'Close free agency')
     await clickAdvance(page, 'Break camp')
+    await expect(HEADER(page)).toContainText('2012 · Preseason', { timeout: 15_000 })
     await cutdownForPreseason(page)
     await clickAdvance(page, 'Start the season')
     await expect(page.getByRole('button', { name: 'Sim week' })).toBeVisible({ timeout: 15_000 })
