@@ -1,9 +1,12 @@
 import {
   persistenceStub,
   TEAM_IDS,
+  type CutdownPlan,
   type LeagueState,
   type PersistenceModule,
+  type PlayerId,
   type SaveSlotMeta,
+  type TeamId,
   type TradeProposal,
   type WeekReport,
 } from '@contracts/index'
@@ -174,5 +177,117 @@ describe('startOver', () => {
 
     await vi.advanceTimersByTimeAsync(5_000)
     expect(save).toHaveBeenCalledTimes(1)
+  })
+})
+
+/** Fake fa.release that actually removes the roster slot, so releaseMany's loop is observable. */
+function fakeRosterRelease(state: LeagueState, teamId: TeamId, playerId: PlayerId): LeagueState {
+  const team = state.teams[teamId]!
+  return {
+    ...state,
+    teams: {
+      ...state.teams,
+      [teamId]: { ...team, roster: team.roster.filter((s) => s.playerId !== playerId) },
+    },
+  }
+}
+
+describe('releaseMany', () => {
+  it('releases every id, leaves exactly one toast, and sets state once', async () => {
+    const base = mockLeague()
+    const idsToCut = base.teams[base.userTeam]!.roster.slice(0, 2).map((s) => s.playerId)
+    const release = vi.fn(fakeRosterRelease)
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { fa: { ...defaultEngineModules.fa, release } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+
+    // "Sets state once at the end": the league state reference should change exactly once, distinct
+    // from the busy-flag toggles around the call (which replace `.busy`, not `.state`).
+    let stateChanges = 0
+    let prevState = store.getState().state
+    const unsubscribe = store.subscribe((s) => {
+      if (s.state !== prevState) {
+        stateChanges += 1
+        prevState = s.state
+      }
+    })
+
+    await store.getState().actions.releaseMany(idsToCut)
+    unsubscribe()
+
+    expect(release).toHaveBeenCalledTimes(2)
+    const rosterAfter = store.getState().state!.teams[base.userTeam]!.roster
+    expect(rosterAfter.some((s) => idsToCut.includes(s.playerId))).toBe(false)
+    expect(stateChanges).toBe(1)
+
+    expect(store.getState().toasts).toHaveLength(1)
+    expect(store.getState().toasts[0]?.text).toBe('Released 2 players')
+  })
+
+  it('uses the singular label for one release', async () => {
+    const base = mockLeague()
+    const id = base.teams[base.userTeam]!.roster[0]!.playerId
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { fa: { ...defaultEngineModules.fa, release: fakeRosterRelease } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+
+    await store.getState().actions.releaseMany([id])
+
+    expect(store.getState().toasts).toHaveLength(1)
+    expect(store.getState().toasts[0]?.text).toBe('Released 1 player')
+  })
+})
+
+describe('cutdownPlan', () => {
+  it('returns null with no state', () => {
+    const store = createGameStore({ mode: 'mock' })
+    expect(store.getState().actions.cutdownPlan([])).toBeNull()
+  })
+
+  it('forwards protect to fa.suggestCutdown', async () => {
+    const base = mockLeague()
+    const fakePlan: CutdownPlan = {
+      cuts: [],
+      sizeAfter: 53,
+      payrollAfter: 100,
+      capSpaceAfter: 5,
+      ok: true,
+    }
+    const suggestCutdown = vi.fn(() => fakePlan)
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { fa: { ...defaultEngineModules.fa, suggestCutdown } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    const protect = [base.teams[base.userTeam]!.roster[0]!.playerId]
+
+    const result = store.getState().actions.cutdownPlan(protect)
+
+    expect(result).toBe(fakePlan)
+    expect(suggestCutdown).toHaveBeenCalledWith(
+      expect.objectContaining({ userTeam: base.userTeam }),
+      base.userTeam,
+      expect.anything(),
+      protect,
+    )
   })
 })

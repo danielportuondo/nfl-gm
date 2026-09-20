@@ -1,5 +1,6 @@
 import type {
   Contract,
+  CutdownPlan,
   DataSource,
   EngineContext,
   EngineModules,
@@ -126,6 +127,8 @@ export interface GameStoreState {
     offerContract: (playerId: PlayerId, contract: Contract) => Promise<void>
     resign: (playerId: PlayerId, contract: Contract) => Promise<void>
     release: (playerId: PlayerId) => Promise<void>
+    /** Releases several players in one action (Roster cutdown panel); one toast, one state update. */
+    releaseMany: (playerIds: PlayerId[]) => Promise<void>
     signUdfa: (playerIds: PlayerId[]) => Promise<void>
     /** The expiring player's ask for the re-sign phase. Null when not built yet. */
     resignAsk: (playerId: PlayerId) => number | null
@@ -133,6 +136,8 @@ export interface GameStoreState {
     capThisSeason: () => number | null
     /** P(accept) before any offer is made, for the offer form's live acceptance odds. Null when not built yet. */
     offerOdds: (playerId: PlayerId, contract: Contract) => number | null
+    /** Pure suggested-cutdown preview for the Roster panel (docs/DECISIONS.md 2026-09-20). Null when not built yet. */
+    cutdownPlan: (protect: readonly PlayerId[]) => CutdownPlan | null
 
     // --- Schedule / season -------------------------------------------------------------------
     simToNextEvent: () => Promise<void>

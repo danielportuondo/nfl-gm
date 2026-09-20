@@ -163,10 +163,13 @@ export function App() {
         <Roster
           state={state}
           data={data}
+          cap={cap}
           onSelectPlayer={actions.selectPlayer}
           onReorderDepthChart={actions.setDepthChart}
           onRelease={actions.release}
           releaseBusy={busy.fa}
+          cutdownPlan={actions.cutdownPlan}
+          onReleaseMany={actions.releaseMany}
         />
       )}
       {screen === 'player' && selectedPlayerId && (

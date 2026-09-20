@@ -176,3 +176,14 @@ Daniel: once a team is chosen there was no way back to the New Game screen; add 
 - Rail: Settings before About; both under More on the tab bar. Form controls got system styling (`.gg-field`), which New Game's selects inherit.
 - **Panels never stacked on phones.** Checking Settings at 390 px showed the two half-width panels side by side. `frame.css` declared the ≤ 720 px `span 12` rule before the base `.gg-col-*` rules; same specificity, so the base rules won and DESIGN §4's "stack to 12 at ≤ 720px" never applied on any screen. The media query now follows the base rules.
 - Tests: store (`updateSettings` merges; `startOver` clears, keeps the save, flushes exactly one pending autosave and writes nothing after), UI (theme and settings report at once; the confirm gates Start over), and a final start-over step on the E2E smoke flow.
+
+## 2026-09-20 — Cutdown helper (cut to 53, get under the cap)
+
+Daniel's go on the feature kept since the Phase 6 QA playthrough ("11–13 releases by hand each year"). Design approved in chat before the build.
+
+- **Engine.** `fa.suggestCutdown(state, teamId, ctx, protect?)` is a pure, deterministic plan: to the roster limit by lowest consensus ovr, then under the cap by most net savings per rating point above 40 (net savings = APY minus the dead-money charge), never dropping a position below `STARTER_TEMPLATE` or the roster below 46, never suggesting a protected player. The cap-stage rule is the scripted GM's, proven over the 160-run sweep; "most expensive first" (the AI's rule) was rejected for the user because it cuts a costly starter when two cheap backups free the same room. The plan simulates with the module's own release so dead money matches what a real release books. Returns `ok: false` at the 46-man floor when the cap is still out of reach.
+- **No history anchoring for the user.** AI cutdowns prefer the real opening-day roster (§6.8). Suggesting exactly who the real team cut would hand the player the future, so the user's plan reads consensus and contracts only. The hindsight rule holds.
+- **UI.** A `Cutdown` panel leads the Roster screen only while the team fails the PRESEASON gate (over the limit or over the cap in a cap-gated phase): status line, checked list of suggested cuts with dead money and savings, kept rows stay visible unchecked, summary of where the roster lands, one `Release N players` button. Unchecking recomputes the plan with that player protected. No confirm modal: the checklist is the review, and single releases have none. The per-row Release button stays.
+- **Store.** `releaseMany` releases in order and toasts once; `cutdownPlan(protect)` is a pure getter like `teamNeeds`.
+- **E2E.** The smoke flow's two hand-rolled cutdown loops are replaced by the panel, which is the real user flow.
+- The headless scripted GM keeps its own cutdown policy so sweep results stay comparable.

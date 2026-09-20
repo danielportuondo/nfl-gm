@@ -1,6 +1,7 @@
 import type { Game, LeagueState, StaticData } from '@contracts/index'
 import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
+import { formatMoney } from '@screens/shared/formatMoney'
 import { injuredWeeksLabel } from '@screens/shared/playerStatus'
 import type { ScreenId } from '@store/router'
 
@@ -33,10 +34,6 @@ function nextGame(state: LeagueState): Game | undefined {
     )
     .sort((a, b) => a.week - b.week)
   return upcoming[0]
-}
-
-function formatMoney(m: number): string {
-  return `$${m.toFixed(1)}M`
 }
 
 /** Season hub: record, next opponent, horizon meter, cap, alerts, sim controls (docs/DESIGN.md §11). */

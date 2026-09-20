@@ -13,6 +13,7 @@ import {
   NotImplementedError,
   SeasonNotLoadedError,
   type Contract,
+  type CutdownPlan,
   type EngineContext,
   type GameSettings,
   type LeagueState,
@@ -742,6 +743,29 @@ export function createGameStore(config: StoreConfig = {}) {
           }
         },
 
+        /** Roster cutdown panel (docs/DECISIONS.md 2026-09-20): one release call per id, one toast. */
+        async releaseMany(playerIds: PlayerId[]) {
+          const league = get().state
+          if (!league || playerIds.length === 0) return
+          set((s) => ({ busy: { ...s.busy, fa: true } }))
+          try {
+            const ctx = buildCtx()
+            let current = league
+            for (const playerId of playerIds) {
+              current = modules.fa.release(current, current.userTeam, playerId, ctx)
+            }
+            set({ state: current })
+            addToast(
+              `Released ${playerIds.length} player${playerIds.length === 1 ? '' : 's'}`,
+              'info',
+            )
+          } catch (err) {
+            reportNotBuilt('Could not release the players.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, fa: false } }))
+          }
+        },
+
         async signUdfa(playerIds: PlayerId[]) {
           const league = get().state
           if (!league) return
@@ -788,6 +812,17 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             return modules.fa.offerOdds(league, league.userTeam, playerId, contract, ctx)
+          } catch {
+            return null
+          }
+        },
+
+        cutdownPlan(protect: readonly PlayerId[]): CutdownPlan | null {
+          const league = get().state
+          if (!league) return null
+          try {
+            const ctx = buildCtx()
+            return modules.fa.suggestCutdown(league, league.userTeam, ctx, protect)
           } catch {
             return null
           }

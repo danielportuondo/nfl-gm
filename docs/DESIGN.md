@@ -299,7 +299,11 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
 - **Dashboard** — hero panel with the yard-line motif: record, next opponent (two helmet sprites facing
   each other), horizon meter. Beside it: cap StatTiles, alerts list, "Sim week" / "Sim to next event".
 - **Roster & Depth Chart** — table (dense) with position filter; depth chart as columns of NamePlates
-  you can reorder by keyboard (move up/down) and pointer.
+  you can reorder by keyboard (move up/down) and pointer. While the team is over 53 or over the cap in
+  a cap-gated phase, a `Cutdown` panel (`attention`) leads the screen: the engine's suggested cuts as a
+  checked list (player, age, consensus Ovr, APY, dead money, net savings, why), a summary of where the
+  roster lands, and one button, "Release 8 players". Unchecking a row keeps that player and the next
+  candidate takes the place; kept rows stay visible. No confirm modal: the checklist is the review.
 - **Player Card** — bust sprite at 4×, name in Barlow 17, position and team badges, consensus ovr/pot
   in Pixelify 32 with the confidence meter under them, contract, season-by-season stats table.
   Nothing on this screen is derived from truth.

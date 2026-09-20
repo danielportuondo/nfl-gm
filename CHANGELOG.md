@@ -6,6 +6,9 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
 ## Unreleased
 
 ### Added
+- Cutdown helper on the Roster screen: while you are over 53 or over the cap before the season, the
+  game lists its suggested cuts with dead money and savings, lets you keep anyone, and releases the
+  rest in one action.
 - Settings tab: theme (dark, light or system), the three game settings adjustable mid-game, and
   Start over, which returns to the New Game screen after a confirm. The saved game stays on offer as
   Continue until you start a new one.

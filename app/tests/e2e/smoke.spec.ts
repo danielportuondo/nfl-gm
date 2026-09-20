@@ -21,42 +21,17 @@ async function clickAdvance(page: Page, label: string): Promise<void> {
   await button.click()
 }
 
-function rosterCount(caption: string | null): number {
-  const match = caption?.match(/(\d+) players/)
-  return match ? Number(match[1]) : 0
-}
-
-/** PRESEASON requires a 53-man roster (HANDOFF §8); cut the lowest-rated players (Roster sorts by Ovr desc). */
-async function cutdownToRosterLimit(page: Page): Promise<void> {
+/**
+ * PRESEASON requires 53 players under the cap (HANDOFF §8). The Roster screen's Cutdown panel lists the
+ * engine's suggested cuts and releases them in one action; a roster that is already legal shows no panel.
+ */
+async function cutdownForPreseason(page: Page): Promise<void> {
   await goTo(page, 'Roster')
-  const caption = page.getByText(/roster · \d+ players/).first()
-  for (let i = 0; i < 40; i++) {
-    const count = rosterCount(await caption.textContent())
-    if (count <= 53) return
-    await page
-      .getByRole('button', { name: /^Release /, exact: false })
-      .last()
-      .click()
-    await page.waitForTimeout(50)
-  }
-}
-
-/** PRESEASON also requires payroll under the cap; shed the priciest contracts until the alert clears. */
-async function fixCapForPreseason(page: Page): Promise<void> {
-  for (let i = 0; i < 20; i++) {
-    await goTo(page, 'Dashboard')
-    const overCap = await page
-      .getByText(/Over the cap by/)
-      .isVisible()
-      .catch(() => false)
-    if (!overCap) return
-    await goTo(page, 'Roster')
-    await page.getByRole('button', { name: 'APY', exact: true }).click()
-    await page
-      .getByRole('button', { name: /^Release /, exact: false })
-      .first()
-      .click()
-    await page.waitForTimeout(50)
+  const releaseAll = page.getByRole('button', { name: /^Release \d+ players?$/ })
+  if (await releaseAll.isVisible({ timeout: 2_000 }).catch(() => false)) {
+    await page.screenshot({ path: '../docs/screenshots/cutdown.png' })
+    await releaseAll.click()
+    await expect(releaseAll).toBeHidden({ timeout: 15_000 })
   }
 }
 
@@ -139,8 +114,7 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
     await clickAdvance(page, 'Close UDFA signings')
     await clickAdvance(page, 'Close free agency')
     await clickAdvance(page, 'Break camp')
-    await cutdownToRosterLimit(page)
-    await fixCapForPreseason(page)
+    await cutdownForPreseason(page)
     await clickAdvance(page, 'Start the season')
     await expect(page.getByRole('button', { name: 'Sim week' })).toBeVisible({ timeout: 15_000 })
   })
