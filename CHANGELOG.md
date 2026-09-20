@@ -3,7 +3,7 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
-## Unreleased
+## 1.3.0 — 2026-09-20
 
 ### Added
 - Cutdown helper on the Roster screen: while you are over 53 or over the cap before the season, the

@@ -187,3 +187,14 @@ Daniel's go on the feature kept since the Phase 6 QA playthrough ("11–13 relea
 - **Store.** `releaseMany` releases in order and toasts once; `cutdownPlan(protect)` is a pure getter like `teamNeeds`.
 - **E2E.** The smoke flow's two hand-rolled cutdown loops are replaced by the panel, which is the real user flow.
 - The headless scripted GM keeps its own cutdown policy so sweep results stay comparable.
+
+## 2026-09-20 — v1.3.0
+
+The Settings tab and the cutdown helper above, plus the phone-width panel stacking fix. Tagged `v1.3.0`.
+
+### Known follow-ups (v2), updated
+- Deferred by decision: dead money past the data; Season Recap bracket connectors; comp picks past the data; MVP-style awards.
+- The Strip theme toggle labels its target from the stored choice, so "system" on a light OS reads "Light theme"; resolve from the effective theme (the Settings screen shows the stored choice explicitly, so the toggle is the only place this shows).
+- A team-in-year preview on the mandate plate (top consensus players, cap room); needs the store to load a season chunk on selection.
+- Export / import of the save as JSON: `persistence.exportJson` / `importJson` exist, no screen uses them. A natural Settings addition.
+- Refilling a roster left short of 46 by retirements is still a trip to Free agency; the cutdown helper only cuts.
