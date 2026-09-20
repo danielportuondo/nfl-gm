@@ -26,8 +26,16 @@ interface Loaded {
 async function loadSeason(season: number, seed = 'sweep'): Promise<Loaded> {
   const manifest = readManifest()
   const ctx = await loadRealContext(seasonsForNewGame(season, manifest.latestRealSeason))
+  // Calibration measures the sim from the real opening-day rosters.
   const state = ctx.modules.league.newGame(
-    { seed, startSeason: season, userTeam: 'IND', horizonSeasons: 1, settings: DEFAULT_SETTINGS },
+    {
+      seed,
+      startSeason: season,
+      userTeam: 'IND',
+      horizonSeasons: 1,
+      settings: DEFAULT_SETTINGS,
+      startAt: 'PRESEASON',
+    },
     ctx,
   )
   return { state, ctx, realWins: realWinTotals(ctx.seasonData(season)!.schedule) ?? {} }

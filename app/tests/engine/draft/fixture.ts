@@ -2,7 +2,8 @@
  * Shared setup for the draft tests: the shipped 2013 data through the real draft module, with fakes
  * for fa/trade/history/lifecycle so only engine/draft is under test.
  *
- * Draft-year convention: a game started in 2013 drafts the 2014 class in its DRAFT phase.
+ * Draft-year convention: a game at PRESEASON of 2013 drafts the 2014 class in its DRAFT phase
+ * (`startAt: 'PRESEASON'` keeps the 2014 redraft measuring what it always measured).
  */
 import type {
   EngineContext,
@@ -43,7 +44,14 @@ export function stateAtDraft(
   seed = 'draft-test',
 ): LeagueState {
   const state = ctx.modules.league.newGame(
-    { seed, startSeason: START_SEASON, userTeam, horizonSeasons: 1, settings: SETTINGS },
+    {
+      seed,
+      startSeason: START_SEASON,
+      userTeam,
+      horizonSeasons: 1,
+      settings: SETTINGS,
+      startAt: 'PRESEASON',
+    },
     ctx,
   )
   return { ...state, phase: 'DRAFT' }

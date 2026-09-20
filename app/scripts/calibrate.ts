@@ -50,6 +50,7 @@ async function loadRealLeague(
       `season ${season} is not in app/public/data (have ${manifest.seasons[0]}–${manifest.latestRealSeason})`,
     )
   const ctx = await loadRealContext(seasonsForNewGame(season, manifest.latestRealSeason))
+  // Calibration measures the sim from the real opening-day rosters.
   const state = ctx.modules.league.newGame(
     {
       seed,
@@ -57,6 +58,7 @@ async function loadRealLeague(
       userTeam: 'IND',
       horizonSeasons: 1,
       settings: CALIBRATION_SETTINGS,
+      startAt: 'PRESEASON',
     },
     ctx,
   )
