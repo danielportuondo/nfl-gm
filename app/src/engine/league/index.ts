@@ -14,6 +14,7 @@ import {
   canonicalTeamId,
   leagueFormat,
   isInHistory,
+  isOpeningOffseason,
   SeasonNotLoadedError,
   type CanonicalTeamId,
   type CompactTrajectory,
@@ -38,6 +39,7 @@ import {
   type RosterSlot,
   type ScoutingView,
   type Season,
+  type SeasonData,
   type SeasonPlayer,
   type SeasonSummary,
   type StandingRow,
@@ -746,6 +748,11 @@ function resetSeasonCounters(teams: Record<TeamId, TeamState>): Record<TeamId, T
   )
 }
 
+/** The opening rollover skips fa.rolloverContracts, which is where dead money normally resets. */
+function zeroDeadMoney(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
+  return Object.fromEntries(Object.entries(teams).map(([id, t]) => [id, { ...t, deadMoney: 0 }]))
+}
+
 /**
  * The user's expiring players who were not re-signed during OFFSEASON_RESIGN hit the market with
  * everyone else's, so the AI can sign them in FREE_AGENCY. A contract signed this offseason (fa.resign
@@ -815,14 +822,20 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
     case 'TRAINING_CAMP': {
       const newSeason = state.season + 1
       let s: LeagueState = { ...state, season: newSeason, week: 0 }
-      const rolled = ctx.modules.fa.rolloverContracts(s, ctx)
-      s = rolled.state
-      const progressRng = ctx.modules.rng.fromSeed(s.seed, newSeason, 'progress')
-      s = ctx.modules.lifecycle.progressSeason(s, ctx, progressRng)
-      const retireRng = ctx.modules.rng.fromSeed(s.seed, newSeason, 'retirements')
-      const retired = ctx.modules.lifecycle.retirements(s, ctx, retireRng)
-      s = retired.state
-      s = ctx.modules.lifecycle.refreshScouting(s, ctx)
+      if (isOpeningOffseason(state)) {
+        // newGame(startAt 'DRAFT') built rosters, contracts, consensus and truth from the newSeason
+        // chunk already; ticking or progressing them here would move everyone a year too far.
+        s = { ...s, teams: zeroDeadMoney(s.teams) }
+      } else {
+        const rolled = ctx.modules.fa.rolloverContracts(s, ctx)
+        s = rolled.state
+        const progressRng = ctx.modules.rng.fromSeed(s.seed, newSeason, 'progress')
+        s = ctx.modules.lifecycle.progressSeason(s, ctx, progressRng)
+        const retireRng = ctx.modules.rng.fromSeed(s.seed, newSeason, 'retirements')
+        const retired = ctx.modules.lifecycle.retirements(s, ctx, retireRng)
+        s = retired.state
+        s = ctx.modules.lifecycle.refreshScouting(s, ctx)
+      }
       if (isInHistory(ctx, newSeason)) {
         s = ctx.modules.history.snapToHistory(s, ctx)
         for (const teamId of TEAM_IDS)
@@ -867,10 +880,26 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
 // newGame
 // -------------------------------------------------------------------------------------------
 
-function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
-  const sd = ctx.seasonData(opts.startSeason)
-  if (!sd) throw new SeasonNotLoadedError(opts.startSeason)
+/**
+ * The season chunk with the start class removed. Class members re-enter through
+ * draft.startDraft → loadClass with pre-draft scouting and `draft: null`, exactly like every later
+ * class; the class is the data's own definition (`draft.prospects`), not a rookieSeason heuristic.
+ */
+function withoutClass(sd: SeasonData): SeasonData {
+  const classIds = new Set(sd.draft.prospects.map((p) => p.id))
+  const rosters: SeasonData['rosters']['rosters'] = {}
+  for (const teamId of Object.keys(sd.rosters.rosters).sort()) {
+    rosters[teamId] = (sd.rosters.rosters[teamId] ?? []).filter((e) => !classIds.has(e.playerId))
+  }
+  return {
+    ...sd,
+    players: { ...sd.players, players: sd.players.players.filter((p) => !classIds.has(p.id)) },
+    rosters: { ...sd.rosters, rosters },
+  }
+}
 
+/** Opening day of startSeason from a (possibly filtered) chunk: players, rosters, contracts, cap fit. */
+function buildOpeningDay(opts: NewGameOptions, ctx: EngineContext, sd: SeasonData): LeagueState {
   const { players, scouting, truth } = buildPlayersFromSeason(
     sd.players.players,
     ctx.trajectories,
@@ -929,19 +958,36 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
   }
   draft = { ...draft, teams }
   for (const teamId of TEAM_IDS) draft = fitPayrollToCap(draft, teamId, ctx)
-
-  // The startSeason draft already happened (its rookies are on the rosters); the next two drafts are
-  // the S+1 and S+2 classes (draft-year convention in contracts/engine/draft.ts).
-  const picks = [
-    ...ctx.modules.draft.buildDraftOrder(draft, opts.startSeason + 1, ctx),
-    ...ctx.modules.draft.buildDraftOrder(draft, opts.startSeason + 2, ctx),
-  ]
-  draft = { ...draft, picks }
-
-  const schedule = buildScheduleImpl(draft, ctx)
-  draft = { ...draft, schedule }
-
   return draft
+}
+
+function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
+  const loaded = ctx.seasonData(opts.startSeason)
+  if (!loaded) throw new SeasonNotLoadedError(opts.startSeason)
+  const startAt = opts.startAt ?? 'DRAFT'
+  const S = opts.startSeason
+
+  if (startAt === 'PRESEASON') {
+    // The startSeason draft already happened (its rookies are on the rosters); the next two drafts
+    // are the S+1 and S+2 classes (draft-year convention in contracts/engine/draft.ts).
+    let state = buildOpeningDay(opts, ctx, loaded)
+    const picks = [
+      ...ctx.modules.draft.buildDraftOrder(state, S + 1, ctx),
+      ...ctx.modules.draft.buildDraftOrder(state, S + 2, ctx),
+    ]
+    state = { ...state, picks }
+    return { ...state, schedule: buildScheduleImpl(state, ctx) }
+  }
+
+  // Opening offseason: the S class is on the board and the real S order is in place. `season` is
+  // S − 1 so season X's DRAFT phase drafting the X+1 class holds without a special case; the
+  // TRAINING_CAMP rollover into S skips progression and contract ticks (isOpeningOffseason).
+  let state = buildOpeningDay(opts, ctx, withoutClass(loaded))
+  const picks = [S, S + 1, S + 2].flatMap((season) =>
+    ctx.modules.draft.buildDraftOrder(state, season, ctx),
+  )
+  state = { ...state, picks, season: S - 1, phase: 'DRAFT' }
+  return state
 }
 
 // -------------------------------------------------------------------------------------------

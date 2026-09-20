@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   PHASES,
   SavedLeagueSchema,
@@ -9,7 +9,12 @@ import {
 } from '@contracts/index'
 import { mockBundle } from '@fixtures/mockLeague'
 import { league } from '@engine/league'
-import { makeFakeContext } from '../fakes'
+import { fakeFa, fakeLifecycle, makeFakeContext } from '../fakes'
+
+/** toSaved stamps savedAt with the real clock, so determinism checks must ignore it. */
+function withoutSavedAt(saved: ReturnType<typeof toSaved>) {
+  return { ...saved, savedAt: undefined }
+}
 
 function newGameOpts(overrides: Partial<Parameters<typeof league.newGame>[0]> = {}) {
   return {
@@ -30,7 +35,7 @@ describe('league.newGame', () => {
   it('produces a SavedLeagueSchema-valid state with 32x53 rosters and the real schedule', () => {
     const bundle = mockBundle({ season: 2015 })
     const ctx = makeFakeContext(bundle)
-    const state = league.newGame(newGameOpts(), ctx)
+    const state = league.newGame(newGameOpts({ startAt: 'PRESEASON' }), ctx)
 
     const parsed = SavedLeagueSchema.safeParse(toSaved(state))
     expect(parsed.success, JSON.stringify(parsed.error?.issues.slice(0, 5), null, 2)).toBe(true)
@@ -42,6 +47,71 @@ describe('league.newGame', () => {
       bundle.seasons[2015]!.schedule.games.filter((g) => g.type === 'REG').length,
     )
     expect(state.phase).toBe('PRESEASON')
+  })
+})
+
+/** A mock 2015 bundle with one member of the 2015 class already on IND's opening-day roster. */
+function bundleWithRosteredRookie() {
+  const bundle = mockBundle({ season: 2015 })
+  const sd = bundle.seasons[2015]!
+  const rookie = sd.draft.prospects[0]!
+  sd.players.players.push({ ...rookie, trueValue: rookie.scouting.ovr, team: 'IND' })
+  sd.rosters.rosters.IND!.push({ playerId: rookie.id, apy: 1, years: 4, depth: 99 })
+  return { bundle, rookie }
+}
+
+describe('league.newGame opening offseason', () => {
+  it('opens at the DRAFT phase of the season before, with the start class off the rosters', () => {
+    const { bundle, rookie } = bundleWithRosteredRookie()
+    const ctx = makeFakeContext(bundle)
+    const state = league.newGame(newGameOpts(), ctx)
+
+    expect(state.season).toBe(2014)
+    expect(state.startSeason).toBe(2015)
+    expect(state.phase).toBe('DRAFT')
+    expect(state.week).toBe(0)
+    expect(state.schedule).toHaveLength(0)
+    expect(state.draftRoom).toBeNull()
+
+    expect(state.players[rookie.id]).toBeUndefined()
+    expect(state.scouting[rookie.id]).toBeUndefined()
+    expect(state.truth[rookie.id]).toBeUndefined()
+    expect(state.freeAgents).not.toContain(rookie.id)
+    for (const id of TEAM_IDS)
+      expect(
+        state.teams[id]!.roster.some((r) => r.playerId === rookie.id),
+        id,
+      ).toBe(false)
+    expect(state.teams.IND!.roster).toHaveLength(53)
+
+    const seasons = new Set(state.picks.map((p) => p.season))
+    expect(seasons).toEqual(new Set([2015, 2016, 2017]))
+    const classPicks = state.picks.filter((p) => p.season === 2015)
+    expect(classPicks.length).toBeGreaterThan(0)
+    expect(classPicks.every((p) => p.pick !== null)).toBe(true)
+
+    const parsed = SavedLeagueSchema.safeParse(toSaved(state))
+    expect(parsed.success, JSON.stringify(parsed.error?.issues.slice(0, 5), null, 2)).toBe(true)
+  })
+
+  it("startAt 'PRESEASON' keeps opening day: rookies rostered, picks for +1/+2, schedule built", () => {
+    const { bundle, rookie } = bundleWithRosteredRookie()
+    const ctx = makeFakeContext(bundle)
+    const state = league.newGame(newGameOpts({ startAt: 'PRESEASON' }), ctx)
+
+    expect(state.season).toBe(2015)
+    expect(state.phase).toBe('PRESEASON')
+    expect(state.players[rookie.id]).toBeDefined()
+    expect(state.teams.IND!.roster.some((r) => r.playerId === rookie.id)).toBe(true)
+    expect(new Set(state.picks.map((p) => p.season))).toEqual(new Set([2016, 2017]))
+    expect(state.schedule.length).toBeGreaterThan(0)
+  })
+
+  it('is deterministic for a seed', () => {
+    const ctx = makeFakeContext(mockBundle({ season: 2015 }))
+    const a = league.newGame(newGameOpts({ seed: 'open-a' }), ctx)
+    const b = league.newGame(newGameOpts({ seed: 'open-a' }), ctx)
+    expect(withoutSavedAt(toSaved(a))).toEqual(withoutSavedAt(toSaved(b)))
   })
 })
 
@@ -81,7 +151,7 @@ function playOffseason(state: LeagueState, ctx: ReturnType<typeof makeFakeContex
 function playThreeSeasons(seed: string, season = 2015) {
   const bundle = mockBundle({ season })
   const ctx = makeFakeContext(bundle)
-  let state = league.newGame(newGameOpts({ seed, startSeason: season }), ctx)
+  let state = league.newGame(newGameOpts({ seed, startSeason: season, startAt: 'PRESEASON' }), ctx)
   state = league.advancePhase(state, ctx) // PRESEASON -> REGULAR week 1
   const phasesSeen: Phase[] = [state.phase]
   // Bracket for each season, captured right as its Super Bowl completes (before records reset).
@@ -182,5 +252,92 @@ describe('league season loop (fakes)', () => {
       }
     }
     for (const [, weeks] of weeksPlayed) expect(weeks.size).toBe(17) // one week (of 18) unused: the bye
+  })
+})
+
+function snapshotContracts(state: LeagueState): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  for (const id of TEAM_IDS)
+    for (const slot of state.teams[id]!.roster) out[`${id}:${slot.playerId}`] = slot.contract
+  return out
+}
+
+/** DRAFT → UDFA → FREE_AGENCY → TRAINING_CAMP → PRESEASON with the draft fakes. */
+function playOpeningOffseason(state: LeagueState, ctx: ReturnType<typeof makeFakeContext>) {
+  let s = ctx.modules.draft.startDraft(state, ctx)
+  s = ctx.modules.draft.autoDraftToEnd(s, ctx)
+  s = league.advancePhase(s, ctx) // -> UDFA
+  s = league.advancePhase(s, ctx) // -> FREE_AGENCY
+  s = league.advancePhase(s, ctx) // -> TRAINING_CAMP
+  s = league.advancePhase(s, ctx) // -> PRESEASON (opening rollover)
+  return s
+}
+
+describe('league opening rollover', () => {
+  it('rolls into startSeason without ticking contracts, progressing or retiring anyone', () => {
+    const rollover = vi.fn(fakeFa.rolloverContracts)
+    const progress = vi.fn(fakeLifecycle.progressSeason)
+    const retire = vi.fn(fakeLifecycle.retirements)
+    const refresh = vi.fn(fakeLifecycle.refreshScouting)
+    const bundle = mockBundle({ season: 2015 })
+    const ctx = makeFakeContext(bundle, {
+      fa: { ...fakeFa, rolloverContracts: rollover },
+      lifecycle: {
+        ...fakeLifecycle,
+        progressSeason: progress,
+        retirements: retire,
+        refreshScouting: refresh,
+      },
+    })
+    const opening = league.newGame(newGameOpts(), ctx)
+    const withDeadMoney: LeagueState = {
+      ...opening,
+      teams: { ...opening.teams, IND: { ...opening.teams.IND!, deadMoney: 5 } },
+    }
+    const before = snapshotContracts(withDeadMoney)
+
+    const s = playOpeningOffseason(withDeadMoney, ctx)
+
+    expect(s.season).toBe(2015)
+    expect(s.phase).toBe('PRESEASON')
+    expect(s.week).toBe(0)
+    expect(rollover).not.toHaveBeenCalled()
+    expect(progress).not.toHaveBeenCalled()
+    expect(retire).not.toHaveBeenCalled()
+    expect(refresh).not.toHaveBeenCalled()
+    expect(snapshotContracts(s)).toEqual(before)
+    expect(s.scouting).toEqual(opening.scouting)
+    for (const id of TEAM_IDS) expect(s.teams[id]!.deadMoney, id).toBe(0)
+    expect(s.schedule.length).toBe(
+      bundle.seasons[2015]!.schedule.games.filter((g) => g.type === 'REG').length,
+    )
+    expect(new Set(s.picks.map((p) => p.season))).toEqual(new Set([2015, 2016, 2017]))
+  })
+
+  it('runs the normal rollover after the first season is played', () => {
+    const rollover = vi.fn(fakeFa.rolloverContracts)
+    const progress = vi.fn(fakeLifecycle.progressSeason)
+    const ctx = makeFakeContext(mockBundle({ season: 2015 }), {
+      fa: { ...fakeFa, rolloverContracts: rollover },
+      lifecycle: { ...fakeLifecycle, progressSeason: progress },
+    })
+    let s = playOpeningOffseason(league.newGame(newGameOpts(), ctx), ctx)
+    s = league.advancePhase(s, ctx) // PRESEASON -> REGULAR
+    s = playSeason(s, ctx)
+    expect(s.phase).toBe('OFFSEASON_RESIGN')
+    s = playOffseason(s, ctx)
+    expect(s.season).toBe(2016)
+    expect(rollover).toHaveBeenCalledTimes(1)
+    expect(progress).toHaveBeenCalledTimes(1)
+  })
+
+  it('is deterministic through the opening offseason', () => {
+    const run = () => {
+      const ctx = makeFakeContext(mockBundle({ season: 2015 }))
+      return toSaved(
+        playOpeningOffseason(league.newGame(newGameOpts({ seed: 'roll-a' }), ctx), ctx),
+      )
+    }
+    expect(withoutSavedAt(run())).toEqual(withoutSavedAt(run()))
   })
 })

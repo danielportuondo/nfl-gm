@@ -130,6 +130,8 @@ function newGameOpts(overrides: Partial<Parameters<typeof league.newGame>[0]> = 
     userTeam: 'IND',
     horizonSeasons: 6,
     settings: SETTINGS,
+    // These tests drive PRESEASON → REGULAR directly; the opening offseason is league-engine's to test.
+    startAt: 'PRESEASON' as const,
     ...overrides,
   }
 }

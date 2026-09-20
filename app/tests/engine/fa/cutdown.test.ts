@@ -23,6 +23,7 @@ function newState(season = 2015) {
       userTeam: 'IND' as TeamId,
       horizonSeasons: 3,
       settings: { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true },
+      startAt: 'PRESEASON',
     },
     ctx,
   )

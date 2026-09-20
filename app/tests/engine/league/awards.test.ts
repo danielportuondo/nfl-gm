@@ -327,6 +327,7 @@ describe('summarizeSeason — bracket', () => {
         userTeam: 'IND',
         horizonSeasons: 3,
         settings: { tradeStrictness: 'balanced', aiOfferFrequency: 'normal', injuries: true },
+        startAt: 'PRESEASON',
       },
       c,
     )
