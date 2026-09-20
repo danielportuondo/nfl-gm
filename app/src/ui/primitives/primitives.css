@@ -596,3 +596,107 @@ button.gg-nameplate:hover {
   flex-wrap: wrap;
   gap: var(--sp-2);
 }
+
+/* Season Recap: playoff bracket, 4 columns x 8 rows, 2px --line connectors (docs/DESIGN.md §11) --- */
+/* Block wrap, tracks centered inside the grid: a flex-centered wrap clips the overflowing left
+   edge on phones and no scroll can reach it. */
+.gg-bracket-wrap {
+  overflow-x: auto;
+}
+.gg-bracket {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 220px));
+  grid-template-rows: auto repeat(8, minmax(56px, auto));
+  justify-content: center;
+  column-gap: var(--sp-5);
+  row-gap: 0;
+  /* Four minimum tracks plus their gaps, so centered tracks never overflow the grid box. */
+  min-width: calc(4 * 150px + 3 * var(--sp-5));
+}
+.gg-bracket__header {
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  letter-spacing: var(--ls-display);
+  color: var(--text-2);
+  padding-bottom: var(--sp-2);
+  border-bottom: var(--bw) solid var(--line);
+}
+.gg-bracket__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+}
+.gg-bracket__cell--parent::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--sp-5) / -2);
+  top: 25%;
+  bottom: 25%;
+  width: var(--bw);
+  background: var(--line);
+}
+.gg-bracket__cell--parent::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--sp-5) / -2);
+  top: calc(50% - 1px);
+  width: calc(var(--sp-5) / 2);
+  height: var(--bw);
+  background: var(--line);
+}
+.gg-bracket__card {
+  position: relative;
+  width: 100%;
+  background: var(--surface-2);
+  border: var(--bw) solid var(--line);
+  border-radius: var(--r-1);
+  padding: var(--sp-2) var(--sp-3);
+}
+.gg-bracket__card:not(.gg-bracket__card--root)::after {
+  content: '';
+  position: absolute;
+  right: calc(var(--sp-5) / -2);
+  top: calc(50% - 1px);
+  width: calc(var(--sp-5) / 2);
+  height: var(--bw);
+  background: var(--line);
+}
+.gg-bracket__card--champion {
+  border-left-width: var(--bw-plate);
+  border-left-color: var(--team-primary);
+  box-shadow: var(--shadow-raise);
+}
+.gg-bracket__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+.gg-bracket__row + .gg-bracket__row {
+  margin-top: 2px;
+}
+.gg-bracket__seed {
+  font-family: var(--font-display);
+  font-size: var(--fd-1);
+  color: var(--text-2);
+  min-width: 1.4ch;
+}
+.gg-bracket__team {
+  flex: 1;
+  font-family: var(--font-body);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gg-bracket__score {
+  font-family: var(--font-display);
+}
+.gg-bracket__row--loser .gg-bracket__team,
+.gg-bracket__row--loser .gg-bracket__score {
+  color: var(--text-2);
+}
+.gg-bracket__row--winner .gg-bracket__team,
+.gg-bracket__row--winner .gg-bracket__score {
+  color: var(--text-1);
+}
