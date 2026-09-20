@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test'
 
 /**
  * One end-to-end smoke flow (HANDOFF §7 Phase 5C): new game → draft a round with a trade → sim 4 weeks
- * → reload → state persists. Selectors are by role and visible text so this survives copy tweaks in
+ * → reload → state persists → start over from Settings. Selectors are by role and visible text so this survives copy tweaks in
  * app/src/screens; it does not assert on CSS classes or DOM shape.
  */
 
@@ -181,5 +181,18 @@ test('new game -> draft round with a trade -> sim 4 weeks -> reload persists', a
 
     await goTo(page, 'Roster')
     await expect(page.getByText(/roster · \d+ players/).first()).toHaveText(rosterCaption)
+  })
+
+  await test.step('start over from Settings returns to New Game with Continue on offer', async () => {
+    await goTo(page, 'Settings')
+    await page.getByRole('button', { name: 'Start over' }).click()
+    await page
+      .getByRole('dialog', { name: 'Start over?' })
+      .getByRole('button', { name: 'Start over' })
+      .click()
+    await expect(page.getByRole('heading', { name: 'Pick your start year' })).toBeVisible({
+      timeout: 15_000,
+    })
+    await expect(page.getByRole('button', { name: 'Continue', exact: true })).toBeVisible()
   })
 })

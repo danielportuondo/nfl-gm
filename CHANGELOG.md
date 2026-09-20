@@ -3,6 +3,16 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## Unreleased
+
+### Added
+- Settings tab: theme (dark, light or system), the three game settings adjustable mid-game, and
+  Start over, which returns to the New Game screen after a confirm. The saved game stays on offer as
+  Continue until you start a new one.
+
+### Fixed
+- Half-width panels now stack on phones (≤ 720 px), as the design always said they should.
+
 ## 1.2.0 — 2026-09-19
 
 ### Added

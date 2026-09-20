@@ -1,7 +1,7 @@
 /**
  * Hand-rolled hash router (no react-router: not installed, none added). Routes: #/new-game,
  * #/dashboard, #/roster, #/player/<id>, #/draft, #/trade, #/free-agency, #/schedule, #/standings,
- * #/league, #/about.
+ * #/league, #/finances, #/season-recap, #/end-game, #/settings, #/about.
  */
 export type ScreenId =
   | 'new-game'
@@ -17,6 +17,7 @@ export type ScreenId =
   | 'finances'
   | 'season-recap'
   | 'end-game'
+  | 'settings'
   | 'about'
 
 export interface Route {
@@ -38,6 +39,7 @@ const SCREENS: ScreenId[] = [
   'finances',
   'season-recap',
   'end-game',
+  'settings',
   'about',
 ]
 

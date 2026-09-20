@@ -14,6 +14,7 @@ import { PlayerCard } from '@screens/PlayerCard'
 import { Roster } from '@screens/Roster'
 import { Schedule } from '@screens/Schedule'
 import { SeasonRecap } from '@screens/SeasonRecap'
+import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
 
@@ -28,6 +29,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'finances', label: 'Finances' },
   { id: 'league', label: 'League' },
   { id: 'season-recap', label: 'Recap' },
+  { id: 'settings', label: 'Settings' },
   { id: 'about', label: 'About' },
 ]
 
@@ -176,6 +178,16 @@ export function App() {
         />
       )}
       {screen === 'about' && <About />}
+      {screen === 'settings' && (
+        <Settings
+          state={state}
+          data={data}
+          theme={theme}
+          onSetTheme={actions.setTheme}
+          onUpdateSettings={actions.updateSettings}
+          onStartOver={actions.startOver}
+        />
+      )}
       {(screen === 'dashboard' || screen === 'new-game') && (
         <Dashboard
           state={state}

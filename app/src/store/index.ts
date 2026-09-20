@@ -14,6 +14,7 @@ import {
   SeasonNotLoadedError,
   type Contract,
   type EngineContext,
+  type GameSettings,
   type LeagueState,
   type NeedProfile,
   type PlayerId,
@@ -138,11 +139,14 @@ export function createGameStore(config: StoreConfig = {}) {
     }
 
     /** §6.9: autosave at every phase transition and every 4 weeks. Fire-and-forget; a failure only toasts. */
-    function autosave(league: LeagueState): void {
-      if (mode === 'mock') return
-      persistence.save('default', league).catch((err: unknown) => {
-        addToast(`Autosave failed: ${err instanceof Error ? err.message : String(err)}`, 'error')
-      })
+    function autosave(league: LeagueState): Promise<void> {
+      if (mode === 'mock') return Promise.resolve()
+      return persistence.save('default', league).then(
+        () => undefined,
+        (err: unknown) => {
+          addToast(`Autosave failed: ${err instanceof Error ? err.message : String(err)}`, 'error')
+        },
+      )
     }
 
     // Roster moves between transitions (cuts, signings, picks) would otherwise be lost to a reload;
@@ -151,7 +155,10 @@ export function createGameStore(config: StoreConfig = {}) {
     api.subscribe((next, prev) => {
       if (mode === 'mock' || !next.state || next.state === prev.state) return
       if (autosaveTimer !== undefined) clearTimeout(autosaveTimer)
-      autosaveTimer = setTimeout(() => autosave(next.state!), 1000)
+      autosaveTimer = setTimeout(() => {
+        autosaveTimer = undefined
+        void autosave(next.state!)
+      }, 1000)
     })
 
     /**
@@ -265,7 +272,7 @@ export function createGameStore(config: StoreConfig = {}) {
               ctx,
             )
             set({ state: league })
-            autosave(league)
+            void autosave(league)
             get().actions.goTo('dashboard')
           } catch (err) {
             reportNotBuilt('Could not start a new game.', err)
@@ -301,7 +308,7 @@ export function createGameStore(config: StoreConfig = {}) {
             routeEvents(report.events, report.state)
             routeAfterSim(league, report.state)
             if (report.state.phase !== league.phase || report.state.week % 4 === 0)
-              autosave(report.state)
+              void autosave(report.state)
           } catch (err) {
             reportNotBuilt('Could not sim the week.', err)
           } finally {
@@ -319,7 +326,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const ctx = buildCtx()
             const next = modules.league.advancePhase(league, ctx)
             set({ state: next, suggestedTrades: [] })
-            autosave(next)
+            void autosave(next)
           } catch (err) {
             reportNotBuilt('Could not advance the phase.', err)
           } finally {
@@ -380,8 +387,34 @@ export function createGameStore(config: StoreConfig = {}) {
           if (!league || league.outcome === 'IN_PROGRESS') return
           const next: LeagueState = { ...league, outcome: 'IN_PROGRESS' }
           set({ state: next })
-          autosave(next)
+          void autosave(next)
           get().actions.goTo('dashboard')
+        },
+
+        updateSettings(patch: Partial<GameSettings>) {
+          const league = get().state
+          if (!league) return
+          set({ state: { ...league, settings: { ...league.settings, ...patch } } })
+        },
+
+        async startOver() {
+          const league = get().state
+          if (!league) return
+          if (autosaveTimer !== undefined) {
+            clearTimeout(autosaveTimer)
+            autosaveTimer = undefined
+            await autosave(league)
+          }
+          set({
+            state: null,
+            selectedPlayerId: null,
+            tradeOffers: [],
+            suggestedTrades: [],
+            dismissedSuggestionIds: [],
+            alerts: [],
+          })
+          await checkForSave()
+          get().actions.goTo('new-game')
         },
 
         capFor(season: Season): number | null {
@@ -780,7 +813,7 @@ export function createGameStore(config: StoreConfig = {}) {
               if (report.events.some((e) => eventMentionsUser(e, current))) break
             }
             if (current !== league) {
-              autosave(current)
+              void autosave(current)
               routeAfterSim(league, current)
             }
           } catch (err) {
@@ -810,7 +843,7 @@ export function createGameStore(config: StoreConfig = {}) {
               // Season Recap / End Game the moment it crosses that boundary (docs/HANDOFF.md item 6).
               routeAfterSim(before, current)
             }
-            if (current !== league) autosave(current)
+            if (current !== league) void autosave(current)
           } catch (err) {
             reportNotBuilt('Could not sim the season.', err)
           } finally {

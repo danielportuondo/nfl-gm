@@ -23,10 +23,11 @@ import { PlayerCard } from '@screens/PlayerCard'
 import { Roster } from '@screens/Roster'
 import { Schedule } from '@screens/Schedule'
 import { SeasonRecap } from '@screens/SeasonRecap'
+import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
 import { AcceptanceBar } from '@ui/primitives'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -128,6 +129,62 @@ describe('NewGame', () => {
       screen.getByText(/Your mandate: win the Super Bowl by \d{4}\. That's \d+ seasons?\./),
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Start' })).toBeInTheDocument()
+  })
+})
+
+describe('Settings', () => {
+  function renderSettings(overrides: Partial<Parameters<typeof Settings>[0]> = {}) {
+    const state = mockLeague()
+    const props = {
+      state,
+      data: mockStatic(),
+      theme: 'dark' as const,
+      onSetTheme: vi.fn(),
+      onUpdateSettings: vi.fn(),
+      onStartOver: vi.fn(),
+      ...overrides,
+    }
+    render(<Settings {...props} />)
+    return props
+  }
+
+  it('shows the stored theme and the running game settings', () => {
+    const { state } = renderSettings()
+    expect(screen.getByRole('button', { name: 'Dark', pressed: true })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'System', pressed: false })).toBeInTheDocument()
+    expect(screen.getByLabelText('Trade strictness')).toHaveValue(state.settings.tradeStrictness)
+    expect(screen.getByLabelText('AI offer frequency')).toHaveValue(state.settings.aiOfferFrequency)
+    expect(screen.getByLabelText('Injuries')).toBeChecked()
+  })
+
+  it('reports a theme pick and a settings change straight away', async () => {
+    const user = userEvent.setup()
+    const { onSetTheme, onUpdateSettings } = renderSettings()
+    await user.click(screen.getByRole('button', { name: 'Light' }))
+    expect(onSetTheme).toHaveBeenCalledWith('light')
+    await user.selectOptions(screen.getByLabelText('Trade strictness'), 'ruthless')
+    expect(onUpdateSettings).toHaveBeenCalledWith({ tradeStrictness: 'ruthless' })
+    await user.click(screen.getByLabelText('Injuries'))
+    expect(onUpdateSettings).toHaveBeenCalledWith({ injuries: false })
+  })
+
+  it('asks before starting over, and only leaves once confirmed', async () => {
+    const user = userEvent.setup()
+    const { onStartOver } = renderSettings()
+    await user.click(screen.getByRole('button', { name: 'Start over' }))
+    const dialog = screen.getByRole('dialog', { name: 'Start over?' })
+    expect(onStartOver).not.toHaveBeenCalled()
+    await user.click(within(dialog).getByRole('button', { name: 'Keep playing' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(onStartOver).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Start over' }))
+    await user.click(
+      within(screen.getByRole('dialog', { name: 'Start over?' })).getByRole('button', {
+        name: 'Start over',
+      }),
+    )
+    expect(onStartOver).toHaveBeenCalledTimes(1)
   })
 })
 

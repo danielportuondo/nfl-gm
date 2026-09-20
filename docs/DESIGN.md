@@ -187,7 +187,7 @@ with the fallback stacks above so text never blocks.
 - **Rail** (left, 200px, `--surface-1`): screen list in Pixelify 16, active item gets a 6px
   `--team-primary` left bar and `--surface-3` fill. At ≤ 720px the rail becomes a **bottom tab bar**
   (5 tabs: Dashboard, Roster, Schedule, Draft/Trades by phase, More) with `padding-bottom:
-  env(safe-area-inset-bottom, 0px)`.
+  env(safe-area-inset-bottom, 0px)`. Settings and About sit last in the rail and inside More.
 - **Board** (content): max-width 1200px, `padding: var(--sp-5) var(--sp-4)`; 12-column grid, gap
   `--sp-4`; panels span 4/6/8/12 columns and stack to 12 at ≤ 720px. Gutter never below 16px.
 - **Alignment**: everything left-aligned. Numbers right-aligned in tables. The one centered composition
@@ -315,6 +315,13 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
 - **Season Recap** — awards as NamePlates, playoff bracket drawn with 2px `--line` connectors.
 - **End Game** — the on-the-clock hero composition reused: gold strip, "Super Bowl champions" or
   "Horizon reached", then the GM report card (StatTiles) and "Keep playing".
+- **Settings** — two quiet panels, then the run plate. Appearance offers Dark / Light / System as
+  pressed buttons (the year picker's control); This game holds the three game settings, the same
+  fields New Game uses, applied from the next trade, offer or sim. The run plate is the New Game
+  mandate composition in the team's colors with a 4× helmet, "Indianapolis Colts, 2015", "Season 1
+  of 3, preseason." and Start over: the plate you arrived on is the plate you leave from. Start over
+  confirms in a Modal ("Keep playing" / "Start over"), writes any pending autosave, clears the league
+  and returns to New Game, where the save is offered as Continue until a new game overwrites it.
 - **About** — attribution and the disclaimer from HANDOFF §2, verbatim, in Barlow 15.
 
 ## 12. Do not

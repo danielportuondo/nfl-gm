@@ -92,6 +92,13 @@ export interface GameStoreState {
     continueGame: () => Promise<void>
     /** Resets a HORIZON_EXPIRED outcome so the user can keep running the front office (End Game screen). */
     keepPlaying: () => void
+    /** Applies a settings change to the running league; the engine reads `state.settings` live. */
+    updateSettings: (patch: Partial<GameSettings>) => void
+    /**
+     * Leaves the current run for the New Game screen (Settings screen). Any pending autosave is written
+     * first; the 'default' save then stays as Continue until a new game overwrites it.
+     */
+    startOver: () => Promise<void>
     /** Cap in $M for any season (this or a future one), for Finances' "next season" tile. Null while data is loading. */
     capFor: (season: Season) => number | null
 

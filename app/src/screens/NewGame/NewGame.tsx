@@ -10,6 +10,8 @@ import {
 import { Button, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
+import { GameSettingsFields } from '../shared/GameSettingsFields'
+import { phaseLabel } from '../shared/phaseLabel'
 
 export interface NewGameProps {
   data: StaticData
@@ -27,15 +29,6 @@ const HORIZON_MAX = 10
 const DEFAULT_TEAM: TeamId = 'IND'
 const CONFERENCES = ['AFC', 'NFC'] as const
 const DIVISIONS = ['East', 'North', 'South', 'West'] as const
-
-const PHASE_LABEL: Record<string, string> = {
-  PRESEASON: 'preseason',
-  REGULAR: 'regular season',
-  PLAYOFFS: 'playoffs',
-  OFFSEASON_RESIGN: 're-signing period',
-  FREE_AGENCY: 'free agency',
-  DRAFT: 'draft',
-}
 
 function yearRange(latest: number): number[] {
   const years: number[] = []
@@ -55,10 +48,6 @@ function divisionGroups(teams: StaticData['teams']): { label: string; teams: Tea
     }
   }
   return groups
-}
-
-function phaseLabel(phase: string): string {
-  return PHASE_LABEL[phase] ?? phase.replace(/_/g, ' ').toLowerCase()
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
@@ -235,49 +224,10 @@ export function NewGame({ data, onStart, savedGame, onContinue, busy }: NewGameP
               </div>
             </label>
 
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
-              Trade strictness
-              <select
-                value={settings.tradeStrictness}
-                onChange={(e) =>
-                  setSettings((s) => ({
-                    ...s,
-                    tradeStrictness: e.target.value as GameSettings['tradeStrictness'],
-                  }))
-                }
-              >
-                <option value="lenient">Lenient</option>
-                <option value="balanced">Balanced</option>
-                <option value="strict">Strict</option>
-                <option value="ruthless">Ruthless</option>
-              </select>
-            </label>
-
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
-              AI offer frequency
-              <select
-                value={settings.aiOfferFrequency}
-                onChange={(e) =>
-                  setSettings((s) => ({
-                    ...s,
-                    aiOfferFrequency: e.target.value as GameSettings['aiOfferFrequency'],
-                  }))
-                }
-              >
-                <option value="rare">Rare</option>
-                <option value="normal">Normal</option>
-                <option value="aggressive">Aggressive</option>
-              </select>
-            </label>
-
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-              <input
-                type="checkbox"
-                checked={settings.injuries}
-                onChange={(e) => setSettings((s) => ({ ...s, injuries: e.target.checked }))}
-              />
-              Injuries
-            </label>
+            <GameSettingsFields
+              value={settings}
+              onChange={(patch) => setSettings((s) => ({ ...s, ...patch }))}
+            />
           </div>
         </Panel>
       </div>

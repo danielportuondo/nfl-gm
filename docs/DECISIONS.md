@@ -165,3 +165,14 @@ Daniel's call on the two "Known follow-ups (v2)" lists and REPORT.md's open ques
 - Deferred by decision: dead money past the data; Season Recap bracket connectors; comp picks past the data; MVP-style awards.
 - The theme toggle labels its target from the stored choice, so "system" on a light OS reads "Light theme"; resolve the label from the effective theme.
 - A team-in-year preview on the mandate plate (top consensus players, cap room) would make the pick informed; it needs the store to load a season chunk on selection.
+
+## 2026-09-20 — Settings tab and start over
+
+Daniel: once a team is chosen there was no way back to the New Game screen; add a Settings tab that also lets you adjust some settings.
+
+- **Settings screen** (`app/src/screens/Settings`). Appearance: theme as Dark / Light / System pressed buttons. This game: trade strictness, AI offer frequency and injuries, the same fields New Game uses (`screens/shared/GameSettingsFields`). Then the run plate with Start over. Settings changes reach the running league at once: the trade AI reads `state.settings.tradeStrictness` when it evaluates, offers read `aiOfferFrequency` when they are generated, the sim reads `injuries` each week. Settings live in `LeagueState`, so a change is an input like a trade and determinism holds.
+- **Start over keeps the save.** Daniel's call between deleting the `default` slot and keeping it: keep. `startOver` writes any pending debounced autosave first, clears `state` and what hangs off it (selected player, trade offers, suggestions, dismissed ids, alerts), re-reads the slot metadata and routes to `new-game`, where the Continue panel offers the old run until a new Start overwrites the slot, as a fresh visit does. The confirm Modal says so. Delete was rejected: one slot, and a misclick after the confirm would cost the run.
+- `autosave` returns its promise so `startOver` can await the flush; the fire-and-forget call sites are `void`. The debounce timer clears its handle when it fires, so a pending write is detectable.
+- Rail: Settings before About; both under More on the tab bar. Form controls got system styling (`.gg-field`), which New Game's selects inherit.
+- **Panels never stacked on phones.** Checking Settings at 390 px showed the two half-width panels side by side. `frame.css` declared the ≤ 720 px `span 12` rule before the base `.gg-col-*` rules; same specificity, so the base rules won and DESIGN §4's "stack to 12 at ≤ 720px" never applied on any screen. The media query now follows the base rules.
+- Tests: store (`updateSettings` merges; `startOver` clears, keeps the save, flushes exactly one pending autosave and writes nothing after), UI (theme and settings report at once; the confirm gates Start over), and a final start-over step on the E2E smoke flow.
