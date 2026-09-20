@@ -6,7 +6,8 @@ export { type TeamColors } from '../sprites'
 export interface StripProps {
   teamAbbr: string
   teamColors: TeamColors
-  season: number
+  /** "2013 offseason" during an offseason, "2013" in season (screens/shared/phaseLabel.ts). */
+  seasonText: string
   week: number
   phaseLabel: string
   record: string
@@ -24,7 +25,7 @@ export interface StripProps {
 export function Strip({
   teamAbbr,
   teamColors,
-  season,
+  seasonText,
   week,
   phaseLabel,
   record,
@@ -44,7 +45,7 @@ export function Strip({
       ) : (
         <>
           <span className="gg-strip__item tabular-nums">
-            {season} · {phaseLabel} {inSeason && week > 0 ? `· week ${week}` : ''}
+            {seasonText} · {phaseLabel} {inSeason && week > 0 ? `· week ${week}` : ''}
           </span>
           <span className="gg-strip__item tabular-nums">{record}</span>
           <span className="gg-strip__item tabular-nums">{capSpaceText}</span>

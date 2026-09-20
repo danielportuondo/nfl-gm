@@ -18,6 +18,7 @@ import {
 } from '@contracts/index'
 import { AcceptanceBar, Button, OfferCard, Panel, PositionBadge } from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
+import { describePick } from '../shared/pickLabel'
 
 export interface TradeCenterProps {
   state: LeagueState
@@ -47,9 +48,7 @@ function describeSide(state: LeagueState, data: StaticData, side: TradeSide): st
     if (p) parts.push(p.name)
   }
   for (const pick of side.picks) {
-    parts.push(
-      `${pick.season} R${pick.round} (${data.teams[pick.originalTeam]?.abbr ?? pick.originalTeam})`,
-    )
+    parts.push(describePick(data, pick))
   }
   return parts.length > 0 ? parts.join(', ') : 'Nothing'
 }

@@ -17,6 +17,7 @@ import { SeasonRecap } from '@screens/SeasonRecap'
 import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
+import { seasonPhaseLabel } from '@screens/shared/phaseLabel'
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard' },
@@ -32,12 +33,6 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'settings', label: 'Settings' },
   { id: 'about', label: 'About' },
 ]
-
-function formatPhase(phase: string): string {
-  if (phase === 'UDFA') return 'UDFA'
-  const lower = phase.replace(/_/g, ' ').toLowerCase()
-  return lower.charAt(0).toUpperCase() + lower.slice(1)
-}
 
 export function App() {
   const {
@@ -121,15 +116,16 @@ export function App() {
     room.order[room.currentPickIndex]?.owner === state.userTeam,
   )
   const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
+  const { seasonText, phaseText } = seasonPhaseLabel(state.season, state.phase)
 
   return (
     <AppFrame
       strip={{
         teamAbbr: teamInfo?.abbr ?? state.userTeam,
         teamColors: teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' },
-        season: state.season,
+        seasonText,
         week: state.week,
-        phaseLabel: formatPhase(state.phase),
+        phaseLabel: phaseText,
         record:
           record.ties > 0
             ? `${record.wins}-${record.losses}-${record.ties}`

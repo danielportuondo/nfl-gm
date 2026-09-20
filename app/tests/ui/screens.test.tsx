@@ -317,6 +317,23 @@ describe('Dashboard', () => {
     await userEvent.click(screen.getByText(/Over the cap/))
     expect(onNavigate).toHaveBeenCalledWith('finances')
   })
+
+  it('points at the Draft room while a draft is waiting or under way', () => {
+    const onNavigate = vi.fn()
+    const base = mockLeague()
+    render(
+      <Dashboard
+        state={{ ...base, phase: 'DRAFT', draftRoom: null }}
+        data={mockStatic()}
+        cap={150}
+        onSimWeek={vi.fn()}
+        onAdvancePhase={vi.fn()}
+        onNavigate={onNavigate}
+      />,
+    )
+    fireEvent.click(screen.getByText('The 2016 draft is waiting.'))
+    expect(onNavigate).toHaveBeenCalledWith('draft')
+  })
 })
 
 describe('Roster', () => {

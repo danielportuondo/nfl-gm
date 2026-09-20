@@ -4,7 +4,7 @@ import type { Theme } from '@ui/frame'
 import { Button, Modal, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
-import { phaseLabel } from '../shared/phaseLabel'
+import { phaseLabel, seasonText } from '../shared/phaseLabel'
 import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
 export interface SettingsProps {
@@ -127,7 +127,7 @@ export function Settings({
               <HelmetSprite pos="QB" size={4} />
               <div className="gg-mandate__text">
                 <h2 className="gg-mandate__team">
-                  {teamName}, {state.season}
+                  {teamName}, {seasonText(state.season, state.phase)}
                 </h2>
                 <p className="gg-mandate__lead">
                   Season {index} of {total}, {where}.

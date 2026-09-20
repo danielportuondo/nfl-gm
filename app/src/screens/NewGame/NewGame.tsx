@@ -11,7 +11,7 @@ import { Button, Modal, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
-import { phaseLabel } from '../shared/phaseLabel'
+import { phaseLabel, seasonText } from '../shared/phaseLabel'
 import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
 export interface NewGameProps {
@@ -108,8 +108,8 @@ export function NewGame({
           <Panel variant="attention" revealIndex={0}>
             <div className="gg-continue">
               <p style={{ margin: 0 }}>
-                Continue as the {savedTeam?.name ?? savedGame.userTeam}: {savedGame.season},{' '}
-                {phaseLabel(savedGame.phase)}.
+                Continue as the {savedTeam?.name ?? savedGame.userTeam}:{' '}
+                {seasonText(savedGame.season, savedGame.phase)}, {phaseLabel(savedGame.phase)}.
               </p>
               <div style={{ display: 'flex', gap: 'var(--sp-2)' }}>
                 <Button
@@ -156,8 +156,9 @@ export function NewGame({
                     {seasonsWord}.
                   </p>
                   <p className="gg-mandate__note">
-                    You take over the roster as it stood at the start of {startSeason}. Every rating
-                    is what scouts believed then. You may know better.
+                    You take over before the {startSeason} draft: the roster as it stood entering
+                    that offseason, with the {startSeason} class on the board. Every rating is what
+                    scouts believed then. You may know better.
                   </p>
                   <Button
                     type="button"

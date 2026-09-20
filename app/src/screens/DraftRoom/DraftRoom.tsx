@@ -21,6 +21,7 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { describePick } from '../shared/pickLabel'
 
 export interface DraftRoomProps {
   state: LeagueState
@@ -59,7 +60,7 @@ function describeSide(state: LeagueState, data: StaticData, side: TradeSide): st
     if (p) parts.push(p.name)
   }
   for (const pick of side.picks) {
-    parts.push(`${pick.season} R${pick.round} (${teamAbbr(data, pick.originalTeam)})`)
+    parts.push(describePick(data, pick))
   }
   return parts.length > 0 ? parts.join(', ') : 'Nothing'
 }

@@ -84,9 +84,26 @@ export function Dashboard({
   const draftPending = state.phase === 'DRAFT' && state.draftRoom?.status !== 'COMPLETE'
   const advanceLabel = ADVANCE_LABEL[state.phase]
 
+  const alerts: Alert[] = []
+  if (draftPending) {
+    const year = state.draftRoom?.season ?? state.season + 1
+    alerts.push(
+      state.draftRoom
+        ? {
+            text: `The ${year} draft is under way.`,
+            detail: 'Finish it in the Draft room.',
+            screen: 'draft',
+          }
+        : {
+            text: `The ${year} draft is waiting.`,
+            detail: 'Start it in the Draft room.',
+            screen: 'draft',
+          },
+    )
+  }
+
   const injuredSlots = (team?.roster ?? []).filter((slot) => slot.injured)
   const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1).length
-  const alerts: Alert[] = []
   if (injuredSlots.length > 0) {
     const worst = injuredSlots
       .map((slot) => ({
