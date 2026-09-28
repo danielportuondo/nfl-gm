@@ -316,9 +316,14 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
 - **Schedule & Results** — week rows with helmet sprites and scores; three sim buttons in the header.
 - **Standings** — eight division tables, clinch badges.
 - **League Browser** — team plate grid → that team's roster/picks/cap in a plate panel.
-- **Draft Room** — the showcase (§5.3). Board grid of NamePlates by round, your picks column, the
-  on-the-clock panel (`attention` variant), offers list with meters (offer text names picks with their
-  overall number once the order is set: "2013 R1 #24 (IND)"), pick log in a sunken well.
+- **Draft Room** — the showcase (§5.3). The sunken "Draft board" panel has two tabs: Prospects (the
+  available-prospects table with position filters, the default) and Pick board (one round at a time
+  behind R1–R7 buttons, following the clock unless the user picks a round: overall #, owner with
+  "from XXX" on traded picks, the player taken with consensus Ovr/Pot; the on-clock row in the
+  accent tint and the user's picks in the team tint via the Table's `rowTone`). Coming on the clock
+  returns to Prospects. Then your picks column, the on-the-clock panel (`attention` variant), offers
+  list with meters (offer text names picks with their overall number once the order is set: "2013
+  R1 #24 (IND)"), pick log in a sunken well.
 - **Trade Center** — two plate panels (yours / theirs) with asset pickers, a single Meter between them
   that updates live, the AI's counter as a toast-styled inline panel.
 - **Free Agency** — pool table with asks; your offers panel; bidding result as a toast.

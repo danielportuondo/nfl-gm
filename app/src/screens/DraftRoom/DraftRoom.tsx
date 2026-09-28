@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   POSITIONS,
   type LeagueState,
@@ -20,8 +20,10 @@ import {
   type Column,
   type SortState,
 } from '@ui/primitives'
+import { formatRating } from '@ui/primitives/Table'
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { describePick } from '../shared/pickLabel'
+import { PickBoard } from './PickBoard'
 
 export interface DraftRoomProps {
   state: LeagueState
@@ -82,6 +84,7 @@ export function DraftRoom({
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
   const [selected, setSelected] = useState<PlayerId | null>(null)
   const [sort, setSort] = useState<SortState>({ key: 'pot', dir: 'desc' })
+  const [activeTab, setActiveTab] = useState<'prospects' | 'board'>('prospects')
   const room = state.draftRoom
   const teamInfo = data.teams[state.userTeam]
 
@@ -116,6 +119,13 @@ export function DraftRoom({
     room && room.status === 'ON_CLOCK' && currentPick?.owner === state.userTeam,
   )
   const complete = room?.status === 'COMPLETE'
+
+  // Coming on the clock always snaps back to Prospects; otherwise the user's tab choice sticks.
+  const wasOnClock = useRef(onClock)
+  useEffect(() => {
+    if (onClock && !wasOnClock.current) setActiveTab('prospects')
+    wasOnClock.current = onClock
+  }, [onClock])
 
   const sorted = useMemo(() => {
     const dir = sort.dir === 'asc' ? 1 : -1
@@ -176,7 +186,7 @@ export function DraftRoom({
       numeric: true,
       rating: true,
       sortValue: (r) => r.ovr,
-      render: (r) => r.ovr,
+      render: (r) => formatRating(r.ovr),
     },
     {
       key: 'pot',
@@ -184,7 +194,7 @@ export function DraftRoom({
       numeric: true,
       rating: true,
       sortValue: (r) => r.pot,
-      render: (r) => r.pot,
+      render: (r) => formatRating(r.pot),
     },
     ...(onClock
       ? [
@@ -288,8 +298,8 @@ export function DraftRoom({
 
         <Panel title="Draft board" variant="sunken" revealIndex={1}>
           <div
-            role="group"
-            aria-label="Filter by position"
+            role="tablist"
+            aria-label="Draft board view"
             style={{
               display: 'flex',
               flexWrap: 'wrap',
@@ -297,32 +307,80 @@ export function DraftRoom({
               marginBottom: 'var(--sp-3)',
             }}
           >
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                className="gg-button gg-button--secondary"
-                aria-pressed={filter === f}
-                onClick={() => setFilter(f)}
-                style={filter === f ? { boxShadow: 'var(--shadow-press)' } : undefined}
-              >
-                {f}
-              </button>
-            ))}
+            <button
+              type="button"
+              role="tab"
+              id="draftroom-tab-prospects"
+              aria-selected={activeTab === 'prospects'}
+              aria-controls="draftroom-panel-prospects"
+              className="gg-button gg-button--secondary"
+              onClick={() => setActiveTab('prospects')}
+              style={activeTab === 'prospects' ? { boxShadow: 'var(--shadow-press)' } : undefined}
+            >
+              Prospects
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="draftroom-tab-board"
+              aria-selected={activeTab === 'board'}
+              aria-controls="draftroom-panel-board"
+              className="gg-button gg-button--secondary"
+              onClick={() => setActiveTab('board')}
+              style={activeTab === 'board' ? { boxShadow: 'var(--shadow-press)' } : undefined}
+            >
+              Pick board
+            </button>
           </div>
-          <Table
-            columns={columns}
-            rows={sorted}
-            rowKey={(r) => r.id}
-            caption="Available prospects"
-            dense
-            selectedRowKey={selected}
-            onRowClick={(r) => setSelected(r.id)}
-            sort={sort}
-            onSortChange={(key) =>
-              setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
-            }
-          />
+
+          {activeTab === 'prospects' ? (
+            <div
+              role="tabpanel"
+              id="draftroom-panel-prospects"
+              aria-labelledby="draftroom-tab-prospects"
+            >
+              <div
+                role="group"
+                aria-label="Filter by position"
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 'var(--sp-2)',
+                  marginBottom: 'var(--sp-3)',
+                }}
+              >
+                {FILTERS.map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    className="gg-button gg-button--secondary"
+                    aria-pressed={filter === f}
+                    onClick={() => setFilter(f)}
+                    style={filter === f ? { boxShadow: 'var(--shadow-press)' } : undefined}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+              <Table
+                columns={columns}
+                rows={sorted}
+                rowKey={(r) => r.id}
+                caption="Available prospects"
+                dense
+                selectedRowKey={selected}
+                onRowClick={(r) => setSelected(r.id)}
+                sort={sort}
+                onSortChange={(key) =>
+                  setSort((s) => ({ key, dir: s.key === key && s.dir === 'desc' ? 'asc' : 'desc' }))
+                }
+              />
+            </div>
+          ) : (
+            <div role="tabpanel" id="draftroom-panel-board" aria-labelledby="draftroom-tab-board">
+              <PickBoard state={state} data={data} room={room} userTeam={state.userTeam} />
+            </div>
+          )}
         </Panel>
 
         <div style={{ height: 'var(--sp-4)' }} />

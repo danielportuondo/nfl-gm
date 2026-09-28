@@ -303,3 +303,13 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   clock (offers are seeded by pick index, so re-advancing would resurrect declined ones).
 - UI: grid columns and stat tiles get `min-width: 0` (the Dashboard cap tiles forced 884px at a 768px
   viewport) and the Strip scrolls internally; the 720px rail breakpoint is unchanged.
+
+## 2026-09-28 — Pick board in the Draft Room
+
+- The Draft Room's "Draft board" panel has two tabs: Prospects (the available-prospects table, the
+  default) and Pick board, the league-wide board DESIGN §5.3 always described. The board shows one
+  round at a time (R1–R7 buttons), follows the clock into each new round unless the user picked a
+  round, and lists every pick with its owner, "from XXX" on traded picks, and the player taken with
+  consensus Ovr/Pot. The pick on the clock and the user's picks are tinted through a row-level
+  `rowTone` hook on the Table primitive. Coming on the clock switches back to Prospects, where the
+  pick is made. Consensus only; no engine or contract change.

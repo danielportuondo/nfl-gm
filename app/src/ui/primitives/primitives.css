@@ -160,6 +160,12 @@
 .gg-table tbody tr:hover {
   background: var(--surface-3);
 }
+.gg-table tbody tr[data-tone='attention'] {
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+}
+.gg-table tbody tr[data-tone='yours'] {
+  background: color-mix(in oklab, var(--team-primary) 12%, transparent);
+}
 .gg-table tbody tr[aria-selected='true'] {
   box-shadow: inset 3px 0 0 var(--accent);
 }

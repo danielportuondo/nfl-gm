@@ -15,6 +15,14 @@ export interface SortState {
   dir: 'asc' | 'desc'
 }
 
+export type RowTone = 'attention' | 'yours'
+
+/** Ratings are 40-99 integers (CLAUDE.md); round a consensus value for display. */
+// eslint-disable-next-line react-refresh/only-export-components -- shared with Table's own rendering
+export function formatRating(value: number): number {
+  return Math.round(value)
+}
+
 interface TableProps<T> {
   columns: Column<T>[]
   rows: T[]
@@ -26,6 +34,8 @@ interface TableProps<T> {
   onRowClick?: (row: T) => void
   sort?: SortState
   onSortChange?: (key: string) => void
+  /** Sets `data-tone` on the row (styled in primitives.css); omit for the default, untoned row. */
+  rowTone?: (row: T) => RowTone | undefined
 }
 
 /** Dense data table living in a sunken panel (docs/DESIGN.md §8). Numbers right-aligned tabular. */
@@ -40,6 +50,7 @@ export function Table<T>({
   onRowClick,
   sort,
   onSortChange,
+  rowTone,
 }: TableProps<T>) {
   return (
     <div className="gg-table-wrap">
@@ -96,10 +107,12 @@ export function Table<T>({
           {rows.map((row) => {
             const key = rowKey(row)
             const selected = key === selectedRowKey
+            const tone = rowTone?.(row)
             return (
               <tr
                 key={key}
                 aria-selected={selected}
+                data-tone={tone}
                 tabIndex={onRowClick ? 0 : undefined}
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
                 onKeyDown={

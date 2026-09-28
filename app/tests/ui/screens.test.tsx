@@ -32,9 +32,12 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-/** Draft-room fixture: a one-round order with the user on the clock and one AI pending offer. */
+/**
+ * Draft-room fixture: rounds 1-2 with the user on the clock in round 1, a pick traded away from
+ * the round's first team, a couple of picks already made, and one AI pending offer.
+ */
 function fixtureDraftRoom(state: LeagueState): DraftRoomState {
-  const order: DraftPick[] = TEAM_IDS.map((t, i) => ({
+  const round1: DraftPick[] = TEAM_IDS.map((t, i) => ({
     season: state.season + 1,
     round: 1,
     pick: i + 1,
@@ -42,16 +45,34 @@ function fixtureDraftRoom(state: LeagueState): DraftRoomState {
     owner: t,
     playerId: null,
   }))
+  const round2: DraftPick[] = TEAM_IDS.map((t, i) => ({
+    season: state.season + 1,
+    round: 2,
+    pick: TEAM_IDS.length + i + 1,
+    originalTeam: t,
+    owner: t,
+    playerId: null,
+  }))
   const userIndex = (TEAM_IDS as readonly string[]).indexOf(state.userTeam)
   const available = Object.keys(state.scouting).slice(0, 25)
+
+  // Pick 1 is traded to the second team in draft order; its originalTeam stays put.
+  const tradedOwner = TEAM_IDS[1]!
+  round1[0] = { ...round1[0]!, owner: tradedOwner }
+
+  // A couple of picks ahead of the user are already made.
+  for (let i = 0; i < Math.min(2, userIndex); i++) {
+    round1[i] = { ...round1[i]!, playerId: available[i]! }
+  }
+
   return {
     season: state.season + 1,
     status: 'ON_CLOCK',
     currentPickIndex: userIndex,
-    order,
+    order: [...round1, ...round2],
     available,
     udfaPool: [],
-    log: [{ pick: 1, round: 1, team: TEAM_IDS[0]!, playerId: available[0]!, historical: false }],
+    log: [{ pick: 1, round: 1, team: tradedOwner, playerId: available[0]!, historical: false }],
     pendingOffers: [fixtureTradeProposal(state)],
   }
 }
@@ -511,6 +532,153 @@ describe('DraftRoom', () => {
       />,
     )
     expect(screen.getByRole('button', { name: 'Start draft' })).toBeInTheDocument()
+  })
+
+  function renderDraftRoom(state: LeagueState, data: ReturnType<typeof mockStatic>) {
+    return render(
+      <DraftRoom
+        state={state}
+        data={data}
+        onStartDraft={vi.fn()}
+        onMakePick={vi.fn()}
+        onAutoPick={vi.fn()}
+        onSimToMyPick={vi.fn()}
+        onFinishDraft={vi.fn()}
+        onRespondToOffer={vi.fn()}
+        onEvaluate={() => FIXTURE_EVALUATION}
+        onTeamNeeds={() => null}
+      />,
+    )
+  }
+
+  it('shows the current round of the pick board with owner abbrs and a traded pick', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const room = fixtureDraftRoom(state)
+    const withRoom = { ...state, draftRoom: room, phase: 'DRAFT' as const }
+    renderDraftRoom(withRoom, data)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Pick board' }))
+
+    expect(screen.getByText('Pick board, round 1')).toBeInTheDocument()
+    const tradedOwner = data.teams[room.order[0]!.owner]!.abbr
+    const originalTeam = data.teams[room.order[0]!.originalTeam]!.abbr
+    expect(screen.getAllByText(tradedOwner).length).toBeGreaterThan(0)
+    expect(screen.getByText(`from ${originalTeam}`)).toBeInTheDocument()
+  })
+
+  it('shows a made pick with its player and grade, and — for an unmade pick', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const room = fixtureDraftRoom(state)
+    const withRoom = { ...state, draftRoom: room, phase: 'DRAFT' as const }
+    renderDraftRoom(withRoom, data)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Pick board' }))
+
+    const table = screen.getByText('Pick board, round 1').closest('table')!
+    const rowFor = (pick: number) =>
+      within(table)
+        .getAllByRole('row')
+        .find((r) => within(r).queryByText(String(pick)) !== null)!
+
+    const madePick = room.order[0]!
+    const madePlayer = state.players[madePick.playerId!]!
+    const madeScouting = state.scouting[madePick.playerId!]!
+    const madeRow = rowFor(madePick.pick!)
+    expect(within(madeRow).getByText(madePlayer.name)).toBeInTheDocument()
+    // Consensus ovr/pot are floats; the grade must render rounded to whole numbers.
+    const expectedGrade = `${Math.round(madeScouting.ovr)}/${Math.round(madeScouting.pot)}`
+    expect(within(madeRow).getByText(expectedGrade)).toBeInTheDocument()
+    expect(within(madeRow).getByText(/^\d+\/\d+$/)).toBeInTheDocument()
+
+    const unmadeIndex = room.order.findIndex(
+      (p, i) => p.round === 1 && p.playerId === null && i !== room.currentPickIndex,
+    )
+    const unmadePick = room.order[unmadeIndex]!
+    const unmadeRow = rowFor(unmadePick.pick!)
+    expect(within(unmadeRow).getByText('—')).toBeInTheDocument()
+  })
+
+  it('marks the on-the-clock slot and the user’s own pick', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const room = fixtureDraftRoom(state)
+    const withRoom = { ...state, draftRoom: room, phase: 'DRAFT' as const }
+    renderDraftRoom(withRoom, data)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Pick board' }))
+
+    const onClockText = screen.getByText('On the clock')
+    expect(onClockText).toBeInTheDocument()
+    expect(onClockText.closest('tr')).toHaveAttribute('data-tone', 'attention')
+
+    const yoursText = screen.getByText('Your pick')
+    expect(yoursText).toBeInTheDocument()
+    // The user is on the clock in this fixture, so this row tones as attention, not yours.
+    expect(yoursText.closest('tr')).toHaveAttribute('data-tone', 'attention')
+  })
+
+  it('tones a future user pick "yours" when it is not the one on the clock', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const room = fixtureDraftRoom(state)
+    const withRoom = { ...state, draftRoom: room, phase: 'DRAFT' as const }
+    renderDraftRoom(withRoom, data)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Pick board' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Round 2' }))
+
+    const userIndex = (TEAM_IDS as readonly string[]).indexOf(state.userTeam)
+    const round2UserPick = room.order[TEAM_IDS.length + userIndex]!
+    const row = screen.getByText(String(round2UserPick.pick)).closest('tr')!
+    expect(row).toHaveAttribute('data-tone', 'yours')
+  })
+
+  it('switches rounds when another round button is clicked', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const room = fixtureDraftRoom(state)
+    const withRoom = { ...state, draftRoom: room, phase: 'DRAFT' as const }
+    renderDraftRoom(withRoom, data)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Pick board' }))
+    expect(screen.getByText('Pick board, round 1')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Round 2' }))
+    expect(screen.getByText('Pick board, round 2')).toBeInTheDocument()
+  })
+
+  it('returns to Prospects when the user comes on the clock while viewing the pick board', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const room = fixtureDraftRoom(state)
+    const notOnClock = { ...room, currentPickIndex: 0 }
+    const withRoom = { ...state, draftRoom: notOnClock, phase: 'DRAFT' as const }
+    const { rerender } = renderDraftRoom(withRoom, data)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Pick board' }))
+    expect(screen.getByText('Pick board, round 1')).toBeInTheDocument()
+
+    const userIndex = (TEAM_IDS as readonly string[]).indexOf(state.userTeam)
+    const onClockRoom = { ...room, currentPickIndex: userIndex }
+    const onClockState = { ...state, draftRoom: onClockRoom, phase: 'DRAFT' as const }
+    rerender(
+      <DraftRoom
+        state={onClockState}
+        data={data}
+        onStartDraft={vi.fn()}
+        onMakePick={vi.fn()}
+        onAutoPick={vi.fn()}
+        onSimToMyPick={vi.fn()}
+        onFinishDraft={vi.fn()}
+        onRespondToOffer={vi.fn()}
+        onEvaluate={() => FIXTURE_EVALUATION}
+        onTeamNeeds={() => null}
+      />,
+    )
+
+    expect(screen.getByText('Available prospects')).toBeInTheDocument()
   })
 })
 
