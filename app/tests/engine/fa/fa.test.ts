@@ -341,6 +341,120 @@ describe('fa.release', () => {
   })
 })
 
+describe('fa.resign guards (QA: no phase/expiry check let a mid-contract player be rewritten anytime)', () => {
+  function expiringSetup(phase: Phase) {
+    const ctx = ctxFor(2015)
+    const base = league.newGame(newGameOpts(), ctx)
+    const teamId = base.userTeam
+    const slot = base.teams[teamId]!.roster.find((r) => !r.contract.rookie)!
+    const state: LeagueState = {
+      ...base,
+      phase,
+      teams: {
+        ...base.teams,
+        [teamId]: {
+          ...base.teams[teamId]!,
+          roster: base.teams[teamId]!.roster.map((r) =>
+            r.playerId === slot.playerId ? { ...r, contract: { ...r.contract, years: 1 } } : r,
+          ),
+        },
+      },
+    }
+    return { ctx, state, teamId, playerId: slot.playerId }
+  }
+
+  it('throws outside OFFSEASON_RESIGN even when the offer is at ask and the deal is expiring', () => {
+    const { ctx, state, playerId } = expiringSetup('DRAFT')
+    const ask = fa.resignAsk(state, playerId, ctx)
+    expect(() =>
+      fa.resign(
+        state,
+        playerId,
+        { years: 1, apy: ask, guaranteedPct: 0.1, signedSeason: state.season, rookie: false },
+        ctx,
+      ),
+    ).toThrow(/OFFSEASON_RESIGN/)
+  })
+
+  it('throws inside OFFSEASON_RESIGN when the player is not actually expiring (years > 1)', () => {
+    const { ctx, state, teamId, playerId } = expiringSetup('OFFSEASON_RESIGN')
+    const notExpiring: LeagueState = {
+      ...state,
+      teams: {
+        ...state.teams,
+        [teamId]: {
+          ...state.teams[teamId]!,
+          roster: state.teams[teamId]!.roster.map((r) =>
+            r.playerId === playerId ? { ...r, contract: { ...r.contract, years: 3 } } : r,
+          ),
+        },
+      },
+    }
+    const ask = fa.resignAsk(notExpiring, playerId, ctx)
+    expect(() =>
+      fa.resign(
+        notExpiring,
+        playerId,
+        { years: 1, apy: ask, guaranteedPct: 0.1, signedSeason: state.season, rookie: false },
+        ctx,
+      ),
+    ).toThrow(/not expiring/)
+  })
+
+  it('succeeds during OFFSEASON_RESIGN for an expiring (years <= 1) contract at or above ask', () => {
+    const { ctx, state, teamId, playerId } = expiringSetup('OFFSEASON_RESIGN')
+    const ask = fa.resignAsk(state, playerId, ctx)
+    const next = fa.resign(
+      state,
+      playerId,
+      { years: 2, apy: ask, guaranteedPct: 0.4, signedSeason: state.season, rookie: false },
+      ctx,
+    )
+    const after = next.teams[teamId]!.roster.find((r) => r.playerId === playerId)!.contract
+    expect(after.apy).toBe(ask)
+    expect(after.years).toBe(2)
+    expect(next.divergence.has(playerId)).toBe(true)
+  })
+
+  it.each([
+    { years: 0, apy: 1, guaranteedPct: 0.5 },
+    { years: 8, apy: 1, guaranteedPct: 0.5 },
+    { years: 2, apy: -1, guaranteedPct: 0.5 },
+    { years: 2, apy: 1, guaranteedPct: -0.1 },
+    { years: 2, apy: 1, guaranteedPct: 1.5 },
+  ])('resign rejects an out-of-bounds contract %o', (bad) => {
+    const { ctx, state, playerId } = expiringSetup('OFFSEASON_RESIGN')
+    expect(() =>
+      fa.resign(state, playerId, { ...bad, signedSeason: state.season, rookie: false }, ctx),
+    ).toThrow(/invalid contract/)
+  })
+
+  it.each([
+    { years: 0, apy: 1, guaranteedPct: 0.5 },
+    { years: 8, apy: 1, guaranteedPct: 0.5 },
+    { years: 2, apy: 1, guaranteedPct: -0.1 },
+    { years: 2, apy: 1, guaranteedPct: 1.5 },
+  ])(
+    'offer rejects an out-of-bounds contract %o (a negative guaranteedPct must never reach dead money math)',
+    (bad) => {
+      const ctx = ctxFor(2015)
+      const state = league.newGame(newGameOpts(), ctx)
+      const playerId = state.freeAgents[0]!
+      const rng = ctx.modules.rng.fromSeed('bad-contract', 0)
+      expect(() =>
+        fa.offer(
+          state,
+          'DAL',
+          playerId,
+          { ...bad, signedSeason: state.season, rookie: false },
+          ctx,
+          rng,
+        ),
+      ).toThrow(/invalid contract/)
+    },
+  )
+})
+
 describe('fa.offer acceptance', () => {
   it('is monotone in offer/ask ratio', () => {
     const ctx = ctxFor(2015)

@@ -6,6 +6,7 @@
  * brings every AI team back under cap (and to legal size) before PRESEASON's validateRoster runs.
  */
 import {
+  ContractSchema,
   SeasonNotLoadedError,
   STARTER_TEMPLATE,
   faStub,
@@ -34,6 +35,23 @@ import {
   round2,
   rosterLimits,
 } from './internal'
+
+// -------------------------------------------------------------------------------------------
+// Input validation
+// -------------------------------------------------------------------------------------------
+
+/**
+ * `resign`/`offer` write a caller-supplied Contract straight into state; ContractSchema (the source of
+ * truth for bounds, contracts/schemas.ts) is re-checked here so a bad `years` or `guaranteedPct` never
+ * reaches deadChargeFor/payroll math (a negative guaranteedPct would produce negative dead money).
+ */
+function assertValidContract(contract: Contract): void {
+  const result = ContractSchema.safeParse(contract)
+  if (!result.success) {
+    const detail = result.error.issues.map((i) => `${i.path.join('.') || 'contract'}: ${i.message}`)
+    throw new Error(`invalid contract: ${detail.join('; ')}`)
+  }
+}
 
 // -------------------------------------------------------------------------------------------
 // Cap / payroll
@@ -286,13 +304,24 @@ function resign(
   contract: Contract,
   ctx: EngineContext,
 ): LeagueState {
+  assertValidContract(contract)
+  if (state.phase !== 'OFFSEASON_RESIGN')
+    throw new Error(
+      `fa.resign: only allowed during OFFSEASON_RESIGN (current phase is "${state.phase}")`,
+    )
   const teamId = findTeamOf(state, playerId)
   if (!teamId) throw new Error(`fa.resign: player "${playerId}" is not on a roster`)
+  const team = state.teams[teamId]!
+  const slot = team.roster.find((r) => r.playerId === playerId)!
+  // Matches how the Free Agency screen (and rolloverContracts) treat a contract as expiring.
+  if (slot.contract.years > 1)
+    throw new Error(
+      `fa.resign: player "${playerId}"'s contract has ${slot.contract.years} years remaining, not expiring`,
+    )
   const ask = resignAsk(state, playerId, ctx)
   if (contract.apy < ask)
     throw new Error(`fa.resign: offer $${contract.apy}M is below the ask $${ask}M`)
-  const team = state.teams[teamId]!
-  const currentApy = team.roster.find((r) => r.playerId === playerId)!.contract.apy
+  const currentApy = slot.contract.apy
   const projectedPayroll = payroll(state, teamId) - currentApy + contract.apy
   if (projectedPayroll > capFor(state.season, ctx))
     throw new Error(`fa.resign: contract would exceed the salary cap`)
@@ -383,6 +412,7 @@ function offer(
   ctx: EngineContext,
   rng: Rng,
 ): { accepted: boolean; state: LeagueState } {
+  assertValidContract(contract)
   const team = state.teams[teamId]
   if (!team) throw new Error(`fa.offer: unknown team "${teamId}"`)
   const p = offerOdds(state, teamId, playerId, contract, ctx)
