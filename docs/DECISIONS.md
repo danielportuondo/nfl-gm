@@ -255,3 +255,18 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
 - Test: three store cases with the real `trade.execute` and a spied `draft.advance` (offer accepted
   in the room, player deal that keeps the user on the clock, user-initiated pick trade from the Trade
   Center). 323 tests.
+
+## 2026-09-28 — Display numerals from Oxanium
+
+- Daniel: the numbers are hard to read. Pixelify Sans digits blur at data sizes (a rating of 72 reads
+  as τ2, a 5 as S, $123.0M as $183.0M). Candidates compared on the app's real numbers at 13/16/24/32px
+  in both themes: Oxanium, Saira Semi Condensed, Barlow Semi Condensed, Big Shoulders, Jersey 10,
+  Chakra Petch. Oxanium won: squared forms that sit on the pixel grid, all ten digits one width (so
+  table columns align without `tnum`), clear at 13px. Chakra Petch was close, but its digits are
+  proportional. Barlow Semi Condensed is legible but drops the game voice.
+- Implementation: a `GG Numerals` `@font-face` in `tokens.css` over the Oxanium variable file,
+  `unicode-range` limited to digits and `$ % + , - . / – −`, first in `--font-display`. Every number
+  in display type switches at once, letters stay pixel, and no component changed. Weight range 600–800,
+  so regular display text gets 600 numerals that hold up beside the pixel strokes. New dev dependency
+  `@fontsource-variable/oxanium` (OFL, self-hosted). Barlow body numbers were already legible and are
+  unchanged.

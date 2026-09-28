@@ -7,6 +7,17 @@
  * prefers-color-scheme media query, guarded so an explicit choice always wins in both directions.
  */
 
+/* Pixelify's digits blur at data sizes (7 reads as τ, 5 as S, 3 as 8), so the display stack draws
+   digits and money punctuation from Oxanium while letters stay pixel. The 600–800 weight range lifts
+   regular-weight display text to 600 so the numerals hold their own beside the pixel strokes. */
+@font-face {
+  font-family: 'GG Numerals';
+  src: url('@fontsource-variable/oxanium/files/oxanium-latin-wght-normal.woff2') format('woff2');
+  font-weight: 600 800;
+  font-display: swap;
+  unicode-range: U+0024-0025, U+002B-002F, U+0030-0039, U+2013, U+2212;
+}
+
 :root {
   color-scheme: dark;
 
@@ -35,7 +46,8 @@
   --on-team-primary: #f3ecd2;
 
   /* 2.3 Type scale */
-  --font-display: 'Pixelify Sans Variable', 'Pixelify Sans', 'Courier New', monospace;
+  --font-display:
+    'GG Numerals', 'Pixelify Sans Variable', 'Pixelify Sans', 'Courier New', monospace;
   --font-body: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
 
   --fs-1: 0.8125rem; /* 13 — dense tables, captions        (Barlow)   */

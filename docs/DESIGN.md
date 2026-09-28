@@ -92,7 +92,7 @@ pixels; display sizes sit on multiples of 4 so pixel glyphs align.
 
 ```css
 :root {
-  --font-display: 'Pixelify Sans Variable', 'Pixelify Sans', 'Courier New', monospace;
+  --font-display: 'GG Numerals', 'Pixelify Sans Variable', 'Pixelify Sans', 'Courier New', monospace;
   --font-body: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
 
   --fs-1: 0.8125rem; /* 13 — dense tables, captions          (Barlow)   */
@@ -114,7 +114,9 @@ pixels; display sizes sit on multiples of 4 so pixel glyphs align.
 - Body copy max line length 70ch. Sentence case everywhere; capitals only in abbreviations (`KC`, `QB`).
 - Numbers in tables, meters and the scoreboard: `font-variant-numeric: tabular-nums`. If a face lacks
   tabular figures at a size, give the cell a fixed `min-width` instead — columns never wobble.
-- Ratings (40–99) are always Pixelify, never Barlow: a rating is a game number, not a spreadsheet number.
+- Ratings (40–99) are always in the display face, never Barlow: a rating is a game number, not a spreadsheet
+  number. The display face draws its digits from Oxanium (see §3), so a rating keeps the game voice and
+  still reads at 13px.
 
 ### 2.4 Space, radius, border, shadow, motion, layering
 
@@ -155,10 +157,12 @@ step (raise → hover → press → none) and the surface step, not from radius.
 | Role | Face | Package | Why |
 |---|---|---|---|
 | Display | **Pixelify Sans** (variable 400–700, OFL) | `@fontsource-variable/pixelify-sans` | A pixel face with real lowercase and weights, so headings and buttons feel like the game without shouting in caps; far less worn than Press Start 2P. |
+| Display numerals | **Oxanium** (variable, used at 600–800, OFL) | `@fontsource-variable/oxanium` | Pixelify's digits blur at data sizes (7 reads as τ, 5 as S, 3 as 8). A `GG Numerals` `@font-face` in `tokens.css` limited by `unicode-range` to digits and `$ % + , - . / –` sits first in `--font-display`, so every number in display type is Oxanium while letters stay pixel. Its squared forms match the pixel grid, and its digits are all one width, so columns stay aligned without a tabular feature. |
 | Body / data | **Barlow** (400, 500, 600, OFL) | `@fontsource/barlow` | Low-contrast grotesque with a slightly squared, sporty voice (it reads like a stadium sign), narrow enough for dense cap tables at 13px. |
 
 Load in `app/src/ui/fonts.ts`: `import '@fontsource-variable/pixelify-sans'` and
-`import '@fontsource/barlow/400.css'`, `/500.css`, `/600.css`. Self-hosted, no CDN. `font-display: swap`
+`import '@fontsource/barlow/400.css'`, `/500.css`, `/600.css`. Oxanium loads from the `GG Numerals`
+`@font-face` in `tokens.css`, not from `fonts.ts`, because it must stay scoped to numerals. Self-hosted, no CDN. `font-display: swap`
 with the fallback stacks above so text never blocks.
 
 ## 4. Layout
