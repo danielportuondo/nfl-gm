@@ -28,8 +28,7 @@ describe('truth isolation', () => {
     const offenders = uiFiles.filter((f) => {
       const code = stripComments(readFileSync(f, 'utf8'))
       return (
-        /\.truth\b/.test(code) ||
-        /\[['"]truth['"]\]/.test(code) ||
+        /\btruth\b/.test(code) ||
         /\bTrueTrajectory\b/.test(code) ||
         /from\s+['"][^'"]*truth[^'"]*['"]/i.test(code) ||
         /\btrajectories\b/.test(code)

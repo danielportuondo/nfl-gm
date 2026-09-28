@@ -28,7 +28,11 @@ async function clickAdvance(page: Page, label: string): Promise<void> {
 async function cutdownForPreseason(page: Page): Promise<void> {
   await goTo(page, 'Roster')
   const releaseAll = page.getByRole('button', { name: /^Release \d+ players?$/ })
-  if (await releaseAll.isVisible({ timeout: 2_000 }).catch(() => false)) {
+  const shown = await releaseAll
+    .waitFor({ state: 'visible', timeout: 2_000 })
+    .then(() => true)
+    .catch(() => false)
+  if (shown) {
     await page.screenshot({ path: '../docs/screenshots/cutdown.png' })
     await releaseAll.click()
     await expect(releaseAll).toBeHidden({ timeout: 15_000 })
