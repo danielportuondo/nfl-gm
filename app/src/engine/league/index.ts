@@ -326,37 +326,80 @@ function pct(r: { wins: number; losses: number; ties: number }): number {
   return total === 0 ? 0 : (r.wins + 0.5 * r.ties) / total
 }
 
-/** In [-1, 1]: positive favors `a`. 0 when the teams haven't played this season. */
-function headToHead(state: LeagueState, a: TeamId, b: TeamId): number {
-  const gamesById = new Map(state.schedule.map((g) => [g.id, g]))
-  let aWins = 0
+type GamesIndex = Map<string, Game>
+
+function indexGames(schedule: Game[]): GamesIndex {
+  return new Map(schedule.map((g) => [g.id, g]))
+}
+
+/**
+ * Win pct for `team` in this-season REG games against the *other members of `group`* only (in
+ * [0, 1]). 0.5 (neutral — doesn't split the bucket) when `team` played none of the rest of the group
+ * this season, so a team with no head-to-head data falls through to the next tiebreaker instead of
+ * being sorted by an empty sample.
+ */
+function groupHeadToHeadPct(
+  state: LeagueState,
+  gamesById: GamesIndex,
+  group: readonly TeamId[],
+  team: TeamId,
+): number {
+  const members = new Set(group)
+  let wins = 0
   let total = 0
   for (const r of state.results) {
     const g = gamesById.get(r.gameId)
     if (!g || g.season !== state.season || g.type !== 'REG') continue
-    const isPair = (g.home === a && g.away === b) || (g.home === b && g.away === a)
-    if (!isPair) continue
+    if (!members.has(g.home) || !members.has(g.away)) continue
+    if (g.home !== team && g.away !== team) continue
     total += 1
-    const homeWin = r.homeScore > r.awayScore
     const tie = r.homeScore === r.awayScore
-    const aIsHome = g.home === a
-    if (tie) aWins += 0.5
-    else if ((aIsHome && homeWin) || (!aIsHome && !homeWin)) aWins += 1
+    const teamWon = g.home === team ? r.homeScore > r.awayScore : r.awayScore > r.homeScore
+    if (tie) wins += 0.5
+    else if (teamWon) wins += 1
   }
-  return total === 0 ? 0 : (aWins / total - 0.5) * 2
+  return total === 0 ? 0.5 : wins / total
 }
 
-function compareTeams(state: LeagueState, a: TeamId, b: TeamId): number {
-  const ra = state.teams[a]?.record ?? ZERO_RECORD
-  const rb = state.teams[b]?.record ?? ZERO_RECORD
-  const pctDiff = pct(rb) - pct(ra)
-  if (pctDiff !== 0) return pctDiff
-  const h2h = headToHead(state, a, b)
-  if (h2h !== 0) return -h2h
-  const diffA = ra.pointsFor - ra.pointsAgainst
-  const diffB = rb.pointsFor - rb.pointsAgainst
-  if (diffA !== diffB) return diffB - diffA
-  return a.localeCompare(b)
+function pointDiff(state: LeagueState, team: TeamId): number {
+  const r = state.teams[team]?.record ?? ZERO_RECORD
+  return r.pointsFor - r.pointsAgainst
+}
+
+/**
+ * Standings tiebreak (HANDOFF §6.3, simplified): win pct -> head-to-head among the tied group only
+ * -> point differential -> team id. Each criterion buckets the current group by score (equal score =
+ * still tied) and recurses into each bucket with the next criterion, so a subgroup that pct already
+ * separated from the rest never has its head-to-head recomputed against teams outside its bucket —
+ * that per-pair recomputation is what let the old pairwise `Array.sort` comparator cycle on a 3+-way
+ * head-to-head loop (A > B > C > A). The final tiebreaker (team id) never ties, so recursion always
+ * bottoms out in a strict order; sorting the input up front makes the result independent of the order
+ * `teamIds` arrived in.
+ */
+function orderTeamsByTiebreak(state: LeagueState, teamIds: readonly TeamId[]): TeamId[] {
+  const gamesById = indexGames(state.schedule)
+  const criteria: ((group: readonly TeamId[], team: TeamId) => number)[] = [
+    (_group, team) => pct(state.teams[team]?.record ?? ZERO_RECORD),
+    (group, team) => groupHeadToHeadPct(state, gamesById, group, team),
+    (_group, team) => pointDiff(state, team),
+  ]
+
+  function orderGroup(group: readonly TeamId[], depth: number): TeamId[] {
+    if (group.length <= 1) return [...group]
+    if (depth >= criteria.length) return [...group].sort((a, b) => a.localeCompare(b))
+    const criterion = criteria[depth]!
+    const buckets = new Map<number, TeamId[]>()
+    for (const team of group) {
+      const score = criterion(group, team)
+      const bucket = buckets.get(score)
+      if (bucket) bucket.push(team)
+      else buckets.set(score, [team])
+    }
+    const scoresDesc = [...buckets.keys()].sort((a, b) => b - a)
+    return scoresDesc.flatMap((score) => orderGroup(buckets.get(score)!, depth + 1))
+  }
+
+  return orderGroup([...teamIds].sort(), 0)
 }
 
 type ConfSeed = PlayoffSeed
@@ -372,15 +415,15 @@ function computeSeeds(state: LeagueState, _ctx: EngineContext, conf: Conference)
     arr.push(t)
     byDivision.set(key, arr)
   }
-  const winners: TeamId[] = []
-  const rest: TeamId[] = []
+  let winners: TeamId[] = []
+  let rest: TeamId[] = []
   for (const [, members] of byDivision) {
-    const sorted = [...members].sort((a, b) => compareTeams(state, a, b))
+    const sorted = orderTeamsByTiebreak(state, members)
     winners.push(sorted[0]!)
     rest.push(...sorted.slice(1))
   }
-  winners.sort((a, b) => compareTeams(state, a, b))
-  rest.sort((a, b) => compareTeams(state, a, b))
+  winners = orderTeamsByTiebreak(state, winners)
+  rest = orderTeamsByTiebreak(state, rest)
   const wildcards = rest.slice(0, Math.max(0, perConf - winners.length))
   const ordered = [...winners, ...wildcards].slice(0, perConf)
   return ordered.map((teamId, i) => ({ teamId, conf, seed: i + 1 }))
@@ -405,7 +448,7 @@ function standingsImpl(state: LeagueState, ctx: EngineContext): StandingRow[] {
   const rows: StandingRow[] = []
   for (const conf of ['AFC', 'NFC'] as const) {
     const confTeams: TeamId[] = TEAM_IDS.filter((t) => teamDivision(t).conf === conf)
-    const confSorted = [...confTeams].sort((a, b) => compareTeams(state, a, b))
+    const confSorted = orderTeamsByTiebreak(state, confTeams)
     const confRankOf = new Map<TeamId, number>(confSorted.map((t, i) => [t, i + 1]))
     const byDivision = new Map<string, TeamId[]>()
     for (const t of confTeams) {
@@ -415,7 +458,7 @@ function standingsImpl(state: LeagueState, ctx: EngineContext): StandingRow[] {
       byDivision.set(key, arr)
     }
     for (const [, members] of byDivision) {
-      const divSorted = [...members].sort((a, b) => compareTeams(state, a, b))
+      const divSorted = orderTeamsByTiebreak(state, members)
       divSorted.forEach((teamId, i) => {
         const record = state.teams[teamId]?.record ?? ZERO_RECORD
         const seedInfo = byTeam.get(teamId) ?? null
