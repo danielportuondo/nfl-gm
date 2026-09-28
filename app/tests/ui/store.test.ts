@@ -475,3 +475,154 @@ describe('engine-mode chunk loading', () => {
     expect(loadSeason.mock.calls.map(([s]) => s)).toEqual([2015])
   })
 })
+
+/**
+ * Regression: accepting a draft-room offer hands the on-clock pick to the AI team, but the engine
+ * leaves running the draft on to the caller (`draft.advance` re-syncs owners; docs/DECISIONS.md
+ * Phase 3). The store used to stop after `trade.submit`, so the room sat with an AI team on the
+ * clock until the user pressed "Sim to my pick".
+ */
+describe('trades during the draft', () => {
+  const DRAFT_SEASON = 2015
+  const AI_TEAM = 'CLE'
+
+  /** The user's round-1 pick on the clock at index 0, the AI's round-1 pick right behind it. */
+  function withDraftRoom(state: LeagueState): LeagueState {
+    const order = state.picks
+      .filter((p) => p.season === DRAFT_SEASON && p.round === 1)
+      .sort((a, b) => (a.owner === state.userTeam ? -1 : b.owner === state.userTeam ? 1 : 0))
+    return {
+      ...state,
+      phase: 'DRAFT',
+      draftRoom: {
+        season: DRAFT_SEASON,
+        status: 'ON_CLOCK',
+        currentPickIndex: 0,
+        order,
+        available: [],
+        udfaPool: [],
+        log: [],
+        pendingOffers: [],
+      },
+    }
+  }
+
+  function pickSwapOffer(state: LeagueState): TradeProposal {
+    const onClock = state.draftRoom!.order[0]!
+    return {
+      id: 'draft-offer-1',
+      offer: {
+        teamId: AI_TEAM,
+        players: [],
+        picks: [{ season: DRAFT_SEASON, round: 1, originalTeam: AI_TEAM }],
+      },
+      request: {
+        teamId: state.userTeam,
+        players: [],
+        picks: [
+          { season: onClock.season, round: onClock.round, originalTeam: onClock.originalTeam },
+        ],
+      },
+      initiatedBy: 'AI',
+      season: state.season,
+      week: state.week,
+    }
+  }
+
+  /** Accepts everything and applies it with the real `execute`, so pick owners move as in the game. */
+  const acceptingSubmit: typeof defaultEngineModules.trade.submit = (state, proposal, ctx) => ({
+    accepted: true,
+    evaluation: { valueIn: 1, valueOut: 1, needAdj: 0, margin: 0, p: 1, valid: true, reasons: [] },
+    counter: null,
+    state: defaultEngineModules.trade.execute(state, proposal, ctx),
+  })
+
+  async function draftStore() {
+    const base = mockLeague()
+    const advance = vi.fn((state: LeagueState) => ({
+      ...state,
+      draftRoom: { ...state.draftRoom!, currentPickIndex: state.draftRoom!.currentPickIndex + 1 },
+    }))
+    const store = createGameStore({
+      mode: 'mock',
+      modules: {
+        trade: { ...defaultEngineModules.trade, submit: acceptingSubmit },
+        draft: { ...defaultEngineModules.draft, advance },
+      },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    store.setState((s) => ({ state: withDraftRoom(s.state!) }))
+    return { store, advance }
+  }
+
+  it('runs the draft on when an accepted offer takes the on-clock pick from the user', async () => {
+    const { store, advance } = await draftStore()
+    const offer = pickSwapOffer(store.getState().state!)
+    store.setState((s) => ({
+      state: { ...s.state!, draftRoom: { ...s.state!.draftRoom!, pendingOffers: [offer] } },
+    }))
+
+    await store.getState().actions.respondToOffer(offer, true)
+
+    expect(advance).toHaveBeenCalledTimes(1)
+    const handedOver = advance.mock.calls[0]![0]
+    expect(handedOver.draftRoom!.order[0]!.owner).toBe(AI_TEAM)
+    expect(handedOver.draftRoom!.pendingOffers).toEqual([])
+    expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(1)
+    expect(store.getState().toasts.map((t) => t.text)).toEqual(['Trade accepted'])
+  })
+
+  it('leaves the room alone when the accepted trade keeps the user on the clock', async () => {
+    const { store, advance } = await draftStore()
+    const state = store.getState().state!
+    const playerDeal = fixtureProposal(state)
+    const stillPending = { ...pickSwapOffer(state), id: 'draft-offer-2' }
+    store.setState((s) => ({
+      state: {
+        ...s.state!,
+        draftRoom: { ...s.state!.draftRoom!, pendingOffers: [playerDeal, stillPending] },
+      },
+    }))
+
+    await store.getState().actions.respondToOffer(playerDeal, true)
+
+    expect(advance).not.toHaveBeenCalled()
+    expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(0)
+    expect(store.getState().state!.draftRoom!.pendingOffers).toEqual([stillPending])
+  })
+
+  it('runs the draft on when the user trades the on-clock pick away from the Trade Center', async () => {
+    const { store, advance } = await draftStore()
+    const state = store.getState().state!
+    const onClock = state.draftRoom!.order[0]!
+    const proposal: TradeProposal = {
+      id: 'user-offer-1',
+      offer: {
+        teamId: state.userTeam,
+        players: [],
+        picks: [
+          { season: onClock.season, round: onClock.round, originalTeam: onClock.originalTeam },
+        ],
+      },
+      request: {
+        teamId: AI_TEAM,
+        players: [],
+        picks: [{ season: DRAFT_SEASON, round: 1, originalTeam: AI_TEAM }],
+      },
+      initiatedBy: 'USER',
+      season: state.season,
+      week: state.week,
+    }
+
+    await store.getState().actions.proposeTrade(proposal)
+
+    expect(advance).toHaveBeenCalledTimes(1)
+    expect(advance.mock.calls[0]![0].draftRoom!.order[0]!.owner).toBe(AI_TEAM)
+    expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(1)
+  })
+})

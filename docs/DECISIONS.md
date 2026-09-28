@@ -237,3 +237,21 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   a 2010 start proves nothing needs a 2009 chunk); the E2E smoke drafts before it sims. New realData test:
   2015 start, scripted GM through the opening offseason, every roster legal on opening day, AI rosters
   ≥ 90 % real.
+
+## 2026-09-28 — Draft resumes after a mid-draft trade
+
+- Daniel: after accepting an offer in the Draft Room the draft did not resume. Root cause was in the
+  store, not the engine: `trade.submit` moves the on-clock pick to the AI team (in `state.picks` and
+  `draftRoom.order`), and `draft.advance` re-syncs owners and runs the AI on, but nothing called
+  `advance` — the room sat at the same index with an AI team on the clock until "Sim to my pick".
+  Reproduced on real 2013 data (ARI, pick 45 to LAC: index 44 → 44, log unchanged; `advance` on that
+  state ran to the user's next slot at index 68 with fresh offers).
+- The store now runs the draft on after any accepted trade that leaves someone other than the user on
+  the clock (`resumeDraftAfterTrade`, used by `respondToOffer` and `proposeTrade`): the same call
+  "Sim to my pick" makes, so the user lands on their next pick with new offers, or on "Draft complete".
+  A trade that keeps the user on the clock (a player deal from the Trade Center) leaves the room and
+  its remaining offers untouched — re-running `advance` there would regenerate declined offers, since
+  draft offers are seeded by pick index. Engine untouched; no contract change.
+- Test: three store cases with the real `trade.execute` and a spied `draft.advance` (offer accepted
+  in the room, player deal that keeps the user on the clock, user-initiated pick trade from the Trade
+  Center). 323 tests.
