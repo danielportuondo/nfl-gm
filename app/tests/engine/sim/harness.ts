@@ -13,6 +13,7 @@ import {
   type EngineContext,
   type GameResult,
   type LeagueState,
+  type PlayerGameLine,
   type StaticData,
   type TeamId,
   type TrajectoryTable,
@@ -46,6 +47,14 @@ export function makeCtx(
       history: historyStub,
     },
   }
+}
+
+/** Points a team's box score accounts for; equals the team's final score. */
+export function boxPoints(lines: readonly PlayerGameLine[]): number {
+  const stat = (key: keyof PlayerGameLine) =>
+    lines.reduce((acc, line) => acc + ((line[key] as number | undefined) ?? 0), 0)
+  const touchdowns = stat('passTd') + stat('rushTd') + stat('defTd') + stat('retTd')
+  return 6 * touchdowns + stat('xpm') + 3 * stat('fgm') + 2 * stat('twoPt') + 2 * stat('safeties')
 }
 
 export interface SeasonTotals {

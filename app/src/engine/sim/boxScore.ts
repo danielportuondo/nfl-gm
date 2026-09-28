@@ -12,6 +12,7 @@ import type {
   Rng,
   TeamId,
 } from '@contracts/index'
+import { POSITIONS } from '@contracts/index'
 import { boxConstants as B } from './constants'
 import { pickDecomposition } from './points'
 import { trueValue } from './strength'
@@ -64,6 +65,18 @@ function capAllocation(values: number[], caps: readonly number[]): number[] {
 
 const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x))
 
+/** Index drawn in proportion to `weights` (need not sum to 1). */
+function pickWeightedIndex(weights: readonly number[], rng: Rng): number {
+  let sum = 0
+  for (const w of weights) sum += Math.max(0, w)
+  let r = rng.next() * sum
+  for (let i = 0; i < weights.length; i++) {
+    r -= Math.max(0, weights[i]!)
+    if (r <= 0 && weights[i]! > 0) return i
+  }
+  return weights.length - 1
+}
+
 function pickIndex(dist: readonly number[], rng: Rng): number {
   let r = rng.next()
   for (let i = 0; i < dist.length; i++) {
@@ -88,6 +101,10 @@ export interface OffenseTotals {
   xpa: number
   punts: number
   puntYds: number
+  twoPt: number
+  safeties: number
+  defTd: number
+  retTd: number
 }
 
 export function offenseTotals(points: number, rng: Rng): OffenseTotals {
@@ -115,9 +132,16 @@ export function offenseTotals(points: number, rng: Rng): OffenseTotals {
   const rushAtt = clamp(Math.round(rushYds / ypc), B.rushAttMin, B.rushAttMax)
 
   let passTd = 0
-  for (let i = 0; i < d.td; i++) if (rng.chance(B.passTdShare)) passTd++
+  let defTd = 0
+  let retTd = 0
+  for (let i = 0; i < d.td; i++) {
+    if (rng.chance(B.nonOffenseTdShare)) {
+      if (rng.chance(B.defShareOfNonOffenseTd)) defTd++
+      else retTd++
+    } else if (rng.chance(B.passTdShare)) passTd++
+  }
   passTd = Math.min(passTd, passCmp)
-  const rushTd = Math.min(d.td - passTd, rushAtt)
+  const rushTd = d.td - defTd - retTd - passTd
 
   const passInt = Math.min(pickIndex(B.intDist, rng), Math.max(0, passAtt - passCmp))
 
@@ -148,6 +172,10 @@ export function offenseTotals(points: number, rng: Rng): OffenseTotals {
     xpa,
     punts,
     puntYds,
+    twoPt: d.twoPt,
+    safeties: d.safety,
+    defTd,
+    retTd,
   }
 }
 
@@ -185,6 +213,35 @@ function usage(
 }
 
 const ones = (n: number) => new Array<number>(n).fill(1)
+
+type ScoringKey = 'twoPt' | 'defTd' | 'retTd' | 'safeties'
+
+/**
+ * Hands `count` scores to players drawn by usage weight, so the box adds up to the final score.
+ * `fallback` takes them when the team has nobody in the candidate pool (a depleted roster).
+ */
+function creditScores(
+  lines: Map<PlayerId, PlayerGameLine>,
+  teamId: TeamId,
+  key: ScoringKey,
+  count: number,
+  candidates: readonly Usage[],
+  fallback: PlayerId | undefined,
+  rng: Rng,
+): void {
+  const weights = candidates.map((c) => c.weight)
+  for (let i = 0; i < count; i++) {
+    const id = candidates.length > 0 ? candidates[pickWeightedIndex(weights, rng)]!.id : fallback
+    if (id === undefined) return
+    const line = lineFor(lines, teamId, id)
+    line[key] = (line[key] ?? 0) + 1
+  }
+}
+
+function firstPlayer(byPos: Record<Position, PlayerId[]>): PlayerId | undefined {
+  for (const pos of POSITIONS) if (byPos[pos][0] !== undefined) return byPos[pos][0]
+  return undefined
+}
 
 function lineFor(
   lines: Map<PlayerId, PlayerGameLine>,
@@ -274,12 +331,17 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     })
   }
 
+  const fallback = firstPlayer(byPos)
+  creditScores(lines, teamId, 'twoPt', totals.twoPt, [...rushers, ...receivers], fallback, rng)
+
   const defenders: Usage[] = []
   const tackleW: number[] = []
   const sackW: number[] = []
   const intW: number[] = []
   const pdW: number[] = []
   const ffW: number[] = []
+  const defTdW: number[] = []
+  const safetyW: number[] = []
   for (const group of ['DL', 'LB', 'CB', 'S'] as const) {
     for (const p of usage(state, byPos[group], ones(B.defenders[group]), rng)) {
       defenders.push(p)
@@ -288,8 +350,21 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
       intW.push(B.intWeights[group] * p.weight)
       pdW.push(B.pdWeights[group] * p.weight)
       ffW.push(B.ffWeights[group] * p.weight)
+      defTdW.push(B.defTdWeights[group] * p.weight)
+      safetyW.push(B.safetyWeights[group] * p.weight)
     }
   }
+  const weighted = (w: readonly number[]): Usage[] =>
+    defenders.map((d, i) => ({ id: d.id, weight: w[i]! }))
+  creditScores(lines, teamId, 'defTd', totals.defTd, weighted(defTdW), fallback, rng)
+  creditScores(lines, teamId, 'safeties', totals.safeties, weighted(safetyW), fallback, rng)
+
+  const returners: Usage[] = [
+    ...usage(state, byPos.WR, B.returnWeights.WR, rng),
+    ...usage(state, byPos.RB, B.returnWeights.RB, rng),
+    ...usage(state, byPos.CB, B.returnWeights.CB, rng),
+  ]
+  creditScores(lines, teamId, 'retTd', totals.retTd, returners, fallback, rng)
   if (defenders.length > 0) {
     const tackles = apportion(
       clamp(Math.round(rng.normal(B.tacklesMean, B.tacklesSd)), 35, 90),
@@ -312,7 +387,8 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     })
   }
 
-  const kicker = byPos.K[0]
+  // With no kicker dressed the punter kicks, so the extra points and field goals still reach the box.
+  const kicker = byPos.K[0] ?? byPos.P[0] ?? fallback
   if (kicker !== undefined && totals.fga + totals.xpa > 0) {
     const line = lineFor(lines, teamId, kicker)
     line.fgm = totals.fgm

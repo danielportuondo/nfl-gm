@@ -115,8 +115,17 @@ export const boxConstants = {
   passAttMax: 60,
   rushAttMin: 10,
   rushAttMax: 45,
-  /** P(a touchdown was a passing touchdown). */
-  passTdShare: 0.62,
+  /**
+   * P(a touchdown was scored by the defense or on a return). NFL 2012–2023: 70–90 of ~1,300 TDs a
+   * season (≈ 0.15 per team-game); about two thirds of them interception or fumble returns.
+   */
+  nonOffenseTdShare: 0.055,
+  defShareOfNonOffenseTd: 0.65,
+  /**
+   * P(an offensive touchdown was a passing touchdown). 0.62 of all TDs before non-offensive TDs
+   * existed; 0.656 of offensive TDs keeps passing TDs where they were (real 2015: 805 of 1,231).
+   */
+  passTdShare: 0.656,
   intDist: [0.45, 0.3, 0.15, 0.07, 0.03],
   fgMissP: [0.25, 0.08],
   puntsBase: 7.5,
@@ -144,6 +153,11 @@ export const boxConstants = {
   intWeights: { DL: 0.02, LB: 0.1, CB: 0.3, S: 0.25 },
   pdWeights: { DL: 0.03, LB: 0.12, CB: 0.32, S: 0.2 },
   ffWeights: { DL: 0.2, LB: 0.25, CB: 0.15, S: 0.15 },
+  /** Who takes a turnover back for a score, and who is in the end zone for a safety. */
+  defTdWeights: { DL: 0.06, LB: 0.12, CB: 0.3, S: 0.22 },
+  safetyWeights: { DL: 0.3, LB: 0.15, CB: 0.03, S: 0.03 },
+  /** Kick and punt returners come from the back of the depth chart, not the starters. */
+  returnWeights: { WR: [0.03, 0.08, 0.22, 0.2], RB: [0.03, 0.18, 0.12], CB: [0.03, 0.08, 0.2] },
   /** Defenders used per group when spreading defensive stats. */
   defenders: { DL: 5, LB: 4, CB: 4, S: 3 } satisfies Record<'DL' | 'LB' | 'CB' | 'S', number>,
 }
@@ -154,10 +168,11 @@ export const injuryConstants = {
   /**
    * `injuryModel.ratePerPlayerGame` is fit from injuries_2012–2025 and already describes real spells:
    * unscaled it gives 1.02 injuries per team-game. §6.3's target is the calibration band: 0.6–1.6 total
-   * and 0.35–0.8 multi-week per team-game. 1.6 is the only value that keeps both rows inside it
-   * (1.64 total, 0.61 multi-week ≈ 10 multi-week injuries per team-season, which is what NFL IR usage
-   * looks like). The original "1–1.5 multi-week per team per week" wording forced the total to 2.9.
+   * and 0.35–0.8 multi-week per team-game. Durations follow players onto reserve (weekly roster `RES`
+   * status), so about 53 % of injuries last 2+ weeks and 12 % run to season end. 1.1 lands 2015 at
+   * ≈ 1.12 total and ≈ 0.59 multi-week (≈ 10 multi-week injuries per team-season, what NFL IR usage
+   * looks like).
    */
-  rateScale: 1.6,
+  rateScale: 1.1,
   maxWeeksOut: 22,
 }

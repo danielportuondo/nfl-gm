@@ -42,8 +42,9 @@ def run(seasons: list[int], allow_placeholder_ratings: bool) -> dict[str, int]:
 
     sizes["teams.json"] = write_json("teams", build_teams(), DATA_OUT_DIR / "teams.json")
     sizes["cap.json"] = write_json("cap", build_cap(seasons), DATA_OUT_DIR / "cap.json")
+    injury_model = build_injury_model(seasons, use_res_extension=True)
     sizes["injuryModel.json"] = write_json(
-        "injuryModel", build_injury_model(seasons), DATA_OUT_DIR / "injuryModel.json"
+        "injuryModel", injury_model, DATA_OUT_DIR / "injuryModel.json"
     )
 
     games = load_games()

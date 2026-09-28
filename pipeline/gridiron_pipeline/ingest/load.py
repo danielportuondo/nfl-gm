@@ -75,3 +75,9 @@ def load_injuries(season: int) -> pd.DataFrame | None:
     if season < sources.FIRST_INJURIES_SEASON:
         return None
     return _read_csv_optional(sources.injuries_url(season))
+
+
+def load_weekly_roster(season: int) -> pd.DataFrame | None:
+    if season < sources.FIRST_WEEKLY_ROSTER_SEASON:
+        return None
+    return _read_csv_optional(sources.weekly_roster_url(season))

@@ -2,36 +2,88 @@
   "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
   "duration": [
     {
-      "p": 0.6258,
+      "p": 0.4664,
       "weeks": 1
     },
     {
-      "p": 0.2272,
+      "p": 0.214,
       "weeks": 2
     },
     {
-      "p": 0.0915,
+      "p": 0.1037,
       "weeks": 3
     },
     {
-      "p": 0.0326,
+      "p": 0.0555,
       "weeks": 4
     },
     {
-      "p": 0.0139,
+      "p": 0.0357,
       "weeks": 5
     },
     {
-      "p": 0.0047,
+      "p": 0.0222,
       "weeks": 6
     },
     {
-      "p": 0.0019,
+      "p": 0.017,
       "weeks": 7
     },
     {
-      "p": 0.0025,
+      "p": 0.0156,
       "weeks": 8
+    },
+    {
+      "p": 0.0123,
+      "weeks": 9
+    },
+    {
+      "p": 0.0099,
+      "weeks": 10
+    },
+    {
+      "p": 0.0102,
+      "weeks": 11
+    },
+    {
+      "p": 0.0062,
+      "weeks": 12
+    },
+    {
+      "p": 0.0081,
+      "weeks": 13
+    },
+    {
+      "p": 0.0065,
+      "weeks": 14
+    },
+    {
+      "p": 0.0046,
+      "weeks": 15
+    },
+    {
+      "p": 0.0043,
+      "weeks": 16
+    },
+    {
+      "p": 0.0033,
+      "weeks": 17
+    },
+    {
+      "p": 0.0022,
+      "weeks": 18
+    },
+    {
+      "p": 0.0014,
+      "weeks": 19
+    },
+    {
+      "p": 0.0006,
+      "weeks": 20
+    },
+    {
+      "p": 0.0002,
+      "weeks": 21
     }
   ],
   "fitSeasons": [
@@ -106,7 +158,7 @@
       3.0
     ],
     "minWeeks": 8,
-    "p": 0.0025
+    "p": 0.0855
   },
   "ratePerPlayerGame": {
     "CB": 0.0279,

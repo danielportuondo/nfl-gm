@@ -34,7 +34,7 @@ export const sim: SimModule = {
     const away = strengthFrom(state, awaySquad)
 
     const mu = expectedMargin(home.overall, away.overall, game.neutralSite === true)
-    const score = drawScore(mu, game.season, rng.fork('score'))
+    const score = drawScore(mu, game.season, rng.fork('score'), game.type !== 'REG')
 
     const boxRng = rng.fork('box')
     const homeTotals = offenseTotals(score.home, boxRng)

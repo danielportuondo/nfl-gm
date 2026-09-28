@@ -9,7 +9,7 @@ from __future__ import annotations
 import pytest
 
 from gridiron_pipeline.build.draft import build_season_draft
-from gridiron_pipeline.build.injury import _episodes
+from gridiron_pipeline.build.injury import DURATION_CAP_WEEKS, _episodes, build_injury_model
 from gridiron_pipeline.build.players import build_player_master
 from gridiron_pipeline.build.positions import map_position_group
 from gridiron_pipeline.build.ratings import Ratings
@@ -271,3 +271,101 @@ def test_resolve_position_uses_fine_label_for_coarse_units() -> None:
     assert resolve_position("OL", "C") == "OL"
     assert resolve_position("LB", "ILB") == "LB"
     assert resolve_position("WR", "CB") == "WR"
+
+
+def test_injury_duration_keeps_long_tail_past_eight_weeks():
+    """Regression for the bug that capped every episode at 8 weeks (`DURATION_CAP_WEEKS`), which
+    flattened the whole long tail into a single point mass at week 8 and made season-ending injuries
+    impossible downstream. 2012-2013 alone contain a 9-week and an 11-week episode, so the fitted
+    distribution must carry weeks beyond 8, and the cap itself must be well above 8.
+    """
+    model = build_injury_model([2012, 2013])
+    weeks = [d["weeks"] for d in model["duration"]]
+
+    assert DURATION_CAP_WEEKS > 8
+    assert max(weeks) > 8
+    assert sum(d["p"] for d in model["duration"]) == pytest.approx(1.0, abs=1e-3)
+    # permanentLoss keeps its own, unrelated meaning (8+ weeks out) regardless of the duration cap.
+    assert model["permanentLoss"]["minWeeks"] == 8
+
+
+def test_res_extension_is_off_by_default_and_unchanged_by_default_call():
+    """`build_injury_model`/`_episodes` default to `use_res_extension=False`: the RES-based
+    recovery of season-ending duration (see build/injury.py module docstring) must be opt-in,
+    because it is not yet safe to ship (see the next test) until the sim's injury `rateScale` is
+    retuned for the reshaped duration distribution.
+    """
+    default_episodes = _episodes(2015)
+    explicit_off_episodes = _episodes(2015, use_res_extension=False)
+    assert default_episodes == explicit_off_episodes
+
+
+def test_res_extension_recovers_season_ending_duration(monkeypatch):
+    """A player reported "Out" for 2 weeks and then never again on the injury report (because he
+    moved to injured reserve, which stops the weekly practice report from listing him) shows as a
+    2-week episode by default, and a 17-week (through-the-rest-of-the-season) episode once the
+    weekly roster's RES runs are used to recover the true end. Occurrence (episode count) is
+    unaffected either way.
+    """
+    import pandas as pd
+
+    from gridiron_pipeline.build import injury as injury_mod
+
+    injuries_df = pd.DataFrame(
+        [
+            {
+                "gsis_id": "p1",
+                "team": "NE",
+                "week": w,
+                "position": "LB",
+                "report_status": "Out",
+                "report_primary_injury": "Knee",
+            }
+            for w in (1, 2)
+        ]
+    )
+    weekly_roster_df = pd.DataFrame(
+        [{"gsis_id": "p1", "team": "NE", "week": w, "status": "RES"} for w in range(3, 18)]
+    )
+    monkeypatch.setattr(injury_mod, "load_injuries", lambda season: injuries_df)
+    monkeypatch.setattr(injury_mod, "load_weekly_roster", lambda season: weekly_roster_df)
+    monkeypatch.setattr(injury_mod, "_position_by_player", lambda season: {"p1": "LB"})
+
+    off = injury_mod._episodes(2099, use_res_extension=False)
+    on = injury_mod._episodes(2099, use_res_extension=True)
+
+    assert off == [{"pos": "LB", "weeks": 2, "kind": "Knee"}]
+    assert on == [{"pos": "LB", "weeks": 17, "kind": "Knee"}]
+    assert len(off) == len(on) == 1  # occurrence (episode count) never changes
+
+
+def test_res_extension_respects_match_gap(monkeypatch):
+    """A `RES` run that starts too long after the last reported "Out" week is a different, later
+    injury (or an unrelated roster move) and must not be chained on.
+    """
+    import pandas as pd
+
+    from gridiron_pipeline.build import injury as injury_mod
+
+    injuries_df = pd.DataFrame(
+        [
+            {
+                "gsis_id": "p1",
+                "team": "NE",
+                "week": 1,
+                "position": "LB",
+                "report_status": "Out",
+                "report_primary_injury": "Knee",
+            }
+        ]
+    )
+    far_week = 1 + injury_mod.RES_MATCH_MAX_GAP + 1
+    weekly_roster_df = pd.DataFrame(
+        [{"gsis_id": "p1", "team": "NE", "week": far_week, "status": "RES"}]
+    )
+    monkeypatch.setattr(injury_mod, "load_injuries", lambda season: injuries_df)
+    monkeypatch.setattr(injury_mod, "load_weekly_roster", lambda season: weekly_roster_df)
+    monkeypatch.setattr(injury_mod, "_position_by_player", lambda season: {"p1": "LB"})
+
+    on = injury_mod._episodes(2099, use_res_extension=True)
+    assert on == [{"pos": "LB", "weeks": 1, "kind": "Knee"}]

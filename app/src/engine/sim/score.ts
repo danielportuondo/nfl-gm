@@ -49,11 +49,20 @@ export function expectedMargin(
   return simConstants.k * (homeOverall - awayOverall) + (neutralSite ? 0 : simConstants.hfa)
 }
 
-function resolveOvertime(tied: number, mu: number, season: Season, rng: Rng): ScoreDraw {
+function resolveOvertime(
+  tied: number,
+  mu: number,
+  season: Season,
+  postseason: boolean,
+  rng: Rng,
+): ScoreDraw {
   const { modifiedFrom, shortPeriodFrom, longPeriodTieMult, fgFirstP, bothScoreP, edgeDamp } =
     overtimeConstants
   const tieP = season >= shortPeriodFrom ? simConstants.tieP : simConstants.tieP * longPeriodTieMult
-  if (rng.chance(tieP)) return { home: tied, away: tied, overtime: true }
+  // The tie roll is always drawn so a regular-season game consumes the same stream either way; a
+  // playoff game that would have tied plays another period instead and is decided like any other.
+  const periodEndsTied = rng.chance(tieP)
+  if (periodEndsTied && !postseason) return { home: tied, away: tied, overtime: true }
 
   let home = tied
   let away = tied
@@ -68,7 +77,8 @@ function resolveOvertime(tied: number, mu: number, season: Season, rng: Rng): Sc
   return { home, away, overtime: true }
 }
 
-export function drawScore(mu: number, season: Season, rng: Rng): ScoreDraw {
+/** `postseason` games cannot end tied (HANDOFF §6.3: era-correct overtime). */
+export function drawScore(mu: number, season: Season, rng: Rng, postseason = false): ScoreDraw {
   const { marginSd, totalMean, totalSd } = simConstants
   const { totalMin, totalMax, otWindow, oneMarginFixP } = scoreConstants
 
@@ -77,7 +87,7 @@ export function drawScore(mu: number, season: Season, rng: Rng): ScoreDraw {
 
   // A margin this small means nobody was ahead when the clock ran out.
   if (Math.abs(margin) < otWindow)
-    return resolveOvertime(snapScore(total / 2, rng), mu, season, rng)
+    return resolveOvertime(snapScore(total / 2, rng), mu, season, postseason, rng)
 
   let home = snapScore((total + margin) / 2, rng)
   let away = snapScore((total - margin) / 2, rng)

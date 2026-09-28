@@ -9,10 +9,22 @@ NFLDATA = "https://raw.githubusercontent.com/nflverse/nfldata/master/data"
 FIRST_SNAP_COUNTS_SEASON = 2012
 FIRST_DEPTH_CHARTS_SEASON = 2001
 FIRST_INJURIES_SEASON = 2009
+FIRST_WEEKLY_ROSTER_SEASON = 2002
 
 
 def roster_url(season: int) -> str:
     return f"{RELEASES}/rosters/roster_{season}.csv"
+
+
+def weekly_roster_url(season: int) -> str:
+    """Per-player-per-week roster status (distinct from `roster_url`'s per-stint snapshot).
+
+    Carries a `RES` (reserve, e.g. injured reserve/PUP/NFI) status per week, which is how
+    build/injury.py measures season-ending injury duration: the weekly practice/game injury
+    report (`injuries_{season}.csv`) stops listing a player once they're on IR, so this is the
+    only source that tracks them through to their return or the end of the season.
+    """
+    return f"{RELEASES}/weekly_rosters/roster_weekly_{season}.csv"
 
 
 def draft_picks_url() -> str:
@@ -67,6 +79,8 @@ def season_urls(season: int) -> list[str]:
         urls.append(depth_charts_url(season))
     if season >= FIRST_INJURIES_SEASON:
         urls.append(injuries_url(season))
+    if season >= FIRST_WEEKLY_ROSTER_SEASON:
+        urls.append(weekly_roster_url(season))
     return urls
 
 

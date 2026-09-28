@@ -4,7 +4,7 @@ import { mockLeague } from '@fixtures/mockLeague'
 import { sim } from '@engine/sim/index'
 import { apportion } from '@engine/sim/boxScore'
 import { isPlausibleScore } from '@engine/sim/score'
-import { makeCtx } from './harness'
+import { boxPoints, makeCtx } from './harness'
 
 const ctx = makeCtx()
 const state = mockLeague({ seed: 'box', season: 2021 })
@@ -40,6 +40,10 @@ const COUNTS: (keyof PlayerGameLine)[] = [
   'xpa',
   'punts',
   'puntYds',
+  'twoPt',
+  'defTd',
+  'retTd',
+  'safeties',
 ]
 
 describe('box score invariants over 200 games', () => {
@@ -88,30 +92,13 @@ describe('box score invariants over 200 games', () => {
     })
   })
 
-  it('scores are plausible football scores and the box adds up to them', () => {
-    let exact = 0
-    let teamGames = 0
+  it('scores are plausible football scores and the box adds up to them exactly', () => {
     for (const result of results) {
       expect(isPlausibleScore(result.homeScore)).toBe(true)
       expect(isPlausibleScore(result.awayScore)).toBe(true)
-      for (const [score, lines] of [
-        [result.homeScore, result.box!.home],
-        [result.awayScore, result.box!.away],
-      ] as const) {
-        const scored =
-          6 * (sum(lines, 'passTd') + sum(lines, 'rushTd')) +
-          sum(lines, 'xpm') +
-          3 * sum(lines, 'fgm')
-        // The remainder is a two-point conversion or a safety, which no PlayerGameLine field can hold.
-        const gap = score - scored
-        expect(gap).toBeGreaterThanOrEqual(0)
-        expect(gap % 2).toBe(0)
-        expect(gap).toBeLessThanOrEqual(8)
-        if (gap === 0) exact++
-        teamGames++
-      }
+      expect(boxPoints(result.box!.home)).toBe(result.homeScore)
+      expect(boxPoints(result.box!.away)).toBe(result.awayScore)
     }
-    expect(exact / teamGames).toBeGreaterThan(0.7)
   })
 
   it('statlines look like football', () => {
