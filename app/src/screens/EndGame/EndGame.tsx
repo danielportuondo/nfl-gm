@@ -7,7 +7,7 @@ export interface EndGameProps {
   data: StaticData
   /** This season's cap in $M, from the store. */
   cap: number
-  /** Only offered when the horizon expired without a title — a championship ends the mandate. */
+  /** Offered whenever the game has ended, win or horizon expiry — either way the GM can keep running the front office. */
   onKeepPlaying?: () => void
 }
 
@@ -122,20 +122,20 @@ export function EndGame({ state, data, cap, onKeepPlaying }: EndGameProps) {
 
       <div className="gg-col-4">
         <Panel title="What's next" revealIndex={3}>
-          {champion ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>
-              The mandate is fulfilled. Thanks for playing.
-            </p>
-          ) : onKeepPlaying ? (
+          {onKeepPlaying ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
               <p style={{ margin: 0, color: 'var(--text-2)' }}>
-                You can keep running this front office with no horizon.
+                {champion
+                  ? 'The mandate is fulfilled, but you can keep running this front office with no horizon.'
+                  : 'You can keep running this front office with no horizon.'}
               </p>
               <Button type="button" variant="primary" onClick={onKeepPlaying}>
                 Keep playing
               </Button>
             </div>
-          ) : null}
+          ) : (
+            <p style={{ margin: 0, color: 'var(--text-2)' }}>Thanks for playing.</p>
+          )}
         </Panel>
       </div>
     </TeamScope>

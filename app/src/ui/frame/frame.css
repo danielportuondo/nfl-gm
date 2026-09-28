@@ -23,6 +23,9 @@
   background: var(--surface-2);
   border-bottom: var(--bw) solid var(--line);
   padding: 0 var(--sp-4);
+  /* Between the ≤390px wrap and a full desktop width, the readouts can outgrow the rail-narrowed
+     main column (docs/HANDOFF.md QA sweep item 9): scroll the strip itself rather than the page. */
+  overflow-x: auto;
 }
 .gg-strip--on-clock {
   background: var(--accent);
@@ -182,6 +185,17 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--sp-4);
+}
+/* Grid items default to a content-based min-width, so a wide child (a table, a StatTile row) can
+   force its 4/6/8-span track past its fr share and push the whole board (and the page) wider than
+   the viewport at 721–~900px, where the rail is still visible and columns don't yet stack to 12
+   (docs/HANDOFF.md QA sweep item 9). `min-width: 0` lets the track — and its content, via the
+   panel/table's own overflow handling — shrink to the space the grid actually gives it. */
+.gg-col-4,
+.gg-col-6,
+.gg-col-8,
+.gg-col-12 {
+  min-width: 0;
 }
 .gg-col-4 {
   grid-column: span 4;

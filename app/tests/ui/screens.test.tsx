@@ -334,6 +334,37 @@ describe('Dashboard', () => {
     fireEvent.click(screen.getByText('The 2016 draft is waiting.'))
     expect(onNavigate).toHaveBeenCalledWith('draft')
   })
+
+  it('does not show a finished game as the next one during the offseason', () => {
+    const base = mockLeague()
+    const userGames = base.schedule.filter(
+      (g) => g.season === base.season && (g.home === base.userTeam || g.away === base.userTeam),
+    )
+    // The whole season is in the books, but the phase rollover can leave `week` low again — the
+    // Super Bowl (which has a result) must not read as "next" (docs/HANDOFF.md QA sweep item 10).
+    const offseason: LeagueState = {
+      ...base,
+      phase: 'OFFSEASON_RESIGN',
+      week: 0,
+      results: userGames.map((g) => ({
+        gameId: g.id,
+        homeScore: 20,
+        awayScore: 17,
+        overtime: false,
+        injuries: [],
+      })),
+    }
+    render(
+      <Dashboard
+        state={offseason}
+        data={mockStatic()}
+        cap={150}
+        onSimWeek={vi.fn()}
+        onAdvancePhase={vi.fn()}
+      />,
+    )
+    expect(screen.queryByText(/at week/)).not.toBeInTheDocument()
+  })
 })
 
 describe('Roster', () => {
@@ -413,6 +444,11 @@ describe('About', () => {
         'Unofficial fan-made project. Not affiliated with or endorsed by the NFL, its teams, or the NFLPA. Data courtesy of nflverse (CC BY 4.0).',
       ),
     ).toBeInTheDocument()
+  })
+
+  it('mentions the nflverse CC BY 4.0 attribution exactly once', () => {
+    render(<About />)
+    expect(screen.getAllByText(/CC BY 4\.0/)).toHaveLength(1)
   })
 })
 
@@ -519,6 +555,56 @@ describe('FreeAgency', () => {
     expect(screen.getByText('Free agent pool')).toBeInTheDocument()
     expect(screen.getByText('Cap this season')).toBeInTheDocument()
   })
+
+  it('hints that signing closes the UDFA period before the pool is signed', () => {
+    const base = mockLeague()
+    const udfaIds = Object.keys(base.scouting).slice(0, 3)
+    const withPool: LeagueState = {
+      ...base,
+      phase: 'UDFA',
+      draftRoom: {
+        season: base.season + 1,
+        status: 'COMPLETE',
+        currentPickIndex: 0,
+        order: [],
+        available: [],
+        udfaPool: udfaIds,
+        log: [],
+        pendingOffers: [],
+      },
+    }
+    render(
+      <FreeAgency
+        state={withPool}
+        cap={150}
+        onOfferContract={vi.fn()}
+        onResign={vi.fn()}
+        onRelease={vi.fn()}
+        onSignUdfa={vi.fn()}
+        onResignAsk={() => null}
+      />,
+    )
+    expect(screen.getByText(/Signing closes the UDFA period for every team/)).toBeInTheDocument()
+    expect(screen.queryByText('No UDFA pool loaded.')).not.toBeInTheDocument()
+  })
+
+  it('shows a done message, not the empty-pool message, once signing clears draftRoom', () => {
+    const base = mockLeague()
+    const done: LeagueState = { ...base, phase: 'UDFA', draftRoom: null }
+    render(
+      <FreeAgency
+        state={done}
+        cap={150}
+        onOfferContract={vi.fn()}
+        onResign={vi.fn()}
+        onRelease={vi.fn()}
+        onSignUdfa={vi.fn()}
+        onResignAsk={() => null}
+      />,
+    )
+    expect(screen.getByText('UDFA signings are done for this year.')).toBeInTheDocument()
+    expect(screen.queryByText('No UDFA pool loaded.')).not.toBeInTheDocument()
+  })
 })
 
 describe('Schedule', () => {
@@ -602,7 +688,22 @@ describe('SeasonRecap', () => {
 })
 
 describe('EndGame', () => {
-  it('celebrates a championship without a Keep playing option', () => {
+  it('celebrates a championship and still offers Keep playing', async () => {
+    const state = mockLeague()
+    const champion: LeagueState = {
+      ...state,
+      outcome: 'CHAMPION',
+      history: [fixtureSeasonSummary(state)],
+    }
+    const data = mockStatic()
+    const onKeepPlaying = vi.fn()
+    render(<EndGame state={champion} data={data} cap={200} onKeepPlaying={onKeepPlaying} />)
+    expect(screen.getByText(/champions/)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: 'Keep playing' }))
+    expect(onKeepPlaying).toHaveBeenCalled()
+  })
+
+  it("has no Keep playing option when the caller doesn't offer one", () => {
     const state = mockLeague()
     const champion: LeagueState = {
       ...state,
@@ -611,7 +712,6 @@ describe('EndGame', () => {
     }
     const data = mockStatic()
     render(<EndGame state={champion} data={data} cap={200} />)
-    expect(screen.getByText(/champions/)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Keep playing' })).not.toBeInTheDocument()
   })
 

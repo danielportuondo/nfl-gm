@@ -50,6 +50,24 @@ function makeSeed(startSeason: number, userTeam: string): string {
   return `${startSeason}-${userTeam}-${Math.random().toString(36).slice(2, 10)}`
 }
 
+/** `idb`'s `openDB` reaches for the global synchronously; a browser blocking storage (private mode,
+ * disabled site data) leaves `indexedDB` undefined and every call fails with this shape. */
+function isStorageUnavailableError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err)
+  return /indexedDB|reading ['"]open['"]/i.test(message)
+}
+
+function reportSelectorError(err: unknown): void {
+  if (!(err instanceof NotImplementedError)) console.error(err)
+}
+
+/** True when the user's team currently holds the on-clock pick in the draft room. */
+function isUserOnClock(league: LeagueState): boolean {
+  const room = league.draftRoom
+  if (!room || room.status !== 'ON_CLOCK') return false
+  return room.order[room.currentPickIndex]?.owner === league.userTeam
+}
+
 function packageKey(proposal: TradeProposal): string {
   const side = (s: TradeProposal['offer']) =>
     [...s.players, ...s.picks.map((p) => `${p.season}r${p.round}${p.originalTeam}`)]
@@ -153,15 +171,57 @@ export function createGameStore(config: StoreConfig = {}) {
       return { data, trajectories, seasonData, modules }
     }
 
+    // The savedAt this tab last loaded or wrote to the 'default' slot; undefined until it has. Lets
+    // a write detect a newer save from another tab before clobbering it (docs/HANDOFF.md §6.9).
+    let knownSavedAt: string | undefined
+    let staleTab = false
+
+    /**
+     * Writes to the 'default' slot, guarding against a newer save from another tab and translating
+     * a blocked-storage failure into a friendly toast. Returns whether the write actually happened.
+     */
+    async function guardedSave(league: LeagueState, failurePrefix: string): Promise<boolean> {
+      if (staleTab) return false
+      try {
+        if (knownSavedAt !== undefined) {
+          const saves = await persistence.listSaves()
+          const stored = saves.find((s) => s.slot === 'default')
+          if (stored && stored.savedAt > knownSavedAt) {
+            // Stay blocked until reload (or a deliberate new game / import): adopting the newer
+            // timestamp here would let this tab's stale state overwrite it on the next save.
+            staleTab = true
+            addToast('This game changed in another tab. Reload to pick up the latest.', 'warn')
+            return false
+          }
+        }
+        const meta = await persistence.save('default', league)
+        knownSavedAt = meta.savedAt
+        return true
+      } catch (err) {
+        if (err instanceof NotImplementedError) addToast('Not built yet', 'warn')
+        else if (isStorageUnavailableError(err))
+          addToast("Your browser is blocking storage, so this game won't be saved.", 'error')
+        else
+          addToast(`${failurePrefix} ${err instanceof Error ? err.message : String(err)}`, 'error')
+        return false
+      }
+    }
+
     /** §6.9: autosave at every phase transition and every 4 weeks. Fire-and-forget; a failure only toasts. */
     function autosave(league: LeagueState): Promise<void> {
       if (mode === 'mock') return Promise.resolve()
-      return persistence.save('default', league).then(
-        () => undefined,
-        (err: unknown) => {
-          addToast(`Autosave failed: ${err instanceof Error ? err.message : String(err)}`, 'error')
-        },
-      )
+      return guardedSave(league, 'Autosave failed:').then(() => undefined)
+    }
+
+    // `newGame` and `continueGame` share `busy.newGame` in the UI (New Game screen's Start/Continue
+    // buttons), but each needs its own re-entrancy guard: two clicks on the SAME button must collapse
+    // to one call, while a Start-then-Continue race must let both run and let whichever finishes
+    // first win (docs/HANDOFF.md QA sweep item 1). These track "is this call in flight", independent
+    // of the UI flag they jointly drive.
+    let newGameInFlight = false
+    let continueGameInFlight = false
+    function setBusyNewGame() {
+      set((s) => ({ busy: { ...s.busy, newGame: newGameInFlight || continueGameInFlight } }))
     }
 
     // Roster moves between transitions (cuts, signings, picks) would otherwise be lost to a reload;
@@ -261,23 +321,30 @@ export function createGameStore(config: StoreConfig = {}) {
         simToNextEvent: false,
         simSeason: false,
         importSave: false,
+        startOver: false,
       },
       actions: {
         async newGame(opts: NewGameInput) {
-          if (mode === 'mock') {
-            const league = mockLeague({
-              seed: makeSeed(opts.startSeason, opts.userTeam),
-              season: opts.startSeason,
-              userTeam: opts.userTeam,
-              horizonSeasons: opts.horizonSeasons,
-              settings: opts.settings,
-            })
-            set({ state: league })
-            get().actions.goTo('dashboard')
-            return
-          }
-          set((s) => ({ busy: { ...s.busy, newGame: true } }))
+          if (newGameInFlight) return
+          newGameInFlight = true
+          setBusyNewGame()
+          // A brand-new game deliberately replaces whatever is in the 'default' slot (this tab's or
+          // another tab's); forget any savedAt baseline so the first autosave writes unconditionally.
+          knownSavedAt = undefined
+          staleTab = false
           try {
+            if (mode === 'mock') {
+              const league = mockLeague({
+                seed: makeSeed(opts.startSeason, opts.userTeam),
+                season: opts.startSeason,
+                userTeam: opts.userTeam,
+                horizonSeasons: opts.horizonSeasons,
+                settings: opts.settings,
+              })
+              set({ state: league })
+              get().actions.goTo('dashboard')
+              return
+            }
             await ensureLoaded(opts.startSeason, opts.startSeason + DRAFTS_AHEAD)
             const ctx = buildCtx()
             const league = modules.league.newGame(
@@ -290,13 +357,15 @@ export function createGameStore(config: StoreConfig = {}) {
               },
               ctx,
             )
+            knownSavedAt = league.savedAt
             set({ state: league })
             void autosave(league)
             get().actions.goTo('dashboard')
           } catch (err) {
             reportNotBuilt('Could not start a new game.', err)
           } finally {
-            set((s) => ({ busy: { ...s.busy, newGame: false } }))
+            newGameInFlight = false
+            setBusyNewGame()
           }
         },
 
@@ -338,6 +407,7 @@ export function createGameStore(config: StoreConfig = {}) {
         async advancePhase() {
           const league = get().state
           if (!league) return
+          if (get().busy.advancePhase) return
           set((s) => ({ busy: { ...s.busy, advancePhase: true } }))
           try {
             // The rollover needs next season's chunk (schedule, rosters) and the drafts after it.
@@ -356,12 +426,11 @@ export function createGameStore(config: StoreConfig = {}) {
         async save() {
           const league = get().state
           if (!league) return
+          if (get().busy.save) return
           set((s) => ({ busy: { ...s.busy, save: true } }))
           try {
-            await persistence.save('default', league)
-            addToast('Saved', 'success')
-          } catch (err) {
-            reportNotBuilt('Could not save.', err)
+            const wrote = await guardedSave(league, 'Could not save.')
+            if (wrote) addToast('Saved', 'success')
           } finally {
             set((s) => ({ busy: { ...s.busy, save: false } }))
           }
@@ -388,16 +457,25 @@ export function createGameStore(config: StoreConfig = {}) {
         },
 
         async continueGame() {
-          set((s) => ({ busy: { ...s.busy, newGame: true } }))
+          if (continueGameInFlight) return
+          continueGameInFlight = true
+          setBusyNewGame()
           try {
             const league = await persistence.load('default')
             await ensureLoaded(league.season, league.season + 1 + DRAFTS_AHEAD)
-            if (!get().state) set({ state: league })
-            get().actions.goTo(league.outcome === 'IN_PROGRESS' ? 'dashboard' : 'end-game')
+            // A concurrent newGame() may have already landed a fresh game while this awaited the
+            // load (docs/HANDOFF.md QA sweep item 1): skip both the write and the navigation, or a
+            // finished save's outcome strands a live game on End Game.
+            if (!get().state) {
+              knownSavedAt = league.savedAt
+              set({ state: league })
+              get().actions.goTo(league.outcome === 'IN_PROGRESS' ? 'dashboard' : 'end-game')
+            }
           } catch (err) {
             reportNotBuilt('Could not continue the saved game.', err)
           } finally {
-            set((s) => ({ busy: { ...s.busy, newGame: false } }))
+            continueGameInFlight = false
+            setBusyNewGame()
           }
         },
 
@@ -441,6 +519,7 @@ export function createGameStore(config: StoreConfig = {}) {
         },
 
         async importSave(json: string) {
+          if (get().busy.importSave) return
           set((s) => ({ busy: { ...s.busy, importSave: true } }))
           try {
             let league: LeagueState
@@ -450,6 +529,18 @@ export function createGameStore(config: StoreConfig = {}) {
               const message = err instanceof Error ? err.message : String(err)
               addToast(`Could not import the save file: ${message}`, 'error')
               return
+            }
+            // A schema-valid save can still name a season this build has no data for (e.g. an old
+            // save from before the shipped range, or a hand-edited file). Reject it before it
+            // overwrites the working autosave — the alternative is a raw SeasonNotLoadedError toast
+            // the moment the league tries to read that season's chunk.
+            const manifest = get().data?.manifest
+            if (manifest) {
+              const earliest = Math.min(...manifest.seasons)
+              if (league.startSeason < earliest || league.season < earliest) {
+                addToast("This save is from a year this version doesn't support.", 'error')
+                return
+              }
             }
             if (mode !== 'mock') {
               await ensureLoaded(league.season, league.season + 1 + DRAFTS_AHEAD)
@@ -467,7 +558,12 @@ export function createGameStore(config: StoreConfig = {}) {
               dismissedSuggestionIds: [],
               alerts: [],
             })
-            if (mode !== 'mock') await persistence.save('default', league)
+            if (mode !== 'mock') {
+              knownSavedAt = undefined // an import deliberately replaces whatever is in the slot
+              staleTab = false
+              const meta = await persistence.save('default', league)
+              knownSavedAt = meta.savedAt
+            }
             addToast('Imported', 'success')
             get().actions.goTo(league.outcome === 'IN_PROGRESS' ? 'dashboard' : 'end-game')
           } finally {
@@ -478,27 +574,34 @@ export function createGameStore(config: StoreConfig = {}) {
         async startOver() {
           const league = get().state
           if (!league) return
-          if (autosaveTimer !== undefined) {
-            clearTimeout(autosaveTimer)
-            autosaveTimer = undefined
-            await autosave(league)
+          if (get().busy.startOver) return
+          set((s) => ({ busy: { ...s.busy, startOver: true } }))
+          try {
+            if (autosaveTimer !== undefined) {
+              clearTimeout(autosaveTimer)
+              autosaveTimer = undefined
+              await autosave(league)
+            }
+            set({
+              state: null,
+              selectedPlayerId: null,
+              tradeOffers: [],
+              suggestedTrades: [],
+              dismissedSuggestionIds: [],
+              alerts: [],
+            })
+            await checkForSave()
+            get().actions.goTo('new-game')
+          } finally {
+            set((s) => ({ busy: { ...s.busy, startOver: false } }))
           }
-          set({
-            state: null,
-            selectedPlayerId: null,
-            tradeOffers: [],
-            suggestedTrades: [],
-            dismissedSuggestionIds: [],
-            alerts: [],
-          })
-          await checkForSave()
-          get().actions.goTo('new-game')
         },
 
         capFor(season: Season): number | null {
           try {
             return modules.fa.capFor(season, buildCtx())
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return null
           }
         },
@@ -553,6 +656,10 @@ export function createGameStore(config: StoreConfig = {}) {
         async simToMyPick() {
           const league = get().state
           if (!league) return
+          // The engine seeds pendingOffers by pick index whenever the user is on the clock with none
+          // pending, so decline-all then Sim to my pick would otherwise resurrect the same offers —
+          // there is no "next pick" to sim to (docs/HANDOFF.md QA sweep item 2).
+          if (isUserOnClock(league)) return
           set((s) => ({ busy: { ...s.busy, draft: true } }))
           try {
             const ctx = buildCtx()
@@ -585,7 +692,8 @@ export function createGameStore(config: StoreConfig = {}) {
           if (!league) return null
           try {
             return modules.draft.teamNeeds(league, teamId)
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return null
           }
         },
@@ -873,7 +981,8 @@ export function createGameStore(config: StoreConfig = {}) {
           if (!league) return null
           try {
             return modules.fa.capFor(league.season, buildCtx())
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return null
           }
         },
@@ -884,7 +993,8 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             return modules.fa.resignAsk(league, playerId, ctx)
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return null
           }
         },
@@ -895,7 +1005,8 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             return modules.fa.offerOdds(league, league.userTeam, playerId, contract, ctx)
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return null
           }
         },
@@ -906,7 +1017,8 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             return modules.fa.suggestCutdown(league, league.userTeam, ctx, protect)
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return null
           }
         },
@@ -976,7 +1088,8 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             return modules.league.standings(league, ctx)
-          } catch {
+          } catch (err) {
+            reportSelectorError(err)
             return []
           }
         },

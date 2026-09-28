@@ -77,6 +77,7 @@ export interface GameStoreState {
     simToNextEvent: boolean
     simSeason: boolean
     importSave: boolean
+    startOver: boolean
   }
   actions: {
     /** Engine mode loads the start season's chunks (and the next two drafts') before building the league. */

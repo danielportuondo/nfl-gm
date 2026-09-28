@@ -25,12 +25,18 @@ interface Alert {
 }
 
 function nextGame(state: LeagueState): Game | undefined {
+  // Only meaningful in season: outside REGULAR/PLAYOFFS this would otherwise surface last season's
+  // schedule (its games all have results, but the phase transition can leave `week` low again) —
+  // e.g. a finished Super Bowl reads as "next" all offseason (docs/HANDOFF.md QA sweep item 10).
+  if (state.phase !== 'REGULAR' && state.phase !== 'PLAYOFFS') return undefined
+  const played = new Set(state.results.map((r) => r.gameId))
   const upcoming = state.schedule
     .filter(
       (g) =>
         g.season === state.season &&
         (g.home === state.userTeam || g.away === state.userTeam) &&
-        g.week >= state.week,
+        g.week >= state.week &&
+        !played.has(g.id),
     )
     .sort((a, b) => a.week - b.week)
   return upcoming[0]

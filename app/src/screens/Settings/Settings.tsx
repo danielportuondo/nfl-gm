@@ -18,6 +18,8 @@ export interface SettingsProps {
   onImportSave: (json: string) => void
   /** True while an import is in flight; disables both save-file buttons. */
   busy?: boolean
+  /** True while startOver is in flight; disables the Start over button and its confirm. */
+  startOverBusy?: boolean
 }
 
 const THEMES: { id: Theme; label: string }[] = [
@@ -42,6 +44,7 @@ export function Settings({
   onExportSave,
   onImportSave,
   busy,
+  startOverBusy,
 }: SettingsProps) {
   const [confirming, setConfirming] = useState(false)
   const [pendingImport, setPendingImport] = useState<string | null>(null)
@@ -136,7 +139,12 @@ export function Settings({
                   Start over to pick a new team or year. Your saved game stays until you start a new
                   one.
                 </p>
-                <Button type="button" variant="secondary" onClick={() => setConfirming(true)}>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  disabled={startOverBusy}
+                  onClick={() => setConfirming(true)}
+                >
                   Start over
                 </Button>
               </div>
@@ -154,7 +162,13 @@ export function Settings({
               <Button type="button" variant="ghost" onClick={() => setConfirming(false)}>
                 Keep playing
               </Button>
-              <Button type="button" variant="danger" onClick={confirmStartOver}>
+              <Button
+                type="button"
+                variant="danger"
+                busy={startOverBusy}
+                busyLabel="Working…"
+                onClick={confirmStartOver}
+              >
                 Start over
               </Button>
             </>

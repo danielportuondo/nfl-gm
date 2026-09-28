@@ -160,6 +160,9 @@ export function FreeAgency({
 
   const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1)
   const udfaPool = state.phase === 'UDFA' ? (state.draftRoom?.udfaPool ?? []) : []
+  // draft.runUdfa finalizes every team's UDFA signings in one shot and clears draftRoom (by design);
+  // an empty pool while still in the UDFA phase means signings are done, not that nothing loaded.
+  const udfaDone = state.phase === 'UDFA' && state.draftRoom === null
 
   return (
     <>
@@ -284,10 +287,18 @@ export function FreeAgency({
       {state.phase === 'UDFA' && (
         <div className="gg-col-12">
           <Panel title="Undrafted free agents" variant="sunken" revealIndex={1}>
-            {udfaPool.length === 0 ? (
+            {udfaDone ? (
+              <p style={{ margin: 0, color: 'var(--text-2)' }}>
+                UDFA signings are done for this year.
+              </p>
+            ) : udfaPool.length === 0 ? (
               <p style={{ margin: 0, color: 'var(--text-2)' }}>No UDFA pool loaded.</p>
             ) : (
               <>
+                <p className="gg-field__hint" style={{ margin: '0 0 var(--sp-2)' }}>
+                  Signing closes the UDFA period for every team this year — there's no more signing
+                  after this.
+                </p>
                 <div
                   style={{
                     display: 'flex',

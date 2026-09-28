@@ -189,6 +189,7 @@ export function App() {
           onExportSave={actions.exportSave}
           onImportSave={actions.importSave}
           busy={busy.importSave}
+          startOverBusy={busy.startOver}
         />
       )}
       {(screen === 'dashboard' || screen === 'new-game') && (
@@ -208,7 +209,7 @@ export function App() {
           state={state}
           data={data}
           cap={cap}
-          onKeepPlaying={state.outcome === 'HORIZON_EXPIRED' ? actions.keepPlaying : undefined}
+          onKeepPlaying={state.outcome !== 'IN_PROGRESS' ? actions.keepPlaying : undefined}
         />
       )}
       {screen === 'season-recap' && <SeasonRecap state={state} data={data} />}
@@ -227,7 +228,7 @@ export function App() {
         <DraftRoom
           state={state}
           data={data}
-          busy={busy.draft}
+          busy={busy.draft || busy.trade}
           onStartDraft={actions.startDraft}
           onMakePick={actions.makePick}
           onAutoPick={actions.autoPick}

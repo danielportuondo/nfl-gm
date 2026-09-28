@@ -1,7 +1,9 @@
 import {
+  NotImplementedError,
   persistenceStub,
   TEAM_IDS,
   type CutdownPlan,
+  type DraftRoomState,
   type LeagueState,
   type PersistenceModule,
   type PlayerId,
@@ -624,5 +626,379 @@ describe('trades during the draft', () => {
     expect(advance).toHaveBeenCalledTimes(1)
     expect(advance.mock.calls[0]![0].draftRoom!.order[0]!.owner).toBe(AI_TEAM)
     expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(1)
+  })
+})
+
+/** A won mandate is just as resumable as an expired one: item 12 extends Keep playing to CHAMPION. */
+describe('keepPlaying', () => {
+  it('resumes a championship outcome back to an in-progress, advanceable league on the dashboard', async () => {
+    const base = mockLeague()
+    const store = createGameStore({ mode: 'mock' })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    store.setState((s) => ({ state: { ...s.state!, outcome: 'CHAMPION' }, screen: 'end-game' }))
+
+    store.getState().actions.keepPlaying()
+
+    expect(store.getState().state?.outcome).toBe('IN_PROGRESS')
+    expect(store.getState().screen).toBe('dashboard')
+
+    // The league is genuinely live again, not just cosmetically: a second call is the no-op guard's
+    // "already in progress" branch, not a re-run of the championship reset.
+    store.getState().actions.keepPlaying()
+    expect(store.getState().state?.outcome).toBe('IN_PROGRESS')
+  })
+})
+
+/** QA sweep item 1: newGame/continueGame must not build or persist two games from concurrent calls. */
+describe('newGame re-entrancy', () => {
+  it('collapses two concurrent calls into exactly one game and one save', async () => {
+    const bundle = mockBundle({ season: 2015 })
+    const baseSource = MemoryDataSource(bundle)
+    let resolveFirst!: () => void
+    const gate = new Promise<void>((r) => (resolveFirst = r))
+    let callCount = 0
+    const loadSeason = async (s: Parameters<typeof baseSource.loadSeason>[0]) => {
+      callCount += 1
+      if (callCount === 1) await gate
+      return baseSource.loadSeason(s)
+    }
+    const saveCalls: string[] = []
+    const persistence: PersistenceModule = {
+      ...persistenceStub,
+      listSaves: async () => [],
+      save: async (_slot, state) => {
+        saveCalls.push(state.seed)
+        return {
+          slot: 'default',
+          userTeam: state.userTeam,
+          season: state.season,
+          week: state.week,
+          phase: state.phase,
+          startSeason: state.startSeason,
+          horizonEnd: state.season + 3,
+          savedAt: new Date().toISOString(),
+          schemaVersion: 1,
+        }
+      },
+    }
+    const store = createGameStore({
+      mode: 'engine',
+      dataSource: { ...baseSource, loadSeason },
+      persistence,
+    })
+    await until(() => store.getState().dataStatus === 'ready')
+
+    const opts = {
+      startSeason: 2015,
+      userTeam: 'IND' as TeamId,
+      horizonSeasons: 3,
+      settings: undefined as never,
+    }
+    const p1 = store.getState().actions.newGame(opts)
+    await new Promise((r) => setTimeout(r, 5))
+    expect(store.getState().busy.newGame).toBe(true) // #1 is mid-flight
+
+    const p2 = store.getState().actions.newGame(opts) // guarded: sees the flag and returns immediately
+    await p2
+    expect(store.getState().state).toBeNull() // #1 hasn't resolved yet; #2 did nothing
+
+    resolveFirst()
+    await p1
+
+    expect(saveCalls.length).toBe(1)
+    expect(store.getState().state).not.toBeNull()
+  })
+})
+
+/**
+ * QA sweep item 1: on the New Game screen, Start and Continue share `busy.newGame` and can both
+ * fire before either becomes disabled. Whichever wins the state race, the loser must not force a
+ * navigation using its own (possibly stale) outcome.
+ */
+describe('continueGame races newGame', () => {
+  it('keeps the new game on dashboard even when continueGame resolves afterward', async () => {
+    const bundle = mockBundle({ season: 2015 })
+    const source = MemoryDataSource(bundle)
+    let releaseLoad!: () => void
+    const gate = new Promise<void>((r) => (releaseLoad = r))
+    const finishedSave: LeagueState = {
+      ...mockLeague({ season: 2015 }),
+      outcome: 'HORIZON_EXPIRED',
+    }
+
+    const persistence: PersistenceModule = {
+      ...persistenceStub,
+      listSaves: async () => [],
+      load: async () => {
+        await gate // resolves AFTER newGame() has already committed fresh state
+        return finishedSave
+      },
+      save: async (_slot, state) => ({
+        slot: 'default',
+        userTeam: state.userTeam,
+        season: state.season,
+        week: state.week,
+        phase: state.phase,
+        startSeason: state.startSeason,
+        horizonEnd: state.season + 3,
+        savedAt: new Date().toISOString(),
+        schemaVersion: 1,
+      }),
+    }
+
+    const store = createGameStore({ mode: 'engine', dataSource: source, persistence })
+    await until(() => store.getState().dataStatus === 'ready')
+
+    const opts = {
+      startSeason: 2015,
+      userTeam: 'IND' as TeamId,
+      horizonSeasons: 3,
+      settings: undefined as never,
+    }
+
+    const pContinue = store.getState().actions.continueGame() // blocks on `gate`
+    const pNewGame = store.getState().actions.newGame(opts)
+    await pNewGame
+
+    expect(store.getState().state?.outcome).toBe('IN_PROGRESS')
+    expect(store.getState().screen).toBe('dashboard')
+
+    releaseLoad()
+    await pContinue
+
+    // continueGame lost the state race and must skip the goTo too, or the finished save's outcome
+    // strands a live game on End Game.
+    expect(store.getState().state?.outcome).toBe('IN_PROGRESS')
+    expect(store.getState().screen).toBe('dashboard')
+  })
+})
+
+/** QA sweep item 2: Sim to my pick must not resurrect offers the user just declined. */
+describe('simToMyPick', () => {
+  function fixtureRoom(onClockTeam: TeamId): DraftRoomState {
+    return {
+      season: 2016,
+      status: 'ON_CLOCK',
+      currentPickIndex: 0,
+      order: [
+        {
+          season: 2016,
+          round: 1,
+          pick: 1,
+          originalTeam: onClockTeam,
+          owner: onClockTeam,
+          playerId: null,
+        },
+      ],
+      available: [],
+      udfaPool: [],
+      log: [],
+      pendingOffers: [],
+    }
+  }
+
+  it('is a no-op while the user is already on the clock', async () => {
+    const base = mockLeague()
+    const advance = vi.fn((state: LeagueState) => state)
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { draft: { ...defaultEngineModules.draft, advance } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    store.setState((s) => ({
+      state: { ...s.state!, phase: 'DRAFT', draftRoom: fixtureRoom(s.state!.userTeam) },
+    }))
+
+    await store.getState().actions.simToMyPick()
+
+    expect(advance).not.toHaveBeenCalled()
+  })
+
+  it('advances normally when an AI team is on the clock', async () => {
+    const base = mockLeague()
+    const aiTeam = TEAM_IDS.find((t) => t !== base.userTeam)!
+    const advance = vi.fn((state: LeagueState) => state)
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { draft: { ...defaultEngineModules.draft, advance } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    store.setState((s) => ({
+      state: { ...s.state!, phase: 'DRAFT', draftRoom: fixtureRoom(aiTeam) },
+    }))
+
+    await store.getState().actions.simToMyPick()
+
+    expect(advance).toHaveBeenCalledTimes(1)
+  })
+})
+
+/** QA sweep item 4: read-only selectors stay silent for "not built yet" but log anything else. */
+describe('read-only selector error reporting', () => {
+  it('logs an unexpected error from a selector', async () => {
+    const base = mockLeague()
+    const boom = new Error('boom')
+    const store = createGameStore({
+      mode: 'mock',
+      modules: {
+        fa: {
+          ...defaultEngineModules.fa,
+          capFor: () => {
+            throw boom
+          },
+        },
+      },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    expect(store.getState().actions.capFor(base.season)).toBeNull()
+
+    expect(spy).toHaveBeenCalledWith(boom)
+    spy.mockRestore()
+  })
+
+  it('stays silent for a not-implemented module', async () => {
+    const base = mockLeague()
+    const store = createGameStore({
+      mode: 'mock',
+      modules: {
+        fa: {
+          ...defaultEngineModules.fa,
+          capFor: () => {
+            throw new NotImplementedError('fa.capFor')
+          },
+        },
+      },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    expect(store.getState().actions.capFor(base.season)).toBeNull()
+
+    expect(spy).not.toHaveBeenCalled()
+    spy.mockRestore()
+  })
+})
+
+/** QA sweep item 5: a schema-valid save from a year this build has no data for must be rejected. */
+describe('importSave season validation', () => {
+  it("rejects a save the manifest doesn't cover and leaves the running game untouched", async () => {
+    const base = mockLeague()
+    const tooOld: LeagueState = { ...mockLeague({ season: 1925 }), startSeason: 1925 }
+    const importJson = vi.fn(() => tooOld)
+    const store = createGameStore({
+      mode: 'mock',
+      persistence: { ...persistenceStub, importJson },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    const before = store.getState().state
+
+    await store.getState().actions.importSave('{"a":1}')
+
+    expect(store.getState().state).toBe(before)
+    const toast = store.getState().toasts.at(-1)
+    expect(toast?.tone).toBe('error')
+    expect(toast?.text).toBe("This save is from a year this version doesn't support.")
+  })
+})
+
+/** QA sweep item 6: an IndexedDB-unavailable failure gets a friendly toast, not the raw TypeError. */
+describe('storage unavailable', () => {
+  it('shows a friendly toast instead of the raw error message', async () => {
+    const league = mockLeague()
+    const save = vi.fn(async () => {
+      throw new TypeError("Cannot read properties of undefined (reading 'open')")
+    })
+    const persistence: PersistenceModule = { ...persistenceStub, listSaves: async () => [], save }
+    const store = createGameStore({ mode: 'engine', persistence })
+    store.setState({ state: league })
+
+    await store.getState().actions.save()
+
+    const toast = store.getState().toasts.at(-1)
+    expect(toast?.tone).toBe('error')
+    expect(toast?.text).toBe("Your browser is blocking storage, so this game won't be saved.")
+  })
+})
+
+/** QA sweep item 7: two tabs on one save must not clobber each other's progress. */
+describe('multi-tab save guard', () => {
+  it('refuses to overwrite a newer save written by another tab', async () => {
+    const league = mockLeague()
+    let tick = 0
+    let stored: SaveSlotMeta | null = null
+    function fakePersistence(): PersistenceModule {
+      return {
+        ...persistenceStub,
+        listSaves: async () => (stored ? [stored] : []),
+        save: async (_slot, state) => {
+          tick += 1
+          stored = {
+            slot: 'default',
+            userTeam: state.userTeam,
+            season: state.season,
+            week: state.week,
+            phase: state.phase,
+            startSeason: state.startSeason,
+            horizonEnd: state.season + 3,
+            savedAt: `2026-01-01T00:00:${String(tick).padStart(2, '0')}.000Z`,
+            schemaVersion: 1,
+          }
+          return stored
+        },
+      }
+    }
+    // Two store instances stand in for two tabs; they share the fake persistence's "disk" (`stored`)
+    // but each keeps its own private savedAt baseline, exactly like two real tabs would.
+    const tabA = createGameStore({ mode: 'engine', persistence: fakePersistence() })
+    const tabB = createGameStore({ mode: 'engine', persistence: fakePersistence() })
+    tabA.setState({ state: league })
+    tabB.setState({ state: league })
+
+    await tabA.getState().actions.save() // v1 — tabA's baseline is now v1
+    await tabB.getState().actions.save() // v2 — tabB learns about v1 and writes past it
+
+    await tabA.getState().actions.save() // tabA's baseline (v1) is stale; the disk now holds v2
+
+    const toast = tabA.getState().toasts.at(-1)
+    expect(toast?.tone).toBe('warn')
+    expect(toast?.text).toBe('This game changed in another tab. Reload to pick up the latest.')
+    // The conflicting write never happened: the disk still holds tabB's v2, not a third version.
+    expect(tick).toBe(2)
+
+    // A stale tab stays blocked until it reloads: its next save must not slip through either.
+    await tabA.getState().actions.save()
+    expect(tick).toBe(2)
   })
 })

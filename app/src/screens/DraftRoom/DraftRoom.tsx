@@ -360,7 +360,7 @@ export function DraftRoom({
             variant="secondary"
             busy={busy}
             busyLabel="Working…"
-            disabled={complete}
+            disabled={complete || onClock}
             onClick={onSimToMyPick}
           >
             Sim to my pick
