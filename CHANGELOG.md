@@ -3,6 +3,32 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## Unreleased
+
+### Changed
+- Numbers in the display face (ratings, cap figures, scores, meters) are drawn from Oxanium, so they
+  read clearly at table sizes; letters stay pixel.
+- Injuries follow players onto injured reserve, so long and season-ending injuries happen; there are
+  fewer injuries overall, and multi-week injuries stay at about ten per team-season.
+- Box scores credit two-point conversions, safeties, and defensive and return touchdowns, so player
+  points add up to the final score.
+- End Game offers "Keep playing" after a championship too.
+
+### Fixed
+- Playoff games can no longer end tied (a tie used to go to the home team).
+- Standings order three-way ties with a head-to-head cycle consistently.
+- "Sim to my pick" no longer brings back Draft Room offers you declined.
+- Re-signing is limited to expiring contracts during the re-signing period.
+- Double clicks on Start, Continue, import and Start over run once; Continue no longer strands a new
+  game on End Game.
+- A tab that fell behind another tab on the same save stops autosaving instead of overwriting it.
+- Importing a save from an unsupported year is refused before it replaces your game; blocked browser
+  storage shows a plain message.
+- Free Agency explains that signing undrafted rookies closes that period for every team, and says so
+  afterwards instead of "No UDFA pool loaded."
+- No horizontal page scroll at tablet widths; the Dashboard no longer shows last season's final game
+  during the offseason; About shows the data attribution once.
+
 ## 1.5.1 — 2026-09-28
 
 ### Fixed

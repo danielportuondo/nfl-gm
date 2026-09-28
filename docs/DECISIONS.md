@@ -270,3 +270,36 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   so regular display text gets 600 numerals that hold up beside the pixel strokes. New dev dependency
   `@fontsource-variable/oxanium` (OFL, self-hosted). Barlow body numbers were already legible and are
   unchanged.
+
+## 2026-09-28 — QA sweep fixes
+
+- Eight read-only QA agents covered the engine on real data, the store, every screen in a browser,
+  persistence and the deploy. Daniel's calls on the design-level findings: the hidden true values stay
+  on the client as they are; free-agency offer retries and the two trade loopholes (a cosmetic
+  sweetener gets a fresh accept roll; the two-firsts-per-deal limit can be split across deals) stay
+  as they are; End Game offers "Keep playing" after a title.
+- Injuries: the injury report drops a player once he goes on reserve, so the fitted durations topped
+  out at 11 weeks and nothing was season-ending. `build/injury.py` now extends a report episode
+  through the player's weekly-roster `RES` run (nflverse `weekly_rosters`), which makes 53 % of
+  injuries last 2+ weeks, 8.5 % 8+ weeks, and 12.5 % run to season end. Occurrence is unchanged.
+  `injuryConstants.rateScale` 1.6 → 1.1 keeps multi-week injuries at ≈ 0.59 per team-game (the
+  shipped level) with 1.12 total (2015 and 2023, 100 sims; the earlier entry's "1.64 is inside the
+  0.6–1.6 band" was wrong). `permanentLoss.p` is fit as the share of 8+-week episodes but applied
+  as the chance of a loss given one; that pre-existing mismatch now means 8.6 % of long injuries
+  cost 1–3 rating points instead of 0.25 %.
+- Sim: postseason games that roll a tie play on to a field goal or touchdown. About 5.5 % of
+  touchdowns become defensive or return touchdowns (taken from rushing TDs; `passTdShare` 0.62 →
+  0.656 keeps passing TDs level) and two-point conversions and safeties are credited, so every box
+  score sums to the final score; with no kicker dressed the punter kicks (the NO 2013 and 2015
+  kickers are missing from the shipped players.json — a pipeline follow-up).
+- Standings break pct ties by groups: head-to-head among the tied teams only, then point
+  differential, then team id, recursing within any group still tied, so a 3-way cycle can't
+  contradict itself. `fa.resign` requires OFFSEASON_RESIGN and an expiring contract; `resign` and
+  `offer` validate the contract against `ContractSchema`.
+- Store: in-flight guards on newGame/continueGame and busy guards on advancePhase/importSave/startOver
+  (new `busy.startOver`); saves check the stored `savedAt` against the tab's own and a tab that fell
+  behind stays blocked until reload; imports outside the shipped seasons are refused before they
+  overwrite; selectors log unexpected errors; "Sim to my pick" is disabled while the user is on the
+  clock (offers are seeded by pick index, so re-advancing would resurrect declined ones).
+- UI: grid columns and stat tiles get `min-width: 0` (the Dashboard cap tiles forced 884px at a 768px
+  viewport) and the Strip scrolls internally; the 720px rail breakpoint is unchanged.
