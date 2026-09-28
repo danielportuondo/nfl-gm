@@ -3,7 +3,7 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
-## Unreleased
+## 1.6.0 — 2026-09-28
 
 ### Changed
 - Numbers in the display face (ratings, cap figures, scores, meters) are drawn from Oxanium, so they
