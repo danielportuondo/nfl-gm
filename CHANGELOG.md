@@ -3,6 +3,13 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## 1.5.1 — 2026-09-28
+
+### Fixed
+- Accepting a trade offer in the Draft Room, or trading your current pick away from the Trade Center
+  mid-draft, now runs the draft on to your next pick. The room used to stall with the other team on
+  the clock until you pressed "Sim to my pick".
+
 ## 1.5.0 — 2026-09-20
 
 ### Changed
