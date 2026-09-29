@@ -36,6 +36,8 @@ export interface DraftRoomProps {
   onFinishDraft: () => void
   onRespondToOffer: (proposal: TradeProposal, accept: boolean) => void
   onEvaluate: (proposal: TradeProposal) => TradeEvaluation
+  /** trade.fairness for an incoming AI offer; drives its meter instead of onEvaluate's acceptance p. */
+  onFairness: (proposal: TradeProposal) => number
   onTeamNeeds: (teamId: TeamId) => NeedProfile | null
 }
 
@@ -79,6 +81,7 @@ export function DraftRoom({
   onFinishDraft,
   onRespondToOffer,
   onEvaluate,
+  onFairness,
   onTeamNeeds,
 }: DraftRoomProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
@@ -486,6 +489,7 @@ export function DraftRoom({
                   youGet={describeSide(state, data, proposal.offer)}
                   youGive={describeSide(state, data, proposal.request)}
                   evaluation={onEvaluate(proposal)}
+                  fairness={onFairness(proposal)}
                   busy={busy}
                   revealIndex={i}
                   onAccept={() => onRespondToOffer(proposal, true)}

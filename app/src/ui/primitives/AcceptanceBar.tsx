@@ -16,9 +16,9 @@ export interface AcceptanceBarProps {
 
 function band(p: number, mode: 'acceptance' | 'fairness'): string {
   if (mode === 'fairness') {
-    if (p < 0.35) return 'Lopsided'
+    if (p < 0.35) return 'Against you'
     if (p <= 0.65) return 'Fair'
-    return 'Favours you'
+    return 'Favors you'
   }
   if (p < 0.35) return 'Unlikely'
   if (p <= 0.65) return 'Coin flip'

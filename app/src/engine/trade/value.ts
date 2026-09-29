@@ -87,7 +87,9 @@ function ratingCurve(effectiveOvr: number): number {
 
 function ageMultiplier(pos: Position, age: number): number {
   const past = Math.max(0, age - valueConstants.peakAge[pos])
-  return Math.max(valueConstants.declineFloor, 1 - valueConstants.declinePerYearPastPeak * past)
+  const rate =
+    valueConstants.declinePerYearPastPeakByPos[pos] ?? valueConstants.declinePerYearPastPeak
+  return Math.max(valueConstants.declineFloor, 1 - rate * past)
 }
 
 function contractCost(slot: RosterSlot | undefined, cap: number): number {
@@ -127,9 +129,30 @@ export function playerValueImpl(
     ageMultiplier(player.pos, age) *
     valueConstants.posMultiplier[player.pos]
   const slot = rosterIndex(state).get(playerId)
-  const value =
-    talent * injuryMultiplier(slot?.injured?.weeksOut ?? 0) - contractCost(slot, capFor(state, ctx))
-  return Math.max(valueConstants.minPlayerValue, value)
+  const healthy = talent * injuryMultiplier(slot?.injured?.weeksOut ?? 0)
+  const cost = Math.min(
+    contractCost(slot, capFor(state, ctx)),
+    valueConstants.maxCostShareOfTalent * healthy,
+  )
+  return Math.max(valueConstants.minPlayerValue, healthy - cost)
+}
+
+/**
+ * Each position's highest-consensus player on `teamId` (ties to the lower id). AI-initiated deals never
+ * send these: trade value nets out salary, so ranking a room by value would call an expensive starter
+ * surplus and deal him for a backup.
+ */
+export function topByOvrAtPosition(state: LeagueState, teamId: TeamId): Set<PlayerId> {
+  const best = new Map<Position, { id: PlayerId; ovr: number }>()
+  for (const slot of state.teams[teamId]?.roster ?? []) {
+    const pos = state.players[slot.playerId]?.pos
+    if (!pos) continue
+    const ovr = state.scouting[slot.playerId]?.ovr ?? 0
+    const held = best.get(pos)
+    if (!held || ovr > held.ovr || (ovr === held.ovr && slot.playerId < held.id))
+      best.set(pos, { id: slot.playerId, ovr })
+  }
+  return new Set([...best.values()].map((entry) => entry.id))
 }
 
 /** How far consensus ovr has fallen since season start (0 when unknown or risen). */

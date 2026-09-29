@@ -129,6 +129,8 @@ export const fakeTrade: TradeModule = {
   constants: {
     marginByStrictness: { lenient: -0.03, balanced: 0.05, strict: 0.15, ruthless: 0.3 },
     scale: 12,
+    scaleShareOfDeal: 0.2,
+    scaleMin: 1,
     futurePickDiscount: 0.85,
     maxFirstsPerDeal: 2,
     annoyancePerLowball: 1,
@@ -136,6 +138,7 @@ export const fakeTrade: TradeModule = {
   },
   playerValue: () => 0,
   pickValue: () => 0,
+  fairness: () => 0.5,
   evaluate: () => ({
     valueIn: 0,
     valueOut: 0,

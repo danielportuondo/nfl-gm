@@ -1002,3 +1002,29 @@ describe('multi-tab save guard', () => {
     expect(tick).toBe(2)
   })
 })
+
+describe('tradeFairness', () => {
+  it("returns the engine's fairness number for a proposal", async () => {
+    const base = mockLeague()
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { trade: { ...defaultEngineModules.trade, fairness: () => 0.74 } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    const proposal = fixtureProposal(store.getState().state!)
+
+    expect(store.getState().actions.tradeFairness(proposal)).toBe(0.74)
+  })
+
+  it('falls back to 0.5 (even) without a league loaded', () => {
+    const store = createGameStore({ mode: 'mock' })
+    const proposal = fixtureProposal(mockLeague())
+
+    expect(store.getState().actions.tradeFairness(proposal)).toBe(0.5)
+  })
+})

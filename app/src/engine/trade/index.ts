@@ -21,6 +21,7 @@ import type {
 } from '@contracts/index'
 import { acceptanceConstants, tradeConstants } from './constants'
 import { evaluateImpl, mirror } from './evaluate'
+import { fairnessImpl } from './fairness'
 import { generateAiOffersImpl } from './offers'
 import { suggestTradesImpl } from './suggest'
 import { logUserTrade } from './transactions'
@@ -209,6 +210,7 @@ export const trade: TradeModule = {
   playerValue: playerValueImpl,
   pickValue: pickValueImpl,
   evaluate: evaluateImpl,
+  fairness: fairnessImpl,
   submit: submitImpl,
   execute: executeImpl,
   generateAiOffers: generateAiOffersImpl,

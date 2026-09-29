@@ -26,6 +26,12 @@ import {
 
 export const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x))
 
+/** Scaled to the deal, so a 4-for-0.4 swap is as decisive as a 40-for-4 one; capped for the big ones. */
+export function sigmoidScale(valueIn: number, valueOut: number): number {
+  const { scale, scaleShareOfDeal, scaleMin } = tradeConstants
+  return Math.min(scale, Math.max(scaleMin, scaleShareOfDeal * Math.max(valueIn, valueOut)))
+}
+
 export function isInSeason(state: LeagueState): boolean {
   return (acceptanceConstants.inSeasonPhases as readonly string[]).includes(state.phase)
 }
@@ -228,7 +234,7 @@ export function evaluateImpl(
   if (annoyancePct > 0) reasons.push(`${evaluator} is tired of lowball offers`)
   const margin = (strictnessPct + annoyancePct) * valueOut
 
-  const p = sigmoid((valueIn - valueOut - needAdj - margin) / tradeConstants.scale)
+  const p = sigmoid((valueIn - valueOut - needAdj - margin) / sigmoidScale(valueIn, valueOut))
   return { valueIn, valueOut, needAdj, margin, p, valid: true, reasons }
 }
 

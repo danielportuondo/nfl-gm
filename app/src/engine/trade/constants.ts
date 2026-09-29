@@ -11,7 +11,14 @@ import type { Position, TradeConstants } from '@contracts/index'
 
 export const tradeConstants: TradeConstants = {
   marginByStrictness: { lenient: -0.03, balanced: 0.05, strict: 0.15, ruthless: 0.3 },
+  /**
+   * The sigmoid scale is clamp(scaleShareOfDeal × max(valueIn, valueOut), scaleMin, scale). A fixed 12
+   * pinned every deal between low-value assets near p = 0.5 whatever the ratio or the strictness: a
+   * backup LB + a 7th for a 40-year-old starting QB read 55% on ruthless (DECISIONS 2026-09-28).
+   */
   scale: 12,
+  scaleShareOfDeal: 0.2,
+  scaleMin: 1,
   /**
    * Phase 5B: a discount below 1 is free money for a patient user — scripts/qa/draftExploit.ts turned
    * seven of IND's 2016 picks into 2017 picks at p = 0.50 each and banked 157 chart points (half a
@@ -70,11 +77,18 @@ export const valueConstants = {
   potShareYoungAge: 21,
   potShareFlatAge: 29,
   declinePerYearPastPeak: 0.07,
+  /** Quarterbacks age gracefully: at 0.07 a 40-year-old consensus-83 starter kept 37% of his talent. */
+  declinePerYearPastPeakByPos: { QB: 0.04 } as Partial<Record<Position, number>>,
   declineFloor: 0.25,
   /** Value subtracted per 1% of the cap in APY, times a small surcharge per extra year owed. */
   costPerCapPct: 2.2,
   costExtraPerYear: 0.12,
   costMaxYears: 5,
+  /**
+   * Cost can take at most this share of talent. Uncapped, a starter on a market deal fell to the
+   * `minPlayerValue` floor, level with a practice-squad body, so the AI dealt him for one.
+   */
+  maxCostShareOfTalent: 0.5,
   /** An albatross contract bottoms out at "worthless", never at "you owe me". */
   minPlayerValue: 0.25,
   injuryDiscountPerWeek: 0.035,

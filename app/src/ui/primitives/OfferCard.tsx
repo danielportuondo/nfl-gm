@@ -8,7 +8,15 @@ export interface OfferCardProps {
   title: string
   youGet: ReactNode
   youGive: ReactNode
+  /** Hard-gate validity and reasons (cap, roster size, unknown assets…) for this proposal. */
   evaluation: TradeEvaluation
+  /**
+   * trade.fairness for this proposal: what the user gets ÷ (gets + gives) by consensus value, 0.5 =
+   * even. Every OfferCard is an AI-initiated deal (a suggestion or an incoming offer), so the meter
+   * shows this, not evaluation.p — the AI's own acceptance math, which says nothing about whether the
+   * deal is good for the user (docs/DECISIONS.md fairness meter).
+   */
+  fairness: number
   onAccept: () => void
   onDecline: () => void
   busy?: boolean
@@ -27,6 +35,7 @@ export function OfferCard({
   youGet,
   youGive,
   evaluation,
+  fairness,
   onAccept,
   onDecline,
   busy,
@@ -42,7 +51,7 @@ export function OfferCard({
       <p style={{ margin: '0 0 var(--sp-3)' }}>
         <strong>You give:</strong> {youGive}
       </p>
-      <AcceptanceBar p={evaluation.p} valid={evaluation.valid} mode="fairness" />
+      <AcceptanceBar p={fairness} valid={evaluation.valid} mode="fairness" />
       {evaluation.reasons.length > 0 && (
         <ul
           style={{

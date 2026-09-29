@@ -11,8 +11,16 @@ import type { Rng } from './rng'
 export interface TradeConstants {
   /** Margin as a fraction of valueOut per strictness (lenient −0.03, balanced 0.05, strict 0.15, ruthless 0.30). */
   marginByStrictness: Record<'lenient' | 'balanced' | 'strict' | 'ruthless', number>
-  /** Sigmoid scale on (valueIn − valueOut − needAdj − margin). */
+  /**
+   * Upper bound on the sigmoid scale. The effective scale is
+   * clamp(scaleShareOfDeal × max(valueIn, valueOut), scaleMin, scale), so a lopsided deal between
+   * low-value assets is as decisive as a big one (docs/DECISIONS.md 2026-09-28, amends HANDOFF §6.5).
+   */
   scale: number
+  /** Share of the larger side's value used as the sigmoid scale (0.2). */
+  scaleShareOfDeal: number
+  /** Lower bound on the effective sigmoid scale (1). */
+  scaleMin: number
   /** Future-pick discount per year (0.85). */
   futurePickDiscount: number
   /** Max first-round picks the AI gives up in one deal (2). */
@@ -46,6 +54,13 @@ export interface TradeModule {
    * Re-values players whose consensus dropped sharply this season. Pure.
    */
   evaluate(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): TradeEvaluation
+
+  /**
+   * How fair an AI-initiated proposal is to the user, by consensus value only: what the user gets
+   * ÷ (gets + gives), in 0–1, 0.5 = even. No margin, strictness, need or annoyance. Drives the meter
+   * on AI-initiated offers; the user's own proposals keep showing evaluate().p. Pure.
+   */
+  fairness(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): number
 
   /**
    * Roll against p. Accepted → execute. Declined → raise counterparty tradeAnnoyance and maybe counter.
@@ -85,6 +100,8 @@ export const tradeStub: TradeModule = {
   constants: {
     marginByStrictness: { lenient: -0.03, balanced: 0.05, strict: 0.15, ruthless: 0.3 },
     scale: 12,
+    scaleShareOfDeal: 0.2,
+    scaleMin: 1,
     futurePickDiscount: 0.85,
     maxFirstsPerDeal: 2,
     annoyancePerLowball: 1,
@@ -93,6 +110,7 @@ export const tradeStub: TradeModule = {
   playerValue: () => notImplemented('trade.playerValue'),
   pickValue: () => notImplemented('trade.pickValue'),
   evaluate: () => notImplemented('trade.evaluate'),
+  fairness: () => notImplemented('trade.fairness'),
   submit: () => notImplemented('trade.submit'),
   execute: () => notImplemented('trade.execute'),
   generateAiOffers: () => notImplemented('trade.generateAiOffers'),

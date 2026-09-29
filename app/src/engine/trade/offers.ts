@@ -17,7 +17,15 @@ import type {
 } from '@contracts/index'
 import { evaluateImpl, mirror } from './evaluate'
 import { offerConstants } from './constants'
-import { incomingValue, needsFor, outgoingValue, pickValueImpl, refKey, refOf } from './value'
+import {
+  incomingValue,
+  needsFor,
+  outgoingValue,
+  pickValueImpl,
+  refKey,
+  refOf,
+  topByOvrAtPosition,
+} from './value'
 
 interface Valued {
   ref: PickRef
@@ -158,6 +166,7 @@ function seasonOffer(
   const ownRoster = state.teams[teamId]?.roster ?? []
 
   const posOf = (id: PlayerId) => state.players[id]?.pos
+  const kept = topByOvrAtPosition(state, teamId)
   const targets = userRoster
     .filter((slot) => {
       const pos = posOf(slot.playerId)
@@ -174,11 +183,12 @@ function seasonOffer(
 
   for (const target of targets) {
     const budget = target.value * payRatio
-    // Never gut the position the AI is trying to fix: the player it sends comes from elsewhere.
+    // Never gut the position the AI is trying to fix: the player it sends comes from elsewhere,
+    // and never its starter anywhere else either.
     const sendable = ownRoster
       .filter((slot) => {
         const pos = posOf(slot.playerId)
-        return pos !== undefined && !wanted.has(pos)
+        return pos !== undefined && !wanted.has(pos) && !kept.has(slot.playerId)
       })
       .map((slot) => ({ id: slot.playerId, value: outgoingValue(state, slot.playerId, ctx) }))
       .sort(

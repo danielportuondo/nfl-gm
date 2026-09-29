@@ -725,6 +725,18 @@ export function createGameStore(config: StoreConfig = {}) {
           }
         },
 
+        tradeFairness(proposal: TradeProposal): number {
+          const league = get().state
+          if (!league) return 0.5
+          try {
+            const ctx = buildCtx()
+            return modules.trade.fairness(league, proposal, ctx)
+          } catch (err) {
+            reportSelectorError(err)
+            return 0.5
+          }
+        },
+
         async proposeTrade(proposal: TradeProposal) {
           const league = get().state
           if (!league) return

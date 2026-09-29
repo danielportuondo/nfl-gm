@@ -27,6 +27,8 @@ export interface TradeCenterProps {
   suggestedTrades: TradeProposal[]
   busy?: boolean
   onEvaluate: (proposal: TradeProposal) => TradeEvaluation
+  /** trade.fairness for an AI-initiated proposal (suggestion or incoming offer); drives its meter. */
+  onFairness: (proposal: TradeProposal) => number
   onProposeTrade: (proposal: TradeProposal) => void
   onRespondToOffer: (proposal: TradeProposal, accept: boolean) => void
   onRefreshOffers: () => void
@@ -241,6 +243,7 @@ export function TradeCenter({
   suggestedTrades,
   busy,
   onEvaluate,
+  onFairness,
   onProposeTrade,
   onRespondToOffer,
   onRefreshOffers,
@@ -432,6 +435,7 @@ export function TradeCenter({
                   youGet={describeSide(state, data, offer.offer)}
                   youGive={describeSide(state, data, offer.request)}
                   evaluation={onEvaluate(offer)}
+                  fairness={onFairness(offer)}
                   busy={busy}
                   revealIndex={i}
                   acceptLabel="Accept deal"
@@ -468,6 +472,7 @@ export function TradeCenter({
                   youGet={describeSide(state, data, offer.offer)}
                   youGive={describeSide(state, data, offer.request)}
                   evaluation={onEvaluate(offer)}
+                  fairness={onFairness(offer)}
                   busy={busy}
                   revealIndex={i}
                   onAccept={() => onRespondToOffer(offer, true)}

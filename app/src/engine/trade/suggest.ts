@@ -16,7 +16,7 @@ import type {
 } from '@contracts/index'
 import { offerConstants, suggestionConstants } from './constants'
 import { acceptableToAi, aiTeams, assemble, propose, tradeablePicks } from './offers'
-import { incomingValue, needsFor, outgoingValue } from './value'
+import { incomingValue, needsFor, outgoingValue, topByOvrAtPosition } from './value'
 
 interface Valued {
   id: PlayerId
@@ -47,8 +47,8 @@ function bestOvrAt(state: LeagueState, teamId: TeamId, pos: Position): number {
 }
 
 /**
- * One suggestion from `aiTeam` at `pos`, or null. The AI keeps its best player at the position and
- * offers the next ones down; each must actually be an upgrade on the user's best there.
+ * One suggestion from `aiTeam` at `pos`, or null. The AI keeps its top consensus player at the position
+ * and offers the next ones down; each must actually be an upgrade on the user's best there.
  */
 function suggestionFor(
   state: LeagueState,
@@ -65,13 +65,18 @@ function suggestionFor(
   const aiWanted = new Set(aiNeeds.top)
   const posOf = (id: PlayerId) => state.players[id]?.pos
 
+  const kept = topByOvrAtPosition(state, aiTeam)
   const surplus: Valued[] = (state.teams[aiTeam]?.roster ?? [])
     .filter(
-      (slot) => posOf(slot.playerId) === pos && !slot.injured && !usedIncoming.has(slot.playerId),
+      (slot) =>
+        posOf(slot.playerId) === pos &&
+        !kept.has(slot.playerId) &&
+        !slot.injured &&
+        !usedIncoming.has(slot.playerId),
     )
     .map((slot) => ({ id: slot.playerId, value: outgoingValue(state, slot.playerId, ctx) }))
     .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id))
-    .slice(1, 1 + suggestionConstants.candidatesScanned)
+    .slice(0, suggestionConstants.candidatesScanned)
 
   const userBest = bestOvrAt(state, state.userTeam, pos)
   const userRoster = state.teams[state.userTeam]?.roster ?? []

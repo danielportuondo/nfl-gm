@@ -236,6 +236,7 @@ export function App() {
           onFinishDraft={actions.finishDraft}
           onRespondToOffer={actions.respondToOffer}
           onEvaluate={actions.evaluateTrade}
+          onFairness={actions.tradeFairness}
           onTeamNeeds={actions.teamNeeds}
         />
       )}
@@ -247,6 +248,7 @@ export function App() {
           suggestedTrades={suggestedTrades}
           busy={busy.trade}
           onEvaluate={actions.evaluateTrade}
+          onFairness={actions.tradeFairness}
           onProposeTrade={actions.proposeTrade}
           onRespondToOffer={actions.respondToOffer}
           onRefreshOffers={actions.refreshTradeOffers}

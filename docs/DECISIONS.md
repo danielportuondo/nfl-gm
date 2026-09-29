@@ -332,3 +332,28 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   season finishes. Built without a separate spec file at Daniel's request; this entry is the record.
 - The headless harness checks that the log only grows, parses, and involves the user's team, and
   prints counts by kind.
+
+## 2026-09-28 — Trade valuation: stars on big deals and old QBs
+
+- Daniel saw 2017 AI deals offering Cam Newton for Rashawn Scott and Tom Brady for Neville Hewitt
+  and a 7th, both labelled "Fair", with the Brady deal at 47 % even on ruthless. Causes: the full
+  contract cost was subtracted from talent and floored at 0.25, so Newton (talent 20.9, cost 38.4)
+  was worth the same as Scott; QBs lost 7 % a year past 31, leaving a 40-year-old Brady below
+  Brian Hoyer; `suggestTrades` and `generateAiOffers` protected a team's most *valuable* player at
+  a position, which after the first two could be a cheap backup; and with a fixed sigmoid scale of
+  12, any deal between small values read ≈ 50 % whatever the gap or the strictness.
+- Fixes (Daniel's calls): contract cost is capped at half of talent (`maxCostShareOfTalent` 0.5);
+  QBs decline 0.04 a year past peak (`declinePerYearPastPeakByPos`); suggestions and offers never
+  send a team's top-consensus player at a position; and the sigmoid scale is
+  clamp(0.2 × max(valueIn, valueOut), 1, 12), amending HANDOFF §6.5's fixed scale. The AI's own
+  p for the Brady deal is now 4.2 / 2.8 / 1.7 / 0.8 % (lenient → ruthless) and for the Newton deal
+  0.9 → 0.2 %. Top-player-for-scraps suggestions over 2016–18 went 12/320 → 0, incoming offers
+  6/160 → 0, and the hindsight exploit check stays inside its 15 % target (strict: 2.2 % in 2015,
+  −4.6 % in 2017).
+- The meter on AI-initiated cards (Trade Center suggestions and offers, Draft Room offers) now
+  shows `trade.fairness`: what the user gets ÷ (gets + gives) by consensus value, 0.5 = even,
+  labelled Against you / Fair / Favors you. The user's own proposals still show the AI's accept
+  chance.
+- Left as is at Daniel's call: an extreme lowball does not raise annoyance, so it can land on a
+  retry (≈ 1 % after these fixes). Noted for the ratings pipeline: Newton's consensus falls
+  91.5 → 71.5 between 2016 and 2017.

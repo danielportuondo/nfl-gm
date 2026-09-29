@@ -124,6 +124,13 @@ export interface GameStoreState {
     // --- Trade Center ------------------------------------------------------------------------
     /** Pure evaluation for the live acceptance bar; never mutates state, never toasts. */
     evaluateTrade: (proposal: TradeProposal) => TradeEvaluation
+    /**
+     * How fair an AI-initiated proposal (a suggestion or an incoming offer) is to the user, by
+     * consensus value alone (0.5 = even). Drives the meter on those cards instead of evaluateTrade's
+     * p, which is the AI's own acceptance math — the wrong thing to show on a deal it already
+     * proposed. Falls back to 0.5 (even) without a league or before the engine is built.
+     */
+    tradeFairness: (proposal: TradeProposal) => number
     proposeTrade: (proposal: TradeProposal) => Promise<void>
     /** Accept/decline an AI-initiated offer (draftRoom.pendingOffers or a fetched season offer). */
     respondToOffer: (proposal: TradeProposal, accept: boolean) => Promise<void>

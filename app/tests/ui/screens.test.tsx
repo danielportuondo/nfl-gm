@@ -506,12 +506,17 @@ describe('DraftRoom', () => {
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
+        onFairness={() => 0.74}
         onTeamNeeds={() => null}
       />,
     )
     expect(screen.getByText('ON THE CLOCK')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Accept' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Decline' })).toBeInTheDocument()
+    // The offer is AI-initiated, so the meter reads trade.fairness (74%), not onEvaluate's p (62%) —
+    // the AI's own acceptance math, which is the wrong thing to show on a deal it already proposed.
+    expect(screen.getByText('74%')).toBeInTheDocument()
+    expect(screen.queryByText('62%')).not.toBeInTheDocument()
   })
 
   it('offers to start the draft when there is no draft room yet', () => {
@@ -528,6 +533,7 @@ describe('DraftRoom', () => {
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
+        onFairness={() => 0.74}
         onTeamNeeds={() => null}
       />,
     )
@@ -546,6 +552,7 @@ describe('DraftRoom', () => {
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
+        onFairness={() => 0.74}
         onTeamNeeds={() => null}
       />,
     )
@@ -674,6 +681,7 @@ describe('DraftRoom', () => {
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
+        onFairness={() => 0.74}
         onTeamNeeds={() => null}
       />,
     )
@@ -692,6 +700,7 @@ describe('TradeCenter', () => {
         data={data}
         tradeOffers={[fixtureTradeProposal(state)]}
         onEvaluate={() => FIXTURE_EVALUATION}
+        onFairness={() => 0.74}
         onProposeTrade={vi.fn()}
         onRespondToOffer={vi.fn()}
         onRefreshOffers={vi.fn()}
@@ -703,6 +712,35 @@ describe('TradeCenter', () => {
     expect(screen.getByText('Their side')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Offer trade' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Accept' })).toBeInTheDocument()
+    // The incoming offer is AI-initiated: its meter reads fairness (74%), not onEvaluate's p (62%).
+    expect(screen.getByText('74%')).toBeInTheDocument()
+  })
+
+  it("keeps the user's own proposal on onEvaluate's p, not fairness", () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    render(
+      <TradeCenter
+        state={state}
+        data={data}
+        tradeOffers={[]}
+        onEvaluate={() => FIXTURE_EVALUATION}
+        onFairness={() => 0.74}
+        onProposeTrade={vi.fn()}
+        onRespondToOffer={vi.fn()}
+        onRefreshOffers={vi.fn()}
+        suggestedTrades={[]}
+        onRefreshSuggestions={() => {}}
+      />,
+    )
+    const yourOfferPanel = screen.getByText('Your offer').closest('section')!
+    fireEvent.click(within(yourOfferPanel).getAllByRole('checkbox')[0]!)
+    const theirSidePanel = screen.getByText('Their side').closest('section')!
+    fireEvent.click(within(theirSidePanel).getAllByRole('checkbox')[0]!)
+
+    // The live preview is the user's own proposal, so it shows onEvaluate's p (62%), never fairness.
+    expect(screen.getByText('62%')).toBeInTheDocument()
+    expect(screen.queryByText('74%')).not.toBeInTheDocument()
   })
 })
 
