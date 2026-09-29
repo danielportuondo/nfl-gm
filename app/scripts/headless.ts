@@ -11,6 +11,7 @@
 import {
   DIVISIONS,
   TEAM_IDS,
+  TransactionSchema,
   isInHistory,
   leagueFormat,
   type EngineContext,
@@ -18,6 +19,7 @@ import {
   type LeagueState,
   type PlayoffBracket,
   type TeamId,
+  type Transaction,
 } from '../src/contracts/index'
 import { truthFallbackCount, resetTruthFallbackCount } from '../src/engine/sim/index'
 import { loadRealContext, readManifest, realWinTotals, seasonsForNewGame } from './lib/publicData'
@@ -124,6 +126,45 @@ function checkRosterInvariants(
   )
 }
 
+/**
+ * The user's move log only grows and every entry is schema-valid and involves the user's team. Checked
+ * after every phase transition and user action across the run (`prevTransactionKeys` tracks the log
+ * from the last check); a mismatched prefix means an earlier entry was mutated or dropped.
+ */
+let prevTransactionKeys: string[] = []
+
+function checkTransactionInvariants(state: LeagueState, label: string): void {
+  const keys = state.transactions.map((t) => JSON.stringify(t))
+  const grewFromPrefix =
+    keys.length >= prevTransactionKeys.length && prevTransactionKeys.every((k, i) => keys[i] === k)
+  check(grewFromPrefix, `${label}: transactions is not a superset of the previous check's log`)
+  for (const t of state.transactions) {
+    const parsed = TransactionSchema.safeParse(t)
+    check(
+      parsed.success,
+      `${label}: invalid transaction ${JSON.stringify(t)} — ${parsed.success ? '' : parsed.error.issues.map((i) => i.message).join('; ')}`,
+    )
+    check(
+      t.season <= state.season,
+      `${label}: transaction season ${t.season} is after the current season ${state.season}`,
+    )
+    if (t.kind === 'TRADE') {
+      check(
+        t.gave.teamId === state.userTeam,
+        `${label}: TRADE transaction gave.teamId ${t.gave.teamId} is not the user team ${state.userTeam}`,
+      )
+    }
+  }
+  prevTransactionKeys = keys
+}
+
+function transactionSummary(transactions: readonly Transaction[]): string {
+  const counts = new Map<string, number>()
+  for (const t of transactions) counts.set(t.kind, (counts.get(t.kind) ?? 0) + 1)
+  const kinds = ['DRAFT', 'UDFA', 'SIGN', 'RESIGN', 'RELEASE', 'TRADE'] as const
+  return kinds.map((k) => `${k} ${counts.get(k) ?? 0}`).join(' · ')
+}
+
 function printStandings(state: LeagueState, ctx: EngineContext): void {
   const rows = ctx.modules.league.standings(state, ctx)
   const byDivision = new Map<string, typeof rows>()
@@ -206,15 +247,24 @@ function playSeason(
 function playOffseason(state: LeagueState, ctx: EngineContext, log: OffseasonLog): LeagueState {
   const { league, draft } = ctx.modules
   let s = userResign(state, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user re-signing)`)
   s = league.advancePhase(s, ctx) // OFFSEASON_RESIGN → DRAFT (AI re-signs; unsigned expiring walk)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = draft.startDraft(s, ctx)
   s = userDraft(s, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user draft)`)
   s = league.advancePhase(s, ctx) // DRAFT → UDFA
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = league.advancePhase(s, ctx) // UDFA → FREE_AGENCY (AI UDFA signings)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = userFreeAgency(s, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user free agency)`)
   s = league.advancePhase(s, ctx) // FREE_AGENCY → TRAINING_CAMP (AI free agency)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = league.advancePhase(s, ctx) // TRAINING_CAMP → PRESEASON (season + 1: rollover, progression, snap)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = userCutdowns(s, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user cutdowns)`)
   return s
 }
 
@@ -227,12 +277,19 @@ function playOpeningOffseason(
   const { league, draft } = ctx.modules
   let s = draft.startDraft(state, ctx)
   s = userDraft(s, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user draft)`)
   s = league.advancePhase(s, ctx) // DRAFT → UDFA
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = league.advancePhase(s, ctx) // UDFA → FREE_AGENCY (AI UDFA signings)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = userFreeAgency(s, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user free agency)`)
   s = league.advancePhase(s, ctx) // FREE_AGENCY → TRAINING_CAMP (AI free agency)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = league.advancePhase(s, ctx) // TRAINING_CAMP → PRESEASON (opening rollover: no progression, no contract tick)
+  checkTransactionInvariants(s, `${s.season} ${s.phase}`)
   s = userCutdowns(s, ctx, log)
+  checkTransactionInvariants(s, `${s.season} ${s.phase} (user cutdowns)`)
   return s
 }
 
@@ -400,6 +457,7 @@ async function main(): Promise<void> {
       `${state.schedule.length} games scheduled (data loaded in ${((loadedAt - started) / 1000).toFixed(1)}s)`,
   )
   checkRosterInvariants(state, ctx, 'newGame', [], [0, 53])
+  checkTransactionInvariants(state, 'newGame')
 
   let offseason: OffseasonLog | null = null
   if (state.phase === 'DRAFT') {
@@ -425,8 +483,10 @@ async function main(): Promise<void> {
     resetTruthFallbackCount()
     state = ctx.modules.league.advancePhase(state, ctx) // PRESEASON → REGULAR (AI cutdowns, then every roster validated)
     checkRosterInvariants(state, ctx, `${season} opening day`)
+    checkTransactionInvariants(state, `${season} opening day`)
     const played = playSeason(state, ctx)
     state = played.state
+    checkTransactionInvariants(state, `${season} end of season`)
 
     console.log(
       `\n=== ${season} — ${played.weeks} weeks, ${played.injuries} weeks with injuries, ${played.offers} AI offers ===`,
@@ -505,6 +565,7 @@ async function main(): Promise<void> {
   console.log(
     `\nfinal: season ${state.season}, phase ${state.phase}, outcome ${state.outcome}, runtime ${((performance.now() - started) / 1000).toFixed(1)}s`,
   )
+  console.log(`transactions: ${transactionSummary(state.transactions)}`)
   if (failures.length) {
     console.error(
       `\n${failures.length} invariant failure(s):\n  ${failures.slice(0, 20).join('\n  ')}`,

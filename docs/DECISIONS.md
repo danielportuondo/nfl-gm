@@ -313,3 +313,22 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   consensus Ovr/Pot. The pick on the clock and the user's picks are tinted through a row-level
   `rowTone` hook on the Table primitive. Coming on the clock switches back to Prospects, where the
   pick is made. Consensus only; no engine or contract change.
+
+## 2026-09-28 — The user's move history
+
+- New saved `state.transactions`: every move by the user's team, logged by the engine where it
+  happens: trades it is part of (`trade.execute`), each pick it makes, auto-picks included
+  (`draft`), UDFA signings (`runUdfa`), accepted free-agent offers, re-signings and releases
+  (`fa`). AI-only moves are never logged. Each entry keeps the consensus ovr of its players at the
+  time (`ovrAtMove`) so Recap can show "then → now" from `state.scouting`, never truth.
+- The field defaults to `[]`, so `SAVE_SCHEMA_VERSION` stays 1. A save made before the log existed
+  gets DRAFT entries backfilled from `players[id].draft` for the user's team from `startSeason` on,
+  with no "then" rating; other kinds can't be recovered. Entries keep the raw `state.season`; Recap
+  files offseason-phase moves under the next league year, as the header reads them ("2012
+  offseason" is season 2011), so a backfilled pick is stored as season = class − 1, phase DRAFT.
+  Signings read "2y $7.0M/yr".
+- Recap has two views: Season (unchanged) and Your moves, which lists every year newest first with
+  a count line and filters (All / Trades / Draft / Signings / Releases). It works before the first
+  season finishes. Built without a separate spec file at Daniel's request; this entry is the record.
+- The headless harness checks that the log only grows, parses, and involves the user's team, and
+  prints counts by kind.

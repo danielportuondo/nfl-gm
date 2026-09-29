@@ -29,7 +29,12 @@ export interface PersistenceModule {
   exportJson(state: LeagueState): string
   /** Parse, migrate, validate, hydrate. Throws with a readable message on a bad file. */
   importJson(json: string): LeagueState
-  /** Bring any older SavedLeague up to SCHEMA_VERSION. Identity for current version. */
+  /**
+   * Bring any older SavedLeague up to SCHEMA_VERSION. Identity for current version. A save without
+   * `transactions` gets DRAFT entries backfilled from players[id].draft for the user's team from
+   * startSeason on (season = class − 1, phase DRAFT, ovrAtMove empty), in overall-pick order; other
+   * kinds can't be recovered.
+   */
   migrate(saved: unknown): SavedLeague
 }
 

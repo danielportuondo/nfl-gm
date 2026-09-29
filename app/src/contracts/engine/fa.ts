@@ -44,7 +44,7 @@ export interface FaModule {
   /** Expiring players' asks for the OFFSEASON_RESIGN phase: marketApy × (1 ± 10%), seeded per player. */
   resignAsk(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number
 
-  /** User re-signs at `apy` ≥ ask. Throws if below ask or over cap. */
+  /** User re-signs at `apy` ≥ ask. Throws if below ask or over cap. Appends a RESIGN Transaction. */
   resign(
     state: LeagueState,
     playerId: PlayerId,
@@ -61,6 +61,7 @@ export interface FaModule {
   /**
    * User offer with 1-day simulated bidding: P(accept) rises with offer/ask and team quality.
    * Hard gates: cap, roster ≤ 90 (offseason) / 53 (in-season). Marks the player diverged on success.
+   * An accepted offer by the user's team appends a SIGN Transaction to state.transactions.
    */
   offer(
     state: LeagueState,
@@ -91,7 +92,10 @@ export interface FaModule {
    */
   runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState
 
-  /** Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged. */
+  /**
+   * Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged.
+   * A release by the user's team appends a RELEASE Transaction (with that dead money) to state.transactions.
+   */
   release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState
 
   /**

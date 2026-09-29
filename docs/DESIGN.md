@@ -341,7 +341,12 @@ works at 390px with a 16px side gutter and no horizontal page scroll; dark defau
   and defensive rookie of the year, coach of the year) are NamePlates in a wrapping row with the
   award name as a caption and the stat line as meta; coach of the year is a helmet plate in the
   team's colors. League leaders stay a compact list underneath. Nothing here reads truth: awards
-  come from box scores, records and consensus.
+  come from box scores, records and consensus. A Season / Your moves tab pair sits on top; Your
+  moves lists every year newest first ("in progress" on the current one) with a count line, then
+  each move as a kind tag (Trade / Draft / UDFA / Signed / Re-signed / Released) and its details,
+  every player with a consensus "then → now" Ovr (now in `--positive` when up, `--danger` when
+  down), and a traded-for pick that has been used shows who it became. Filters: All / Trades /
+  Draft / Signings / Releases. It is a list, not a table, so it wraps at 390 px.
 - **End Game** — the on-the-clock hero composition reused: gold strip, "Super Bowl champions" or
   "Horizon reached", then the GM report card (StatTiles) and "Keep playing".
 - **Settings** — two quiet panels, then the run plate. Appearance offers Dark / Light / System as

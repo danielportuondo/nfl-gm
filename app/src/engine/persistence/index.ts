@@ -9,6 +9,7 @@ import {
   toSaved,
   type LeagueState,
   type SavedLeague,
+  type Transaction,
 } from '@contracts/index'
 import type { PersistenceModule, SaveSlotMeta } from '@contracts/index'
 import { DB_NAME, DB_VERSION, SAVES_STORE } from './constants'
@@ -47,7 +48,37 @@ function describeIssues(issues: { path: PropertyKey[]; message: string }[]): str
     .join('; ')
 }
 
-/** Bring any older SavedLeague up to SCHEMA_VERSION. Identity for the current version. */
+/**
+ * Reconstructs the user's DRAFT moves for a save made before the transaction log existed. Only
+ * DRAFT entries are recoverable (the pick is recorded on the player); trades, signings, re-signings
+ * and releases from before the log leave no trace in `players[id]`, so they can't be backfilled.
+ */
+function backfillDraftTransactions(saved: SavedLeague): Transaction[] {
+  type DraftEntry = Extract<Transaction, { kind: 'DRAFT' }>
+  const entries: DraftEntry[] = []
+  for (const playerId of Object.keys(saved.players).sort()) {
+    const draft = saved.players[playerId]?.draft
+    if (!draft || draft.team !== saved.userTeam || draft.season < saved.startSeason) continue
+    entries.push({
+      kind: 'DRAFT',
+      // A class is drafted in the DRAFT phase of the season before it (seasonText's convention).
+      season: draft.season - 1,
+      phase: 'DRAFT',
+      week: 0,
+      playerId,
+      round: draft.round,
+      pick: draft.pick,
+      ovrAtMove: {},
+    })
+  }
+  return entries.sort((a, b) => a.season - b.season || a.pick - b.pick)
+}
+
+/**
+ * Bring any older SavedLeague up to SCHEMA_VERSION. Identity for the current version, except that a
+ * save from before the transaction log (no `transactions` key at all — not even `[]`) gets its DRAFT
+ * moves backfilled; see `backfillDraftTransactions`.
+ */
 export function migrate(saved: unknown): SavedLeague {
   if (typeof saved !== 'object' || saved === null) {
     throw new Error('persistence.migrate: save data is not an object')
@@ -62,13 +93,15 @@ export function migrate(saved: unknown): SavedLeague {
     )
   }
   // No migrations exist yet; `version === SCHEMA_VERSION` is the only supported case and is the identity.
+  const hadTransactionsKey = Object.prototype.hasOwnProperty.call(saved, 'transactions')
   const parsed = SavedLeagueSchema.safeParse(saved)
   if (!parsed.success) {
     throw new Error(
       `persistence.migrate: invalid save data — ${describeIssues(parsed.error.issues)}`,
     )
   }
-  return parsed.data
+  if (hadTransactionsKey) return parsed.data
+  return { ...parsed.data, transactions: backfillDraftTransactions(parsed.data) }
 }
 
 export const persistence: PersistenceModule = {

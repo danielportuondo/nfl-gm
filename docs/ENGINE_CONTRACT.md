@@ -90,6 +90,7 @@ import type {
   TradeProposalSchema,
   TradeSideSchema,
   TrajectoriesFileSchema,
+  TransactionSchema,
   TrueTrajectorySchema,
 } from './schemas'
 
@@ -142,6 +143,8 @@ export type TradeProposal = z.infer<typeof TradeProposalSchema>
 export type DraftLogEntry = z.infer<typeof DraftLogEntrySchema>
 export type DraftRoomState = z.infer<typeof DraftRoomStateSchema>
 export type SnapEvent = z.infer<typeof SnapEventSchema>
+export type Transaction = z.infer<typeof TransactionSchema>
+export type TransactionKind = Transaction['kind']
 
 // --- league state -----------------------------------------------------------------------------
 /** Serialized form (IndexedDB / export). `divergence` is an array here. */
@@ -834,6 +837,7 @@ export interface DraftModule {
   /**
    * User selection while on the clock. Throws if not the user's pick or player unavailable. Needs ctx for
    * the rookie contract (fa.rookieContract) and the divergence mark (history.markDiverged).
+   * Appends a DRAFT Transaction to state.transactions.
    */
   userPick(state: LeagueState, playerId: PlayerId, ctx: EngineContext): LeagueState
 
@@ -841,7 +845,8 @@ export interface DraftModule {
    * Resolve the current pick (AI: aiPick; user: must have picked or auto-picks best available when
    * `auto`), log it, advance to the next pick; when the user comes on the clock, populate
    * draftRoom.pendingOffers via trade.generateAiOffers(…, 'draft'). Runs consecutive AI picks until
-   * the user is on the clock or the draft is COMPLETE. Returns the new state.
+   * the user is on the clock or the draft is COMPLETE. Returns the new state. Every pick the user's
+   * team makes, auto-picks included, appends a DRAFT Transaction to state.transactions.
    */
   advance(state: LeagueState, ctx: EngineContext, opts?: { auto?: boolean }): LeagueState
 
@@ -851,6 +856,7 @@ export interface DraftModule {
   /**
    * UDFA phase: user signings applied first (up to 90 roster), then AI teams sign from the pool using
    * the same anchored logic (real UDFA team when known). Clears draftRoom, moves unsigned to freeAgents.
+   * Each user signing appends a UDFA Transaction to state.transactions.
    */
   runUdfa(state: LeagueState, ctx: EngineContext, userSignings: PlayerId[]): LeagueState
 
@@ -937,7 +943,11 @@ export interface TradeModule {
    */
   submit(state: LeagueState, proposal: TradeProposal, ctx: EngineContext, rng: Rng): TradeOutcome
 
-  /** Move players and picks; mark all involved players diverged (history.markDiverged). Pure. */
+  /**
+   * Move players and picks; mark all involved players diverged (history.markDiverged). Pure.
+   * When the user's team is one side, appends a TRADE Transaction to state.transactions (gave = the
+   * user's side, got = the other team's, ovrAtMove from state.scouting before the move).
+   */
   execute(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): LeagueState
 
   /**
@@ -1029,7 +1039,7 @@ export interface FaModule {
   /** Expiring players' asks for the OFFSEASON_RESIGN phase: marketApy × (1 ± 10%), seeded per player. */
   resignAsk(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number
 
-  /** User re-signs at `apy` ≥ ask. Throws if below ask or over cap. */
+  /** User re-signs at `apy` ≥ ask. Throws if below ask or over cap. Appends a RESIGN Transaction. */
   resign(
     state: LeagueState,
     playerId: PlayerId,
@@ -1046,6 +1056,7 @@ export interface FaModule {
   /**
    * User offer with 1-day simulated bidding: P(accept) rises with offer/ask and team quality.
    * Hard gates: cap, roster ≤ 90 (offseason) / 53 (in-season). Marks the player diverged on success.
+   * An accepted offer by the user's team appends a SIGN Transaction to state.transactions.
    */
   offer(
     state: LeagueState,
@@ -1076,7 +1087,10 @@ export interface FaModule {
    */
   runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState
 
-  /** Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged. */
+  /**
+   * Release: dead money = 25% of remaining guaranteed apy × years, charged this season. Marks diverged.
+   * A release by the user's team appends a RELEASE Transaction (with that dead money) to state.transactions.
+   */
   release(state: LeagueState, teamId: TeamId, playerId: PlayerId, ctx: EngineContext): LeagueState
 
   /**
@@ -1271,7 +1285,12 @@ export interface PersistenceModule {
   exportJson(state: LeagueState): string
   /** Parse, migrate, validate, hydrate. Throws with a readable message on a bad file. */
   importJson(json: string): LeagueState
-  /** Bring any older SavedLeague up to SCHEMA_VERSION. Identity for current version. */
+  /**
+   * Bring any older SavedLeague up to SCHEMA_VERSION. Identity for current version. A save without
+   * `transactions` gets DRAFT entries backfilled from players[id].draft for the user's team from
+   * startSeason on (season = class − 1, phase DRAFT, ovrAtMove empty), in overall-pick order; other
+   * kinds can't be recovered.
+   */
   migrate(saved: unknown): SavedLeague
 }
 

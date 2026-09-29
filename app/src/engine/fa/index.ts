@@ -35,6 +35,7 @@ import {
   round2,
   rosterLimits,
 } from './internal'
+import { logRelease, logResign, logSign } from './transactions'
 
 // -------------------------------------------------------------------------------------------
 // Input validation
@@ -275,7 +276,11 @@ function release(
   playerId: PlayerId,
   ctx: EngineContext,
 ): LeagueState {
-  return releaseFrom(state, teamId, playerId, ctx, { diverge: true })
+  const beforeDead = state.teams[teamId]?.deadMoney ?? 0
+  const s = releaseFrom(state, teamId, playerId, ctx, { diverge: true })
+  if (teamId !== state.userTeam) return s
+  const deadMoney = round2((s.teams[teamId]?.deadMoney ?? beforeDead) - beforeDead)
+  return logRelease(state, s, playerId, deadMoney)
 }
 
 /** Natural contract expiration: no dead money, no divergence — the player simply leaves the roster. */
@@ -330,7 +335,7 @@ function resign(
     r.playerId === playerId ? { ...r, contract } : r,
   )
   s = { ...s, teams: { ...s.teams, [teamId]: { ...s.teams[teamId]!, roster } } }
-  return s
+  return logResign(state, s, playerId, contract)
 }
 
 function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState {
@@ -428,6 +433,7 @@ function offer(
     teams: { ...s.teams, [teamId]: { ...s.teams[teamId]!, roster } },
     freeAgents: s.freeAgents.filter((id) => id !== playerId),
   }
+  if (teamId === state.userTeam) s = logSign(state, s, playerId, contract)
   return { accepted: true, state: s }
 }
 

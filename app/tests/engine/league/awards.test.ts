@@ -225,6 +225,7 @@ function buildState(): LeagueState {
     freeAgents: [],
     draftRoom: null,
     snapLog: [],
+    transactions: [],
     outcome: 'IN_PROGRESS',
     savedAt: new Date(0).toISOString(),
   }

@@ -495,6 +495,7 @@ export function mockLeague(opts: MockOptions = {}): LeagueState {
     freeAgents: built.freeAgents,
     draftRoom: null,
     snapLog: [],
+    transactions: [],
     outcome: 'IN_PROGRESS',
     savedAt: '1970-01-01T00:00:00.000Z',
   }

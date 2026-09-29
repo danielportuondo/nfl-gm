@@ -11,6 +11,7 @@ import type {
 import { NamePlate, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { Bracket } from './Bracket'
+import { MovesHistory } from './MovesHistory'
 
 export interface SeasonRecapProps {
   state: LeagueState
@@ -114,18 +115,78 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
     [state.history],
   )
   const [season, setSeason] = useState<number | null>(seasons[0] ?? null)
+  const [view, setView] = useState<'season' | 'moves'>('season')
   const summary: SeasonSummary | undefined =
     state.history.find((h) => h.season === season) ?? state.history[state.history.length - 1]
 
+  const viewTabs = (
+    <div className="gg-col-12">
+      <div
+        role="tablist"
+        aria-label="Recap view"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 'var(--sp-2)',
+          marginBottom: 'var(--sp-4)',
+        }}
+      >
+        <button
+          type="button"
+          role="tab"
+          id="recap-tab-season"
+          aria-selected={view === 'season'}
+          aria-controls="recap-panel-season"
+          className="gg-button gg-button--secondary"
+          onClick={() => setView('season')}
+          style={view === 'season' ? { boxShadow: 'var(--shadow-press)' } : undefined}
+        >
+          Season
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="recap-tab-moves"
+          aria-selected={view === 'moves'}
+          aria-controls="recap-panel-moves"
+          className="gg-button gg-button--secondary"
+          onClick={() => setView('moves')}
+          style={view === 'moves' ? { boxShadow: 'var(--shadow-press)' } : undefined}
+        >
+          Your moves
+        </button>
+      </div>
+    </div>
+  )
+
   if (!summary) {
     return (
-      <div className="gg-col-12">
-        <Panel title="Season recap" revealIndex={0}>
-          <p style={{ margin: 0, color: 'var(--text-2)' }}>
-            No season has finished yet. Play through the playoffs to see a recap here.
-          </p>
-        </Panel>
-      </div>
+      <>
+        {viewTabs}
+        {view === 'season' ? (
+          <div
+            className="gg-col-12"
+            role="tabpanel"
+            id="recap-panel-season"
+            aria-labelledby="recap-tab-season"
+          >
+            <Panel title="Season recap" revealIndex={0}>
+              <p style={{ margin: 0, color: 'var(--text-2)' }}>
+                No season has finished yet. Play through the playoffs to see a recap here.
+              </p>
+            </Panel>
+          </div>
+        ) : (
+          <div
+            className="gg-col-12"
+            role="tabpanel"
+            id="recap-panel-moves"
+            aria-labelledby="recap-tab-moves"
+          >
+            <MovesHistory state={state} data={data} revealIndex={0} />
+          </div>
+        )}
+      </>
     )
   }
 
@@ -152,162 +213,189 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
       as="div"
       style={{ display: 'contents' }}
     >
-      <div className="gg-col-12">
-        <Panel
-          title={`${summary.season} season recap`}
-          revealIndex={0}
-          action={
-            seasons.length > 1 ? (
-              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-                Season
-                <select value={summary.season} onChange={(e) => setSeason(Number(e.target.value))}>
-                  {seasons.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ) : undefined
-          }
+      {viewTabs}
+      {view === 'moves' ? (
+        <div
+          className="gg-col-12"
+          role="tabpanel"
+          id="recap-panel-moves"
+          aria-labelledby="recap-tab-moves"
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--sp-4)',
-              marginBottom: 'var(--sp-4)',
-            }}
-          >
-            {teamInfo && (
-              <TeamScope colors={teamInfo.colors}>
-                <HelmetSprite pos="QB" size={4} />
-              </TeamScope>
-            )}
-            <div>
-              <p style={{ margin: 0, fontSize: 'var(--fs-3)' }}>
-                {teamInfo?.city} {teamInfo?.name} finished {summary.userRecord.wins}-
-                {summary.userRecord.losses}-{summary.userRecord.ties}.
-              </p>
-              <p style={{ margin: 0, color: 'var(--text-2)' }}>
-                {EXIT_LABEL[summary.userPlayoffExit]}
-              </p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-              gap: 'var(--sp-4)',
-            }}
-          >
-            <StatTile
-              value={summary.champion ? teamLabel(data, summary.champion) : '—'}
-              label="Champion"
-            />
-            <StatTile
-              value={summary.runnerUp ? teamLabel(data, summary.runnerUp) : '—'}
-              label="Runner-up"
-            />
-          </div>
-        </Panel>
-      </div>
-
-      <div className="gg-col-12">
-        <Panel title="Playoff bracket" variant="sunken" revealIndex={1}>
-          {summary.bracket ? (
-            <Bracket bracket={summary.bracket} results={state.results} data={data} />
-          ) : rounds.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>
-              No playoff games recorded for this season.
-            </p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
-              {rounds.map((round) => (
-                <div
-                  key={round.type}
-                  style={{ borderTop: 'var(--bw) solid var(--line)', paddingTop: 'var(--sp-2)' }}
-                >
-                  <h4
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'var(--fd-1)',
-                      margin: '0 0 var(--sp-2)',
-                    }}
-                  >
-                    {ROUND_LABEL[round.type]}
-                  </h4>
-                  <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
-                    {round.games.map((g) => (
-                      <li key={g.id} className="tabular-nums">
-                        {scoreFor(g)}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          )}
-        </Panel>
-      </div>
-
-      <div className="gg-col-6">
-        <Panel title="Awards" variant="sunken" revealIndex={2}>
-          {summary.awards.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>No awards recorded this season.</p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
-              {summary.awards.some((a) => a.id) && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-4)' }}>
-                  {summary.awards
-                    .filter((a) => a.id)
-                    .map((a) => (
-                      <AwardTile key={a.id} award={a} state={state} data={data} />
-                    ))}
-                </div>
-              )}
-              {summary.awards.some((a) => !a.id) && (
-                <div>
-                  <h4
-                    style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: 'var(--fs-1)',
-                      color: 'var(--text-2)',
-                      margin: '0 0 var(--sp-2)',
-                    }}
-                  >
-                    League leaders
-                  </h4>
-                  <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
-                    {summary.awards
-                      .filter((a) => !a.id)
-                      .map((a, i) => (
-                        <li key={i}>
-                          {a.name}
-                          {a.playerId ? `: ${state.players[a.playerId]?.name ?? a.playerId}` : ''}
-                          {a.teamId ? ` (${teamLabel(data, a.teamId)})` : ''}
-                          {a.note ? ` — ${a.note}` : ''}
-                        </li>
+          <MovesHistory state={state} data={data} revealIndex={1} />
+        </div>
+      ) : (
+        <div
+          role="tabpanel"
+          id="recap-panel-season"
+          aria-labelledby="recap-tab-season"
+          style={{ display: 'contents' }}
+        >
+          <div className="gg-col-12">
+            <Panel
+              title={`${summary.season} season recap`}
+              revealIndex={0}
+              action={
+                seasons.length > 1 ? (
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+                    Season
+                    <select
+                      value={summary.season}
+                      onChange={(e) => setSeason(Number(e.target.value))}
+                    >
+                      {seasons.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
                       ))}
-                  </ul>
+                    </select>
+                  </label>
+                ) : undefined
+              }
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'var(--sp-4)',
+                  marginBottom: 'var(--sp-4)',
+                }}
+              >
+                {teamInfo && (
+                  <TeamScope colors={teamInfo.colors}>
+                    <HelmetSprite pos="QB" size={4} />
+                  </TeamScope>
+                )}
+                <div>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-3)' }}>
+                    {teamInfo?.city} {teamInfo?.name} finished {summary.userRecord.wins}-
+                    {summary.userRecord.losses}-{summary.userRecord.ties}.
+                  </p>
+                  <p style={{ margin: 0, color: 'var(--text-2)' }}>
+                    {EXIT_LABEL[summary.userPlayoffExit]}
+                  </p>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                  gap: 'var(--sp-4)',
+                }}
+              >
+                <StatTile
+                  value={summary.champion ? teamLabel(data, summary.champion) : '—'}
+                  label="Champion"
+                />
+                <StatTile
+                  value={summary.runnerUp ? teamLabel(data, summary.runnerUp) : '—'}
+                  label="Runner-up"
+                />
+              </div>
+            </Panel>
+          </div>
+
+          <div className="gg-col-12">
+            <Panel title="Playoff bracket" variant="sunken" revealIndex={1}>
+              {summary.bracket ? (
+                <Bracket bracket={summary.bracket} results={state.results} data={data} />
+              ) : rounds.length === 0 ? (
+                <p style={{ margin: 0, color: 'var(--text-2)' }}>
+                  No playoff games recorded for this season.
+                </p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
+                  {rounds.map((round) => (
+                    <div
+                      key={round.type}
+                      style={{
+                        borderTop: 'var(--bw) solid var(--line)',
+                        paddingTop: 'var(--sp-2)',
+                      }}
+                    >
+                      <h4
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: 'var(--fd-1)',
+                          margin: '0 0 var(--sp-2)',
+                        }}
+                      >
+                        {ROUND_LABEL[round.type]}
+                      </h4>
+                      <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
+                        {round.games.map((g) => (
+                          <li key={g.id} className="tabular-nums">
+                            {scoreFor(g)}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
               )}
-            </div>
-          )}
-        </Panel>
-      </div>
+            </Panel>
+          </div>
 
-      <div className="gg-col-6">
-        <Panel title="Final standings" variant="sunken" revealIndex={3}>
-          <ol style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
-            {sortedStandings.map((row) => (
-              <li key={row.teamId} className="tabular-nums">
-                {teamLabel(data, row.teamId)} — {row.wins}-{row.losses}-{row.ties}
-              </li>
-            ))}
-          </ol>
-        </Panel>
-      </div>
+          <div className="gg-col-6">
+            <Panel title="Awards" variant="sunken" revealIndex={2}>
+              {summary.awards.length === 0 ? (
+                <p style={{ margin: 0, color: 'var(--text-2)' }}>No awards recorded this season.</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
+                  {summary.awards.some((a) => a.id) && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-4)' }}>
+                      {summary.awards
+                        .filter((a) => a.id)
+                        .map((a) => (
+                          <AwardTile key={a.id} award={a} state={state} data={data} />
+                        ))}
+                    </div>
+                  )}
+                  {summary.awards.some((a) => !a.id) && (
+                    <div>
+                      <h4
+                        style={{
+                          fontFamily: 'var(--font-body)',
+                          fontSize: 'var(--fs-1)',
+                          color: 'var(--text-2)',
+                          margin: '0 0 var(--sp-2)',
+                        }}
+                      >
+                        League leaders
+                      </h4>
+                      <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
+                        {summary.awards
+                          .filter((a) => !a.id)
+                          .map((a, i) => (
+                            <li key={i}>
+                              {a.name}
+                              {a.playerId
+                                ? `: ${state.players[a.playerId]?.name ?? a.playerId}`
+                                : ''}
+                              {a.teamId ? ` (${teamLabel(data, a.teamId)})` : ''}
+                              {a.note ? ` — ${a.note}` : ''}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </Panel>
+          </div>
+
+          <div className="gg-col-6">
+            <Panel title="Final standings" variant="sunken" revealIndex={3}>
+              <ol style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
+                {sortedStandings.map((row) => (
+                  <li key={row.teamId} className="tabular-nums">
+                    {teamLabel(data, row.teamId)} — {row.wins}-{row.losses}-{row.ties}
+                  </li>
+                ))}
+              </ol>
+            </Panel>
+          </div>
+        </div>
+      )}
     </TeamScope>
   )
 }

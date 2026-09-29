@@ -34,6 +34,7 @@ import { needProfile } from './needs'
 import { buildOrder, historicalOccupants, settleOrder } from './order'
 import { chooseProspect } from './picking'
 import { draftSeasonOf, loadClass, splitBoard } from './prospects'
+import { logUserDraftPick } from './transactions'
 import { runUdfaPhase } from './udfa'
 
 function roomOf(state: LeagueState, what: string): DraftRoomState {
@@ -171,6 +172,8 @@ function applySelection(
     freeAgents: state.freeAgents.filter((id) => id !== playerId),
     draftRoom: nextRoom,
   }
+
+  if (slot.owner === state.userTeam) next = logUserDraftPick(next, playerId, slot.round, pickNumber)
 
   // §6.8: a user pick puts both the player and the historical occupant of the slot off the rails.
   if (slot.owner === state.userTeam && (opts.explicitUserPick || !historical)) {

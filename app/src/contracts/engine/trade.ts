@@ -53,7 +53,11 @@ export interface TradeModule {
    */
   submit(state: LeagueState, proposal: TradeProposal, ctx: EngineContext, rng: Rng): TradeOutcome
 
-  /** Move players and picks; mark all involved players diverged (history.markDiverged). Pure. */
+  /**
+   * Move players and picks; mark all involved players diverged (history.markDiverged). Pure.
+   * When the user's team is one side, appends a TRADE Transaction to state.transactions (gave = the
+   * user's side, got = the other team's, ovrAtMove from state.scouting before the move).
+   */
   execute(state: LeagueState, proposal: TradeProposal, ctx: EngineContext): LeagueState
 
   /**

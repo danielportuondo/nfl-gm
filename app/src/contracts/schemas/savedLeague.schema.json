@@ -1840,6 +1840,515 @@
         "additionalProperties": false
       }
     },
+    "transactions": {
+      "default": [],
+      "description": "The user's moves in the order they happened. Defaults to [] so saves made before v1.7 still load; the loader backfills their DRAFT entries.",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them."
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "PRESEASON",
+                  "REGULAR",
+                  "PLAYOFFS",
+                  "OFFSEASON_RESIGN",
+                  "DRAFT",
+                  "UDFA",
+                  "FREE_AGENCY",
+                  "TRAINING_CAMP"
+                ],
+                "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+              },
+              "week": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "ovrAtMove": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed."
+              },
+              "kind": {
+                "type": "string",
+                "const": "TRADE"
+              },
+              "gave": {
+                "type": "object",
+                "properties": {
+                  "teamId": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                  },
+                  "players": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                    }
+                  },
+                  "picks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "season": {
+                          "type": "integer",
+                          "minimum": 1920,
+                          "maximum": 2200,
+                          "description": "NFL season year, e.g. 2015."
+                        },
+                        "round": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 7
+                        },
+                        "originalTeam": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 3,
+                          "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                        },
+                        "pick": {
+                          "description": "Overall pick number when known; needed to tell a compensatory pick from the same team's own pick in that round.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 300
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "season",
+                        "round",
+                        "originalTeam"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Identifies a DraftPick regardless of current owner."
+                    }
+                  }
+                },
+                "required": [
+                  "teamId",
+                  "players",
+                  "picks"
+                ],
+                "additionalProperties": false,
+                "description": "The user's side (teamId = user team)."
+              },
+              "got": {
+                "type": "object",
+                "properties": {
+                  "teamId": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 3,
+                    "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                  },
+                  "players": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                    }
+                  },
+                  "picks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "season": {
+                          "type": "integer",
+                          "minimum": 1920,
+                          "maximum": 2200,
+                          "description": "NFL season year, e.g. 2015."
+                        },
+                        "round": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 7
+                        },
+                        "originalTeam": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 3,
+                          "description": "Canonical franchise id (current abbreviation, e.g. LAR for STL/LA). See teams.ts."
+                        },
+                        "pick": {
+                          "description": "Overall pick number when known; needed to tell a compensatory pick from the same team's own pick in that round.",
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 300
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "season",
+                        "round",
+                        "originalTeam"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Identifies a DraftPick regardless of current owner."
+                    }
+                  }
+                },
+                "required": [
+                  "teamId",
+                  "players",
+                  "picks"
+                ],
+                "additionalProperties": false,
+                "description": "The counterparty's side (teamId = the other team)."
+              }
+            },
+            "required": [
+              "season",
+              "phase",
+              "week",
+              "ovrAtMove",
+              "kind",
+              "gave",
+              "got"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them."
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "PRESEASON",
+                  "REGULAR",
+                  "PLAYOFFS",
+                  "OFFSEASON_RESIGN",
+                  "DRAFT",
+                  "UDFA",
+                  "FREE_AGENCY",
+                  "TRAINING_CAMP"
+                ],
+                "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+              },
+              "week": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "ovrAtMove": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed."
+              },
+              "kind": {
+                "type": "string",
+                "const": "DRAFT"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              },
+              "round": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              },
+              "pick": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300,
+                "description": "Overall pick number."
+              }
+            },
+            "required": [
+              "season",
+              "phase",
+              "week",
+              "ovrAtMove",
+              "kind",
+              "playerId",
+              "round",
+              "pick"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them."
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "PRESEASON",
+                  "REGULAR",
+                  "PLAYOFFS",
+                  "OFFSEASON_RESIGN",
+                  "DRAFT",
+                  "UDFA",
+                  "FREE_AGENCY",
+                  "TRAINING_CAMP"
+                ],
+                "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+              },
+              "week": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "ovrAtMove": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed."
+              },
+              "kind": {
+                "type": "string",
+                "const": "UDFA"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              }
+            },
+            "required": [
+              "season",
+              "phase",
+              "week",
+              "ovrAtMove",
+              "kind",
+              "playerId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them."
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "PRESEASON",
+                  "REGULAR",
+                  "PLAYOFFS",
+                  "OFFSEASON_RESIGN",
+                  "DRAFT",
+                  "UDFA",
+                  "FREE_AGENCY",
+                  "TRAINING_CAMP"
+                ],
+                "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+              },
+              "week": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "ovrAtMove": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed."
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "SIGN",
+                  "RESIGN"
+                ]
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              },
+              "contract": {
+                "type": "object",
+                "properties": {
+                  "years": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 7,
+                    "description": "Years remaining including the current season."
+                  },
+                  "apy": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Average per year in $M."
+                  },
+                  "guaranteedPct": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "signedSeason": {
+                    "type": "integer",
+                    "minimum": 1920,
+                    "maximum": 2200,
+                    "description": "NFL season year, e.g. 2015."
+                  },
+                  "rookie": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "years",
+                  "apy",
+                  "guaranteedPct",
+                  "signedSeason",
+                  "rookie"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "season",
+              "phase",
+              "week",
+              "ovrAtMove",
+              "kind",
+              "playerId",
+              "contract"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them."
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "PRESEASON",
+                  "REGULAR",
+                  "PLAYOFFS",
+                  "OFFSEASON_RESIGN",
+                  "DRAFT",
+                  "UDFA",
+                  "FREE_AGENCY",
+                  "TRAINING_CAMP"
+                ],
+                "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+              },
+              "week": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "ovrAtMove": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed."
+              },
+              "kind": {
+                "type": "string",
+                "const": "RELEASE"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              },
+              "deadMoney": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Dead money charged by the release, $M."
+              }
+            },
+            "required": [
+              "season",
+              "phase",
+              "week",
+              "ovrAtMove",
+              "kind",
+              "playerId",
+              "deadMoney"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "description": "One move by the user's team: a trade it was part of, a pick it made (auto-picks included), a UDFA or free-agent signing, a re-signing or a release. AI-only moves are never logged."
+      }
+    },
     "outcome": {
       "type": "string",
       "enum": [
@@ -1875,6 +2384,7 @@
     "freeAgents",
     "draftRoom",
     "snapLog",
+    "transactions",
     "outcome",
     "savedAt"
   ],

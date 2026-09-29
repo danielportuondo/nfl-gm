@@ -23,6 +23,7 @@ import { acceptanceConstants, tradeConstants } from './constants'
 import { evaluateImpl, mirror } from './evaluate'
 import { generateAiOffersImpl } from './offers'
 import { suggestTradesImpl } from './suggest'
+import { logUserTrade } from './transactions'
 import { matchesRef, outgoingValue, pickValueImpl, playerValueImpl, refKey, refOf } from './value'
 
 const keyOfExtra = (extra: { player?: PlayerId; pick?: PickRef }): string =>
@@ -97,7 +98,7 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
 
   const involved = [...proposal.offer.players, ...proposal.request.players].sort()
   if (involved.length > 0) next = ctx.modules.history.markDiverged(next, involved)
-  return next
+  return logUserTrade(state, next, proposal)
 }
 
 function raiseAnnoyance(state: LeagueState, teamId: TeamId): LeagueState {

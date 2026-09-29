@@ -14,6 +14,7 @@ import {
 import { draftConstants, type DraftConstants } from './constants'
 import { chooseProspect } from './picking'
 import { sortByBoard } from './prospects'
+import { logUserUdfaSigning } from './transactions'
 
 function rosteredIds(state: LeagueState): Set<PlayerId> {
   const ids = new Set<PlayerId>()
@@ -81,6 +82,7 @@ export function runUdfaPhase(
     if (!pool.includes(id)) throw new Error(`draft.runUdfa: "${id}" is not in the UDFA pool`)
     if (rosterSize(s, s.userTeam) >= c.rosterMax) break
     s = sign(s, ctx, s.userTeam, id, season)
+    s = logUserUdfaSigning(s, id)
     s = ctx.modules.history.markDiverged(s, [id])
     take(id)
   }

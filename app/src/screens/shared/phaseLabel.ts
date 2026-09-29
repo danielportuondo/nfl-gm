@@ -30,6 +30,11 @@ export function seasonText(season: number, phase: string): string {
   return OFFSEASON_PHASES.has(phase) ? `${season + 1} offseason` : String(season)
 }
 
+/** The league year a (season, phase) belongs to: offseason phases lead into season + 1. */
+export function leagueYear(season: number, phase: string): number {
+  return OFFSEASON_PHASES.has(phase) ? season + 1 : season
+}
+
 /** Strip readout parts: "2013 offseason · Draft", "2013 · Regular season". */
 export function seasonPhaseLabel(
   season: number,

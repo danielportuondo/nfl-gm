@@ -971,6 +971,7 @@ function buildOpeningDay(opts: NewGameOptions, ctx: EngineContext, sd: SeasonDat
     freeAgents: sd.players.players.filter((p) => p.team === null).map((p) => p.id),
     draftRoom: null,
     snapLog: [],
+    transactions: [],
     outcome: 'IN_PROGRESS',
     savedAt: EPOCH,
   }

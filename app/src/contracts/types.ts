@@ -63,6 +63,7 @@ import type {
   TradeProposalSchema,
   TradeSideSchema,
   TrajectoriesFileSchema,
+  TransactionSchema,
   TrueTrajectorySchema,
 } from './schemas'
 
@@ -115,6 +116,8 @@ export type TradeProposal = z.infer<typeof TradeProposalSchema>
 export type DraftLogEntry = z.infer<typeof DraftLogEntrySchema>
 export type DraftRoomState = z.infer<typeof DraftRoomStateSchema>
 export type SnapEvent = z.infer<typeof SnapEventSchema>
+export type Transaction = z.infer<typeof TransactionSchema>
+export type TransactionKind = Transaction['kind']
 
 // --- league state -----------------------------------------------------------------------------
 /** Serialized form (IndexedDB / export). `divergence` is an array here. */

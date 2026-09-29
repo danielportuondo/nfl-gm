@@ -374,6 +374,52 @@ export const SnapEventSchema = z.object({
   reason: z.enum(['HISTORY', 'RETIRED', 'DIVERGED_KEPT', 'NEW_ARRIVAL']),
 })
 
+const transactionBase = {
+  season: SeasonSchema.describe(
+    'state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them.',
+  ),
+  phase: PhaseSchema,
+  week: WeekSchema,
+  ovrAtMove: z
+    .record(PlayerIdSchema, z.number())
+    .describe(
+      'Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed.',
+    ),
+}
+
+export const TransactionSchema = z
+  .discriminatedUnion('kind', [
+    z.object({
+      ...transactionBase,
+      kind: z.literal('TRADE'),
+      gave: TradeSideSchema.describe("The user's side (teamId = user team)."),
+      got: TradeSideSchema.describe("The counterparty's side (teamId = the other team)."),
+    }),
+    z.object({
+      ...transactionBase,
+      kind: z.literal('DRAFT'),
+      playerId: PlayerIdSchema,
+      round: z.number().int().min(1).max(7),
+      pick: z.number().int().min(1).max(300).describe('Overall pick number.'),
+    }),
+    z.object({ ...transactionBase, kind: z.literal('UDFA'), playerId: PlayerIdSchema }),
+    z.object({
+      ...transactionBase,
+      kind: z.enum(['SIGN', 'RESIGN']),
+      playerId: PlayerIdSchema,
+      contract: ContractSchema,
+    }),
+    z.object({
+      ...transactionBase,
+      kind: z.literal('RELEASE'),
+      playerId: PlayerIdSchema,
+      deadMoney: z.number().min(0).describe('Dead money charged by the release, $M.'),
+    }),
+  ])
+  .describe(
+    "One move by the user's team: a trade it was part of, a pick it made (auto-picks included), a UDFA or free-agent signing, a re-signing or a release. AI-only moves are never logged.",
+  )
+
 // ---------------------------------------------------------------------------------------------
 // Save file (LeagueState with Set → array). In memory, `divergence` is a Set<PlayerId>.
 // ---------------------------------------------------------------------------------------------
@@ -406,6 +452,12 @@ export const SavedLeagueSchema = z.object({
   freeAgents: z.array(PlayerIdSchema),
   draftRoom: DraftRoomStateSchema.nullable(),
   snapLog: z.array(SnapEventSchema),
+  transactions: z
+    .array(TransactionSchema)
+    .default([])
+    .describe(
+      "The user's moves in the order they happened. Defaults to [] so saves made before v1.7 still load; the loader backfills their DRAFT entries.",
+    ),
   outcome: GameOutcomeSchema,
   savedAt: z.string().describe('ISO timestamp of the save.'),
 })

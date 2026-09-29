@@ -49,6 +49,7 @@ export interface DraftModule {
   /**
    * User selection while on the clock. Throws if not the user's pick or player unavailable. Needs ctx for
    * the rookie contract (fa.rookieContract) and the divergence mark (history.markDiverged).
+   * Appends a DRAFT Transaction to state.transactions.
    */
   userPick(state: LeagueState, playerId: PlayerId, ctx: EngineContext): LeagueState
 
@@ -56,7 +57,8 @@ export interface DraftModule {
    * Resolve the current pick (AI: aiPick; user: must have picked or auto-picks best available when
    * `auto`), log it, advance to the next pick; when the user comes on the clock, populate
    * draftRoom.pendingOffers via trade.generateAiOffers(…, 'draft'). Runs consecutive AI picks until
-   * the user is on the clock or the draft is COMPLETE. Returns the new state.
+   * the user is on the clock or the draft is COMPLETE. Returns the new state. Every pick the user's
+   * team makes, auto-picks included, appends a DRAFT Transaction to state.transactions.
    */
   advance(state: LeagueState, ctx: EngineContext, opts?: { auto?: boolean }): LeagueState
 
@@ -66,6 +68,7 @@ export interface DraftModule {
   /**
    * UDFA phase: user signings applied first (up to 90 roster), then AI teams sign from the pool using
    * the same anchored logic (real UDFA team when known). Clears draftRoom, moves unsigned to freeAgents.
+   * Each user signing appends a UDFA Transaction to state.transactions.
    */
   runUdfa(state: LeagueState, ctx: EngineContext, userSignings: PlayerId[]): LeagueState
 
