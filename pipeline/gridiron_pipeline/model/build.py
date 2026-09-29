@@ -30,8 +30,8 @@ ATTRIBUTION = (
     "not affiliated with the NFL."
 )
 
-# Consensus for the first playable season needs the season before it: a veteran's ovr is last
-# completed season's true value, and there is no such thing on the first row of the table.
+# Consensus for the first playable season needs the seasons before it: a veteran's ovr blends the
+# last completed seasons' true values, and there are none on the first row of the table.
 BURN_IN_SEASONS = 2
 
 

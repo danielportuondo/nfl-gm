@@ -34,7 +34,13 @@ function compactToTrajectory(
     if (v !== null) bySeason[String(compact.start + i)] = v
   })
   if (Object.keys(bySeason).length === 0) bySeason[String(fallbackSeason)] = fallback
-  return { bySeason, retiresAfter: compact.retiresAfter }
+  const availBySeason: Record<string, number> = {}
+  compact.avail?.forEach((a, i) => {
+    if (a !== null) availBySeason[String(compact.start + i)] = a
+  })
+  return compact.avail
+    ? { bySeason, retiresAfter: compact.retiresAfter, availBySeason }
+    : { bySeason, retiresAfter: compact.retiresAfter }
 }
 
 /** HIDDEN-DATA BOUNDARY: real prospects' true careers come from the trajectory table. */

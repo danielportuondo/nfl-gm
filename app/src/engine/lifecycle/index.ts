@@ -18,11 +18,14 @@ import {
   type Rng,
   type Season,
   type TeamState,
+  type TrueTrajectory,
 } from '@contracts/index'
 import {
   CONFIDENCE_BASE,
   CONFIDENCE_MAX,
   CONFIDENCE_PER_SEASON,
+  CONSENSUS_MIN_BLEND_WEIGHT,
+  CONSENSUS_RECENCY_WEIGHTS,
   PEDIGREE_BASELINE_PICK,
   PEDIGREE_BUMP_MAX,
   PEDIGREE_BUMP_SCALE,
@@ -181,6 +184,28 @@ function pedigreeBump(curves: CurvesFile, player: Player): number {
   return Math.min(PEDIGREE_BUMP_MAX, Math.max(0, (slot.pot - baseline.pot) * PEDIGREE_BUMP_SCALE))
 }
 
+/**
+ * Consensus ovr baseline for `season`: a games-weighted blend of the true value over the up-to-3
+ * completed seasons immediately before it (recency weights × availability), so one missed or
+ * injury-shortened season doesn't crash a star's public rating (see docs/DECISIONS.md). Falls back
+ * to the most recent known value when the blend window carries too little weight to trust.
+ */
+function blendedConsensusValue(traj: TrueTrajectory, season: Season): number | undefined {
+  let weightSum = 0
+  let valueSum = 0
+  for (let i = 0; i < CONSENSUS_RECENCY_WEIGHTS.length; i++) {
+    const s = season - 1 - i
+    const value = traj.bySeason[String(s)]
+    if (value == null) continue
+    const availability = traj.availBySeason?.[String(s)] ?? 1
+    const weight = CONSENSUS_RECENCY_WEIGHTS[i]! * availability
+    weightSum += weight
+    valueSum += weight * value
+  }
+  if (weightSum < CONSENSUS_MIN_BLEND_WEIGHT) return lastKnownValue(traj.bySeason, season)
+  return valueSum / weightSum
+}
+
 function refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState {
   const season = state.season
   const curves = ctx.data.curves
@@ -202,7 +227,7 @@ function refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState {
     }
 
     const traj = state.truth[id]
-    const priorValue = traj?.bySeason[String(season - 1)]
+    const priorValue = traj ? blendedConsensusValue(traj, season) : undefined
     if (priorValue == null) continue // nothing completed to report on yet
 
     const yearsIn = Math.max(0, season - player.rookieSeason)

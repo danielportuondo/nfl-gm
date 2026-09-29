@@ -1,14 +1,18 @@
 """Consensus scouting views: what the league believes at the start of a season.
 
-Hard rule: nothing here may read a player's future. A veteran's `ovr` is last completed season's
-true value (performance is public). A rookie's grade comes from draft slot, combine numbers, age
-and per-player noise seeded from their id. Undrafted players get the UDFA band. No row ever looks
-at a season >= the season it is scouting for.
+Hard rule: nothing here may read a player's future. A veteran's `ovr` is a weighted mean of the
+true values of their last three completed seasons (performance is public), each weighted by recency
+and by the share of the season they played, so one lost or injury-shortened year dents a
+reputation instead of erasing it. With no meaningful games in that window it falls back to the
+latest completed season's true value. True values themselves are never smoothed. A rookie's grade
+comes from draft slot, combine numbers, age and per-player noise seeded from their id. Undrafted
+players get the UDFA band. No row ever looks at a season >= the season it is scouting for.
 """
 
 from __future__ import annotations
 
 import hashlib
+from collections.abc import Callable
 
 import numpy as np
 import pandas as pd
@@ -16,10 +20,11 @@ from scipy.stats import norm
 
 from gridiron_pipeline.model.curves import interpolate_slot, positive_growth
 from gridiron_pipeline.model.data import (
+    availability,
     load_combine,
     load_draft_picks,
     load_players,
-    team_games,
+    median_team_games,
 )
 
 OVR_MIN, OVR_MAX = 40.0, 99.0
@@ -38,6 +43,10 @@ YOUTH_CEILING = 1.5
 STALE_DRAFT_PENALTY = 2.0
 
 CONFIDENCE_FLOOR = 0.15
+
+# Weights for the seasons N-1, N-2, N-3 behind a veteran's consensus ovr for season N.
+CONSENSUS_RECENCY_WEIGHTS = (0.6, 0.3, 0.1)
+MIN_BLEND_WEIGHT = 0.05
 
 
 def _seeded_uniform(ids: pd.Series, salt: bytes) -> pd.Series:
@@ -130,7 +139,7 @@ def _veteran_views(
     history: pd.DataFrame, curves: dict[str, object], picks: pd.Series, ages: pd.Series
 ) -> pd.DataFrame:
     growth_by_pos = positive_growth(curves["aging"])  # type: ignore[arg-type]
-    ovr = history["prev_value"]
+    ovr = history["consensus_value"]
     age_next = ages.round().astype(int).clip(lower=21, upper=42)
     growth = pd.Series(
         [
@@ -165,6 +174,23 @@ def _veteran_views(
     )
 
 
+def blended_prior_value(
+    true_values: pd.DataFrame,
+    season: int,
+    reference_games: Callable[[int], float] = median_team_games,
+) -> pd.Series:
+    """Veteran consensus ovr going into `season`, indexed by gsis_id (see the module docstring)."""
+    past = true_values[true_values["season"] < season]
+    latest = past.sort_values("season").groupby("gsis_id")["true_value"].last()
+    recency_by_lag = dict(enumerate(CONSENSUS_RECENCY_WEIGHTS, start=1))
+    recency = (season - past["season"]).map(recency_by_lag).fillna(0.0)
+    weight = recency * availability(past, reference_games)
+    total = weight.groupby(past["gsis_id"]).sum()
+    weighted = (weight * past["true_value"]).groupby(past["gsis_id"]).sum()
+    blended = weighted / total.where(total >= MIN_BLEND_WEIGHT)
+    return blended.reindex(latest.index).fillna(latest)
+
+
 def _prior_history(true_values: pd.DataFrame, season: int) -> pd.DataFrame:
     """Latest completed season on record for every player, as of the start of `season`."""
     past = true_values[true_values["season"] < season]
@@ -173,7 +199,7 @@ def _prior_history(true_values: pd.DataFrame, season: int) -> pd.DataFrame:
             columns=[
                 "gsis_id",
                 "pos",
-                "prev_value",
+                "consensus_value",
                 "prev_games",
                 "prev_season",
                 "seasons_played",
@@ -190,18 +216,16 @@ def _prior_history(true_values: pd.DataFrame, season: int) -> pd.DataFrame:
     seasons_played = pd.concat([from_rookie_year.rename("a"), observed.rename("b")], axis=1).max(
         axis=1
     )
-    slots = team_games(season - 1)
-    reference_games = float(slots.median()) if len(slots) else 16.0
     return pd.DataFrame(
         {
             "gsis_id": latest["gsis_id"].to_numpy(),
             "pos": latest["pos"].to_numpy(),
-            "prev_value": latest["true_value"].to_numpy(),
+            "consensus_value": latest["gsis_id"].map(blended_prior_value(past, season)).to_numpy(),
             "prev_games": latest["games"].to_numpy(),
             "prev_season": latest["season"].to_numpy(),
             "seasons_played": seasons_played.to_numpy(),
             "season_gap": (season - latest["season"]).to_numpy(),
-            "prev_availability": (latest["games"] / reference_games).clip(0, 1).to_numpy(),
+            "prev_availability": availability(latest).to_numpy(),
         }
     )
 

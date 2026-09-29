@@ -67,16 +67,58 @@ describe('lifecycle.refreshScouting — beyond data / procedural', () => {
     return { ctx, state }
   }
 
-  it('derives ovr from the prior completed season only, never a season beyond state.season', () => {
+  it('derives ovr from a 3-season games-weighted blend, never a season beyond state.season', () => {
     const { ctx, state } = veteranState()
     const next = lifecycle.refreshScouting(state, ctx)
     const view = next.scouting['vet-1']
     expect(view).toBeDefined()
-    // Centered on 70 (season 2017's true value) with a small noise band; nowhere near the "future" 99.
-    expect(view!.ovr).toBeGreaterThan(55)
-    expect(view!.ovr).toBeLessThan(85)
+    // (0.6*70 + 0.3*50) / 0.9 ≈ 63.3 (2015 is missing so only weighs the two present seasons) with a
+    // small noise band; nowhere near the "future" 99.
+    expect(view!.ovr).toBeGreaterThan(58)
+    expect(view!.ovr).toBeLessThan(69)
     expect(view!.pot).toBeGreaterThanOrEqual(view!.ovr)
     expect(view!.pot).toBeLessThanOrEqual(99)
+  })
+
+  it('ignores a season with zero availability in the blend (weighs only the seasons actually played)', () => {
+    const { ctx, state } = veteranState()
+    const zeroedOut: LeagueState = {
+      ...state,
+      truth: {
+        'vet-1': {
+          bySeason: { '2016': 50, '2017': 70 },
+          retiresAfter: null,
+          availBySeason: { '2017': 0 },
+        },
+      },
+    }
+    const next = lifecycle.refreshScouting(zeroedOut, ctx)
+    const view = next.scouting['vet-1']
+    expect(view).toBeDefined()
+    // 2017 drops out entirely (weight 0), leaving only 2016's value of 50.
+    expect(view!.ovr).toBeGreaterThan(46)
+    expect(view!.ovr).toBeLessThan(54)
+  })
+
+  it('falls back to the latest known value when every in-window season has zero availability', () => {
+    const { ctx, state } = veteranState()
+    const onlyZeroAvail: LeagueState = {
+      ...state,
+      truth: {
+        'vet-1': {
+          bySeason: { '2017': 45 },
+          retiresAfter: null,
+          availBySeason: { '2017': 0 },
+        },
+      },
+    }
+    const next = lifecycle.refreshScouting(onlyZeroAvail, ctx)
+    const view = next.scouting['vet-1']
+    expect(view).toBeDefined()
+    // Blend weight collapses to 0, so it falls back to the most recent completed value (45) instead
+    // of silently reporting nothing.
+    expect(view!.ovr).toBeGreaterThan(41)
+    expect(view!.ovr).toBeLessThan(49)
   })
 
   it('is deterministic for the same seed', () => {

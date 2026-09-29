@@ -117,9 +117,10 @@ the bracket from its own standings.
 
 ## `trajectories.json` — schema `trajectories`
 The only cross-season file and the only place the hidden truth is stored. `byPlayer[PlayerId]` =
-`{start, values[], retiresAfter}` where `values[i]` is the true value in season `start + i`, `null`
-for seasons the player was not in the league (gaps), and `retiresAfter` is the last real roster
-season. Covers every player who appears in any season chunk. Compact arrays, no names.
+`{start, values[], avail[], retiresAfter}` where `values[i]` is the true value in season `start + i`,
+`null` for seasons the player was not in the league (gaps), `avail[i]` is the share of the team's games
+the player played that season (0–1, `null` on gaps; public, used to weight consensus), and
+`retiresAfter` is the last real roster season. Covers every player who appears in any season chunk. Compact arrays, no names.
 
 ## Save file — schema `savedLeague`
 `LeagueState` serialized: `divergence` is an array (a `Set` in memory), `savedAt` is added on save,

@@ -166,12 +166,18 @@ describe('UDFA phase', () => {
         expect(freeAgents.has(id), `${id} is rostered and a free agent`).toBe(false)
     }
     // Most real UDFAs land back on the team that really signed them.
-    const anchored = [...unsigned].filter((id) => {
-      const real = ctx.seasonData(CLASS_SEASON)!.players.players.find((p) => p.id === id)?.team
-      if (!real) return false
-      return after.teams[real]!.roster.some((s) => s.playerId === id)
+    const realTeam = new Map(
+      ctx.seasonData(CLASS_SEASON)!.players.players.map((p) => [p.id, p.team] as const),
+    )
+    const anchorable = [...unsigned].filter((id) => {
+      const real = realTeam.get(id)
+      return real != null && real !== drafted.userTeam
     })
-    expect(anchored.length).toBeGreaterThan(50)
+    const anchored = anchorable.filter((id) =>
+      after.teams[realTeam.get(id)!]!.roster.some((s) => s.playerId === id),
+    )
+    expect(anchorable.length).toBeGreaterThan(30)
+    expect(anchored.length / anchorable.length).toBeGreaterThan(0.9)
   })
 
   it('applies the user signings first and marks them diverged', () => {

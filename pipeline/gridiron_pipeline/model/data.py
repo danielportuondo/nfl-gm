@@ -8,6 +8,7 @@ this module can share the same cache safely.
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from functools import cache
 from pathlib import Path
 
@@ -34,6 +35,7 @@ CONTRACTS_URL = _RELEASES + "/contracts/historical_contracts.parquet"
 GAMES_URL = _NFLDATA + "/games.csv"
 
 SNAPS_FIRST_SEASON = 2012
+FALLBACK_TEAM_GAMES = 16.0
 CONTRACTS_FIRST_SEASON = 2011
 
 # Copied from app/src/contracts/teams.ts (TEAM_ALIASES). Codes not listed map to themselves.
@@ -277,3 +279,18 @@ def team_games(season: int) -> pd.Series:
     played = g.dropna(subset=["home_score", "away_score"])
     counts = pd.concat([played["home_team"], played["away_team"]]).value_counts()
     return counts.astype(int)
+
+
+@cache
+def median_team_games(season: int) -> float:
+    games = team_games(season)
+    return float(games.median()) if len(games) else FALLBACK_TEAM_GAMES
+
+
+def availability(
+    true_values: pd.DataFrame, reference_games: Callable[[int], float] = median_team_games
+) -> pd.Series:
+    """Share of the season a player was on the field: games / that season's median team games."""
+    seasons = sorted(int(season) for season in true_values["season"].unique())
+    per_season = pd.Series([reference_games(season) for season in seasons], index=seasons)
+    return (true_values["games"] / true_values["season"].map(per_season)).clip(0, 1)

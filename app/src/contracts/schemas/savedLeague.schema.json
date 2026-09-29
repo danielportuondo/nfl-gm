@@ -484,6 +484,18 @@
               }
             ],
             "description": "Last season played; null = unknown/still active."
+          },
+          "availBySeason": {
+            "description": "Share of the team's games played, keyed like bySeason. Real seasons only; a missing key means fully available.",
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
           }
         },
         "required": [

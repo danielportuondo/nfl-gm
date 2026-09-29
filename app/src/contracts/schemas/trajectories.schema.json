@@ -62,6 +62,22 @@
               ]
             }
           },
+          "avail": {
+            "description": "Parallel to values: share of the team's games played that season.",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
           "retiresAfter": {
             "anyOf": [
               {

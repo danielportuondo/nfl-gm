@@ -88,6 +88,12 @@ export const TrueTrajectorySchema = z.object({
   retiresAfter: SeasonSchema.nullable().describe(
     'Last season played; null = unknown/still active.',
   ),
+  availBySeason: z
+    .record(z.string(), ProbabilitySchema)
+    .optional()
+    .describe(
+      "Share of the team's games played, keyed like bySeason. Real seasons only; a missing key means fully available.",
+    ),
 })
 
 export const ContractSchema = z.object({
@@ -689,6 +695,10 @@ export const SeasonScheduleFileSchema = z.object({
 export const CompactTrajectorySchema = z.object({
   start: SeasonSchema,
   values: z.array(RatingSchema.nullable()),
+  avail: z
+    .array(ProbabilitySchema.nullable())
+    .optional()
+    .describe("Parallel to values: share of the team's games played that season."),
   retiresAfter: SeasonSchema.nullable(),
 })
 

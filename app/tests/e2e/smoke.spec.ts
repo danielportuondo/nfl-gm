@@ -91,9 +91,10 @@ test('new game -> opening draft with a trade -> season start -> sim 4 weeks -> r
     await page.getByRole('button', { name: 'Offer trade' }).click()
     // Either outcome proves the acceptance evaluation ran; the trade only needs to be evaluated, not accepted.
     await expect(
-      page
-        .getByRole('status')
-        .filter({ hasText: /Trade accepted|Trade fell through|They passed on that trade/ }),
+      page.getByRole('status').filter({
+        hasText:
+          /Trade accepted|Trade fell through|They passed on that trade|passed but sent a counter/,
+      }),
     ).toBeVisible({
       timeout: 15_000,
     })

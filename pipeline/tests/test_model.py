@@ -14,6 +14,7 @@ import pytest
 
 from gridiron_pipeline import DATA_OUT_DIR
 from gridiron_pipeline.model.build import build_model
+from gridiron_pipeline.model.consensus import blended_prior_value
 from gridiron_pipeline.model.data import MODEL_CACHE_DIR, load_contracts, load_players
 from gridiron_pipeline.model.names import generate_name_lists, real_full_names
 from gridiron_pipeline.model.validate import starter_value_correlations
@@ -23,6 +24,8 @@ SEASONS = list(range(2010, 2026))
 CORRELATION_SEASONS = list(range(2012, 2024))
 MIN_CORRELATION = 0.55
 MAX_TRAJECTORIES_GZIP = 3 * 1024 * 1024
+MAX_BIG_SWING_SHARE = 0.03
+BIG_SWING = 20.0
 
 TRUE_VALUE_COLUMNS = ["gsis_id", "season", "pos", "true_value", "games"]
 CONSENSUS_COLUMNS = ["gsis_id", "season", "ovr", "pot", "confidence"]
@@ -181,3 +184,75 @@ def test_contracts_come_from_the_refreshed_parquet_in_millions() -> None:
     assert contracts["apy"].max() < 1_000
     assert 0.3 < contracts["apy"].median() < 5
     assert contracts["gsis_id"].str.startswith("00-").all()
+
+
+def _consensus_ovr(consensus: pd.DataFrame, names: pd.Series, name: str, season: int) -> float:
+    rows = consensus[
+        (consensus["season"] == season) & consensus["gsis_id"].isin(_ids_named(names, name))
+    ]
+    assert len(rows) == 1, f"expected one {season} consensus row for {name}"
+    return float(rows["ovr"].iat[0])
+
+
+def test_blended_prior_value_weights_recent_available_seasons() -> None:
+    frame = pd.DataFrame(
+        [
+            ("blend", 2014, "QB", 70.0, 16),
+            ("blend", 2013, "QB", 80.0, 8),
+            ("blend", 2012, "QB", 90.0, 16),
+            ("blend", 2011, "QB", 99.0, 16),
+            ("blend", 2015, "QB", 40.0, 16),
+            ("blend", 2016, "QB", 40.0, 16),
+            ("missed", 2014, "QB", 41.5, 0),
+            ("missed", 2013, "QB", 85.0, 16),
+            ("never_played", 2014, "QB", 41.5, 0),
+            ("never_played", 2013, "QB", 43.0, 0),
+            ("long_gone", 2009, "QB", 66.0, 16),
+            ("future_only", 2015, "QB", 90.0, 16),
+        ],
+        columns=["gsis_id", "season", "pos", "true_value", "games"],
+    )
+    blended = blended_prior_value(frame, 2015, reference_games=lambda season: 16.0)
+
+    recency_and_availability = (0.6 * 70.0 + 0.3 * 0.5 * 80.0 + 0.1 * 90.0) / (0.6 + 0.15 + 0.1)
+    assert blended["blend"] == pytest.approx(recency_and_availability)
+    assert blended["missed"] == pytest.approx(85.0)
+    assert blended["never_played"] == pytest.approx(41.5)
+    assert blended["long_gone"] == pytest.approx(66.0)
+    assert "future_only" not in blended.index
+
+
+def test_veteran_consensus_survives_one_bad_or_missed_season(artifacts, names_by_id) -> None:
+    consensus = artifacts["consensus"]
+    assert 75 <= _consensus_ovr(consensus, names_by_id, "Cam Newton", 2017) <= 85
+    assert _consensus_ovr(consensus, names_by_id, "Andrew Luck", 2018) >= 75
+    assert _consensus_ovr(consensus, names_by_id, "Deshaun Watson", 2022) >= 75
+
+
+def test_veteran_consensus_rarely_swings_twenty_points(artifacts) -> None:
+    consensus = artifacts["consensus"][["gsis_id", "season", "ovr"]]
+    on_roster = artifacts["true_values"][["gsis_id", "season"]]
+    # On a roster in both N-1 and N-2: both years' views come from performance, not the draft.
+    veteran_both_years = on_roster.assign(season=on_roster["season"] + 1).merge(
+        on_roster.assign(season=on_roster["season"] + 2), on=["gsis_id", "season"]
+    )
+    last_year = consensus.assign(season=consensus["season"] + 1).rename(columns={"ovr": "prev"})
+    pairs = consensus.merge(veteran_both_years, on=["gsis_id", "season"]).merge(
+        last_year, on=["gsis_id", "season"]
+    )
+    swing = (pairs["ovr"] - pairs["prev"]).abs()
+    share = float((swing >= BIG_SWING).mean())
+    assert share < MAX_BIG_SWING_SHARE, f"{share:.1%} of {len(pairs)} veterans swing >= 20"
+
+
+def test_trajectories_carry_availability_parallel_to_values(artifacts, names_by_id) -> None:
+    by_player = artifacts["trajectories"]["byPlayer"]
+    for entry in by_player.values():
+        assert len(entry["avail"]) == len(entry["values"])
+        pairs = zip(entry["avail"], entry["values"], strict=True)
+        assert all((a is None) == (v is None) for a, v in pairs)
+
+    (luck,) = [by_player[i] for i in _ids_named(names_by_id, "Andrew Luck") if i in by_player]
+    missed_2017 = 2017 - luck["start"]
+    assert luck["avail"][missed_2017] == 0
+    assert luck["avail"][missed_2017 - 1] > 0.9

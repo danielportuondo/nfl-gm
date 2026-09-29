@@ -356,4 +356,30 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   chance.
 - Left as is at Daniel's call: an extreme lowball does not raise annoyance, so it can land on a
   retry (≈ 1 % after these fixes). Noted for the ratings pipeline: Newton's consensus falls
-  91.5 → 71.5 between 2016 and 2017.
+  91.5 → 71.5 between 2016 and 2017 (resolved in the next entry).
+
+## 2026-09-28 — Consensus blends the last three seasons
+
+- Root cause of Newton's 91.5 → 71.5: a veteran's consensus `ovr` was exactly last season's true
+  value (HANDOFF §6.2), true for all 24,457 returning player-seasons. One season decided the
+  rating, and a missed season (true value ≈ 41.5 with no games) crashed it: Luck 2018 and Watson
+  2022 read 42.7. 7.7 % of veterans moved 20+ points a year. No future leakage was involved.
+- Daniel's call: consensus `ovr` = the last three seasons' true values weighted 0.6 / 0.3 / 0.1 by
+  recency and by the share of games played; with under 0.05 total weight, the latest season's
+  value as before. True value stays single-season, so the sim and hindsight are unchanged; pot and
+  confidence formulas are unchanged. HANDOFF §6.2 is amended.
+- Same rule in the pipeline (`model/consensus.py#blended_prior_value`) and in the refresh past the
+  data (`lifecycle` `blendedConsensusValue`, weights in `constants.ts`). `trajectories.json` gains
+  `avail[]` parallel to `values`, copied to `TrueTrajectory.availBySeason`, so a real season missed
+  just before the data ends still counts little (72 players with a 2024 value ≥ 70 played under 4
+  games in 2025). Old saves have no `availBySeason` and count every season as fully played. File
+  size 904 → 1,220 kB raw, 178 → 189 kB gzipped.
+- Results: Newton 2017 71.5 → 78.1, Brady 2019 71.8 → 78.7, Luck 2018 42.7 → 80.7, Watson 2022
+  42.7 → 85.7. Share moving 20+ points (players on a roster the two prior seasons) 8.5 % → 2.3 %.
+- Knock-ons: opening-day 53s are filled by consensus, so veterans back from a missed season now
+  keep spots that went to UDFAs (2014: 56 → 50 real UDFAs on opening rosters). The UDFA anchoring
+  test now checks a share (> 90 %) instead of a fixed count of 50. The E2E trade step accepts a
+  counter-offer toast, which is what the smoke deal now draws.
+- Open: a drafted player who has not played meaningful snaps yet (e.g. a redshirt rookie QB) falls
+  back to his 0-game season value (≈ 41) the next year, as before this change; 67 rows among top-64
+  picks. A fix would route them to the draft-based rookie view.

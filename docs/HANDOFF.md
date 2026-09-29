@@ -296,7 +296,7 @@ Rule enforced by lint/test: nothing under `app/src/screens/` or `app/src/ui/` im
 - For a real player's seasons **after** the latest real data, extend with the aging curve from §6.7 seeded at their last real value.
 
 **Consensus scouting view at timeline point T:**
-- Veterans (≥1 real prior season as of T): `ovr` = true value of the most recent completed season (performance is public). `pot` = age/position-based generic curve applied to `ovr`, plus a small draft-pedigree bump. `confidence` rises with seasons played.
+- Veterans (≥1 real prior season as of T): `ovr` = average of the last three completed seasons' true values, weighted 0.6 / 0.3 / 0.1 by recency and by the share of games played, so a missed season barely counts (performance is public); with no games in those three seasons, the most recent completed season's value. *(Amended 2026-09-28: was the most recent season alone; see DECISIONS.)* `pot` = age/position-based generic curve applied to `ovr`, plus a small draft-pedigree bump. `confidence` rises with seasons played.
 - Rookies in season T's draft: `ovr`/`pot` from **draft slot** (pick number → grade curve, fit from 2010–2020 classes so the median pick-32 player's actual year-3 value maps to the grade), adjusted by combine percentiles and age, plus per-player deterministic noise (seeded by id) so the board isn't a straight line. **Never use the player's real future.**
 - UDFAs: low `ovr`, low `confidence`, `pot` sampled from the UDFA outcome distribution.
 

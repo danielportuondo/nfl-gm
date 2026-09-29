@@ -3,6 +3,13 @@
 All notable changes to Gridiron GM. Dates are build dates; the project was built in six phases on 2026-09-17/18
 (see `docs/HANDOFF.md` for the plan and `docs/DECISIONS.md` for what was decided along the way).
 
+## Unreleased
+
+### Fixed
+- Veteran ratings no longer swing on one season: consensus blends the last three seasons, weighted
+  by games played, so a bad or missed year (Cam Newton 2016, Andrew Luck 2017) no longer sinks a
+  star's rating or lets AI teams give him away.
+
 ## 1.6.0 — 2026-09-28
 
 ### Changed

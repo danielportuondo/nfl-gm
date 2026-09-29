@@ -24,6 +24,15 @@ export const VETERAN_OVR_NOISE_BASE_SD = 2.5
 /** Noise floor so very experienced veterans still have *some* scouting uncertainty. */
 export const VETERAN_OVR_NOISE_MIN_SD = 0.5
 
+/**
+ * Recency weights for the 3-season games-weighted consensus blend (N-1, N-2, N-3), matching
+ * pipeline model/consensus.py — avoids a single missed/off season crashing a star's consensus.
+ */
+export const CONSENSUS_RECENCY_WEIGHTS = [0.6, 0.3, 0.1] as const
+/** Below this total weight (e.g. all candidate seasons missing or fully unavailable), fall back to
+ * the most recent completed season's value instead of a near-meaningless blend. */
+export const CONSENSUS_MIN_BLEND_WEIGHT = 0.05
+
 export const CONFIDENCE_BASE = 0.3
 export const CONFIDENCE_PER_SEASON = 0.08
 export const CONFIDENCE_MAX = 0.95
