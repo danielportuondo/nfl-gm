@@ -206,6 +206,18 @@ function blendedConsensusValue(traj: TrueTrajectory, season: Season): number | u
   return valueSum / weightSum
 }
 
+/**
+ * True for a drafted player whose real career (so far, strictly before `season`) has zero recorded
+ * availability in every known season — hasn't taken a real snap yet. A missing `availBySeason` entry
+ * means fully available, so this only fires when every prior season is explicitly zeroed out; a
+ * procedural player with no prior seasons at all also fails this (nothing to check "not played" against).
+ */
+function hasNotPlayedYet(traj: TrueTrajectory, season: Season): boolean {
+  const priorSeasons = Object.keys(traj.bySeason).filter((s) => Number(s) < season)
+  if (priorSeasons.length === 0) return false
+  return priorSeasons.every((s) => traj.availBySeason?.[s] === 0)
+}
+
 function refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState {
   const season = state.season
   const curves = ctx.data.curves
@@ -227,6 +239,15 @@ function refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState {
     }
 
     const traj = state.truth[id]
+    if (
+      player.draft != null &&
+      state.scouting[id] != null &&
+      traj &&
+      hasNotPlayedYet(traj, season)
+    ) {
+      continue // drafted, never played a real snap yet: keep the draft-based rookie view
+    }
+
     const priorValue = traj ? blendedConsensusValue(traj, season) : undefined
     if (priorValue == null) continue // nothing completed to report on yet
 

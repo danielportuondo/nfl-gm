@@ -5,14 +5,15 @@ true values of their last three completed seasons (performance is public), each 
 and by the share of the season they played, so one lost or injury-shortened year dents a
 reputation instead of erasing it. With no meaningful games in that window it falls back to the
 latest completed season's true value. True values themselves are never smoothed. A rookie's grade
-comes from draft slot, combine numbers, age and per-player noise seeded from their id. Undrafted
+comes from draft slot, combine numbers, age and per-player noise seeded from their id; a draft pick
+who has not played a game yet keeps that draft grade, less a staleness penalty per season. Undrafted
 players get the UDFA band. No row ever looks at a season >= the season it is scouting for.
 """
 
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 
 import numpy as np
 import pandas as pd
@@ -84,8 +85,10 @@ def combine_scores() -> pd.Series:
 
 
 def _draft_age_adjustment(picks: pd.DataFrame) -> pd.Series:
+    """Half a point of upside per year younger than his own draft class's median at his position."""
     age = pd.to_numeric(picks["age"], errors="coerce")
-    median_by_pos = age.groupby(picks["pos"]).transform("median")
+    draft_class = picks["seasons_since_draft"]
+    median_by_pos = age.groupby([draft_class, picks["pos"]]).transform("median")
     edge = (median_by_pos - age).fillna(0.0) * 0.5
     return edge.clip(-AGE_SPAN, AGE_SPAN)
 
@@ -191,6 +194,15 @@ def blended_prior_value(
     return blended.reindex(latest.index).fillna(latest)
 
 
+def drafted_without_games(
+    true_values: pd.DataFrame, season: int, drafted_ids: Iterable[str]
+) -> set[str]:
+    """Draft picks on record before `season` who have not played a single NFL game yet."""
+    past = true_values[true_values["season"] < season]
+    games_before = past.groupby("gsis_id")["games"].sum()
+    return set(games_before.index[games_before == 0]).intersection(drafted_ids)
+
+
 def _prior_history(true_values: pd.DataFrame, season: int) -> pd.DataFrame:
     """Latest completed season on record for every player, as of the start of `season`."""
     past = true_values[true_values["season"] < season]
@@ -258,7 +270,10 @@ def build_consensus(
     frames: list[pd.DataFrame] = []
     for season in seasons:
         history = _prior_history(true_values, season)
-        veterans = set(history["gsis_id"])
+        drafted_by_now = draft_seasons.index[draft_seasons <= season]
+        veterans = set(history["gsis_id"]) - drafted_without_games(
+            true_values, season, drafted_by_now
+        )
 
         rostered = true_values[true_values["season"] == season]
         class_drafted, class_undrafted = season_class(season, true_values)

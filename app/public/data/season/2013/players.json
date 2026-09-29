@@ -410,7 +410,7 @@
       "scouting": {
         "confidence": 0.26,
         "ovr": 57.6,
-        "pot": 62.6
+        "pot": 62.3
       },
       "team": "ATL",
       "trueValue": 63.4,
@@ -1742,7 +1742,7 @@
       "scouting": {
         "confidence": 0.26,
         "ovr": 62.4,
-        "pot": 63.6
+        "pot": 64.1
       },
       "team": "BUF",
       "trueValue": 41.5,
@@ -2032,7 +2032,7 @@
         "ovr": 41.7,
         "pot": 43.2
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 59.5,
       "weightLb": 212.0
     },
@@ -3192,7 +3192,7 @@
       "scouting": {
         "confidence": 0.25,
         "ovr": 56.6,
-        "pot": 61.2
+        "pot": 60.9
       },
       "team": null,
       "trueValue": 43.0,
@@ -3849,9 +3849,9 @@
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
-        "confidence": 0.72,
-        "ovr": 41.7,
-        "pot": 41.7
+        "confidence": 0.27,
+        "ovr": 55.5,
+        "pot": 60.4
       },
       "team": null,
       "trueValue": 50.9,
@@ -5913,7 +5913,7 @@
       "scouting": {
         "confidence": 0.25,
         "ovr": 57.4,
-        "pot": 59.9
+        "pot": 60.4
       },
       "team": "JAX",
       "trueValue": 43.0,
@@ -6176,11 +6176,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.0,
-        "pot": 44.2
+        "confidence": 0.26,
+        "ovr": 55.9,
+        "pot": 59.5
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 68.5,
       "weightLb": 239.0
     },
@@ -14707,9 +14707,9 @@
       "real": true,
       "rookieSeason": 2009,
       "scouting": {
-        "confidence": 0.81,
-        "ovr": 42.0,
-        "pot": 42.4
+        "confidence": 0.25,
+        "ovr": 52.0,
+        "pot": 55.2
       },
       "team": null,
       "trueValue": 54.8,
@@ -21655,7 +21655,7 @@
       "scouting": {
         "confidence": 0.26,
         "ovr": 62.3,
-        "pot": 63.9
+        "pot": 64.2
       },
       "team": "MIA",
       "trueValue": 61.3,
@@ -23630,7 +23630,7 @@
         "ovr": 47.9,
         "pot": 64.8
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 48.7,
       "weightLb": 320.0
     },
@@ -23937,7 +23937,7 @@
         "ovr": 48.6,
         "pot": 48.6
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 54.4,
       "weightLb": 269.0
     },
@@ -24091,11 +24091,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 40.7,
-        "pot": 42.8
+        "confidence": 0.25,
+        "ovr": 54.8,
+        "pot": 61.0
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 75.2,
       "weightLb": 215.0
     },
@@ -24327,11 +24327,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.9,
-        "pot": 43.9
+        "confidence": 0.26,
+        "ovr": 57.5,
+        "pot": 60.2
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 41.7,
       "weightLb": 325.0
     },
@@ -24441,11 +24441,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.8,
-        "pot": 43.8
+        "confidence": 0.27,
+        "ovr": 59.1,
+        "pot": 63.4
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 40.8,
       "weightLb": 264.0
     },
@@ -24482,9 +24482,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.2,
-        "pot": 44.8
+        "confidence": 0.26,
+        "ovr": 57.5,
+        "pot": 61.5
       },
       "team": "WAS",
       "trueValue": 52.8,
@@ -25037,7 +25037,7 @@
         "ovr": 46.0,
         "pot": 56.5
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 64.9,
       "weightLb": 205.0
     },
@@ -25093,7 +25093,7 @@
         "ovr": 47.2,
         "pot": 67.5
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 59.9,
       "weightLb": 307.0
     },
@@ -25129,7 +25129,7 @@
         "ovr": 47.5,
         "pot": 52.4
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 341.0
     },
@@ -25647,7 +25647,7 @@
         "ovr": 42.2,
         "pot": 44.1
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 71.0,
       "weightLb": 240.0
     },
@@ -26592,9 +26592,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.2,
-        "pot": 45.6
+        "confidence": 0.29,
+        "ovr": 62.4,
+        "pot": 68.0
       },
       "team": "MIA",
       "trueValue": 63.4,
@@ -26663,9 +26663,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 47.0
+        "confidence": 0.3,
+        "ovr": 62.5,
+        "pot": 66.5
       },
       "team": "WAS",
       "trueValue": 42.1,
@@ -27058,9 +27058,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 45.1
+        "confidence": 0.26,
+        "ovr": 60.0,
+        "pot": 63.9
       },
       "team": "WAS",
       "trueValue": 54.2,
@@ -27448,9 +27448,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 46.3
+        "confidence": 0.27,
+        "ovr": 59.7,
+        "pot": 63.4
       },
       "team": "ARI",
       "trueValue": 60.5,
@@ -27638,11 +27638,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.8,
-        "pot": 46.9
+        "confidence": 0.31,
+        "ovr": 64.3,
+        "pot": 65.7
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 67.6,
       "weightLb": 317.0
     },
@@ -27863,11 +27863,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 45.8
+        "confidence": 0.28,
+        "ovr": 61.7,
+        "pot": 65.3
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 71.5,
       "weightLb": 333.0
     },
@@ -28115,9 +28115,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.5,
-        "pot": 45.4
+        "confidence": 0.26,
+        "ovr": 57.2,
+        "pot": 60.8
       },
       "team": "JAX",
       "trueValue": 62.7,
@@ -28374,11 +28374,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 45.5
+        "confidence": 0.26,
+        "ovr": 58.6,
+        "pot": 62.0
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 50.3,
       "weightLb": 308.0
     },
@@ -28966,9 +28966,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 42.6
+        "confidence": 0.25,
+        "ovr": 57.1,
+        "pot": 61.2
       },
       "team": "KC",
       "trueValue": 67.2,
@@ -29164,9 +29164,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.6,
-        "pot": 44.6
+        "confidence": 0.27,
+        "ovr": 60.1,
+        "pot": 62.9
       },
       "team": "KC",
       "trueValue": 58.9,
@@ -29950,11 +29950,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.3,
-        "pot": 44.6
+        "confidence": 0.27,
+        "ovr": 59.3,
+        "pot": 64.0
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 67.7,
       "weightLb": 244.0
     },
@@ -33036,7 +33036,7 @@
         "ovr": 48.1,
         "pot": 48.1
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 54.3,
       "weightLb": 243.0
     },
@@ -34404,9 +34404,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 44.5
+        "confidence": 0.25,
+        "ovr": 57.6,
+        "pot": 59.6
       },
       "team": null,
       "trueValue": 54.8,
@@ -35573,7 +35573,7 @@
       "scouting": {
         "confidence": 0.27,
         "ovr": 59.6,
-        "pot": 63.6
+        "pot": 64.1
       },
       "team": "NO",
       "trueValue": 57.9,
@@ -35660,9 +35660,9 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.0,
-        "pot": 43.9
+        "confidence": 0.27,
+        "ovr": 58.8,
+        "pot": 63.6
       },
       "team": "IND",
       "trueValue": 57.7,
@@ -38712,11 +38712,11 @@
       "real": true,
       "rookieSeason": 2012,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 47.9
+        "confidence": 0.27,
+        "ovr": 59.4,
+        "pot": 64.9
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 53.2,
       "weightLb": 315.0
     },
@@ -38943,7 +38943,7 @@
         "ovr": 50.0,
         "pot": 66.4
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 42.4,
       "weightLb": 234.0
     },

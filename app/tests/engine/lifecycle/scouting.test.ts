@@ -150,3 +150,82 @@ describe('lifecycle.refreshScouting — beyond data / procedural', () => {
     expect(next.scouting['rookie-1']).toEqual(preDraftView)
   })
 })
+
+describe('lifecycle.refreshScouting — drafted real player with zero games played', () => {
+  const SEASON = 2018
+
+  function draftedNoSnapsState(): { ctx: ReturnType<typeof makeFakeContext>; state: LeagueState } {
+    const bundle = mockBundle({ season: 2015 })
+    const ctx = makeFakeContext(bundle, { lifecycle })
+    const player: Player = {
+      id: 'rook-2',
+      name: 'rook-2',
+      pos: 'QB',
+      birthYear: SEASON - 24,
+      draft: { season: 2016, round: 1, pick: 5, team: 'IND' },
+      real: true,
+      rookieSeason: 2016,
+    }
+    const existingView = { ovr: 72, pot: 80, confidence: 0.3 }
+    const base = mockLeague({ season: SEASON })
+    const state: LeagueState = {
+      ...base,
+      season: SEASON,
+      players: { 'rook-2': player },
+      truth: {},
+      scouting: { 'rook-2': existingView },
+    }
+    return { ctx, state }
+  }
+
+  it('keeps the existing scouting view unchanged when every prior real season had zero availability', () => {
+    const { ctx, state } = draftedNoSnapsState()
+    const withTruth: LeagueState = {
+      ...state,
+      truth: {
+        'rook-2': {
+          bySeason: { '2016': 41, '2017': 41 },
+          retiresAfter: null,
+          availBySeason: { '2016': 0, '2017': 0 },
+        },
+      },
+    }
+    const next = lifecycle.refreshScouting(withTruth, ctx)
+    expect(next.scouting['rook-2']).toEqual(state.scouting['rook-2'])
+  })
+
+  it('blends normally once a prior season has nonzero availability', () => {
+    const { ctx, state } = draftedNoSnapsState()
+    const withTruth: LeagueState = {
+      ...state,
+      truth: {
+        'rook-2': {
+          bySeason: { '2016': 41, '2017': 60 },
+          retiresAfter: null,
+          availBySeason: { '2017': 0.5 },
+        },
+      },
+    }
+    const next = lifecycle.refreshScouting(withTruth, ctx)
+    expect(next.scouting['rook-2']).not.toEqual(state.scouting['rook-2'])
+  })
+
+  it('undrafted player with all-zero availability still falls back (unchanged prior behavior)', () => {
+    const { ctx, state } = draftedNoSnapsState()
+    const undrafted: LeagueState = {
+      ...state,
+      players: { 'rook-2': { ...state.players['rook-2']!, draft: null, real: false } },
+      truth: {
+        'rook-2': {
+          bySeason: { '2016': 41, '2017': 41 },
+          retiresAfter: null,
+          availBySeason: { '2016': 0, '2017': 0 },
+        },
+      },
+    }
+    const next = lifecycle.refreshScouting(undrafted, ctx)
+    expect(next.scouting['rook-2']).not.toEqual(state.scouting['rook-2'])
+    expect(next.scouting['rook-2']!.ovr).toBeGreaterThan(35)
+    expect(next.scouting['rook-2']!.ovr).toBeLessThan(47)
+  })
+})

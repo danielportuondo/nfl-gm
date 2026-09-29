@@ -1798,7 +1798,7 @@
         "ovr": 54.2,
         "pot": 57.5
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 62.5,
       "weightLb": 210.0
     },
@@ -3691,7 +3691,7 @@
       "scouting": {
         "confidence": 0.29,
         "ovr": 60.0,
-        "pot": 63.1
+        "pot": 63.3
       },
       "team": "JAX",
       "trueValue": 52.9,
@@ -18997,7 +18997,7 @@
       "scouting": {
         "confidence": 0.26,
         "ovr": 55.0,
-        "pot": 57.8
+        "pot": 58.1
       },
       "team": "NYG",
       "trueValue": 60.5,
@@ -19663,7 +19663,7 @@
         "ovr": 56.5,
         "pot": 56.5
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 68.9,
       "weightLb": 190.0
     },
@@ -20067,11 +20067,11 @@
       "real": true,
       "rookieSeason": 2010,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.9,
-        "pot": 43.5
+        "confidence": 0.27,
+        "ovr": 57.5,
+        "pot": 62.4
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 41.7,
       "weightLb": 252.0
     },
@@ -20491,7 +20491,7 @@
       "scouting": {
         "confidence": 0.25,
         "ovr": 54.1,
-        "pot": 57.5
+        "pot": 57.8
       },
       "team": null,
       "trueValue": 42.3,
@@ -27248,7 +27248,7 @@
       "scouting": {
         "confidence": 0.26,
         "ovr": 57.5,
-        "pot": 60.3
+        "pot": 60.8
       },
       "team": "CHI",
       "trueValue": 66.0,
@@ -30083,9 +30083,9 @@
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.5,
-        "pot": 43.6
+        "confidence": 0.26,
+        "ovr": 59.3,
+        "pot": 62.2
       },
       "team": null,
       "trueValue": 67.1,
@@ -38088,11 +38088,11 @@
       "real": true,
       "rookieSeason": 2011,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.2,
-        "pot": 42.7
+        "confidence": 0.25,
+        "ovr": 57.5,
+        "pot": 59.3
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 51.3,
       "weightLb": 205.0
     },
@@ -39604,7 +39604,7 @@
       "scouting": {
         "confidence": 0.25,
         "ovr": 54.6,
-        "pot": 57.1
+        "pot": 57.9
       },
       "team": "ATL",
       "trueValue": 41.8,
@@ -40855,7 +40855,7 @@
       "scouting": {
         "confidence": 0.26,
         "ovr": 55.0,
-        "pot": 60.1
+        "pot": 60.3
       },
       "team": null,
       "trueValue": 41.9,

@@ -380,6 +380,23 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
   keep spots that went to UDFAs (2014: 56 → 50 real UDFAs on opening rosters). The UDFA anchoring
   test now checks a share (> 90 %) instead of a fixed count of 50. The E2E trade step accepts a
   counter-offer toast, which is what the smoke deal now draws.
-- Open: a drafted player who has not played meaningful snaps yet (e.g. a redshirt rookie QB) falls
-  back to his 0-game season value (≈ 41) the next year, as before this change; 67 rows among top-64
-  picks. A fix would route them to the draft-based rookie view.
+- A drafted player who has not played meaningful snaps yet fell back to his 0-game season value
+  (≈ 41) the next year; resolved in the next entry.
+
+## 2026-09-28 — Draft picks who have not played keep their draft grade
+
+- A draft pick with zero games in every season so far is scouted with the draft-based rookie view
+  (slot, combine, age, less 2 points per season since the draft) instead of his 0-game true value
+  (`model/consensus.py#drafted_without_games`). One to three games stay on the blend, since that
+  true value is already shrunk toward the position mean. Undrafted players are unchanged.
+- Results: McCarthy 2025 41.7 → 72.1, Etienne 2022 41.9 → 68.6, Jonah Williams 2020 41.3 → 70.5;
+  623 rows switch (28 among top-64 picks, none of which now sit below 50). Share moving 20+ points
+  2.3 % → 2.0 %.
+- Side effect, accepted: the rookie age bonus now compares a prospect with his own draft class's
+  median age at his position, not the whole season's rookie group, so adding these players does not
+  move everyone else's pot (295 rookie rows in 2010–17 move by ≤ 0.8 pot).
+- Past the data, the refresh keeps a drafted real player's existing view while every real season
+  on record has zero availability (`lifecycle` `hasNotPlayedYet`).
+- Open: a veteran back from a long absence (Blackmon 2017–20, Bridgewater 2025) still falls to his
+  0-game value when the three-season window holds no games; falling back to the last season with
+  games would fix it. Late-round picks who sat for years scout at about 52–56.

@@ -427,9 +427,9 @@
       "real": true,
       "rookieSeason": 2019,
       "scouting": {
-        "confidence": 0.81,
-        "ovr": 40.8,
-        "pot": 40.8
+        "confidence": 0.25,
+        "ovr": 51.3,
+        "pot": 54.7
       },
       "team": null,
       "trueValue": 40.5,
@@ -7309,9 +7309,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.8,
-        "pot": 44.7
+        "confidence": 0.25,
+        "ovr": 55.7,
+        "pot": 61.3
       },
       "team": null,
       "trueValue": 58.8,
@@ -8126,9 +8126,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 43.8
+        "confidence": 0.25,
+        "ovr": 57.5,
+        "pot": 61.8
       },
       "team": null,
       "trueValue": 53.4,
@@ -9703,9 +9703,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 43.1
+        "confidence": 0.25,
+        "ovr": 56.4,
+        "pot": 62.2
       },
       "team": null,
       "trueValue": 40.5,
@@ -10472,9 +10472,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 46.4
+        "confidence": 0.25,
+        "ovr": 57.2,
+        "pot": 61.4
       },
       "team": null,
       "trueValue": 61.0,
@@ -11956,11 +11956,11 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 43.3
+        "confidence": 0.26,
+        "ovr": 57.4,
+        "pot": 62.3
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 42.2,
       "weightLb": 255.0
     },
@@ -12465,7 +12465,7 @@
         "ovr": 48.5,
         "pot": 51.4
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 54.7,
       "weightLb": 290.0
     },
@@ -12523,9 +12523,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.7,
-        "pot": 47.9
+        "confidence": 0.26,
+        "ovr": 58.7,
+        "pot": 60.8
       },
       "team": null,
       "trueValue": 47.1,
@@ -13601,11 +13601,11 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.0,
-        "pot": 43.7
+        "confidence": 0.26,
+        "ovr": 58.4,
+        "pot": 61.8
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 61.2,
       "weightLb": 230.0
     },
@@ -20842,7 +20842,7 @@
         "ovr": 53.9,
         "pot": 53.9
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 49.2,
       "weightLb": 245.0
     },
@@ -21959,11 +21959,11 @@
       "real": true,
       "rookieSeason": 2021,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 42.9,
-        "pot": 44.8
+        "confidence": 0.27,
+        "ovr": 56.9,
+        "pot": 60.9
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 62.8,
       "weightLb": 260.0
     },
@@ -22587,9 +22587,9 @@
       "real": true,
       "rookieSeason": 2021,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.5,
-        "pot": 43.0
+        "confidence": 0.25,
+        "ovr": 55.0,
+        "pot": 59.5
       },
       "team": null,
       "trueValue": 41.5,
@@ -24833,9 +24833,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.7,
-        "pot": 44.4
+        "confidence": 0.26,
+        "ovr": 57.3,
+        "pot": 62.8
       },
       "team": "CIN",
       "trueValue": 54.2,
@@ -25337,9 +25337,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 44.0
+        "confidence": 0.26,
+        "ovr": 57.3,
+        "pot": 60.2
       },
       "team": null,
       "trueValue": 55.0,
@@ -25638,7 +25638,7 @@
         "ovr": 55.7,
         "pot": 57.4
       },
-      "team": "NO",
+      "team": null,
       "trueValue": 63.1,
       "weightLb": 228.0
     },
@@ -27712,9 +27712,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.4,
-        "pot": 43.7
+        "confidence": 0.26,
+        "ovr": 58.6,
+        "pot": 63.1
       },
       "team": null,
       "trueValue": 44.5,
@@ -27875,9 +27875,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 45.7
+        "confidence": 0.25,
+        "ovr": 57.3,
+        "pot": 59.5
       },
       "team": null,
       "trueValue": 42.2,
@@ -31304,9 +31304,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.8,
-        "pot": 46.2
+        "confidence": 0.25,
+        "ovr": 57.2,
+        "pot": 59.3
       },
       "team": null,
       "trueValue": 41.3,
@@ -32037,9 +32037,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.5,
-        "pot": 43.2
+        "confidence": 0.25,
+        "ovr": 56.4,
+        "pot": 60.7
       },
       "team": null,
       "trueValue": 58.3,
@@ -33413,9 +33413,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.0,
-        "pot": 44.1
+        "confidence": 0.27,
+        "ovr": 61.3,
+        "pot": 64.4
       },
       "team": "PIT",
       "trueValue": 64.8,
@@ -37277,11 +37277,11 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.6,
-        "pot": 49.0
+        "confidence": 0.28,
+        "ovr": 61.1,
+        "pot": 66.7
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 61.7,
       "weightLb": 320.0
     },
@@ -37324,7 +37324,7 @@
         "ovr": 46.5,
         "pot": 50.6
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 65.1,
       "weightLb": 215.0
     },
@@ -37344,11 +37344,11 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.8,
-        "pot": 44.8
+        "confidence": 0.25,
+        "ovr": 58.2,
+        "pot": 62.7
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 72.3,
       "weightLb": 195.0
     },
@@ -37531,9 +37531,9 @@
       "real": true,
       "rookieSeason": 2021,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 42.3,
-        "pot": 44.2
+        "confidence": 0.26,
+        "ovr": 56.2,
+        "pot": 59.9
       },
       "team": null,
       "trueValue": 42.6,
@@ -37655,7 +37655,7 @@
         "ovr": 55.9,
         "pot": 58.1
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 67.2,
       "weightLb": 224.0
     },
@@ -37766,11 +37766,11 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 45.1
+        "confidence": 0.32,
+        "ovr": 64.7,
+        "pot": 68.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 60.8,
       "weightLb": 195.0
     },
@@ -39024,7 +39024,7 @@
         "ovr": 53.0,
         "pot": 53.0
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 42.5,
       "weightLb": 250.0
     },
@@ -39044,11 +39044,11 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.5,
-        "pot": 46.9
+        "confidence": 0.25,
+        "ovr": 56.1,
+        "pot": 60.4
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 67.6,
       "weightLb": 325.0
     },
@@ -40773,7 +40773,7 @@
         "ovr": 59.5,
         "pot": 62.0
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 59.2,
       "weightLb": 210.0
     },
@@ -47626,9 +47626,9 @@
       "real": true,
       "rookieSeason": 2022,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.5,
-        "pot": 44.3
+        "confidence": 0.25,
+        "ovr": 56.9,
+        "pot": 62.0
       },
       "team": null,
       "trueValue": 65.4,

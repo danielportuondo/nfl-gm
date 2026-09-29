@@ -2089,9 +2089,9 @@
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
-        "confidence": 0.9,
-        "ovr": 41.1,
-        "pot": 41.1
+        "confidence": 0.26,
+        "ovr": 50.2,
+        "pot": 53.2
       },
       "team": null,
       "trueValue": 52.5,
@@ -3502,9 +3502,9 @@
       "real": true,
       "rookieSeason": 2014,
       "scouting": {
-        "confidence": 0.9,
-        "ovr": 40.0,
-        "pot": 40.5
+        "confidence": 0.28,
+        "ovr": 52.9,
+        "pot": 58.1
       },
       "team": null,
       "trueValue": 41.6,
@@ -3669,7 +3669,7 @@
         "ovr": 59.5,
         "pot": 59.5
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 51.1,
       "weightLb": 240.0
     },
@@ -3780,11 +3780,11 @@
       "real": true,
       "rookieSeason": 2015,
       "scouting": {
-        "confidence": 0.81,
-        "ovr": 41.5,
-        "pot": 41.9
+        "confidence": 0.25,
+        "ovr": 51.7,
+        "pot": 56.5
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 43.0,
       "weightLb": 320.0
     },
@@ -5393,11 +5393,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.2,
-        "pot": 44.2
+        "confidence": 0.29,
+        "ovr": 60.7,
+        "pot": 65.1
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 65.2,
       "weightLb": 235.0
     },
@@ -5705,11 +5705,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.6,
-        "pot": 45.3
+        "confidence": 0.31,
+        "ovr": 63.2,
+        "pot": 68.4
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 64.1,
       "weightLb": 198.0
     },
@@ -5935,11 +5935,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.7,
-        "pot": 44.9
+        "confidence": 0.25,
+        "ovr": 57.2,
+        "pot": 62.3
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 61.9,
       "weightLb": 219.0
     },
@@ -5959,9 +5959,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.5,
-        "pot": 45.3
+        "confidence": 0.26,
+        "ovr": 57.9,
+        "pot": 61.0
       },
       "team": "LAR",
       "trueValue": 67.7,
@@ -5983,11 +5983,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.5,
-        "pot": 48.7
+        "confidence": 0.26,
+        "ovr": 56.0,
+        "pot": 60.2
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 64.5,
       "weightLb": 321.0
     },
@@ -6031,11 +6031,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.5,
-        "pot": 44.8
+        "confidence": 0.26,
+        "ovr": 58.8,
+        "pot": 62.1
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 63.3,
       "weightLb": 253.0
     },
@@ -6780,7 +6780,7 @@
         "ovr": 49.4,
         "pot": 67.4
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 42.8,
       "weightLb": 245.0
     },
@@ -7690,7 +7690,7 @@
         "ovr": 50.5,
         "pot": 50.5
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 57.1,
       "weightLb": 175.0
     },
@@ -7915,7 +7915,7 @@
         "ovr": 55.3,
         "pot": 55.3
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 57.6,
       "weightLb": 158.0
     },
@@ -11769,9 +11769,9 @@
       "real": true,
       "rookieSeason": 2016,
       "scouting": {
-        "confidence": 0.72,
-        "ovr": 42.1,
-        "pot": 42.1
+        "confidence": 0.26,
+        "ovr": 53.8,
+        "pot": 58.1
       },
       "team": "DEN",
       "trueValue": 66.0,
@@ -17776,9 +17776,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.2,
-        "pot": 44.2
+        "confidence": 0.26,
+        "ovr": 57.4,
+        "pot": 60.6
       },
       "team": null,
       "trueValue": 57.0,
@@ -17800,11 +17800,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 43.3
+        "confidence": 0.26,
+        "ovr": 56.9,
+        "pot": 62.1
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 67.7,
       "weightLb": 200.0
     },
@@ -18448,9 +18448,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 45.2
+        "confidence": 0.26,
+        "ovr": 57.2,
+        "pot": 61.4
       },
       "team": null,
       "trueValue": 63.2,
@@ -18640,11 +18640,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 40.8,
-        "pot": 43.7
+        "confidence": 0.26,
+        "ovr": 57.7,
+        "pot": 61.5
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 50.3,
       "weightLb": 290.0
     },
@@ -18664,11 +18664,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.9,
-        "pot": 43.9
+        "confidence": 0.26,
+        "ovr": 57.3,
+        "pot": 61.6
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 61.0,
       "weightLb": 248.0
     },
@@ -18736,11 +18736,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.6,
-        "pot": 44.1
+        "confidence": 0.26,
+        "ovr": 59.4,
+        "pot": 62.2
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 41.7,
       "weightLb": 226.0
     },
@@ -18808,11 +18808,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 42.9
+        "confidence": 0.25,
+        "ovr": 56.8,
+        "pot": 59.6
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 63.8,
       "weightLb": 245.0
     },
@@ -18832,9 +18832,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.4,
-        "pot": 44.0
+        "confidence": 0.25,
+        "ovr": 55.4,
+        "pot": 59.0
       },
       "team": null,
       "trueValue": 53.2,
@@ -20636,11 +20636,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.5,
-        "pot": 44.2
+        "confidence": 0.31,
+        "ovr": 62.6,
+        "pot": 66.8
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 74.7,
       "weightLb": 225.0
     },
@@ -20937,11 +20937,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.0,
-        "pot": 46.5
+        "confidence": 0.27,
+        "ovr": 59.6,
+        "pot": 64.5
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 60.9,
       "weightLb": 303.0
     },
@@ -24456,7 +24456,7 @@
         "ovr": 45.8,
         "pot": 45.8
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 59.0,
       "weightLb": 210.0
     },
@@ -25738,7 +25738,7 @@
         "ovr": 50.3,
         "pot": 70.8
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 65.8,
       "weightLb": 205.0
     },
@@ -26130,7 +26130,7 @@
         "ovr": 49.4,
         "pot": 67.6
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 57.5,
       "weightLb": 240.0
     },
@@ -26518,7 +26518,7 @@
         "ovr": 48.4,
         "pot": 48.4
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 41.9,
       "weightLb": 323.0
     },
@@ -27169,7 +27169,7 @@
         "ovr": 52.3,
         "pot": 52.3
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 42.4,
       "weightLb": 260.0
     },
@@ -27188,7 +27188,7 @@
         "ovr": 50.2,
         "pot": 68.3
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 43.1,
       "weightLb": 284.0
     },
@@ -27413,7 +27413,7 @@
         "ovr": 50.1,
         "pot": 50.1
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 54.3,
       "weightLb": 212.0
     },
@@ -28539,9 +28539,9 @@
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.4,
-        "pot": 45.9
+        "confidence": 0.27,
+        "ovr": 57.9,
+        "pot": 60.7
       },
       "team": null,
       "trueValue": 51.3,
@@ -28563,9 +28563,9 @@
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.3,
-        "pot": 43.0
+        "confidence": 0.25,
+        "ovr": 55.4,
+        "pot": 59.0
       },
       "team": null,
       "trueValue": 41.9,
@@ -29917,7 +29917,7 @@
         "ovr": 47.6,
         "pot": 47.6
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 64.9,
       "weightLb": 218.0
     },
@@ -30758,7 +30758,7 @@
         "ovr": 46.1,
         "pot": 70.0
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 64.3,
       "weightLb": 215.0
     },
@@ -32355,7 +32355,7 @@
         "ovr": 49.2,
         "pot": 71.0
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 51.6,
       "weightLb": 255.0
     },
@@ -32898,11 +32898,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.2,
-        "pot": 50.1
+        "confidence": 0.25,
+        "ovr": 57.6,
+        "pot": 62.0
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 42.4,
       "weightLb": 346.0
     },
@@ -33075,9 +33075,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.3,
-        "pot": 45.2
+        "confidence": 0.26,
+        "ovr": 57.3,
+        "pot": 60.0
       },
       "team": null,
       "trueValue": 57.7,
@@ -33496,11 +33496,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 45.1
+        "confidence": 0.25,
+        "ovr": 56.1,
+        "pot": 59.3
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 74.4,
       "weightLb": 255.0
     },
@@ -34333,9 +34333,9 @@
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.6,
-        "pot": 43.6
+        "confidence": 0.26,
+        "ovr": 55.6,
+        "pot": 59.8
       },
       "team": null,
       "trueValue": 47.5,
@@ -34424,11 +34424,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 48.2
+        "confidence": 0.35,
+        "ovr": 69.1,
+        "pot": 72.0
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 69.8,
       "weightLb": 310.0
     },
@@ -34615,7 +34615,7 @@
         "ovr": 61.2,
         "pot": 64.1
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 59.4,
       "weightLb": 335.0
     },
@@ -36708,7 +36708,7 @@
         "ovr": 51.8,
         "pot": 65.5
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 42.1,
       "weightLb": 305.0
     },
@@ -37642,9 +37642,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.3,
-        "pot": 48.6
+        "confidence": 0.26,
+        "ovr": 57.5,
+        "pot": 60.1
       },
       "team": null,
       "trueValue": 59.8,
@@ -37805,9 +37805,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.8,
-        "pot": 43.4
+        "confidence": 0.27,
+        "ovr": 58.8,
+        "pot": 62.5
       },
       "team": null,
       "trueValue": 58.4,
@@ -38021,9 +38021,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 47.5
+        "confidence": 0.26,
+        "ovr": 57.4,
+        "pot": 60.0
       },
       "team": null,
       "trueValue": 55.8,
@@ -41844,9 +41844,9 @@
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.7,
-        "pot": 46.1
+        "confidence": 0.26,
+        "ovr": 55.9,
+        "pot": 63.2
       },
       "team": null,
       "trueValue": 61.5,
@@ -43065,9 +43065,9 @@
       "real": true,
       "rookieSeason": 2017,
       "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.3,
-        "pot": 43.1
+        "confidence": 0.25,
+        "ovr": 55.8,
+        "pot": 60.2
       },
       "team": "TEN",
       "trueValue": 54.7,
@@ -45524,7 +45524,7 @@
         "ovr": 56.6,
         "pot": 56.6
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 71.3,
       "weightLb": 239.0
     },
@@ -45616,11 +45616,11 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.8,
-        "pot": 44.8
+        "confidence": 0.27,
+        "ovr": 59.8,
+        "pot": 61.4
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 42.3,
       "weightLb": 308.0
     },
@@ -45865,9 +45865,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 46.0
+        "confidence": 0.27,
+        "ovr": 60.8,
+        "pot": 62.5
       },
       "team": null,
       "trueValue": 60.0,
@@ -47153,9 +47153,9 @@
       "real": true,
       "rookieSeason": 2018,
       "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.7,
-        "pot": 44.6
+        "confidence": 0.25,
+        "ovr": 56.8,
+        "pot": 59.6
       },
       "team": null,
       "trueValue": 42.4,

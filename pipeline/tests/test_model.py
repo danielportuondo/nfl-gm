@@ -14,8 +14,13 @@ import pytest
 
 from gridiron_pipeline import DATA_OUT_DIR
 from gridiron_pipeline.model.build import build_model
-from gridiron_pipeline.model.consensus import blended_prior_value
-from gridiron_pipeline.model.data import MODEL_CACHE_DIR, load_contracts, load_players
+from gridiron_pipeline.model.consensus import blended_prior_value, drafted_without_games
+from gridiron_pipeline.model.data import (
+    MODEL_CACHE_DIR,
+    load_contracts,
+    load_draft_picks,
+    load_players,
+)
 from gridiron_pipeline.model.names import generate_name_lists, real_full_names
 from gridiron_pipeline.model.validate import starter_value_correlations
 from gridiron_pipeline.schemas import validate
@@ -100,8 +105,6 @@ def test_starter_value_tracks_point_differential(artifacts) -> None:
 
 
 def test_consensus_never_leaks_the_future(artifacts, names_by_id) -> None:
-    from gridiron_pipeline.model.data import load_draft_picks
-
     consensus = artifacts["consensus"]
 
     wilson = consensus[
@@ -220,6 +223,67 @@ def test_blended_prior_value_weights_recent_available_seasons() -> None:
     assert blended["never_played"] == pytest.approx(41.5)
     assert blended["long_gone"] == pytest.approx(66.0)
     assert "future_only" not in blended.index
+
+
+def test_drafted_without_games_flags_only_unplayed_draft_picks() -> None:
+    frame = pd.DataFrame(
+        [
+            ("redshirt", 2013, "QB", 41.5, 0),
+            ("redshirt", 2014, "QB", 41.2, 0),
+            ("one_game", 2013, "WR", 44.0, 1),
+            ("one_game", 2014, "WR", 41.0, 0),
+            ("undrafted_bench", 2014, "LB", 41.0, 0),
+            ("breaks_out_later", 2014, "RB", 41.0, 0),
+            ("breaks_out_later", 2015, "RB", 80.0, 16),
+            ("breaks_out_later", 2016, "RB", 82.0, 16),
+        ],
+        columns=["gsis_id", "season", "pos", "true_value", "games"],
+    )
+    drafted = {"redshirt", "one_game", "breaks_out_later"}
+
+    assert drafted_without_games(frame, 2015, drafted) == {"redshirt", "breaks_out_later"}
+    assert drafted_without_games(frame, 2016, drafted) == {"redshirt"}
+
+
+def test_unplayed_draft_picks_keep_their_draft_grade(artifacts, names_by_id) -> None:
+    consensus = artifacts["consensus"]
+    draft = load_draft_picks().dropna(subset=["gsis_id"]).drop_duplicates("gsis_id")
+    picks = draft.set_index("gsis_id")["pick"]
+
+    sat_out_their_first_years = (
+        ("J.J. McCarthy", 2025),
+        ("Travis Etienne", 2022),
+        ("Jonah Williams", 2020),
+    )
+    for name, season in sat_out_their_first_years:
+        drafted_ids = [i for i in _ids_named(names_by_id, name) if i in picks.index]
+        rows = consensus[(consensus["season"] == season) & consensus["gsis_id"].isin(drafted_ids)]
+        assert len(rows) == 1, f"expected one {season} consensus row for drafted {name}"
+        assert rows["ovr"].iat[0] >= 60, f"{name} {season} ovr {rows['ovr'].iat[0]}"
+
+    scouted = consensus.assign(
+        pick=consensus["gsis_id"].map(picks),
+        draft_season=consensus["gsis_id"].map(draft.set_index("gsis_id")["season"]),
+    )
+    early_picks_after_rookie_year = scouted[
+        (scouted["pick"] <= 64) & (scouted["draft_season"] < scouted["season"])
+    ]
+    history = early_picks_after_rookie_year[["gsis_id", "season"]].merge(
+        artifacts["true_values"][["gsis_id", "season", "games"]],
+        on="gsis_id",
+        suffixes=("", "_past"),
+    )
+    games_before = (
+        history[history["season_past"] < history["season"]]
+        .groupby(["gsis_id", "season"])["games"]
+        .sum()
+    )
+    unplayed = early_picks_after_rookie_year.merge(
+        games_before[games_before == 0].rename("games_before").reset_index(),
+        on=["gsis_id", "season"],
+    )
+    assert len(unplayed) >= 20
+    assert (unplayed["ovr"] >= 50).all(), unplayed.nsmallest(5, "ovr")
 
 
 def test_veteran_consensus_survives_one_bad_or_missed_season(artifacts, names_by_id) -> None:
