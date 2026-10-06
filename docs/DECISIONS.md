@@ -474,7 +474,10 @@ A playthrough agent played MIA from the 2017 draft (titles in 2018 and 2019). A 
   - Seasons under 4 games lean on the player's previous full season.
 
   Regulars' year-over-year correlation went from 0.570 to 0.667. Win correlation vs real seasons (2015/2017/2019) is 0.839 / 0.845 / 0.802. The 2014 redraft is 95.3% historical.
-  - Open proposal: `PRIOR_SEASON_GAMES = 2` reaches 0.738, but that is cross-season smoothing, which §6.2 rules out, so it needs Daniel's call.
+  - **`PRIOR_SEASON_GAMES = 2` is on (Daniel's call, same day; HANDOFF §2 player-value row and §6.2 amended).** Every season carries two games' worth of the player's previous full season, so a 16-game season keeps 16/18 of itself, and nothing reads a later season. Results:
+    - Regulars' year-over-year r: 0.667 → 0.738 (QB 0.60, RB 0.82, K 0.60, P 0.69, OL 0.66).
+    - Win correlation vs real: 0.834 / 0.840 / 0.812 for 2015 / 2017 / 2019.
+    - 2014 redraft: 94.9% historical; fingerprints re-recorded.
 - **Draft-class position-mix test pools five seeded classes.** One class's L1 swings 0.08–0.21 by seed.
 - **Weeks without a game explain themselves** (`screens/shared/scheduleNotes.ts`). The reported "week 2 after break camp" was the Dashboard's next-opponent line: the 2017 Dolphins had no week-1 game. The real disruptions in 2010–2025 are:
   - 2017 MIA/TB, week 1 (Hurricane Irma; played in week 11)

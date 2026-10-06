@@ -38,7 +38,7 @@ STABILITY_PAIRS = (2012, 2022)  # season N of each adjacent (N, N+1) pair
 REGULAR_AVAILABILITY = 0.8
 # Without cross-season smoothing (HANDOFF §6.2) the measurement alone reaches ~0.67; the model
 # before the stability rework was 0.57, with kickers at 0.28, punters 0.45 and QBs 0.39.
-MIN_REGULAR_STABILITY = 0.66
+MIN_REGULAR_STABILITY = 0.70
 MIN_SPECIALIST_AND_QB_STABILITY = 0.45
 # Mean / sd of active (>= 1 game) true values by position before the stability rework; the sim's
 # calibration depends on this spread, so it must not drift.
@@ -211,12 +211,17 @@ def test_tiny_samples_lean_on_the_players_own_past_only() -> None:
             ("missed", 2017, 41.0, 0),
             ("long_ago", 2013, 90.0, 16),
             ("long_ago", 2017, 60.0, 1),
+            ("steady", 2016, 80.0, 16),
+            ("steady", 2017, 90.0, 16),
         ],
         columns=["gsis_id", "season", "true_value", "games"],
     )
     keys = zip(frame["gsis_id"], frame["season"], strict=True)
     shrunk = dict(zip(keys, shrink_toward_prior(frame), strict=True))
-    assert shrunk[("star", 2017)] == pytest.approx(0.5 * 70.0 + 0.5 * 88.0)
+    # Two games: half weight for the tiny sample, times 2 / (2 + PRIOR_SEASON_GAMES).
+    assert shrunk[("star", 2017)] == pytest.approx(0.25 * 70.0 + 0.75 * 88.0)
+    # A full season keeps 16 / (16 + 2) of itself and carries two games' worth of the last one.
+    assert shrunk[("steady", 2017)] == pytest.approx((16 * 90.0 + 2 * 80.0) / 18)
     assert shrunk[("star", 2016)] == 88.0
     assert shrunk[("rookie", 2017)] == 60.0
     assert shrunk[("later_star", 2017)] == 60.0  # never borrows from the future

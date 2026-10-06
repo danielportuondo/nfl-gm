@@ -41,9 +41,10 @@ ACTIVE_FLOOR = 43.0
 
 MIN_GAMES_FOR_FULL_WEIGHT = 4
 PRIOR_LOOKBACK_SEASONS = 2
-# Games' worth of the player's previous season blended into every season. 0 = HANDOFF §6.2 (no
-# smoothing); 2 would lift year-over-year stability of regulars from ~0.67 to ~0.74 (proposal).
-PRIOR_SEASON_GAMES = 0.0
+# Games' worth of the player's previous full season blended into every season (HANDOFF §6.2,
+# amended 2026-10-06): a 16-game season keeps 16/18 of itself. Regulars' year-over-year r goes
+# from ~0.67 at 0 to ~0.74, with no calibration cost.
+PRIOR_SEASON_GAMES = 2.0
 # Pay z imputed per unit of the player's own evidence when his deal says nothing (entry deal or
 # none on record). Below 1 because the market regresses one season; much lower and rookie stars
 # (Michael Thomas 2018) rank under veterans with the same season.
@@ -600,9 +601,9 @@ def value_from_latent(features: pd.DataFrame) -> pd.Series:
 def shrink_toward_prior(values: pd.DataFrame) -> pd.Series:
     """A season under four games leans on the player's own latest full season, if recent enough.
 
-    With `PRIOR_SEASON_GAMES` > 0 every season would also carry that many games' worth of the prior
-    (cross-season smoothing, which HANDOFF §6.2 does not allow today). Only seasons strictly before
-    the one being rated are read, so neither rule ever looks ahead.
+    Every season also carries `PRIOR_SEASON_GAMES` games' worth of that prior (the light blend
+    HANDOFF §6.2 allows). Only seasons strictly before the one being rated are read, so neither
+    rule ever looks ahead.
     """
     games = values["games"]
     played = games > 0

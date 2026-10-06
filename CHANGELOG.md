@@ -40,7 +40,7 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
 - A trade adds the new player to the end of your depth chart instead of re-sorting it.
 - The capital C reads as C, and Standings cards no longer clip.
 - Safeties show up in draft classes and free agency again.
-- Player ratings are steadier from year to year, and running quarterbacks and backs get credit for their rushing.
+- Player ratings are steadier from year to year: each season carries a little of the one before, and running quarterbacks and backs get credit for their rushing.
 - A week your team doesn't play says why, for example the 2017 Dolphins' week-1 game moved by Hurricane Irma, or the canceled 2022 Bills-Bengals game.
 
 ### Added
