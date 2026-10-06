@@ -60,6 +60,12 @@ export const PlayerSchema = z.object({
   id: PlayerIdSchema,
   name: z.string().min(1),
   pos: PositionSchema,
+  role: z
+    .literal('FB')
+    .optional()
+    .describe(
+      "Fullback. nflverse lists fullbacks with `pos` RB; the tag keeps them out of the tailback's rushing share.",
+    ),
   birthYear: z.number().int().min(1900).max(2200),
   college: z.string().optional(),
   heightIn: z.number().optional(),

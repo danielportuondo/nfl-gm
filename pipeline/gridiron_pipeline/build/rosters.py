@@ -9,6 +9,7 @@ import pandas as pd
 
 from gridiron_pipeline import CACHE_DIR
 from gridiron_pipeline.build.cap import CAP_BY_SEASON
+from gridiron_pipeline.build.fullbacks import season_fullback_ids, tag_fullback
 from gridiron_pipeline.build.players import (
     PlayerMaster,
     birth_year,
@@ -355,6 +356,7 @@ def build_season_rosters_and_players(
     depth_ranks = compute_depth_ranks(season, start, master, snaps)
 
     unmatched_file, unmatched_writer = _unmatched_logger(season)
+    fullback_ids = season_fullback_ids(season, start)
 
     players = []
     pos_group_by_id: dict[str, str] = {}
@@ -378,6 +380,7 @@ def build_season_rosters_and_players(
         if rec is None:
             unmatched_writer.writerow(["players", row.gsis_id, "incomplete attributes"])
             continue
+        tag_fullback(rec, fullback_ids)
         depth = depth_ranks.get((row.team_canon, rec["pos"], row.gsis_id))
         is_rookie_now = rec["rookieSeason"] == season
         scouting, true_value = ratings.for_player_season(

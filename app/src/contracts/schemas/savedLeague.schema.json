@@ -331,6 +331,11 @@
             ],
             "description": "Position group. Fine-grained nflverse positions are collapsed in the pipeline (T/G/C→OL, DE/DT/NT→DL, OLB/ILB/MLB→LB, FS/SS→S)."
           },
+          "role": {
+            "description": "Fullback. nflverse lists fullbacks with `pos` RB; the tag keeps them out of the tailback's rushing share.",
+            "type": "string",
+            "const": "FB"
+          },
           "birthYear": {
             "type": "integer",
             "minimum": 1900,

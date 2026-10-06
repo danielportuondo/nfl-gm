@@ -6,6 +6,7 @@ import logging
 
 import pandas as pd
 
+from gridiron_pipeline.build.fullbacks import label_is_fb, season_fullback_ids, tag_fullback
 from gridiron_pipeline.build.players import PlayerMaster, birth_year, make_player_record
 from gridiron_pipeline.build.positions import map_position_group, resolve_position
 from gridiron_pipeline.build.ratings import Ratings
@@ -69,6 +70,11 @@ def build_season_draft(
     picks = load_draft_picks()
     picks = picks[picks["season"] == season].sort_values("pick")
     combine_idx = _combine_index(master)
+    fullback_ids = (
+        season_fullback_ids(season, season_start_roster)
+        if season_start_roster is not None and not season_start_roster.empty
+        else set()
+    )
 
     order = []
     prospects = []
@@ -113,6 +119,7 @@ def build_season_draft(
         )
         if rec is None:
             continue
+        tag_fullback(rec, fullback_ids | ({gsis_id} if label_is_fb(row.position) else set()))
         rec["scouting"] = ratings.prospect_scouting(gsis_id, season, int(row.round), int(row.pick))
         combine = combine_idx.get(gsis_id)
         if combine:
@@ -142,6 +149,7 @@ def build_season_draft(
             )
             if rec is None:
                 continue
+            tag_fullback(rec, fullback_ids)
             rec["scouting"] = ratings.udfa_scouting(row.gsis_id, season)
             combine = combine_idx.get(row.gsis_id)
             if combine:

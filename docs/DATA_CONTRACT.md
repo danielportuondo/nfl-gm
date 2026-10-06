@@ -82,6 +82,10 @@ excluded unless he was drafted this season (retired or never-signed roster rows,
 the free-agent pool holds only players who could really play. `Player` fields (`id`, `name`, `pos`, `birthYear`, `college`,
 `heightIn`, `weightLb`, `draft` = `{season, round, pick, team}` or `null` for UDFA, `real: true`,
 `rookieSeason`) plus:
+- `role?: 'FB'` — optional fullback tag (also on `draft.json` prospects). nflverse lists fullbacks as `RB`, so
+  `pos` stays `RB`; `role` marks the ones the source labels FB that season (roster `position` through 2015,
+  `depth_chart_position` from 2016, or the depth chart's player position; `build/fullbacks.py`). A fullback
+  who is a tailback the next year simply has no `role` in that year's chunk. Ratings are unchanged.
 - `scouting` — consensus **at season start**, computed only from information public at that point.
 - `trueValue` — this season's real value. The engine copies it into `state.truth`; the UI never sees it.
 - `team` — the team whose opening-day roster in `rosters.json` lists the player, or `null`. The engine
