@@ -186,6 +186,35 @@
   background: var(--surface-1);
 }
 
+/* Standings division cards (docs/DESIGN.md §11) ------------------------------------------------
+   The table needs ~420px for six columns. Two cards per row only give it that from 1200px up, so in
+   between (rail visible, 721-1199px) each card takes the full row. On phones the cards already
+   stack; the team column swaps its full name for the abbreviation and the card padding tightens,
+   which is what lets all six columns fit a 390px screen without a scroll. */
+.gg-standings__abbr {
+  display: none;
+}
+@media (min-width: 721px) and (max-width: 1199px) {
+  .gg-board > .gg-standings-col {
+    grid-column: span 12;
+  }
+}
+@media (max-width: 720px) {
+  .gg-panel.gg-standings {
+    padding: var(--sp-3);
+  }
+  .gg-standings__full {
+    display: none;
+  }
+  .gg-standings__abbr {
+    display: inline;
+  }
+  .gg-standings .gg-table th,
+  .gg-standings .gg-table td {
+    padding-inline: var(--sp-1);
+  }
+}
+
 /* Meter ------------------------------------------------------------------------------------- */
 .gg-meter {
   display: flex;

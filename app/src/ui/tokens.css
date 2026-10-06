@@ -18,6 +18,19 @@
   unicode-range: U+0024-0025, U+002B-002F, U+0030-0039, U+2013, U+2212;
 }
 
+/* Pixelify's capital C is an O with a one-pixel notch ("Oap", "OLE", "AFO East" at 16-24px), so the
+   display stack takes U+0043 alone from Tiny5 (OFL; src/ui/fonts/OFL.txt), whose C opens clearly on
+   the right. size-adjust matches its cap height to Pixelify's; the 400-700 range stops the browser
+   faking bold on a one-weight font. */
+@font-face {
+  font-family: 'GG Capital C';
+  src: url('./fonts/tiny5-c.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+  size-adjust: 103%;
+  unicode-range: U+0043;
+}
+
 :root {
   color-scheme: dark;
 
@@ -47,7 +60,8 @@
 
   /* 2.3 Type scale */
   --font-display:
-    'GG Numerals', 'Pixelify Sans Variable', 'Pixelify Sans', 'Courier New', monospace;
+    'GG Numerals', 'GG Capital C', 'Pixelify Sans Variable', 'Pixelify Sans', 'Courier New',
+    monospace;
   --font-body: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
 
   --fs-1: 0.8125rem; /* 13 — dense tables, captions        (Barlow)   */

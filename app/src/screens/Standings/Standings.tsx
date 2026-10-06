@@ -71,7 +71,8 @@ export function Standings({ data, rows, season }: StandingsProps) {
                 <HelmetSprite pos="QB" size={2} />
               </TeamScope>
             )}
-            {teamLabel(data, r.teamId, season).full}
+            <span className="gg-standings__full">{teamLabel(data, r.teamId, season).full}</span>
+            <span className="gg-standings__abbr">{teamAbbr(data, r.teamId, season)}</span>
           </span>
         )
       },
@@ -132,8 +133,13 @@ export function Standings({ data, rows, season }: StandingsProps) {
   return (
     <>
       {GROUPS.map((g, i) => (
-        <div className="gg-col-6" key={`${g.conf}-${g.div}`}>
-          <Panel title={`${g.conf} ${g.div}`} variant="sunken" revealIndex={i}>
+        <div className="gg-col-6 gg-standings-col" key={`${g.conf}-${g.div}`}>
+          <Panel
+            title={`${g.conf} ${g.div}`}
+            variant="sunken"
+            revealIndex={i}
+            className="gg-standings"
+          >
             <Table
               columns={columns}
               rows={sortRows(byGroup.get(`${g.conf}-${g.div}`) ?? [])}
