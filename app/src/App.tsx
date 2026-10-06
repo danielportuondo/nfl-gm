@@ -18,6 +18,7 @@ import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
 import { seasonPhaseLabel } from '@screens/shared/phaseLabel'
+import { teamAbbr } from '@screens/shared/teamLabel'
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard' },
@@ -121,7 +122,7 @@ export function App() {
   return (
     <AppFrame
       strip={{
-        teamAbbr: teamInfo?.abbr ?? state.userTeam,
+        teamAbbr: teamAbbr(data, state.userTeam, state.season),
         teamColors: teamInfo?.colors ?? { primary: '#1F4334', secondary: '#F3ECD2' },
         seasonText,
         week: state.week,
@@ -282,7 +283,9 @@ export function App() {
           onSimSeason={actions.simSeason}
         />
       )}
-      {screen === 'standings' && <Standings data={data} rows={actions.standings()} />}
+      {screen === 'standings' && (
+        <Standings data={data} rows={actions.standings()} season={state.season} />
+      )}
       {screen === 'league' && (
         <LeagueBrowser state={state} data={data} onSelectPlayer={actions.selectPlayer} />
       )}

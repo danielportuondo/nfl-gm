@@ -8,6 +8,7 @@ import {
   statColumnsFor,
 } from '@screens/shared/playerStats'
 import type { SeasonStatLine, StatTotals } from '@screens/shared/playerStats'
+import { teamAbbr } from '@screens/shared/teamLabel'
 
 export interface PlayerStatsProps {
   state: Pick<LeagueState, 'schedule' | 'results'>
@@ -26,7 +27,7 @@ interface StatRow {
 
 function toRows(lines: SeasonStatLine[], data: Pick<StaticData, 'teams'>): StatRow[] {
   const teamLabel = (line: SeasonStatLine) =>
-    line.teams.map((id) => data.teams[id]?.abbr ?? id).join(', ')
+    line.teams.map((id) => teamAbbr(data, id, line.season)).join(', ')
   return lines.flatMap((line) => {
     const rows: StatRow[] = []
     if (line.regular) {
@@ -60,11 +61,14 @@ export function PlayerStats({ state, data, player, revealIndex }: PlayerStatsPro
   const latest = latestRegularSeason(lines)
 
   if (!latest) {
+    // The sim writes a box line only when a player records a stat, and linemen never do.
+    const message =
+      player.pos === 'OL'
+        ? "Box scores don't track offensive linemen."
+        : 'No stats yet. Sim a week to see results here.'
     return (
       <Panel title="Season by season" variant="sunken" revealIndex={revealIndex}>
-        <p style={{ margin: 0, color: 'var(--text-2)' }}>
-          No stats yet. Sim a week to see results here.
-        </p>
+        <p style={{ margin: 0, color: 'var(--text-2)' }}>{message}</p>
       </Panel>
     )
   }

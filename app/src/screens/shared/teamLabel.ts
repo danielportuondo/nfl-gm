@@ -13,7 +13,11 @@ export interface TeamLabel {
  * so display text comes from `teams.eras`; without a season, or for a franchise that never moved,
  * the current `TeamInfo` fields are used.
  */
-export function teamLabel(data: StaticData, teamId: TeamId, season?: number): TeamLabel {
+export function teamLabel(
+  data: Pick<StaticData, 'teams'>,
+  teamId: TeamId,
+  season?: number,
+): TeamLabel {
   const info = data.teams[teamId]
   if (!info) return { abbr: teamId, city: '', name: '', full: teamId }
   const era =
@@ -24,6 +28,6 @@ export function teamLabel(data: StaticData, teamId: TeamId, season?: number): Te
   return { abbr, city, name, full: `${city} ${name}` }
 }
 
-export function teamAbbr(data: StaticData, teamId: TeamId, season?: number): string {
+export function teamAbbr(data: Pick<StaticData, 'teams'>, teamId: TeamId, season?: number): string {
   return teamLabel(data, teamId, season).abbr
 }

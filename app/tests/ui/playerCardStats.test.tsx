@@ -106,4 +106,11 @@ describe('PlayerCard stat line', () => {
     render(<PlayerCard state={state} data={mockStatic()} playerId={qb} onBack={vi.fn()} />)
     expect(screen.getByText(/No stats yet/)).toBeInTheDocument()
   })
+
+  it('says linemen are not tracked instead of promising stats after a sim', () => {
+    const state = mockLeague()
+    const ol = playerAt(state, 'OL')
+    render(<PlayerCard state={state} data={mockStatic()} playerId={ol} onBack={vi.fn()} />)
+    expect(screen.getByText(/don't track offensive linemen/)).toBeInTheDocument()
+  })
 })

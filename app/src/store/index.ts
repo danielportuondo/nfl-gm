@@ -33,6 +33,7 @@ import { mockLeague, mockStatic } from '@fixtures/mockLeague'
 import { applyTheme, loadTheme, persistTheme, type Theme } from '../ui/frame'
 import type { ToastItem } from '../ui/primitives'
 import { defaultEngineModules, defaultPersistence } from './engineDefaults'
+import { teamAbbr } from '@screens/shared/teamLabel'
 import { buildHash, currentRoute, type ScreenId } from './router'
 import type { GameStoreState, NewGameInput, StoreConfig } from './types'
 
@@ -512,7 +513,9 @@ export function createGameStore(config: StoreConfig = {}) {
           if (!league) return
           const json = persistence.exportJson(league)
           const data = get().data
-          const abbr = (data?.teams[league.userTeam]?.abbr ?? league.userTeam).toLowerCase()
+          const abbr = (
+            data ? teamAbbr(data, league.userTeam, league.season) : league.userTeam
+          ).toLowerCase()
           const fileName = `gridiron-gm-${abbr}-${league.season}-w${league.week}.json`
           if (typeof document !== 'undefined') {
             const blob = new Blob([json], { type: 'application/json' })
