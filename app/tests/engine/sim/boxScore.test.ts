@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest'
 import type { GameResult, PlayerGameLine } from '@contracts/index'
 import { mockLeague } from '@fixtures/mockLeague'
 import { sim } from '@engine/sim/index'
-import { apportion } from '@engine/sim/boxScore'
+import { apportion, offenseTotals, teamLines } from '@engine/sim/boxScore'
 import { isPlausibleScore } from '@engine/sim/score'
+import { availableByPosition } from '@engine/sim/strength'
 import { boxPoints, makeCtx } from './harness'
+import { testRng } from './testRng'
 
 const ctx = makeCtx()
 const state = mockLeague({ seed: 'box', season: 2021 })
@@ -113,6 +115,27 @@ describe('box score invariants over 200 games', () => {
     const mean = qbYards.reduce((a, b) => a + b, 0) / qbYards.length
     expect(mean).toBeGreaterThan(170)
     expect(mean).toBeLessThan(300)
+  })
+
+  it('a squad with no quarterback, kicker or backs still accounts for every point', () => {
+    const teamId = Object.keys(state.teams).sort()[0]!
+    const full = availableByPosition(state, teamId)
+    const squads = [
+      { ...full, QB: [], K: [], P: [] },
+      { ...full, QB: [], RB: [], WR: full.WR.slice(0, 1), TE: [] },
+      { ...full, QB: [], RB: [], WR: [], TE: [], K: [] },
+    ]
+    const rng = testRng.fromSeed('depleted')
+    for (const byPos of squads) {
+      for (let points = 0; points <= 59; points++) {
+        if (!isPlausibleScore(points)) continue
+        const totals = offenseTotals(points, rng)
+        const lines = teamLines(state, { teamId, byPos, totals, takeaways: 0 }, rng)
+        expect(boxPoints(lines)).toBe(points)
+        expect(sum(lines, 'rec')).toBe(sum(lines, 'passCmp'))
+        expect(sum(lines, 'recTd')).toBe(sum(lines, 'passTd'))
+      }
+    }
   })
 
   it('apportion splits a total exactly, weights or not', () => {

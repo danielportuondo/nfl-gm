@@ -153,8 +153,23 @@ export const boxConstants = {
   usageNoiseSd: 0.32,
   /** How strongly true value tilts usage inside a position group. */
   valueTilt: 0.03,
-  rushWeights: { QB: 0.08, RB: [0.43, 0.28, 0.12], WR: 0.03 },
-  recWeights: { WR: [0.24, 0.17, 0.11, 0.06], TE: [0.13, 0.05], RB: [0.12, 0.05] },
+  /**
+   * The same tilt for tailback carries: a star back takes the workload, a committee splits it. With
+   * QBs at real rushing volume (~14 % of carries) it lifts the rushing leader to real levels
+   * (2015–2019: 1,327–1,631) while keeping ~10 thousand-yard rushers a season.
+   */
+  rushValueTilt: 0.048,
+  /**
+   * RB weights go to tailbacks in depth order; fullbacks (`role: 'FB'`) get the FB weights, which
+   * land them at real fullback usage: ~10–35 carries and ~15–40 targets a season.
+   */
+  rushWeights: { QB: 0.14, RB: [0.43, 0.28, 0.12], FB: [0.04], WR: 0.03 },
+  recWeights: {
+    WR: [0.24, 0.17, 0.11, 0.06],
+    TE: [0.13, 0.05],
+    RB: [0.12, 0.05],
+    FB: [0.04],
+  },
   tackleWeights: { DL: 0.07, LB: 0.13, CB: 0.08, S: 0.1 },
   sackWeights: { DL: 0.25, LB: 0.12, CB: 0.02, S: 0.02 },
   intWeights: { DL: 0.02, LB: 0.1, CB: 0.3, S: 0.25 },

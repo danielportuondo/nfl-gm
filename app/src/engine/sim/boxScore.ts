@@ -163,7 +163,8 @@ export function offenseTotals(points: number, rng: Rng): OffenseTotals {
     passYds,
     passTd,
     passInt,
-    rushAtt,
+    // Every rushing touchdown needs a carry to sit on, or the box would lose its points.
+    rushAtt: Math.max(rushAtt, rushTd),
     rushYds: Math.max(0, rushYds),
     rushTd: Math.max(0, rushTd),
     fgm: d.fg,
@@ -190,6 +191,7 @@ function usage(
   ids: readonly PlayerId[],
   baseline: readonly number[],
   rng: Rng,
+  valueTilt: number = B.valueTilt,
 ): Usage[] {
   const n = Math.min(ids.length, baseline.length)
   if (n === 0) return []
@@ -205,7 +207,7 @@ function usage(
   for (let i = 0; i < n; i++) {
     const w =
       baseline[i]! *
-      Math.exp(B.valueTilt * (values[i]! - mean)) *
+      Math.exp(valueTilt * (values[i]! - mean)) *
       Math.exp(rng.normal(0, B.usageNoiseSd))
     out.push({ id: ids[i]!, weight: Math.max(1e-6, w) })
   }
@@ -259,18 +261,43 @@ function lineFor(
 export interface TeamBoxInput {
   teamId: TeamId
   byPos: Record<Position, PlayerId[]>
+  /** Backs in `byPos.RB` who are fullbacks: a few carries and catches, never the featured back. */
+  fullbacks?: ReadonlySet<PlayerId>
   totals: OffenseTotals
   /** Interceptions this defense takes away, i.e. the opponent's passInt. */
   takeaways: number
+}
+
+/** With every quarterback hurt, the deepest healthy skill player takes the snaps. */
+function emergencyPasser(byPos: Record<Position, PlayerId[]>): PlayerId | undefined {
+  for (const pos of ['WR', 'RB', 'TE'] as const) {
+    const depth = byPos[pos]
+    if (depth.length > 0) return depth[depth.length - 1]
+  }
+  return firstPlayer(byPos)
+}
+
+/** A pool that is never empty while the team has anyone, so its total always reaches the box. */
+function orFallback(pool: Usage[], fallback: PlayerId | undefined): Usage[] {
+  return pool.length > 0 || fallback === undefined ? pool : [{ id: fallback, weight: 1 }]
 }
 
 export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): PlayerGameLine[] {
   const { teamId, byPos, totals } = input
   const lines = new Map<PlayerId, PlayerGameLine>()
   const qb = byPos.QB[0]
+  const passer = qb ?? emergencyPasser(byPos)
+  const fallback = firstPlayer(byPos)
 
-  if (qb !== undefined && totals.passAtt > 0) {
-    const line = lineFor(lines, teamId, qb)
+  const isFullback = (id: PlayerId) => input.fullbacks?.has(id) === true
+  const taggedFullbacks = byPos.RB.filter(isFullback)
+  const tailbacks = byPos.RB.filter((id) => !isFullback(id))
+  // A backfield of fullbacks only still has to carry the ball.
+  const featuredBacks = tailbacks.length > 0 ? tailbacks : taggedFullbacks
+  const fullbacks = tailbacks.length > 0 ? taggedFullbacks : []
+
+  if (passer !== undefined && totals.passAtt > 0) {
+    const line = lineFor(lines, teamId, passer)
     line.passAtt = totals.passAtt
     line.passCmp = totals.passCmp
     line.passYds = totals.passYds
@@ -278,11 +305,15 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     line.passInt = totals.passInt
   }
 
-  const rushers: Usage[] = [
-    ...(qb !== undefined ? usage(state, [qb], [B.rushWeights.QB], rng) : []),
-    ...usage(state, byPos.RB, B.rushWeights.RB, rng),
-    ...usage(state, byPos.WR, [B.rushWeights.WR], rng),
-  ]
+  const rushers: Usage[] = orFallback(
+    [
+      ...(qb !== undefined ? usage(state, [qb], [B.rushWeights.QB], rng) : []),
+      ...usage(state, featuredBacks, B.rushWeights.RB, rng, B.rushValueTilt),
+      ...usage(state, fullbacks, B.rushWeights.FB, rng),
+      ...usage(state, byPos.WR, [B.rushWeights.WR], rng),
+    ],
+    passer,
+  )
   if (rushers.length > 0 && totals.rushAtt > 0) {
     const att = apportion(
       totals.rushAtt,
@@ -302,14 +333,19 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     })
   }
 
+  const notPasser = (id: PlayerId) => id !== passer
   const receivers: Usage[] =
-    qb === undefined
+    passer === undefined
       ? []
-      : [
-          ...usage(state, byPos.WR, B.recWeights.WR, rng),
-          ...usage(state, byPos.TE, B.recWeights.TE, rng),
-          ...usage(state, byPos.RB, B.recWeights.RB, rng),
-        ]
+      : orFallback(
+          [
+            ...usage(state, byPos.WR.filter(notPasser), B.recWeights.WR, rng),
+            ...usage(state, byPos.TE.filter(notPasser), B.recWeights.TE, rng),
+            ...usage(state, featuredBacks.filter(notPasser), B.recWeights.RB, rng),
+            ...usage(state, fullbacks.filter(notPasser), B.recWeights.FB, rng),
+          ],
+          passer,
+        )
   if (receivers.length > 0 && totals.passAtt > 0) {
     const targets = apportion(
       totals.passAtt,
@@ -331,7 +367,6 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
     })
   }
 
-  const fallback = firstPlayer(byPos)
   creditScores(lines, teamId, 'twoPt', totals.twoPt, [...rushers, ...receivers], fallback, rng)
 
   const defenders: Usage[] = []
@@ -361,7 +396,7 @@ export function teamLines(state: LeagueState, input: TeamBoxInput, rng: Rng): Pl
 
   const returners: Usage[] = [
     ...usage(state, byPos.WR, B.returnWeights.WR, rng),
-    ...usage(state, byPos.RB, B.returnWeights.RB, rng),
+    ...usage(state, tailbacks, B.returnWeights.RB, rng),
     ...usage(state, byPos.CB, B.returnWeights.CB, rng),
   ]
   creditScores(lines, teamId, 'retTd', totals.retTd, returners, fallback, rng)

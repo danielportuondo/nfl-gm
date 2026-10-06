@@ -16,6 +16,7 @@ import type {
 } from '@contracts/index'
 import { buildBoxScore, offenseTotals } from './boxScore'
 import { simConstants } from './constants'
+import { fullbacksAmong } from './fullbacks'
 import { sampleInjuries } from './injuries'
 import { drawScore, expectedMargin } from './score'
 import { availableByPosition, computeTeamStrength, strengthFrom } from './strength'
@@ -41,8 +42,20 @@ export const sim: SimModule = {
     const awayTotals = offenseTotals(score.away, boxRng)
     const box = buildBoxScore(
       state,
-      { teamId: game.home, byPos: homeSquad, totals: homeTotals, takeaways: awayTotals.passInt },
-      { teamId: game.away, byPos: awaySquad, totals: awayTotals, takeaways: homeTotals.passInt },
+      {
+        teamId: game.home,
+        byPos: homeSquad,
+        fullbacks: fullbacksAmong(state, ctx, homeSquad.RB),
+        totals: homeTotals,
+        takeaways: awayTotals.passInt,
+      },
+      {
+        teamId: game.away,
+        byPos: awaySquad,
+        fullbacks: fullbacksAmong(state, ctx, awaySquad.RB),
+        totals: awayTotals,
+        takeaways: homeTotals.passInt,
+      },
       boxRng,
     )
 
