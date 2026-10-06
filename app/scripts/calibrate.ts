@@ -10,7 +10,12 @@
  */
 import type { EngineContext, LeagueState, TeamId } from '../src/contracts/index'
 import { mockLeague } from '../tests/fixtures/mockLeague'
-import { calibrate, makeCtx, type CalibrationReport } from '../tests/engine/sim/harness'
+import {
+  calibrate,
+  makeCtx,
+  type BoxSeasonStats,
+  type CalibrationReport,
+} from '../tests/engine/sim/harness'
 import { loadRealContext, readManifest, realWinTotals, seasonsForNewGame } from './lib/publicData'
 
 interface Args {
@@ -32,6 +37,9 @@ function parseArgs(argv: readonly string[]): Args {
   if (!argv.includes('--season')) args.mock = true
   return args
 }
+
+/** Box-score stats come from the first few seasons only; collecting all 500 costs runtime. */
+const BOX_SIMS = 50
 
 const CALIBRATION_SETTINGS = {
   tradeStrictness: 'balanced',
@@ -89,7 +97,30 @@ function report(r: CalibrationReport, label: string): void {
     console.log(`${name.padEnd(24)}${value.padStart(9)}   ${target}`)
   }
   console.log('-'.repeat(52))
+  if (r.box) reportBox(r.box)
   console.log(`${'runtime (s)'.padEnd(24)}${r.seconds.toFixed(1).padStart(9)}   < 60\n`)
+}
+
+/** Targets are real 2015–2019 regular seasons. */
+function reportBox(b: BoxSeasonStats): void {
+  const rows: [string, string, string][] = [
+    ['pass att / team-game', b.passAttPerTeamGame.toFixed(1), '33 - 36'],
+    ['pass yds / team-game', b.passYdsPerTeamGame.toFixed(1), '230 - 255'],
+    ['rush yds / team-game', b.rushYdsPerTeamGame.toFixed(1), '108 - 120'],
+    ['1,000-yd rushers', b.rushers1000.toFixed(1), '6 - 11'],
+    ['4,000-yd passers', b.passers4000.toFixed(1), '8 - 14'],
+    ['1,000-yd receivers', b.receivers1000.toFixed(1), '18 - 25'],
+    ['passing leader', b.passLeader.toFixed(0), '4500 - 5200'],
+    ['rushing leader', b.rushLeader.toFixed(0), '1300 - 1600'],
+    ['receiving leader', b.recLeader.toFixed(0), '1400 - 1950'],
+    ['top receiver share', b.topReceiverShare.toFixed(3), '0.24 - 0.34'],
+    ['top TE share', b.topTeShare.toFixed(3), '0.10 - 0.20'],
+  ]
+  console.log(`box scores (first ${b.seasons} seasons)`)
+  for (const [name, value, target] of rows) {
+    console.log(`${name.padEnd(24)}${value.padStart(9)}   ${target}`)
+  }
+  console.log('-'.repeat(52))
 }
 
 async function main(): Promise<void> {
@@ -105,7 +136,14 @@ async function main(): Promise<void> {
     }
     const { state, ctx, realWins } = await loadRealLeague(args.season, args.seed)
     report(
-      calibrate({ sims: args.sims, seed: args.seed, state, ctx, realWins: realWins ?? undefined }),
+      calibrate({
+        sims: args.sims,
+        seed: args.seed,
+        state,
+        ctx,
+        realWins: realWins ?? undefined,
+        boxSims: BOX_SIMS,
+      }),
       `real league ${args.season}`,
     )
   } catch (error) {

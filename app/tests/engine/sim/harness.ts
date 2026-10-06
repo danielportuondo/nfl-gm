@@ -162,6 +162,7 @@ export interface CalibrationReport {
   injuriesPerTeamGame: number
   multiWeekInjuriesPerTeamGame: number
   truthFallbacks: number
+  box: BoxSeasonStats | null
   seconds: number
 }
 
@@ -197,6 +198,8 @@ export interface CalibrationOptions {
   ctx?: EngineContext
   /** Real regular-season win totals by team, when calibrating against a real season. */
   realWins?: Record<TeamId, number>
+  /** Collect box-score season stats over the first this-many sims (0 = skip; it costs runtime). */
+  boxSims?: number
 }
 
 export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
@@ -223,8 +226,17 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
   let multiWeek = 0
   let teamGames = 0
 
+  const boxSims = Math.min(sims, opts.boxSims ?? 0)
+  const box = boxSims > 0 ? boxStatsCollector(base) : null
+
   for (let i = 0; i < sims; i++) {
-    const totals = runSeason({ ...base, seed: `${base.seed}#${i}` }, ctx)
+    const collect = box !== null && i < boxSims
+    const totals = runSeason(
+      { ...base, seed: `${base.seed}#${i}` },
+      ctx,
+      collect ? box.onResult : undefined,
+    )
+    if (collect) box.endSeason()
     const wins = teamIds.map((id) => totals.wins[id] ?? 0)
     wins.forEach((w, t) => (meanWins[t]! += w / sims))
     winSds.push(sd(wins))
@@ -260,6 +272,117 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
     injuriesPerTeamGame: injuries / teamGames,
     multiWeekInjuriesPerTeamGame: multiWeek / teamGames,
     truthFallbacks: truthFallbackCount(),
+    box: box ? box.summary() : null,
     seconds: (performance.now() - started) / 1000,
   }
+}
+
+/** Season-level box-score shape: team rates per game and the leaderboard a real season produces. */
+export interface BoxSeasonStats {
+  seasons: number
+  passAttPerTeamGame: number
+  passYdsPerTeamGame: number
+  rushAttPerTeamGame: number
+  rushYdsPerTeamGame: number
+  /** Means per season. */
+  rushers1000: number
+  passers4000: number
+  receivers1000: number
+  passLeader: number
+  rushLeader: number
+  recLeader: number
+  /** Mean share of a team's receiving yards caught by its top receiver, and by its top tight end. */
+  topReceiverShare: number
+  topTeShare: number
+}
+
+type SeasonLeaders = Pick<
+  BoxSeasonStats,
+  'rushers1000' | 'passers4000' | 'receivers1000' | 'passLeader' | 'rushLeader' | 'recLeader'
+>
+
+/** Accumulates box scores fed through `runSeason`'s `onResult`; call `endSeason` after each season. */
+export function boxStatsCollector(state: LeagueState) {
+  const seasons: SeasonLeaders[] = []
+  const team = { passAtt: 0, passYds: 0, rushAtt: 0, rushYds: 0, teamGames: 0 }
+  const topShares: number[] = []
+  const teShares: number[] = []
+  let pass = new Map<string, number>()
+  let rush = new Map<string, number>()
+  let rec = new Map<string, number>()
+  let recByTeam = new Map<TeamId, Map<string, number>>()
+
+  const add = (m: Map<string, number>, id: string, v: number | undefined) => {
+    if (v) m.set(id, (m.get(id) ?? 0) + v)
+  }
+
+  function onResult(r: GameResult): void {
+    for (const lines of [r.box?.home ?? [], r.box?.away ?? []]) {
+      team.teamGames++
+      for (const line of lines) {
+        team.passAtt += line.passAtt ?? 0
+        team.passYds += line.passYds ?? 0
+        team.rushAtt += line.rushAtt ?? 0
+        team.rushYds += line.rushYds ?? 0
+        add(pass, line.playerId, line.passYds)
+        add(rush, line.playerId, line.rushYds)
+        add(rec, line.playerId, line.recYds)
+        if (line.recYds) {
+          const byPlayer = recByTeam.get(line.teamId) ?? new Map<string, number>()
+          add(byPlayer, line.playerId, line.recYds)
+          recByTeam.set(line.teamId, byPlayer)
+        }
+      }
+    }
+  }
+
+  function endSeason(): void {
+    const values = (m: Map<string, number>) => [...m.values()]
+    const atLeast = (m: Map<string, number>, line: number) =>
+      values(m).filter((v) => v >= line).length
+    const max = (m: Map<string, number>) => Math.max(0, ...values(m))
+    seasons.push({
+      rushers1000: atLeast(rush, 1000),
+      passers4000: atLeast(pass, 4000),
+      receivers1000: atLeast(rec, 1000),
+      passLeader: max(pass),
+      rushLeader: max(rush),
+      recLeader: max(rec),
+    })
+    for (const byPlayer of recByTeam.values()) {
+      const total = values(byPlayer).reduce((a, b) => a + b, 0)
+      if (total === 0) continue
+      topShares.push(max(byPlayer) / total)
+      const te = [...byPlayer].filter(([id]) => state.players[id]?.pos === 'TE').map(([, v]) => v)
+      teShares.push(Math.max(0, ...te) / total)
+    }
+    pass = new Map()
+    rush = new Map()
+    rec = new Map()
+    recByTeam = new Map()
+  }
+
+  function summary(): BoxSeasonStats {
+    const n = Math.max(1, seasons.length)
+    const tg = Math.max(1, team.teamGames)
+    const mean = (key: keyof SeasonLeaders) => seasons.reduce((a, s) => a + s[key], 0) / n
+    const avg = (xs: readonly number[]) => xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length)
+    return {
+      seasons: seasons.length,
+      passAttPerTeamGame: team.passAtt / tg,
+      passYdsPerTeamGame: team.passYds / tg,
+      rushAttPerTeamGame: team.rushAtt / tg,
+      rushYdsPerTeamGame: team.rushYds / tg,
+      rushers1000: mean('rushers1000'),
+      passers4000: mean('passers4000'),
+      receivers1000: mean('receivers1000'),
+      passLeader: mean('passLeader'),
+      rushLeader: mean('rushLeader'),
+      recLeader: mean('recLeader'),
+      topReceiverShare: avg(topShares),
+      topTeShare: avg(teShares),
+    }
+  }
+
+  return { onResult, endSeason, summary }
 }

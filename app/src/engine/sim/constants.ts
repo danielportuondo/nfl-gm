@@ -89,17 +89,24 @@ export const overtimeConstants = {
   edgeDamp: 0.35,
 }
 
+/**
+ * Yards follow from the final score, never the other way round, so these move box stats without
+ * moving a single result. Calibrated on 2015–2019 (tests/engine/sim/boxDistribution.test.ts): ~357
+ * gross yards, ~35 pass attempts and ~114 rush yards per team-game, ~10 thousand-yard rushers,
+ * ~12 four-thousand-yard passers and ~22 thousand-yard receivers a season.
+ */
 export const boxConstants = {
-  yardsBase: 150,
+  yardsBase: 162,
   yardsPerPoint: 8.5,
   yardsSd: 55,
   yardsMin: 140,
   yardsMax: 620,
-  passShareMean: 0.61,
+  passShareMean: 0.68,
   passShareSd: 0.08,
   passShareMin: 0.35,
   passShareMax: 0.82,
-  ypaMean: 7.0,
+  /** Gross yards per attempt (sacks are not subtracted from box passing yards). */
+  ypaMean: 7.1,
   ypaSd: 1.4,
   ypaMin: 4,
   ypaMax: 11,
@@ -146,8 +153,8 @@ export const boxConstants = {
   usageNoiseSd: 0.32,
   /** How strongly true value tilts usage inside a position group. */
   valueTilt: 0.03,
-  rushWeights: { QB: 0.07, RB: [0.5, 0.26, 0.11], WR: 0.03 },
-  recWeights: { WR: [0.22, 0.17, 0.11, 0.06], TE: [0.13, 0.05], RB: [0.13, 0.06] },
+  rushWeights: { QB: 0.08, RB: [0.43, 0.28, 0.12], WR: 0.03 },
+  recWeights: { WR: [0.24, 0.17, 0.11, 0.06], TE: [0.13, 0.05], RB: [0.12, 0.05] },
   tackleWeights: { DL: 0.07, LB: 0.13, CB: 0.08, S: 0.1 },
   sackWeights: { DL: 0.25, LB: 0.12, CB: 0.02, S: 0.02 },
   intWeights: { DL: 0.02, LB: 0.1, CB: 0.3, S: 0.25 },
