@@ -35,7 +35,10 @@ async function cutdownForPreseason(page: Page): Promise<void> {
   if (shown) {
     await page.screenshot({ path: '../docs/screenshots/cutdown.png' })
     await releaseAll.click()
-    await page.getByRole('dialog').getByRole('button', { name: /^Release \d+ players?$/ }).click()
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: /^Release \d+ players?$/ })
+      .click()
     await expect(releaseAll).toBeHidden({ timeout: 15_000 })
   }
 }
