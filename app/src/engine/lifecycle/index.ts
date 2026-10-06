@@ -41,6 +41,7 @@ import {
   projectedCeiling,
   retireProbability,
 } from './curves'
+import { applyHistoricalAbsences } from './absences'
 import { generateDraftClass as generateDraftClassImpl } from './draftClass'
 
 // -------------------------------------------------------------------------------------------
@@ -347,6 +348,7 @@ function tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueS
 
 export const lifecycle: LifecycleModule = {
   ...lifecycleStub,
+  applyHistoricalAbsences,
   progressSeason,
   retirements,
   refreshScouting,

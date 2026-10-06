@@ -53,7 +53,6 @@ import {
 import { DIVISION_ROUND_TEMPLATE, DIVISION_ROUND_WEEKS } from './constants'
 import { seasonAwards } from './awards'
 import { reconcileDepthChart } from './depthChart'
-import { applyHistoricalAbsences } from '../lifecycle/absences'
 
 const EPOCH = '1970-01-01T00:00:00.000Z'
 const ZERO_RECORD = { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
@@ -940,7 +939,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       }
       s = { ...s, teams: healOffseasonInjuries(resetSeasonCounters(s.teams)) }
       s = ensureFuturePicks(s, ctx)
-      s = applyHistoricalAbsences(s)
+      s = ctx.modules.lifecycle.applyHistoricalAbsences(s)
       const newGames = buildScheduleImpl(s, ctx)
       s = { ...s, schedule: [...s.schedule, ...newGames], phase: 'PRESEASON' }
       return s
@@ -1074,7 +1073,7 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
       ...ctx.modules.draft.buildDraftOrder(state, S + 1, ctx),
       ...ctx.modules.draft.buildDraftOrder(state, S + 2, ctx),
     ]
-    state = applyHistoricalAbsences({ ...state, picks })
+    state = ctx.modules.lifecycle.applyHistoricalAbsences({ ...state, picks })
     return { ...state, schedule: buildScheduleImpl(state, ctx) }
   }
 

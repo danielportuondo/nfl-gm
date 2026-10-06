@@ -57,6 +57,13 @@ export interface LifecycleModule {
 
   /** Age of a player in a season (season − birthYear). */
   age(state: LeagueState, playerId: PlayerId, season?: number): number
+
+  /**
+   * Before a season: a consensus starter whose real availability this season was very low (Luck 2017)
+   * is announced injured for the share of the season he really missed, so depth charts skip him through
+   * the normal injured path. Idempotent; a no-op for seasons without real availability.
+   */
+  applyHistoricalAbsences(state: LeagueState): LeagueState
 }
 
 export const lifecycleStub: LifecycleModule = {
@@ -67,4 +74,5 @@ export const lifecycleStub: LifecycleModule = {
   applyInjuryEvents: () => notImplemented('lifecycle.applyInjuryEvents'),
   generateDraftClass: () => notImplemented('lifecycle.generateDraftClass'),
   age: () => notImplemented('lifecycle.age'),
+  applyHistoricalAbsences: () => notImplemented('lifecycle.applyHistoricalAbsences'),
 }
