@@ -30,6 +30,7 @@ import {
   capFor,
   capGatedPhase,
   isExpiringDeal,
+  seasonsLeft,
   payroll,
   releaseFrom,
   round2,
@@ -548,4 +549,6 @@ export const fa: FaModule = {
   suggestCutdown,
   validateRoster,
   rolloverContracts,
+  seasonsLeft,
+  isExpiringDeal,
 }

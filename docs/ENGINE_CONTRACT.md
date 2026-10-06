@@ -1153,6 +1153,15 @@ export interface FaModule {
     state: LeagueState,
     ctx: EngineContext,
   ): { state: LeagueState; expiring: Record<TeamId, PlayerId[]> }
+
+  /**
+   * Seasons the player will still play under `contract`, as of now. `years` is seasons actually played;
+   * until the camp rollover, a deal signed before the offseason still counts the season just closed.
+   */
+  seasonsLeft(state: LeagueState, contract: Contract): number
+
+  /** In the re-signing window: the deal's last season has been played and it has not been renewed. */
+  isExpiringDeal(state: LeagueState, contract: Contract): boolean
 }
 
 export const faStub: FaModule = {
@@ -1174,6 +1183,8 @@ export const faStub: FaModule = {
   suggestCutdown: () => notImplemented('fa.suggestCutdown'),
   validateRoster: () => notImplemented('fa.validateRoster'),
   rolloverContracts: () => notImplemented('fa.rolloverContracts'),
+  seasonsLeft: () => notImplemented('fa.seasonsLeft'),
+  isExpiringDeal: () => notImplemented('fa.isExpiringDeal'),
 }
 ```
 

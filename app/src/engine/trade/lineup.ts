@@ -101,9 +101,9 @@ export function isStarter(state: LeagueState, teamId: TeamId, playerId: PlayerId
   return depthAt(state, teamId, pos).slice(0, startingSlots(pos)).includes(playerId)
 }
 
-function controlOf(state: LeagueState, playerId: PlayerId): number {
+function controlOf(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number {
   const contract = rosterIndex(state).get(playerId)?.contract
-  return contract ? controlFactor(controlSeasons(state, contract)) : 1
+  return contract ? controlFactor(controlSeasons(state, contract, ctx)) : 1
 }
 
 export function isLineupAware(state: LeagueState, teamId: TeamId): boolean {
@@ -145,7 +145,7 @@ export function valueSides(
       if (leavingHere.length === 0) continue
       const drop = lineupTalent(state, pos, before, slots) - lineupTalent(state, pos, after, slots)
       // A starter whose deal is about to run out was leaving anyway: the hole is only the seasons left.
-      const control = Math.max(...leavingHere.map((id) => controlOf(state, id)))
+      const control = Math.max(...leavingHere.map((id) => controlOf(state, id, ctx)))
       if (drop > 0) starterLoss.set(pos, lineupConstants.starterLossShare * drop * control)
     }
   }

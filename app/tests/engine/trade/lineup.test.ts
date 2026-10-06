@@ -28,16 +28,19 @@ describe('trade — starters and filler (real 2017 offseason, user MIA)', () => 
 
   beforeAll(async () => {
     ctx = await loadRealContext([2017, 2018, 2019])
-    // The draft runs up to MIA's first pick, by which point KC has taken Mahomes.
-    state = ctx.modules.draft.startDraft(
-      ctx.modules.league.newGame(
-        {
-          seed: '2017-MIA-986okssy',
-          startSeason: 2017,
-          userTeam: 'MIA',
-          horizonSeasons: 3,
-          settings: SETTINGS,
-        },
+    // startDraft stops at pick 1, so advance runs the AI up to MIA's first pick, by which point KC has taken Mahomes.
+    state = ctx.modules.draft.advance(
+      ctx.modules.draft.startDraft(
+        ctx.modules.league.newGame(
+          {
+            seed: '2017-MIA-986okssy',
+            startSeason: 2017,
+            userTeam: 'MIA',
+            horizonSeasons: 3,
+            settings: SETTINGS,
+          },
+          ctx,
+        ),
         ctx,
       ),
       ctx,
@@ -114,10 +117,12 @@ describe('trade — starters and filler (real 2017 offseason, user MIA)', () => 
   })
 
   it('prices Brady, NE’s only starting QB, at 1.5–2.5× his stand-alone value', () => {
+    // Brady is 40 on a one-season deal (synthesized deals end by age 39 for QBs), so a first-rounder
+    // now outbids even his lineup-charged price and there is nothing to counter; a second falls short.
     const brady = id('Tom Brady', 'NE')
     const evaluation = trade.evaluate(
       state,
-      userProposal(state, { picks: [pick(2017, 1, 'MIA')] }, { players: [brady] }, 'NE'),
+      userProposal(state, { picks: [pick(2017, 2, 'MIA')] }, { players: [brady] }, 'NE'),
       ctx,
     )
     const alone = trade.playerValue(state, brady, ctx)
@@ -127,7 +132,7 @@ describe('trade — starters and filler (real 2017 offseason, user MIA)', () => 
     // The counter asks for one more asset NE counts in full, not another bench body at half price.
     const proposal = userProposal(
       state,
-      { picks: [pick(2017, 1, 'MIA')] },
+      { picks: [pick(2017, 2, 'MIA')] },
       { players: [brady] },
       'NE',
     )

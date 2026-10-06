@@ -21,7 +21,6 @@ import {
   type ScoutingView,
   type TeamId,
 } from '@contracts/index'
-import { isExpiringDeal, seasonsLeft } from '../fa/internal'
 import {
   controlConstants,
   dropConstants,
@@ -83,8 +82,8 @@ export function ageOf(state: LeagueState, playerId: PlayerId, ctx: EngineContext
  * season just played until the camp rollover. In season that count includes the current season, of
  * which only the unplayed share is left.
  */
-export function controlSeasons(state: LeagueState, contract: Contract): number {
-  const left = seasonsLeft(state, contract)
+export function controlSeasons(state: LeagueState, contract: Contract, ctx: EngineContext): number {
+  const left = ctx.modules.fa.seasonsLeft(state, contract)
   if (isOffseasonPhase(state.phase) || state.phase === 'PRESEASON') return left
   const ahead = left - 1
   if (state.phase === 'PLAYOFFS') return ahead + controlConstants.playoffShare
@@ -207,7 +206,7 @@ function computePlayerValue(
   const anchor = rookieSlotAnchor(state, playerId) * health
   const cap = capFor(state, ctx)
   const contract = slot?.contract
-  const seasons = contract ? controlSeasons(state, contract) : 1
+  const seasons = contract ? controlSeasons(state, contract, ctx) : 1
   const cost = contract ? contractCost(contract.apy, seasons, cap) : 0
   const controlled =
     controlFactor(seasons) * (healthy - (fullCost ? cost : cappedCost(cost, healthy)))
@@ -246,7 +245,8 @@ function reSigningRights(
   const contract = rosterIndex(state).get(playerId)?.contract
   if (!contract || isOpeningOffseason(state)) return 0
   if (isOffseasonPhase(state.phase)) {
-    if (state.phase !== 'OFFSEASON_RESIGN' || !isExpiringDeal(state, contract)) return 0
+    if (state.phase !== 'OFFSEASON_RESIGN' || !ctx.modules.fa.isExpiringDeal(state, contract))
+      return 0
   } else if (contract.years !== 1) return 0
   const market = ctx.modules.fa.synthesizeContract(state, playerId, leagueYear(state), ctx)
   // Signed in the re-sign window, the new deal is stamped for next season and plays all its years.

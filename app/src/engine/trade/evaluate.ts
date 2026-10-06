@@ -97,7 +97,7 @@ function capBook(state: LeagueState, ctx: EngineContext): CapBook {
   }
   const salary = (id: PlayerId) => {
     const contract = roster.get(id)?.contract
-    return contract && controlSeasons(state, contract) >= 1 ? contract.apy : 0
+    return contract && controlSeasons(state, contract, ctx) >= 1 ? contract.apy : 0
   }
   return {
     cap: ctx.modules.fa.capFor(state.season + 1, ctx),

@@ -85,6 +85,7 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
 
   const placements: Placement[] = []
   const divergedKept: PlayerId[] = []
+  const keptDraftees: PlayerId[] = []
   for (const id of [...idsToConsider].sort()) {
     const currentTeam = currentTeamOf.get(id) ?? null
     if (state.divergence.has(id) || tradedDraftees.has(id)) {
@@ -95,6 +96,12 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
     const isNewArrival = !state.players[id]
     const sp = seasonPlayerById.get(id)
     if (!sp) {
+      // The chunk drops real prospects who never played (undrafted in real life), but the sim draft
+      // can still take one early; he stays with the team that drafted him and the cutdown decides.
+      if (currentTeam !== null && state.players[id]?.draft?.season === season) {
+        keptDraftees.push(id)
+        continue
+      }
       // A known real player absent from this season's data has left the league — retire him if he is
       // still around; one already gone (retired earlier, or sitting out a year) is left alone so he can
       // come back when a later season lists him again.
@@ -122,6 +129,16 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
   let players = state.players
   let scouting = state.scouting
   let truth = state.truth
+  // Such a prospect has no real season to anchor on, so this season gets the flat truth a new arrival does.
+  for (const id of keptDraftees) {
+    const held = truth[id]
+    if (held?.bySeason[String(season)] !== undefined) continue
+    const flat = fallbackTruth(season, scouting[id]?.ovr ?? 40)
+    truth = {
+      ...truth,
+      [id]: held ? { ...held, bySeason: { ...held.bySeason, ...flat.bySeason } } : flat,
+    }
+  }
   for (const pl of placements) {
     if (!pl.isNewArrival) continue
     const sp = seasonPlayerById.get(pl.id)!

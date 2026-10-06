@@ -25,6 +25,7 @@ import {
 } from '@contracts/index'
 import { rng } from '@engine/rng'
 import { league } from '@engine/league'
+import { isExpiringDeal, seasonsLeft } from '@engine/fa/internal'
 
 // --- sim: seeded coin-flip games ------------------------------------------------------------
 
@@ -211,6 +212,8 @@ export const fakeFa: FaModule = {
     errors: [],
   }),
   rolloverContracts: (state) => ({ state, expiring: {} }),
+  seasonsLeft,
+  isExpiringDeal,
 }
 
 // --- lifecycle: no aging/retirement/injury churn ----------------------------------------------

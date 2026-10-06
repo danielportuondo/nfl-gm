@@ -964,6 +964,10 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
     case 'PRESEASON': {
       // Fill first so the cap pass in runAiCutdowns sees the floor bodies and can swap salary for them.
       let s = ctx.modules.fa.runAiCutdowns(fillAiRosters(state, ctx), ctx)
+      // The refill signs players the real roster left out for missing the season (Jacquies Smith,
+      // 2016 GB), after the camp pass already ran; mark them now. Once only: applying it in-season
+      // would re-injure a healed starter every week.
+      s = ctx.modules.lifecycle.applyHistoricalAbsences(s)
       const updatedTeams: Record<TeamId, TeamState> = { ...s.teams }
       for (const teamId of Object.keys(updatedTeams)) {
         if (teamId === s.userTeam) continue

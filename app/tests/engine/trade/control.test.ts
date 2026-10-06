@@ -86,7 +86,9 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
   it('is a non-opening offseason, where a 1-year deal expires at the camp rollover', () => {
     expect(state.phase).toBe('FREE_AGENCY')
     expect(state.season).toBe(2017)
-    expect(controlSeasons(state, { ...OLD_DEAL, years: 1, signedSeason: state.season })).toBe(0)
+    expect(controlSeasons(state, { ...OLD_DEAL, years: 1, signedSeason: state.season }, ctx)).toBe(
+      0,
+    )
   })
 
   it('a star signed at his ask on a 1-year deal cannot be flipped the same day', () => {
@@ -216,7 +218,7 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
     const nextCap = ctx.modules.fa.capFor(s.season + 1, ctx)
     const team = s.teams[teamId]!
     const committed = team.roster
-      .filter((r) => controlSeasons(s, r.contract) >= 1)
+      .filter((r) => controlSeasons(s, r.contract, ctx) >= 1)
       .reduce((sum, r) => sum + r.contract.apy, 0)
     const target = team.roster.find((r) => r.contract.years >= 3)!
     return withContract(s, teamId, target.playerId, {
@@ -296,7 +298,7 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
       .sort()
       .filter((t) => t !== 'MIA')
       .flatMap((t) => state.teams[t]!.roster)
-      .filter((r) => controlSeasons(state, r.contract) >= 3)
+      .filter((r) => controlSeasons(state, r.contract, ctx) >= 3)
       .map((r) => r.playerId)
       .sort((a, b) => trade.playerValue(state, b, ctx) - trade.playerValue(state, a, ctx))[0]!
     const owner = Object.keys(state.teams).find((t) =>
@@ -324,16 +326,16 @@ describe('trade — control of deals signed this offseason (contract years mean 
 
   it('a fresh deal covers all its years; an older deal has already used the season just played', () => {
     const next = offseason.season + 1
-    expect(controlSeasons(offseason, deal(1, next))).toBe(1)
-    expect(controlSeasons(offseason, deal(3, next))).toBe(3)
-    expect(controlSeasons(offseason, deal(1, offseason.season))).toBe(0)
-    expect(controlSeasons(offseason, deal(3, offseason.season))).toBe(2)
+    expect(controlSeasons(offseason, deal(1, next), ctx)).toBe(1)
+    expect(controlSeasons(offseason, deal(3, next), ctx)).toBe(3)
+    expect(controlSeasons(offseason, deal(1, offseason.season), ctx)).toBe(0)
+    expect(controlSeasons(offseason, deal(3, offseason.season), ctx)).toBe(2)
   })
 
   it('a deal means the same in season, whenever it was signed', () => {
     const inSeason: LeagueState = { ...base, phase: 'PRESEASON' }
-    expect(controlSeasons(inSeason, deal(1, inSeason.season))).toBe(1)
-    expect(controlSeasons(inSeason, deal(3, inSeason.season - 1))).toBe(3)
+    expect(controlSeasons(inSeason, deal(1, inSeason.season), ctx)).toBe(1)
+    expect(controlSeasons(inSeason, deal(3, inSeason.season - 1), ctx)).toBe(3)
   })
 
   it('a star on a fresh 1-year deal is worth more than the same star on an expiring one', () => {
