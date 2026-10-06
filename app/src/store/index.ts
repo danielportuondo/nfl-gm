@@ -369,7 +369,8 @@ export function createGameStore(config: StoreConfig = {}) {
               },
               ctx,
             )
-            knownSavedAt = league.savedAt
+            // No baseline yet: a fresh league carries the epoch `savedAt`, which any older save in
+            // the slot would beat, latching staleTab and refusing every autosave of this game.
             set({ state: league })
             void autosave(league)
             get().actions.goTo('dashboard')

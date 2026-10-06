@@ -15,6 +15,8 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
   opening draft still uses the real order.
 - Players you draft or sign now show up in your depth chart, and players who leave drop out of it;
   your own ordering is kept.
+- A new game started while an older save existed was never saved: every autosave was refused as
+  if another tab owned the game, so a refresh brought back the old save.
 
 ### Changed
 - Depth chart rows drop the position badge and show a smaller rating, so full names fit.
