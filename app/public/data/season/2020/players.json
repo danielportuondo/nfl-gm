@@ -2,231 +2,6 @@
   "attribution": "Data courtesy of nflverse (CC BY 4.0). Unofficial fan-made project; not affiliated with the NFL.",
   "players": [
     {
-      "birthYear": 1996,
-      "college": "Boston College",
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0035374",
-      "name": "Michael Walker",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 58.9,
-        "pot": 60.9
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 194.0
-    },
-    {
-      "birthYear": 1993,
-      "college": "Alabama A&M",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0032369",
-      "name": "Anthony Lanier",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 71.8,
-        "pot": 71.8
-      },
-      "team": "NO",
-      "trueValue": 41.6,
-      "weightLb": 285.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "California",
-      "draft": {
-        "pick": 232,
-        "round": 7,
-        "season": 2018,
-        "team": "GB"
-      },
-      "heightIn": 75.0,
-      "id": "00-0034284",
-      "name": "James Looney",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 45.2,
-        "pot": 47.0
-      },
-      "team": "GB",
-      "trueValue": 41.5,
-      "weightLb": 287.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Tulane",
-      "draft": {
-        "pick": 218,
-        "round": 6,
-        "season": 2018,
-        "team": "MIN"
-      },
-      "heightIn": 77.0,
-      "id": "00-0034166",
-      "name": "Ade Aruna",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.25,
-        "ovr": 56.6,
-        "pot": 59.4
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 263.0
-    },
-    {
-      "birthYear": 1985,
-      "college": "California",
-      "draft": {
-        "pick": 85,
-        "round": 3,
-        "season": 2007,
-        "team": "SEA"
-      },
-      "heightIn": 73.0,
-      "id": "00-0025472",
-      "name": "Brandon Mebane",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.6,
-        "pot": 65.6
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 311.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "Oregon",
-      "draft": {
-        "pick": 70,
-        "round": 3,
-        "season": 2010,
-        "team": "BAL"
-      },
-      "heightIn": 76.0,
-      "id": "00-0027675",
-      "name": "Ed Dickson",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 77.8,
-        "pot": 77.8
-      },
-      "team": null,
-      "trueValue": 42.2,
-      "weightLb": 250.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Texas",
-      "draft": {
-        "pick": 14,
-        "round": 1,
-        "season": 2010,
-        "team": "SEA"
-      },
-      "heightIn": 70.0,
-      "id": "00-0027866",
-      "name": "Earl Thomas",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 79.9,
-        "pot": 80.0
-      },
-      "team": null,
-      "trueValue": 42.7,
-      "weightLb": 202.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "Arizona",
-      "draft": {
-        "pick": 81,
-        "round": 3,
-        "season": 2010,
-        "team": "HOU"
-      },
-      "heightIn": 75.0,
-      "id": "00-0027684",
-      "name": "Earl Mitchell",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 62.8,
-        "pot": 62.8
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 310.0
-    },
-    {
-      "birthYear": 1982,
-      "college": "Penn State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0023368",
-      "name": "Cameron Wake",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2005,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 70.6,
-        "pot": 70.6
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 263.0
-    },
-    {
-      "birthYear": 1988,
-      "college": "Montana State",
-      "draft": {
-        "pick": 239,
-        "round": 7,
-        "season": 2011,
-        "team": "SF"
-      },
-      "heightIn": 76.0,
-      "id": "00-0028177",
-      "name": "Mike Person",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.6,
-        "pot": 66.1
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 305.0
-    },
-    {
       "birthYear": 1988,
       "college": "Oklahoma",
       "draft": {
@@ -251,528 +26,6 @@
       "weightLb": 300.0
     },
     {
-      "birthYear": 1989,
-      "college": "South Carolina",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0028581",
-      "name": "Patrick DiMarco",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 66.8,
-        "pot": 66.8
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 234.0
-    },
-    {
-      "birthYear": 1986,
-      "college": "Southern California",
-      "draft": {
-        "pick": 26,
-        "round": 1,
-        "season": 2009,
-        "team": "GB"
-      },
-      "heightIn": 75.0,
-      "id": "00-0027002",
-      "name": "Clay Matthews",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 75.1,
-        "pot": 75.1
-      },
-      "team": null,
-      "trueValue": 42.4,
-      "weightLb": 255.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "Texas Christian",
-      "draft": {
-        "pick": 190,
-        "round": 6,
-        "season": 2011,
-        "team": "SF"
-      },
-      "heightIn": 72.0,
-      "id": "00-0028128",
-      "name": "Colin Jones",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 48.5,
-        "pot": 48.5
-      },
-      "team": null,
-      "trueValue": 41.2,
-      "weightLb": 205.0
-    },
-    {
-      "birthYear": 1990,
-      "college": "Alabama",
-      "draft": {
-        "pick": 3,
-        "round": 1,
-        "season": 2011,
-        "team": "BUF"
-      },
-      "heightIn": 75.0,
-      "id": "00-0027941",
-      "name": "Marcell Dareus",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 72.4,
-        "pot": 72.5
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 331.0
-    },
-    {
-      "birthYear": 1988,
-      "college": "Ohio State",
-      "draft": {
-        "pick": 244,
-        "round": 7,
-        "season": 2010,
-        "team": "PHI"
-      },
-      "heightIn": 71.0,
-      "id": "00-0027835",
-      "name": "Kurt Coleman",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 61.5,
-        "pot": 61.5
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 208.0
-    },
-    {
-      "birthYear": 1985,
-      "college": "Texas A&M",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0026618",
-      "name": "Michael Bennett",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 79.5,
-        "pot": 79.5
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 274.0
-    },
-    {
-      "birthYear": 1984,
-      "college": "Howard",
-      "draft": {
-        "pick": 207,
-        "round": 6,
-        "season": 2006,
-        "team": "IND"
-      },
-      "heightIn": 71.0,
-      "id": "00-0024421",
-      "name": "Antoine Bethea",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2006,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 78.1,
-        "pot": 78.1
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 201.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Iowa",
-      "draft": {
-        "pick": 119,
-        "round": 4,
-        "season": 2015,
-        "team": "LAR"
-      },
-      "heightIn": 78.0,
-      "id": "00-0032246",
-      "name": "Andrew Donnal",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.9,
-        "ovr": 41.2,
-        "pot": 41.7
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 305.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Ohio State",
-      "draft": {
-        "pick": 92,
-        "round": 3,
-        "season": 2015,
-        "team": "DEN"
-      },
-      "heightIn": 77.0,
-      "id": "00-0032227",
-      "name": "Jeff Heuerman",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 67.7,
-        "pot": 67.8
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 255.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Georgia Tech",
-      "draft": {
-        "pick": 71,
-        "round": 3,
-        "season": 2010,
-        "team": "GB"
-      },
-      "heightIn": 73.0,
-      "id": "00-0027676",
-      "name": "Morgan Burnett",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.7,
-        "pot": 65.8
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 210.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Colorado",
-      "draft": {
-        "pick": 45,
-        "round": 2,
-        "season": 2014,
-        "team": "SEA"
-      },
-      "heightIn": 72.0,
-      "id": "00-0031257",
-      "name": "Paul Richardson",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 68.7,
-        "pot": 68.8
-      },
-      "team": "SEA",
-      "trueValue": 41.9,
-      "weightLb": 180.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Louisville",
-      "draft": {
-        "pick": 73,
-        "round": 3,
-        "season": 2014,
-        "team": "BUF"
-      },
-      "heightIn": 73.0,
-      "id": "00-0031171",
-      "name": "Preston Brown",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 67.3,
-        "pot": 67.4
-      },
-      "team": null,
-      "trueValue": 41.2,
-      "weightLb": 255.0
-    },
-    {
-      "birthYear": 1990,
-      "college": "Tulane",
-      "draft": {
-        "pick": 142,
-        "round": 5,
-        "season": 2014,
-        "team": "WAS"
-      },
-      "heightIn": 72.0,
-      "id": "00-0031068",
-      "name": "Ryan Grant",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 67.7,
-        "pot": 67.7
-      },
-      "team": null,
-      "trueValue": 42.7,
-      "weightLb": 194.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Nebraska",
-      "draft": {
-        "pick": 209,
-        "round": 6,
-        "season": 2014,
-        "team": "NYJ"
-      },
-      "heightIn": 74.0,
-      "id": "00-0031023",
-      "name": "Quincy Enunwa",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.9,
-        "pot": 65.9
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 225.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Abilene Christian",
-      "draft": null,
-      "heightIn": 67.0,
-      "id": "00-0031228",
-      "name": "Taylor Gabriel",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 74.5,
-        "pot": 74.5
-      },
-      "team": null,
-      "trueValue": 42.0,
-      "weightLb": 168.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Arkansas",
-      "draft": {
-        "pick": 118,
-        "round": 4,
-        "season": 2012,
-        "team": "MIN"
-      },
-      "heightIn": 70.0,
-      "id": "00-0029572",
-      "name": "Jarius Wright",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 57.5,
-        "pot": 57.5
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 191.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Georgia",
-      "draft": {
-        "pick": 41,
-        "round": 2,
-        "season": 2012,
-        "team": "BUF"
-      },
-      "heightIn": 78.0,
-      "id": "00-0029561",
-      "name": "Cordy Glenn",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 72.3,
-        "pot": 72.8
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 345.0
-    },
-    {
-      "birthYear": 1993,
-      "college": "Alabama State",
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0030656",
-      "name": "Isaiah Crowell",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.8,
-        "pot": 71.8
-      },
-      "team": null,
-      "trueValue": 42.2,
-      "weightLb": 225.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Louisiana State",
-      "draft": {
-        "pick": 18,
-        "round": 1,
-        "season": 2013,
-        "team": "SF"
-      },
-      "heightIn": 73.0,
-      "id": "00-0030548",
-      "name": "Eric Reid",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 75.5,
-        "pot": 75.7
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 215.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Kent State",
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0030741",
-      "name": "Roosevelt Nix",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.91,
-        "ovr": 60.7,
-        "pot": 60.7
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 248.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Alabama",
-      "draft": {
-        "pick": 21,
-        "round": 1,
-        "season": 2014,
-        "team": "GB"
-      },
-      "heightIn": 73.0,
-      "id": "00-0031333",
-      "name": "Ha Ha Clinton-Dix",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 77.8,
-        "pot": 78.0
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 211.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Clemson",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0030896",
-      "name": "Chandler Catanzaro",
-      "pos": "K",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 60.6,
-        "pot": 62.7
-      },
-      "team": null,
-      "trueValue": 42.4,
-      "weightLb": 200.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "South Florida",
-      "draft": {
-        "pick": 90,
-        "round": 3,
-        "season": 2013,
-        "team": "DEN"
-      },
-      "heightIn": 71.0,
-      "id": "00-0030523",
-      "name": "Kayvon Webster",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.0,
-        "pot": 65.0
-      },
-      "team": null,
-      "trueValue": 42.3,
-      "weightLb": 190.0
-    },
-    {
       "birthYear": 1992,
       "college": "Oklahoma",
       "draft": null,
@@ -790,130 +43,6 @@
       "team": null,
       "trueValue": 42.4,
       "weightLb": 211.0
-    },
-    {
-      "birthYear": 1990,
-      "college": "William &amp; Mary",
-      "draft": {
-        "pick": 114,
-        "round": 4,
-        "season": 2013,
-        "team": "DAL"
-      },
-      "heightIn": 71.0,
-      "id": "00-0030403",
-      "name": "B.W. Webb",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 68.4,
-        "pot": 68.5
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 190.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Louisville",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0029319",
-      "name": "Josh Bellamy",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 57.0,
-        "pot": 57.0
-      },
-      "team": null,
-      "trueValue": 41.0,
-      "weightLb": 208.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Harvard",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0032661",
-      "name": "Ben Braunecker",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.85,
-        "ovr": 56.9,
-        "pot": 56.9
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 247.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Memphis",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0029010",
-      "name": "Ronald Leary",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.2,
-        "pot": 71.6
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 320.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Kent State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0029992",
-      "name": "Josh Kline",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 70.9,
-        "pot": 71.3
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 300.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Kentucky",
-      "draft": {
-        "pick": 65,
-        "round": 3,
-        "season": 2013,
-        "team": "DET"
-      },
-      "heightIn": 75.0,
-      "id": "00-0030065",
-      "name": "Larry Warford",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 78.9,
-        "pot": 79.4
-      },
-      "team": null,
-      "trueValue": 42.2,
-      "weightLb": 317.0
     },
     {
       "birthYear": 1991,
@@ -1007,30 +136,6 @@
       "weightLb": 295.0
     },
     {
-      "birthYear": 1990,
-      "college": "Montana",
-      "draft": {
-        "pick": 65,
-        "round": 3,
-        "season": 2012,
-        "team": "LAR"
-      },
-      "heightIn": 74.0,
-      "id": "00-0029690",
-      "name": "Trumaine Johnson",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 78.3,
-        "pot": 78.3
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 213.0
-    },
-    {
       "birthYear": 1995,
       "college": "Ohio State",
       "draft": {
@@ -1098,30 +203,6 @@
       "weightLb": 260.0
     },
     {
-      "birthYear": 1989,
-      "college": "Florida State",
-      "draft": {
-        "pick": 105,
-        "round": 4,
-        "season": 2012,
-        "team": "BUF"
-      },
-      "heightIn": 74.0,
-      "id": "00-0029272",
-      "name": "Nigel Bradham",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 76.5,
-        "pot": 76.5
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 241.0
-    },
-    {
       "birthYear": 1996,
       "college": "Air Force",
       "draft": {
@@ -1160,33 +241,9 @@
         "ovr": 44.2,
         "pot": 45.7
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 63.1,
       "weightLb": 188.0
-    },
-    {
-      "birthYear": 1990,
-      "college": "Oregon",
-      "draft": {
-        "pick": 46,
-        "round": 2,
-        "season": 2013,
-        "team": "BUF"
-      },
-      "heightIn": 75.0,
-      "id": "00-0030401",
-      "name": "Kiko Alonso",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 72.7,
-        "pot": 72.8
-      },
-      "team": "SF",
-      "trueValue": 42.1,
-      "weightLb": 239.0
     },
     {
       "birthYear": 1993,
@@ -1235,30 +292,6 @@
       "team": null,
       "trueValue": 64.9,
       "weightLb": 211.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "Alabama",
-      "draft": {
-        "pick": 7,
-        "round": 1,
-        "season": 2012,
-        "team": "TB"
-      },
-      "heightIn": 74.0,
-      "id": "00-0029670",
-      "name": "Mark Barron",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 77.0,
-        "pot": 77.1
-      },
-      "team": null,
-      "trueValue": 42.7,
-      "weightLb": 230.0
     },
     {
       "birthYear": 1995,
@@ -1404,25 +437,6 @@
       "weightLb": 211.0
     },
     {
-      "birthYear": 1993,
-      "college": "Washington",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0032599",
-      "name": "Joshua Perkins",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.83,
-        "ovr": 58.9,
-        "pot": 58.9
-      },
-      "team": null,
-      "trueValue": 40.4,
-      "weightLb": 223.0
-    },
-    {
       "birthYear": 1990,
       "college": "Wake Forest",
       "draft": {
@@ -1485,7 +499,7 @@
         "ovr": 40.4,
         "pot": 40.4
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 66.0,
       "weightLb": 292.0
     },
@@ -1705,30 +719,6 @@
       "weightLb": 320.0
     },
     {
-      "birthYear": 1992,
-      "college": "Texas Christian",
-      "draft": {
-        "pick": 22,
-        "round": 1,
-        "season": 2016,
-        "team": "WAS"
-      },
-      "heightIn": 74.0,
-      "id": "00-0032760",
-      "name": "Josh Doctson",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 69.8,
-        "pot": 70.3
-      },
-      "team": "NYJ",
-      "trueValue": 40.1,
-      "weightLb": 206.0
-    },
-    {
       "birthYear": 1989,
       "college": "Missouri",
       "draft": {
@@ -1748,7 +738,7 @@
         "ovr": 41.1,
         "pot": 41.2
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 78.4,
       "weightLb": 265.0
     },
@@ -1906,7 +896,7 @@
         "ovr": 69.8,
         "pot": 69.8
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 40.8,
       "weightLb": 202.0
     },
@@ -1963,7 +953,7 @@
         "ovr": 64.2,
         "pot": 64.6
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 70.4,
       "weightLb": 315.0
     },
@@ -2001,7 +991,7 @@
         "ovr": 63.3,
         "pot": 63.8
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 57.7,
       "weightLb": 320.0
     },
@@ -2082,7 +1072,7 @@
         "ovr": 70.0,
         "pot": 70.0
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 340.0
     },
@@ -2149,7 +1139,7 @@
         "ovr": 70.6,
         "pot": 70.6
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 220.0
     },
@@ -2206,28 +1196,9 @@
         "ovr": 62.7,
         "pot": 63.2
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 249.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "North Texas",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0029492",
-      "name": "Jamize Olawale",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 60.7,
-        "pot": 60.7
-      },
-      "team": "DAL",
-      "trueValue": 41.7,
-      "weightLb": 240.0
     },
     {
       "birthYear": 1989,
@@ -2249,7 +1220,7 @@
         "ovr": 67.1,
         "pot": 69.3
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 62.2,
       "weightLb": 210.0
     },
@@ -2412,7 +1383,7 @@
         "ovr": 59.6,
         "pot": 59.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 72.6,
       "weightLb": 228.0
     },
@@ -2804,30 +1775,6 @@
       "weightLb": 252.0
     },
     {
-      "birthYear": 1990,
-      "college": "Boston College",
-      "draft": {
-        "pick": 9,
-        "round": 1,
-        "season": 2012,
-        "team": "CAR"
-      },
-      "heightIn": 75.0,
-      "id": "00-0029248",
-      "name": "Luke Kuechly",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 83.6,
-        "pot": 83.8
-      },
-      "team": "CAR",
-      "trueValue": 40.9,
-      "weightLb": 238.0
-    },
-    {
       "birthYear": 1993,
       "college": "South Carolina",
       "draft": {
@@ -2866,7 +1813,7 @@
         "ovr": 76.9,
         "pot": 79.1
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 65.4,
       "weightLb": 215.0
     },
@@ -3078,25 +2025,6 @@
     },
     {
       "birthYear": 1993,
-      "college": "New Mexico State",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0032757",
-      "name": "Winston Rose",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.35,
-        "ovr": 41.0,
-        "pot": 42.5
-      },
-      "team": null,
-      "trueValue": 40.4,
-      "weightLb": 180.0
-    },
-    {
-      "birthYear": 1993,
       "college": "California",
       "draft": null,
       "heightIn": 75.0,
@@ -3249,7 +2177,7 @@
         "ovr": 72.4,
         "pot": 72.4
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 41.9,
       "weightLb": 270.0
     },
@@ -3273,7 +2201,7 @@
         "ovr": 64.5,
         "pot": 64.9
       },
-      "team": "DET",
+      "team": null,
       "trueValue": 56.9,
       "weightLb": 310.0
     },
@@ -3297,7 +2225,7 @@
         "ovr": 72.5,
         "pot": 72.5
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 70.9,
       "weightLb": 347.0
     },
@@ -3348,30 +2276,6 @@
       "team": "ATL",
       "trueValue": 67.1,
       "weightLb": 288.0
-    },
-    {
-      "birthYear": 1993,
-      "college": "Michigan",
-      "draft": {
-        "pick": 191,
-        "round": 6,
-        "season": 2016,
-        "team": "DET"
-      },
-      "heightIn": 75.0,
-      "id": "00-0032431",
-      "name": "Jake Rudock",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 40.6,
-        "pot": 40.6
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 212.0
     },
     {
       "birthYear": 1992,
@@ -3537,30 +2441,6 @@
       "weightLb": 192.0
     },
     {
-      "birthYear": 1991,
-      "college": "Wisconsin",
-      "draft": {
-        "pick": 224,
-        "round": 7,
-        "season": 2014,
-        "team": "PHI"
-      },
-      "heightIn": 75.0,
-      "id": "00-0031089",
-      "name": "Beau Allen",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 61.5,
-        "pot": 61.5
-      },
-      "team": "NE",
-      "trueValue": 41.4,
-      "weightLb": 327.0
-    },
-    {
       "birthYear": 1990,
       "college": "Minn. State-Mankato",
       "draft": null,
@@ -3680,7 +2560,7 @@
         "ovr": 70.5,
         "pot": 70.5
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 55.9,
       "weightLb": 263.0
     },
@@ -3800,7 +2680,7 @@
         "ovr": 52.7,
         "pot": 53.2
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 57.3,
       "weightLb": 315.0
     },
@@ -3910,7 +2790,7 @@
         "ovr": 70.9,
         "pot": 71.0
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 41.2,
       "weightLb": 179.0
     },
@@ -4006,7 +2886,7 @@
         "ovr": 71.7,
         "pot": 71.9
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 56.6,
       "weightLb": 275.0
     },
@@ -4078,30 +2958,6 @@
       "weightLb": 205.0
     },
     {
-      "birthYear": 1990,
-      "college": "Nebraska",
-      "draft": {
-        "pick": 78,
-        "round": 3,
-        "season": 2014,
-        "team": "WAS"
-      },
-      "heightIn": 77.0,
-      "id": "00-0031047",
-      "name": "Spencer Long",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 63.9,
-        "pot": 64.4
-      },
-      "team": "SF",
-      "trueValue": 41.6,
-      "weightLb": 318.0
-    },
-    {
       "birthYear": 1993,
       "college": "Stanford",
       "draft": null,
@@ -4143,30 +2999,6 @@
       "team": "CAR",
       "trueValue": 66.4,
       "weightLb": 265.0
-    },
-    {
-      "birthYear": 1988,
-      "college": "Florida",
-      "draft": {
-        "pick": 63,
-        "round": 2,
-        "season": 2011,
-        "team": "PIT"
-      },
-      "heightIn": 78.0,
-      "id": "00-0028001",
-      "name": "Marcus Gilbert",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 77.8,
-        "pot": 78.2
-      },
-      "team": "ARI",
-      "trueValue": 41.9,
-      "weightLb": 330.0
     },
     {
       "birthYear": 1993,
@@ -4255,7 +3087,7 @@
         "ovr": 65.4,
         "pot": 65.4
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 259.0
     },
@@ -4327,30 +3159,6 @@
       "weightLb": 183.0
     },
     {
-      "birthYear": 1989,
-      "college": "Nebraska",
-      "draft": {
-        "pick": 19,
-        "round": 1,
-        "season": 2011,
-        "team": "NYG"
-      },
-      "heightIn": 72.0,
-      "id": "00-0027957",
-      "name": "Prince Amukamara",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 80.7,
-        "pot": 80.8
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 204.0
-    },
-    {
       "birthYear": 1988,
       "college": "Colorado",
       "draft": {
@@ -4413,30 +3221,6 @@
       "weightLb": 190.0
     },
     {
-      "birthYear": 1989,
-      "college": "Florida",
-      "draft": {
-        "pick": 15,
-        "round": 1,
-        "season": 2011,
-        "team": "MIA"
-      },
-      "heightIn": 77.0,
-      "id": "00-0027953",
-      "name": "Mike Pouncey",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2011,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 75.3,
-        "pot": 75.8
-      },
-      "team": "LAC",
-      "trueValue": 42.5,
-      "weightLb": 298.0
-    },
-    {
       "birthYear": 1993,
       "college": "Appalachian State",
       "draft": null,
@@ -4451,7 +3235,7 @@
         "ovr": 60.3,
         "pot": 60.3
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 210.0
     },
@@ -4521,25 +3305,6 @@
       "team": "NE",
       "trueValue": 42.7,
       "weightLb": 245.0
-    },
-    {
-      "birthYear": 1993,
-      "college": "Michigan State",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0032727",
-      "name": "Joel Heath",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.82,
-        "ovr": 57.7,
-        "pot": 57.7
-      },
-      "team": "DEN",
-      "trueValue": 41.2,
-      "weightLb": 300.0
     },
     {
       "birthYear": 1989,
@@ -4743,7 +3508,7 @@
         "ovr": 62.2,
         "pot": 62.3
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 61.7,
       "weightLb": 177.0
     },
@@ -4954,7 +3719,7 @@
         "ovr": 72.5,
         "pot": 72.5
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 65.1,
       "weightLb": 255.0
     },
@@ -5040,7 +3805,7 @@
         "ovr": 61.5,
         "pot": 61.5
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 195.0
     },
@@ -5136,7 +3901,7 @@
         "ovr": 51.2,
         "pot": 52.7
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 72.0,
       "weightLb": 215.0
     },
@@ -5189,25 +3954,6 @@
       "weightLb": 264.0
     },
     {
-      "birthYear": 1997,
-      "college": "Dartmouth",
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0035613",
-      "name": "Matt Kaskey",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.0,
-        "pot": 48.1
-      },
-      "team": null,
-      "trueValue": 42.3,
-      "weightLb": 325.0
-    },
-    {
       "birthYear": 1996,
       "college": "Massachusetts",
       "draft": {
@@ -5246,7 +3992,7 @@
         "ovr": 41.7,
         "pot": 46.2
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 54.2,
       "weightLb": 280.0
     },
@@ -5284,7 +4030,7 @@
         "ovr": 55.3,
         "pot": 56.8
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 65.0,
       "weightLb": 205.0
     },
@@ -5330,25 +4076,6 @@
       "team": "MIA",
       "trueValue": 41.8,
       "weightLb": 280.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Boston College",
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0035344",
-      "name": "Aaron Monteiro",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.1,
-        "pot": 47.2
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 315.0
     },
     {
       "birthYear": 1996,
@@ -5701,7 +4428,7 @@
         "ovr": 58.7,
         "pot": 60.3
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 41.9,
       "weightLb": 210.0
     },
@@ -5739,7 +4466,7 @@
         "ovr": 61.8,
         "pot": 67.9
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 42.4,
       "weightLb": 300.0
     },
@@ -5777,7 +4504,7 @@
         "ovr": 51.8,
         "pot": 54.8
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 46.9,
       "weightLb": 200.0
     },
@@ -5801,7 +4528,7 @@
         "ovr": 71.7,
         "pot": 75.5
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 46.3,
       "weightLb": 214.0
     },
@@ -5887,25 +4614,6 @@
       "weightLb": 228.0
     },
     {
-      "birthYear": 1996,
-      "college": "Kansas",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0035172",
-      "name": "Shakial Taylor",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 57.1,
-        "pot": 59.1
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 175.0
-    },
-    {
       "birthYear": 1998,
       "college": "Michigan",
       "draft": {
@@ -5925,7 +4633,7 @@
         "ovr": 60.3,
         "pot": 61.5
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 45.8,
       "weightLb": 210.0
     },
@@ -5966,30 +4674,6 @@
       "team": null,
       "trueValue": 55.5,
       "weightLb": 192.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Southern California",
-      "draft": {
-        "pick": 162,
-        "round": 5,
-        "season": 2019,
-        "team": "MIN"
-      },
-      "heightIn": 74.0,
-      "id": "00-0034986",
-      "name": "Cameron Smith",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 56.8,
-        "pot": 60.1
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 235.0
     },
     {
       "birthYear": 1996,
@@ -6035,7 +4719,7 @@
         "ovr": 60.7,
         "pot": 63.5
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 50.2,
       "weightLb": 300.0
     },
@@ -6059,7 +4743,7 @@
         "ovr": 59.4,
         "pot": 63.0
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 54.3,
       "weightLb": 190.0
     },
@@ -6188,47 +4872,9 @@
         "ovr": 61.5,
         "pot": 67.6
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 48.9,
       "weightLb": 175.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "North Carolina",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0035492",
-      "name": "William Sweet",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.6,
-        "pot": 47.7
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 313.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Akron",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0035499",
-      "name": "Kyron Brown",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 65.9,
-        "pot": 67.9
-      },
-      "team": "NYJ",
-      "trueValue": 41.1,
-      "weightLb": 195.0
     },
     {
       "birthYear": 1997,
@@ -6253,25 +4899,6 @@
       "team": "NYJ",
       "trueValue": 42.2,
       "weightLb": 213.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Appalachian State",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0035505",
-      "name": "Jalin Moore",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 40.7,
-        "pot": 42.2
-      },
-      "team": null,
-      "trueValue": 41.1,
-      "weightLb": 212.0
     },
     {
       "birthYear": 1997,
@@ -6307,7 +4934,7 @@
         "ovr": 56.3,
         "pot": 59.3
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 44.7,
       "weightLb": 195.0
     },
@@ -6475,30 +5102,6 @@
       "weightLb": 236.0
     },
     {
-      "birthYear": 1992,
-      "college": "Delaware State",
-      "draft": {
-        "pick": 116,
-        "round": 4,
-        "season": 2015,
-        "team": "ARI"
-      },
-      "heightIn": 77.0,
-      "id": "00-0032131",
-      "name": "Rodney Gunter",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.3,
-        "pot": 71.3
-      },
-      "team": "JAX",
-      "trueValue": 41.1,
-      "weightLb": 305.0
-    },
-    {
       "birthYear": 1991,
       "college": "Florida",
       "draft": {
@@ -6542,7 +5145,7 @@
         "ovr": 74.5,
         "pot": 74.5
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 69.2,
       "weightLb": 260.0
     },
@@ -6662,7 +5265,7 @@
         "ovr": 73.8,
         "pot": 74.6
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 62.7,
       "weightLb": 313.0
     },
@@ -6710,7 +5313,7 @@
         "ovr": 77.0,
         "pot": 77.0
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 67.3,
       "weightLb": 218.0
     },
@@ -6799,30 +5402,6 @@
       "team": "CIN",
       "trueValue": 70.8,
       "weightLb": 240.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Florida State",
-      "draft": {
-        "pick": 194,
-        "round": 6,
-        "season": 2015,
-        "team": "BUF"
-      },
-      "heightIn": 75.0,
-      "id": "00-0032117",
-      "name": "Nick O'Leary",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.7,
-        "pot": 65.7
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 252.0
     },
     {
       "birthYear": 1989,
@@ -7007,7 +5586,7 @@
         "ovr": 56.2,
         "pot": 56.4
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 70.6,
       "weightLb": 203.0
     },
@@ -7385,7 +5964,7 @@
         "ovr": 60.9,
         "pot": 63.9
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 58.9,
       "weightLb": 188.0
     },
@@ -7428,7 +6007,7 @@
         "ovr": 55.3,
         "pot": 56.8
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 73.6,
       "weightLb": 204.0
     },
@@ -7447,7 +6026,7 @@
         "ovr": 41.2,
         "pot": 44.1
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 51.9,
       "weightLb": 299.0
     },
@@ -7474,30 +6053,6 @@
       "team": "MIA",
       "trueValue": 77.1,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Auburn",
-      "draft": {
-        "pick": 235,
-        "round": 7,
-        "season": 2019,
-        "team": "JAX"
-      },
-      "heightIn": 75.0,
-      "id": "00-0035312",
-      "name": "Dontavius Russell",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 51.2,
-        "pot": 53.0
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 320.0
     },
     {
       "birthYear": 1996,
@@ -7669,25 +6224,6 @@
     },
     {
       "birthYear": 1995,
-      "college": "Wisconsin",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0035323",
-      "name": "Beau Benzschawel",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 45.0
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 300.0
-    },
-    {
-      "birthYear": 1995,
       "college": "Mississippi",
       "draft": null,
       "heightIn": 71.0,
@@ -7720,7 +6256,7 @@
         "ovr": 40.9,
         "pot": 45.7
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 62.8,
       "weightLb": 237.0
     },
@@ -7742,25 +6278,6 @@
       "team": "MIA",
       "trueValue": 75.2,
       "weightLb": 193.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Boston College",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0035332",
-      "name": "Ray Smith",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.3,
-        "pot": 45.1
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 310.0
     },
     {
       "birthYear": 1996,
@@ -7887,7 +6404,7 @@
         "ovr": 47.3,
         "pot": 48.8
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 50.2,
       "weightLb": 198.0
     },
@@ -7906,7 +6423,7 @@
         "ovr": 59.6,
         "pot": 62.2
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 66.0,
       "weightLb": 209.0
     },
@@ -7925,7 +6442,7 @@
         "ovr": 54.9,
         "pot": 62.8
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 58.6,
       "weightLb": 334.0
     },
@@ -8006,7 +6523,7 @@
         "ovr": 59.1,
         "pot": 61.7
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 60.5,
       "weightLb": 176.0
     },
@@ -8131,25 +6648,6 @@
     },
     {
       "birthYear": 1997,
-      "college": "Clemson",
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0035416",
-      "name": "Mitch Hyatt",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.6,
-        "pot": 47.0
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 305.0
-    },
-    {
-      "birthYear": 1997,
       "college": "South Carolina",
       "draft": null,
       "heightIn": 77.0,
@@ -8163,7 +6661,7 @@
         "ovr": 50.2,
         "pot": 62.3
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 66.4,
       "weightLb": 190.0
     },
@@ -8283,7 +6781,7 @@
         "ovr": 70.9,
         "pot": 70.9
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 65.9,
       "weightLb": 175.0
     },
@@ -8331,7 +6829,7 @@
         "ovr": 65.3,
         "pot": 65.3
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 54.4,
       "weightLb": 245.0
     },
@@ -8441,7 +6939,7 @@
         "ovr": 53.6,
         "pot": 53.7
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 71.6,
       "weightLb": 256.0
     },
@@ -8460,7 +6958,7 @@
         "ovr": 67.8,
         "pot": 68.4
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 70.9,
       "weightLb": 246.0
     },
@@ -8546,7 +7044,7 @@
         "ovr": 64.8,
         "pot": 64.8
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 52.5,
       "weightLb": 210.0
     },
@@ -8680,7 +7178,7 @@
         "ovr": 74.0,
         "pot": 74.4
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 65.7,
       "weightLb": 325.0
     },
@@ -8790,7 +7288,7 @@
         "ovr": 61.0,
         "pot": 61.0
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 52.7,
       "weightLb": 189.0
     },
@@ -8905,30 +7403,6 @@
       "weightLb": 235.0
     },
     {
-      "birthYear": 1991,
-      "college": "Auburn",
-      "draft": {
-        "pick": 76,
-        "round": 3,
-        "season": 2016,
-        "team": "CLE"
-      },
-      "heightIn": 77.0,
-      "id": "00-0033097",
-      "name": "Shon Coleman",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 73.0,
-        "pot": 73.6
-      },
-      "team": "SF",
-      "trueValue": 40.7,
-      "weightLb": 310.0
-    },
-    {
       "birthYear": 1993,
       "college": "South Carolina State",
       "draft": {
@@ -9023,30 +7497,6 @@
       "team": "CIN",
       "trueValue": 76.5,
       "weightLb": 211.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "Oregon",
-      "draft": {
-        "pick": 34,
-        "round": 2,
-        "season": 2009,
-        "team": "NE"
-      },
-      "heightIn": 71.0,
-      "id": "00-0027010",
-      "name": "Patrick Chung",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2009,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 71.3,
-        "pot": 71.3
-      },
-      "team": "NE",
-      "trueValue": 41.5,
-      "weightLb": 215.0
     },
     {
       "birthYear": 1985,
@@ -9250,7 +7700,7 @@
         "ovr": 40.8,
         "pot": 40.8
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 43.2,
       "weightLb": 212.0
     },
@@ -9370,7 +7820,7 @@
         "ovr": 64.4,
         "pot": 64.4
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 66.5,
       "weightLb": 219.0
     },
@@ -9485,7 +7935,7 @@
         "ovr": 61.4,
         "pot": 61.4
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 43.0,
       "weightLb": 181.0
     },
@@ -9632,25 +8082,6 @@
       "team": null,
       "trueValue": 64.7,
       "weightLb": 190.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Michigan",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0033317",
-      "name": "Erik Magnuson",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 50.8,
-        "pot": 51.2
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 300.0
     },
     {
       "birthYear": 1986,
@@ -9844,44 +8275,6 @@
       "weightLb": 235.0
     },
     {
-      "birthYear": 1993,
-      "college": "Vanderbilt",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0032911",
-      "name": "Spencer Pulley",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.82,
-        "ovr": 65.9,
-        "pot": 66.3
-      },
-      "team": "NYG",
-      "trueValue": 42.0,
-      "weightLb": 308.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Mississippi",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0033366",
-      "name": "Quincy Adeboyejo",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 41.9,
-        "pot": 41.9
-      },
-      "team": null,
-      "trueValue": 41.2,
-      "weightLb": 200.0
-    },
-    {
       "birthYear": 1987,
       "college": "Florida State",
       "draft": null,
@@ -9920,7 +8313,7 @@
         "ovr": 49.7,
         "pot": 50.2
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 62.9,
       "weightLb": 302.0
     },
@@ -9939,7 +8332,7 @@
         "ovr": 56.6,
         "pot": 56.6
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 58.0,
       "weightLb": 180.0
     },
@@ -10006,30 +8399,6 @@
       "weightLb": 300.0
     },
     {
-      "birthYear": 1994,
-      "college": "Akron",
-      "draft": {
-        "pick": 175,
-        "round": 5,
-        "season": 2016,
-        "team": "LAC"
-      },
-      "heightIn": 71.0,
-      "id": "00-0032895",
-      "name": "Jatavis Brown",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.84,
-        "ovr": 66.3,
-        "pot": 66.3
-      },
-      "team": "PHI",
-      "trueValue": 41.5,
-      "weightLb": 221.0
-    },
-    {
       "birthYear": 1981,
       "college": "California",
       "draft": null,
@@ -10044,7 +8413,7 @@
         "ovr": 66.6,
         "pot": 67.1
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 69.9,
       "weightLb": 256.0
     },
@@ -10164,33 +8533,9 @@
         "ovr": 63.8,
         "pot": 64.9
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 50.1,
       "weightLb": 194.0
-    },
-    {
-      "birthYear": 1979,
-      "college": "Sam Houston State",
-      "draft": {
-        "pick": 81,
-        "round": 3,
-        "season": 2002,
-        "team": "ARI"
-      },
-      "heightIn": 76.0,
-      "id": "00-0021206",
-      "name": "Josh McCown",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2002,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 62.5,
-        "pot": 62.5
-      },
-      "team": "HOU",
-      "trueValue": 41.6,
-      "weightLb": 218.0
     },
     {
       "birthYear": 1993,
@@ -10279,7 +8624,7 @@
         "ovr": 41.7,
         "pot": 42.3
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 48.1,
       "weightLb": 300.0
     },
@@ -10327,7 +8672,7 @@
         "ovr": 61.3,
         "pot": 61.3
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 64.4,
       "weightLb": 195.0
     },
@@ -10599,7 +8944,7 @@
         "ovr": 54.0,
         "pot": 54.0
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 63.7,
       "weightLb": 234.0
     },
@@ -10848,7 +9193,7 @@
         "ovr": 63.8,
         "pot": 63.8
       },
-      "team": null,
+      "team": "MIA",
       "trueValue": 65.2,
       "weightLb": 169.0
     },
@@ -10896,33 +9241,9 @@
         "ovr": 65.1,
         "pot": 65.2
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 59.5,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Georgia Southern",
-      "draft": {
-        "pick": 183,
-        "round": 5,
-        "season": 2017,
-        "team": "KC"
-      },
-      "heightIn": 74.0,
-      "id": "00-0033468",
-      "name": "Ukeme Eligwe",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 52.2,
-        "pot": 52.2
-      },
-      "team": null,
-      "trueValue": 41.0,
-      "weightLb": 239.0
     },
     {
       "birthYear": 1992,
@@ -10939,7 +9260,7 @@
         "ovr": 57.7,
         "pot": 57.7
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 67.2,
       "weightLb": 252.0
     },
@@ -11293,7 +9614,7 @@
         "ovr": 60.1,
         "pot": 60.5
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 66.9,
       "weightLb": 260.0
     },
@@ -11438,30 +9759,6 @@
     },
     {
       "birthYear": 1994,
-      "college": "Mississippi",
-      "draft": {
-        "pick": 199,
-        "round": 6,
-        "season": 2016,
-        "team": "CIN"
-      },
-      "heightIn": 75.0,
-      "id": "00-0032795",
-      "name": "Cody Core",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.87,
-        "ovr": 60.1,
-        "pot": 60.1
-      },
-      "team": "NYG",
-      "trueValue": 41.0,
-      "weightLb": 205.0
-    },
-    {
-      "birthYear": 1994,
       "college": "Villanova",
       "draft": null,
       "heightIn": 72.0,
@@ -11475,7 +9772,7 @@
         "ovr": 65.9,
         "pot": 65.9
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 62.3,
       "weightLb": 240.0
     },
@@ -11502,30 +9799,6 @@
       "team": "SF",
       "trueValue": 55.6,
       "weightLb": 236.0
-    },
-    {
-      "birthYear": 1993,
-      "college": "Northwestern",
-      "draft": {
-        "pick": 197,
-        "round": 6,
-        "season": 2016,
-        "team": "TB"
-      },
-      "heightIn": 72.0,
-      "id": "00-0032794",
-      "name": "Dan Vitale",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.89,
-        "ovr": 67.6,
-        "pot": 67.6
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 239.0
     },
     {
       "birthYear": 1993,
@@ -11598,25 +9871,6 @@
       "team": "LAC",
       "trueValue": 64.0,
       "weightLb": 314.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Central Florida",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0033390",
-      "name": "D.J. Killings",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 40.7,
-        "pot": 40.7
-      },
-      "team": null,
-      "trueValue": 40.5,
-      "weightLb": 195.0
     },
     {
       "birthYear": 1995,
@@ -11772,7 +10026,7 @@
         "ovr": 55.4,
         "pot": 55.8
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 64.4,
       "weightLb": 308.0
     },
@@ -12103,25 +10357,6 @@
     },
     {
       "birthYear": 1991,
-      "college": "Miami",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0030821",
-      "name": "Allen Hurns",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 73.2,
-        "pot": 73.2
-      },
-      "team": "MIA",
-      "trueValue": 41.7,
-      "weightLb": 195.0
-    },
-    {
-      "birthYear": 1991,
       "college": "Clemson",
       "draft": null,
       "heightIn": 75.0,
@@ -12230,7 +10465,7 @@
         "ovr": 62.8,
         "pot": 62.8
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 81.8,
       "weightLb": 270.0
     },
@@ -12680,7 +10915,7 @@
         "ovr": 70.0,
         "pot": 70.0
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 40.8,
       "weightLb": 196.0
     },
@@ -13044,7 +11279,7 @@
         "ovr": 69.2,
         "pot": 69.2
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 61.4,
       "weightLb": 201.0
     },
@@ -13071,30 +11306,6 @@
       "team": "CAR",
       "trueValue": 73.9,
       "weightLb": 215.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Colorado State",
-      "draft": {
-        "pick": 43,
-        "round": 2,
-        "season": 2014,
-        "team": "NYG"
-      },
-      "heightIn": 76.0,
-      "id": "00-0031238",
-      "name": "Weston Richburg",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 70.5,
-        "pot": 71.1
-      },
-      "team": "SF",
-      "trueValue": 41.7,
-      "weightLb": 290.0
     },
     {
       "birthYear": 1991,
@@ -13370,7 +11581,7 @@
         "ovr": 63.7,
         "pot": 63.8
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 70.3,
       "weightLb": 192.0
     },
@@ -13442,7 +11653,7 @@
         "ovr": 76.3,
         "pot": 76.4
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 69.6,
       "weightLb": 315.0
     },
@@ -13610,30 +11821,6 @@
       "weightLb": 190.0
     },
     {
-      "birthYear": 1991,
-      "college": "Wisconsin",
-      "draft": {
-        "pick": 31,
-        "round": 1,
-        "season": 2013,
-        "team": "DAL"
-      },
-      "heightIn": 76.0,
-      "id": "00-0030546",
-      "name": "Travis Frederick",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 93.8,
-        "pot": 94.3
-      },
-      "team": "DAL",
-      "trueValue": 41.9,
-      "weightLb": 320.0
-    },
-    {
       "birthYear": 1990,
       "college": "Notre Dame",
       "draft": {
@@ -13677,7 +11864,7 @@
         "ovr": 62.7,
         "pot": 63.0
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 69.4,
       "weightLb": 275.0
     },
@@ -13869,7 +12056,7 @@
         "ovr": 47.0,
         "pot": 47.0
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 43.5,
       "weightLb": 240.0
     },
@@ -13984,7 +12171,7 @@
         "ovr": 78.5,
         "pot": 78.6
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 41.8,
       "weightLb": 260.0
     },
@@ -14214,7 +12401,7 @@
         "ovr": 80.1,
         "pot": 80.3
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 70.1,
       "weightLb": 252.0
     },
@@ -14262,7 +12449,7 @@
         "ovr": 66.7,
         "pot": 66.8
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 52.2,
       "weightLb": 215.0
     },
@@ -14545,30 +12732,6 @@
       "weightLb": 192.0
     },
     {
-      "birthYear": 1992,
-      "college": "North Carolina",
-      "draft": {
-        "pick": 111,
-        "round": 4,
-        "season": 2014,
-        "team": "CIN"
-      },
-      "heightIn": 75.0,
-      "id": "00-0031306",
-      "name": "Russell Bodine",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 67.8,
-        "pot": 68.3
-      },
-      "team": "DET",
-      "trueValue": 40.4,
-      "weightLb": 308.0
-    },
-    {
       "birthYear": 1989,
       "college": "Texas A&amp;M",
       "draft": {
@@ -14588,7 +12751,7 @@
         "ovr": 88.0,
         "pot": 88.1
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 42.9,
       "weightLb": 250.0
     },
@@ -14631,7 +12794,7 @@
         "ovr": 60.6,
         "pot": 60.6
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 42.1,
       "weightLb": 200.0
     },
@@ -14818,7 +12981,7 @@
         "ovr": 50.8,
         "pot": 51.3
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 56.1,
       "weightLb": 305.0
     },
@@ -14837,7 +13000,7 @@
         "ovr": 46.1,
         "pot": 47.6
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 53.9,
       "weightLb": 170.0
     },
@@ -14861,7 +13024,7 @@
         "ovr": 61.5,
         "pot": 61.7
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 79.0,
       "weightLb": 188.0
     },
@@ -14885,7 +13048,7 @@
         "ovr": 91.6,
         "pot": 91.7
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 75.0,
       "weightLb": 265.0
     },
@@ -15000,7 +13163,7 @@
         "ovr": 47.7,
         "pot": 47.7
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 50.4,
       "weightLb": 315.0
     },
@@ -15105,7 +13268,7 @@
         "ovr": 47.4,
         "pot": 47.9
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 76.0,
       "weightLb": 320.0
     },
@@ -15143,7 +13306,7 @@
         "ovr": 66.9,
         "pot": 66.9
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 41.3,
       "weightLb": 255.0
     },
@@ -15234,7 +13397,7 @@
         "ovr": 52.3,
         "pot": 52.3
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 69.5,
       "weightLb": 265.0
     },
@@ -15354,30 +13517,6 @@
       "weightLb": 249.0
     },
     {
-      "birthYear": 1986,
-      "college": "Utah",
-      "draft": {
-        "pick": 95,
-        "round": 3,
-        "season": 2012,
-        "team": "LV"
-      },
-      "heightIn": 77.0,
-      "id": "00-0029699",
-      "name": "Tony Bergstrom",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 50.1,
-        "pot": 50.6
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 310.0
-    },
-    {
       "birthYear": 1989,
       "college": "Texas Tech",
       "draft": null,
@@ -15454,30 +13593,6 @@
       "weightLb": 270.0
     },
     {
-      "birthYear": 1993,
-      "college": "Southern California",
-      "draft": {
-        "pick": 70,
-        "round": 3,
-        "season": 2014,
-        "team": "SF"
-      },
-      "heightIn": 75.0,
-      "id": "00-0031337",
-      "name": "Marcus Martin",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 40.6,
-        "pot": 41.1
-      },
-      "team": null,
-      "trueValue": 42.5,
-      "weightLb": 330.0
-    },
-    {
       "birthYear": 1992,
       "college": "Florida State",
       "draft": {
@@ -15497,7 +13612,7 @@
         "ovr": 65.7,
         "pot": 65.8
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 56.3,
       "weightLb": 205.0
     },
@@ -15521,7 +13636,7 @@
         "ovr": 59.6,
         "pot": 59.6
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 63.3,
       "weightLb": 216.0
     },
@@ -15591,30 +13706,6 @@
       "team": "CAR",
       "trueValue": 77.9,
       "weightLb": 300.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Southern California",
-      "draft": {
-        "pick": 39,
-        "round": 2,
-        "season": 2014,
-        "team": "JAX"
-      },
-      "heightIn": 72.0,
-      "id": "00-0031431",
-      "name": "Marqise Lee",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.7,
-        "pot": 65.8
-      },
-      "team": "NE",
-      "trueValue": 42.3,
-      "weightLb": 196.0
     },
     {
       "birthYear": 1992,
@@ -15727,30 +13818,6 @@
       "weightLb": 192.0
     },
     {
-      "birthYear": 1993,
-      "college": "UCLA",
-      "draft": {
-        "pick": 147,
-        "round": 5,
-        "season": 2015,
-        "team": "GB"
-      },
-      "heightIn": 75.0,
-      "id": "00-0031589",
-      "name": "Brett Hundley",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.92,
-        "ovr": 62.9,
-        "pot": 62.9
-      },
-      "team": "ARI",
-      "trueValue": 41.7,
-      "weightLb": 226.0
-    },
-    {
       "birthYear": 1988,
       "college": "Michigan State",
       "draft": {
@@ -15832,7 +13899,7 @@
         "ovr": 58.5,
         "pot": 63.3
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 41.5,
       "weightLb": 307.0
     },
@@ -15894,7 +13961,7 @@
         "ovr": 74.2,
         "pot": 77.1
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 42.8,
       "weightLb": 240.0
     },
@@ -15913,7 +13980,7 @@
         "ovr": 60.3,
         "pot": 61.8
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 59.0,
       "weightLb": 205.0
     },
@@ -15937,7 +14004,7 @@
         "ovr": 55.7,
         "pot": 55.7
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 47.0,
       "weightLb": 252.0
     },
@@ -15956,7 +14023,7 @@
         "ovr": 57.7,
         "pot": 59.5
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 64.5,
       "weightLb": 252.0
     },
@@ -16004,7 +14071,7 @@
         "ovr": 52.6,
         "pot": 54.1
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 48.4,
       "weightLb": 185.0
     },
@@ -16028,7 +14095,7 @@
         "ovr": 59.3,
         "pot": 62.3
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 53.3,
       "weightLb": 246.0
     },
@@ -16138,7 +14205,7 @@
         "ovr": 53.6,
         "pot": 55.1
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 61.1,
       "weightLb": 300.0
     },
@@ -16160,25 +14227,6 @@
       "team": "HOU",
       "trueValue": 64.3,
       "weightLb": 202.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Fresno State",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0034256",
-      "name": "Da'Mari Scott",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.66,
-        "ovr": 62.7,
-        "pot": 64.2
-      },
-      "team": "NYG",
-      "trueValue": 40.6,
-      "weightLb": 210.0
     },
     {
       "birthYear": 1995,
@@ -16299,30 +14347,6 @@
       "team": "SF",
       "trueValue": 70.4,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "UCLA",
-      "draft": {
-        "pick": 88,
-        "round": 3,
-        "season": 2017,
-        "team": "LV"
-      },
-      "heightIn": 75.0,
-      "id": "00-0033924",
-      "name": "Eddie Vanderdoes",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.73,
-        "ovr": 57.4,
-        "pot": 57.5
-      },
-      "team": "HOU",
-      "trueValue": 41.1,
-      "weightLb": 315.0
     },
     {
       "birthYear": 1995,
@@ -16656,7 +14680,7 @@
         "ovr": 55.2,
         "pot": 55.2
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 51.2,
       "weightLb": 295.0
     },
@@ -16680,7 +14704,7 @@
         "ovr": 59.6,
         "pot": 61.7
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 41.6,
       "weightLb": 235.0
     },
@@ -16704,7 +14728,7 @@
         "ovr": 72.6,
         "pot": 74.1
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 65.3,
       "weightLb": 280.0
     },
@@ -16929,7 +14953,7 @@
         "ovr": 61.0,
         "pot": 64.1
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 61.0,
       "weightLb": 320.0
     },
@@ -17097,7 +15121,7 @@
         "ovr": 73.3,
         "pot": 76.2
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 64.7,
       "weightLb": 191.0
     },
@@ -17255,7 +15279,7 @@
         "ovr": 61.5,
         "pot": 61.5
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 74.8,
       "weightLb": 202.0
     },
@@ -17317,7 +15341,7 @@
         "ovr": 59.7,
         "pot": 61.2
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 49.4,
       "weightLb": 207.0
     },
@@ -17379,7 +15403,7 @@
         "ovr": 62.4,
         "pot": 67.3
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 69.0,
       "weightLb": 255.0
     },
@@ -17398,28 +15422,9 @@
         "ovr": 41.9,
         "pot": 43.7
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 61.7,
       "weightLb": 295.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Minnesota",
-      "draft": null,
-      "heightIn": 82.0,
-      "id": "00-0034128",
-      "name": "Nate Wozniak",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.4,
-        "pot": 43.5
-      },
-      "team": null,
-      "trueValue": 40.6,
-      "weightLb": 302.0
     },
     {
       "birthYear": 1996,
@@ -17494,25 +15499,6 @@
       "weightLb": 242.0
     },
     {
-      "birthYear": 1994,
-      "college": "Florida",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0033855",
-      "name": "Chris Thompson",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 66.6,
-        "pot": 66.6
-      },
-      "team": "SF",
-      "trueValue": 41.5,
-      "weightLb": 175.0
-    },
-    {
       "birthYear": 1996,
       "college": "Wesley",
       "draft": null,
@@ -17530,25 +15516,6 @@
       "team": "ATL",
       "trueValue": 53.1,
       "weightLb": 305.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Cincinnati",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0034141",
-      "name": "Devin Gray",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.2,
-        "pot": 42.7
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 192.0
     },
     {
       "birthYear": 1996,
@@ -17747,7 +15714,7 @@
         "ovr": 56.0,
         "pot": 58.0
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 60.7,
       "weightLb": 185.0
     },
@@ -17774,25 +15741,6 @@
       "team": "JAX",
       "trueValue": 75.5,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Notre Dame",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0033704",
-      "name": "James Onwualu",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 62.1,
-        "pot": 62.2
-      },
-      "team": "LV",
-      "trueValue": 41.0,
-      "weightLb": 235.0
     },
     {
       "birthYear": 1995,
@@ -17929,7 +15877,7 @@
         "ovr": 52.6,
         "pot": 54.1
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 61.0,
       "weightLb": 260.0
     },
@@ -18145,7 +16093,7 @@
         "ovr": 55.6,
         "pot": 59.5
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 57.5,
       "weightLb": 344.0
     },
@@ -18198,25 +16146,6 @@
       "weightLb": 254.0
     },
     {
-      "birthYear": 1995,
-      "college": "Holy Cross",
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0034295",
-      "name": "James Murray",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 40.6,
-        "pot": 43.5
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 305.0
-    },
-    {
       "birthYear": 1996,
       "college": "Washington State",
       "draft": null,
@@ -18231,7 +16160,7 @@
         "ovr": 65.2,
         "pot": 67.4
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 66.1,
       "weightLb": 235.0
     },
@@ -18258,25 +16187,6 @@
       "team": "NYG",
       "trueValue": 65.0,
       "weightLb": 245.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Nevada-Las Vegas",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0033758",
-      "name": "Jeremiah Valoaga",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.74,
-        "ovr": 58.2,
-        "pot": 58.2
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 275.0
     },
     {
       "birthYear": 1995,
@@ -18432,7 +16342,7 @@
         "ovr": 59.4,
         "pot": 61.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 69.6,
       "weightLb": 180.0
     },
@@ -18523,7 +16433,7 @@
         "ovr": 57.7,
         "pot": 59.8
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 59.9,
       "weightLb": 332.0
     },
@@ -18619,7 +16529,7 @@
         "ovr": 57.0,
         "pot": 58.5
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 62.4,
       "weightLb": 190.0
     },
@@ -18758,7 +16668,7 @@
         "ovr": 60.5,
         "pot": 64.1
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 60.4,
       "weightLb": 245.0
     },
@@ -18809,30 +16719,6 @@
       "team": "LV",
       "trueValue": 66.1,
       "weightLb": 200.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Ohio State",
-      "draft": {
-        "pick": 24,
-        "round": 1,
-        "season": 2017,
-        "team": "LV"
-      },
-      "heightIn": 72.0,
-      "id": "00-0033882",
-      "name": "Gareon Conley",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.79,
-        "ovr": 72.6,
-        "pot": 73.4
-      },
-      "team": "HOU",
-      "trueValue": 41.5,
-      "weightLb": 190.0
     },
     {
       "birthYear": 1994,
@@ -18897,7 +16783,7 @@
         "ovr": 61.1,
         "pot": 62.6
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 64.5,
       "weightLb": 186.0
     },
@@ -18935,7 +16821,7 @@
         "ovr": 49.0,
         "pot": 49.0
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 65.6,
       "weightLb": 243.0
     },
@@ -18981,25 +16867,6 @@
       "team": "PHI",
       "trueValue": 79.4,
       "weightLb": 259.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "UCLA",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0034097",
-      "name": "Najee Toran",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.8,
-        "pot": 44.7
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 305.0
     },
     {
       "birthYear": 1994,
@@ -19088,7 +16955,7 @@
         "ovr": 57.9,
         "pot": 57.9
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 56.6,
       "weightLb": 200.0
     },
@@ -19157,30 +17024,6 @@
       },
       "team": "NE",
       "trueValue": 70.2,
-      "weightLb": 255.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Wake Forest",
-      "draft": {
-        "pick": 177,
-        "round": 6,
-        "season": 2018,
-        "team": "HOU"
-      },
-      "heightIn": 76.0,
-      "id": "00-0034402",
-      "name": "Duke Ejiofor",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 64.2,
-        "pot": 65.9
-      },
-      "team": "HOU",
-      "trueValue": 40.9,
       "weightLb": 255.0
     },
     {
@@ -19270,7 +17113,7 @@
         "ovr": 61.0,
         "pot": 62.5
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 58.2,
       "weightLb": 248.0
     },
@@ -19385,7 +17228,7 @@
         "ovr": 59.2,
         "pot": 60.8
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 49.2,
       "weightLb": 201.0
     },
@@ -19452,7 +17295,7 @@
         "ovr": 60.2,
         "pot": 62.1
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 68.7,
       "weightLb": 283.0
     },
@@ -19757,7 +17600,7 @@
         "ovr": 74.8,
         "pot": 74.8
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 65.3,
       "weightLb": 260.0
     },
@@ -19814,7 +17657,7 @@
         "ovr": 63.4,
         "pot": 65.4
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 54.6,
       "weightLb": 209.0
     },
@@ -19881,7 +17724,7 @@
         "ovr": 51.2,
         "pot": 51.2
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 43.0,
       "weightLb": 253.0
     },
@@ -19943,7 +17786,7 @@
         "ovr": 58.6,
         "pot": 60.1
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 70.0,
       "weightLb": 232.0
     },
@@ -20005,7 +17848,7 @@
         "ovr": 54.7,
         "pot": 56.2
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 58.8,
       "weightLb": 202.0
     },
@@ -20024,7 +17867,7 @@
         "ovr": 65.4,
         "pot": 67.0
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 57.5,
       "weightLb": 199.0
     },
@@ -20048,7 +17891,7 @@
         "ovr": 63.8,
         "pot": 68.4
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 75.8,
       "weightLb": 200.0
     },
@@ -20067,7 +17910,7 @@
         "ovr": 59.2,
         "pot": 61.2
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 46.3,
       "weightLb": 202.0
     },
@@ -20121,25 +17964,6 @@
     },
     {
       "birthYear": 1994,
-      "college": "San Jose State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0033635",
-      "name": "Isaiah Irving",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.79,
-        "ovr": 59.4,
-        "pot": 59.4
-      },
-      "team": null,
-      "trueValue": 42.5,
-      "weightLb": 254.0
-    },
-    {
-      "birthYear": 1994,
       "college": "UCLA",
       "draft": null,
       "heightIn": 75.0,
@@ -20153,7 +17977,7 @@
         "ovr": 57.8,
         "pot": 57.8
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 55.4,
       "weightLb": 325.0
     },
@@ -20272,7 +18096,7 @@
         "ovr": 49.4,
         "pot": 50.9
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 50.6,
       "weightLb": 195.0
     },
@@ -20334,7 +18158,7 @@
         "ovr": 66.0,
         "pot": 67.6
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 61.8,
       "weightLb": 250.0
     },
@@ -20406,7 +18230,7 @@
         "ovr": 61.1,
         "pot": 64.0
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 56.4,
       "weightLb": 305.0
     },
@@ -20756,7 +18580,7 @@
         "ovr": 63.4,
         "pot": 64.9
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 58.0,
       "weightLb": 210.0
     },
@@ -20876,7 +18700,7 @@
         "ovr": 54.3,
         "pot": 54.3
       },
-      "team": null,
+      "team": "DET",
       "trueValue": 49.8,
       "weightLb": 190.0
     },
@@ -20924,7 +18748,7 @@
         "ovr": 64.0,
         "pot": 67.2
       },
-      "team": "CIN",
+      "team": null,
       "trueValue": 57.6,
       "weightLb": 312.0
     },
@@ -20948,7 +18772,7 @@
         "ovr": 61.2,
         "pot": 64.6
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 67.8,
       "weightLb": 320.0
     },
@@ -21044,7 +18868,7 @@
         "ovr": 68.0,
         "pot": 68.0
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 62.5,
       "weightLb": 185.0
     },
@@ -21087,7 +18911,7 @@
         "ovr": 58.3,
         "pot": 59.8
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 58.2,
       "weightLb": 200.0
     },
@@ -21234,30 +19058,6 @@
       "team": "DAL",
       "trueValue": 49.5,
       "weightLb": 265.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Miami",
-      "draft": {
-        "pick": 139,
-        "round": 5,
-        "season": 2018,
-        "team": "NYG"
-      },
-      "heightIn": 77.0,
-      "id": "00-0034848",
-      "name": "R.J. McIntosh",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.69,
-        "ovr": 55.3,
-        "pot": 58.2
-      },
-      "team": "NYG",
-      "trueValue": 42.7,
-      "weightLb": 283.0
     },
     {
       "birthYear": 1994,
@@ -21451,7 +19251,7 @@
         "ovr": 42.5,
         "pot": 44.7
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 65.5,
       "weightLb": 235.0
     },
@@ -21844,7 +19644,7 @@
         "ovr": 78.6,
         "pot": 82.5
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 215.0
     },
@@ -21863,7 +19663,7 @@
         "ovr": 64.9,
         "pot": 64.9
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 48.0,
       "weightLb": 305.0
     },
@@ -21983,7 +19783,7 @@
         "ovr": 58.6,
         "pot": 62.4
       },
-      "team": null,
+      "team": "ARI",
       "trueValue": 41.7,
       "weightLb": 245.0
     },
@@ -22055,7 +19855,7 @@
         "ovr": 43.1,
         "pot": 44.7
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 67.0,
       "weightLb": 230.0
     },
@@ -22098,7 +19898,7 @@
         "ovr": 41.7,
         "pot": 43.2
       },
-      "team": "MIA",
+      "team": null,
       "trueValue": 60.9,
       "weightLb": 198.0
     },
@@ -22149,30 +19949,6 @@
       "team": "DAL",
       "trueValue": 73.5,
       "weightLb": 202.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Baylor",
-      "draft": {
-        "pick": 67,
-        "round": 3,
-        "season": 2019,
-        "team": "SF"
-      },
-      "heightIn": 77.0,
-      "id": "00-0034971",
-      "name": "Jalen Hurd",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.3,
-        "ovr": 63.7,
-        "pot": 67.8
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 227.0
     },
     {
       "birthYear": 1997,
@@ -22242,7 +20018,7 @@
         "ovr": 74.1,
         "pot": 75.1
       },
-      "team": "LV",
+      "team": null,
       "trueValue": 68.5,
       "weightLb": 265.0
     },
@@ -22352,7 +20128,7 @@
         "ovr": 56.1,
         "pot": 62.2
       },
-      "team": null,
+      "team": "CIN",
       "trueValue": 52.9,
       "weightLb": 326.0
     },
@@ -22403,30 +20179,6 @@
       "team": "NYG",
       "trueValue": 70.6,
       "weightLb": 190.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Mississippi",
-      "draft": {
-        "pick": 46,
-        "round": 2,
-        "season": 2018,
-        "team": "KC"
-      },
-      "heightIn": 75.0,
-      "id": "00-0034774",
-      "name": "Breeland Speaks",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 67.2,
-        "pot": 69.5
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 285.0
     },
     {
       "birthYear": 1994,
@@ -22500,7 +20252,7 @@
         "ovr": 50.8,
         "pot": 52.6
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 51.8,
       "weightLb": 265.0
     },
@@ -22557,28 +20309,9 @@
         "ovr": 56.8,
         "pot": 58.3
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 66.2,
       "weightLb": 215.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Georgia",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0034586",
-      "name": "John Atkins",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.69,
-        "ovr": 55.5,
-        "pot": 57.0
-      },
-      "team": null,
-      "trueValue": 40.3,
-      "weightLb": 320.0
     },
     {
       "birthYear": 1996,
@@ -22600,28 +20333,9 @@
         "ovr": 70.0,
         "pot": 71.0
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 72.8,
       "weightLb": 181.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Wyoming",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0034932",
-      "name": "Austin Fort",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.4,
-        "pot": 43.3
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 244.0
     },
     {
       "birthYear": 1996,
@@ -22710,7 +20424,7 @@
         "ovr": 49.5,
         "pot": 51.1
       },
-      "team": null,
+      "team": "LV",
       "trueValue": 56.5,
       "weightLb": 210.0
     },
@@ -23145,25 +20859,6 @@
       "weightLb": 303.0
     },
     {
-      "birthYear": 1996,
-      "college": "Arkansas State",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0035947",
-      "name": "Omar Bayless",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 44.3,
-        "pot": 63.1
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 207.0
-    },
-    {
       "birthYear": 1998,
       "college": "Alabama",
       "draft": {
@@ -23293,7 +20988,7 @@
         "ovr": 48.5,
         "pot": 48.5
       },
-      "team": "LAC",
+      "team": null,
       "trueValue": 55.7,
       "weightLb": 195.0
     },
@@ -23436,7 +21131,7 @@
         "ovr": 64.4,
         "pot": 65.8
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 61.3,
       "weightLb": 260.0
     },
@@ -23522,7 +21217,7 @@
         "ovr": 48.7,
         "pot": 71.0
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 57.4,
       "weightLb": 211.0
     },
@@ -23541,7 +21236,7 @@
         "ovr": 52.3,
         "pot": 64.5
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 62.9,
       "weightLb": 220.0
     },
@@ -23623,25 +21318,6 @@
     },
     {
       "birthYear": 1998,
-      "college": "Memphis",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0036200",
-      "name": "Dustin Woodard",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 49.4,
-        "pot": 62.8
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 291.0
-    },
-    {
-      "birthYear": 1998,
       "college": "North Carolina",
       "draft": null,
       "heightIn": 74.0,
@@ -23679,7 +21355,7 @@
         "ovr": 59.4,
         "pot": 63.6
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 70.7,
       "weightLb": 350.0
     },
@@ -23722,7 +21398,7 @@
         "ovr": 60.5,
         "pot": 64.9
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 52.6,
       "weightLb": 315.0
     },
@@ -23789,7 +21465,7 @@
         "ovr": 61.2,
         "pot": 64.5
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 41.9,
       "weightLb": 230.0
     },
@@ -23880,25 +21556,6 @@
       "weightLb": 335.0
     },
     {
-      "birthYear": 1997,
-      "college": "Mississippi State",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0036136",
-      "name": "Stephen Guidry",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 51.1,
-        "pot": 56.2
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 200.0
-    },
-    {
       "birthYear": 1998,
       "college": "Kansas",
       "draft": null,
@@ -23970,7 +21627,7 @@
         "ovr": 46.7,
         "pot": 46.7
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 66.1,
       "weightLb": 215.0
     },
@@ -23989,7 +21646,7 @@
         "ovr": 47.4,
         "pot": 47.4
       },
-      "team": null,
+      "team": "NYJ",
       "trueValue": 63.8,
       "weightLb": 255.0
     },
@@ -24008,7 +21665,7 @@
         "ovr": 47.8,
         "pot": 50.9
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 60.4,
       "weightLb": 180.0
     },
@@ -24075,7 +21732,7 @@
         "ovr": 59.5,
         "pot": 62.3
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 62.3,
       "weightLb": 290.0
     },
@@ -24391,49 +22048,6 @@
       "weightLb": 225.0
     },
     {
-      "birthYear": 1996,
-      "college": "Alabama",
-      "draft": {
-        "pick": 115,
-        "round": 4,
-        "season": 2019,
-        "team": "CAR"
-      },
-      "heightIn": 75.0,
-      "id": "00-0035257",
-      "name": "Christian Miller",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.57,
-        "ovr": 62.6,
-        "pot": 65.0
-      },
-      "team": "CAR",
-      "trueValue": 41.3,
-      "weightLb": 244.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Iowa",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0035036",
-      "name": "Ross Reynolds",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.5,
-        "pot": 44.4
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 295.0
-    },
-    {
       "birthYear": 1995,
       "college": "Purdue",
       "draft": null,
@@ -24702,7 +22316,7 @@
         "ovr": 64.5,
         "pot": 66.1
       },
-      "team": "JAX",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 220.0
     },
@@ -24745,28 +22359,9 @@
         "ovr": 60.2,
         "pot": 63.0
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 67.9,
       "weightLb": 285.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Alabama",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0035025",
-      "name": "Hale Hentges",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.59,
-        "ovr": 60.7,
-        "pot": 63.7
-      },
-      "team": null,
-      "trueValue": 42.8,
-      "weightLb": 245.0
     },
     {
       "birthYear": 1995,
@@ -25061,7 +22656,7 @@
         "ovr": 56.4,
         "pot": 60.1
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 41.7,
       "weightLb": 302.0
     },
@@ -25152,7 +22747,7 @@
         "ovr": 62.0,
         "pot": 66.4
       },
-      "team": "MIN",
+      "team": null,
       "trueValue": 53.2,
       "weightLb": 323.0
     },
@@ -25224,7 +22819,7 @@
         "ovr": 59.2,
         "pot": 63.3
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 315.0
     },
@@ -25248,7 +22843,7 @@
         "ovr": 61.0,
         "pot": 65.7
       },
-      "team": "PHI",
+      "team": null,
       "trueValue": 41.1,
       "weightLb": 315.0
     },
@@ -25560,7 +23155,7 @@
         "ovr": 59.0,
         "pot": 66.7
       },
-      "team": "DAL",
+      "team": null,
       "trueValue": 65.6,
       "weightLb": 308.0
     },
@@ -25613,30 +23208,6 @@
       "weightLb": 250.0
     },
     {
-      "birthYear": 1995,
-      "college": "West Virginia",
-      "draft": {
-        "pick": 100,
-        "round": 3,
-        "season": 2019,
-        "team": "CAR"
-      },
-      "heightIn": 73.0,
-      "id": "00-0035251",
-      "name": "Will Grier",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 51.8,
-        "pot": 53.5
-      },
-      "team": "CAR",
-      "trueValue": 42.4,
-      "weightLb": 220.0
-    },
-    {
       "birthYear": 1996,
       "college": "West Virginia",
       "draft": {
@@ -25656,7 +23227,7 @@
         "ovr": 61.8,
         "pot": 64.8
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 310.0
     },
@@ -25824,7 +23395,7 @@
         "ovr": 70.4,
         "pot": 72.7
       },
-      "team": "NYJ",
+      "team": null,
       "trueValue": 50.9,
       "weightLb": 235.0
     },
@@ -25843,7 +23414,7 @@
         "ovr": 41.6,
         "pot": 43.6
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 46.6,
       "weightLb": 202.0
     },
@@ -25867,7 +23438,7 @@
         "ovr": 58.1,
         "pot": 64.7
       },
-      "team": "NE",
+      "team": null,
       "trueValue": 52.0,
       "weightLb": 210.0
     },
@@ -25990,30 +23561,6 @@
       "team": "ATL",
       "trueValue": 60.3,
       "weightLb": 232.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Rutgers",
-      "draft": {
-        "pick": 177,
-        "round": 6,
-        "season": 2019,
-        "team": "NO"
-      },
-      "heightIn": 73.0,
-      "id": "00-0035288",
-      "name": "Saquan Hampton",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 61.6,
-        "pot": 63.4
-      },
-      "team": null,
-      "trueValue": 42.5,
-      "weightLb": 207.0
     },
     {
       "birthYear": 1996,
@@ -26203,7 +23750,7 @@
         "ovr": 60.6,
         "pot": 62.9
       },
-      "team": "HOU",
+      "team": null,
       "trueValue": 60.2,
       "weightLb": 310.0
     },
@@ -26254,25 +23801,6 @@
       "team": null,
       "trueValue": 40.9,
       "weightLb": 305.0
-    },
-    {
-      "birthYear": 1998,
-      "college": "Virginia",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0035772",
-      "name": "Jordan Mack",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 47.2,
-        "pot": 47.2
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 230.0
     },
     {
       "birthYear": 1999,
@@ -26342,7 +23870,7 @@
         "ovr": 59.0,
         "pot": 63.2
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 60.2,
       "weightLb": 190.0
     },
@@ -26691,7 +24219,7 @@
         "ovr": 59.7,
         "pot": 64.0
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 56.6,
       "weightLb": 324.0
     },
@@ -26820,7 +24348,7 @@
         "ovr": 47.2,
         "pot": 47.2
       },
-      "team": null,
+      "team": "DEN",
       "trueValue": 65.7,
       "weightLb": 190.0
     },
@@ -26935,7 +24463,7 @@
         "ovr": 46.2,
         "pot": 66.0
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 65.5,
       "weightLb": 215.0
     },
@@ -27040,7 +24568,7 @@
         "ovr": 56.8,
         "pot": 58.5
       },
-      "team": "ATL",
+      "team": null,
       "trueValue": 49.7,
       "weightLb": 305.0
     },
@@ -27083,7 +24611,7 @@
         "ovr": 60.0,
         "pot": 62.9
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 62.7,
       "weightLb": 287.0
     },
@@ -27193,7 +24721,7 @@
         "ovr": 57.7,
         "pot": 61.7
       },
-      "team": null,
+      "team": "ATL",
       "trueValue": 41.5,
       "weightLb": 205.0
     },
@@ -27289,7 +24817,7 @@
         "ovr": 58.2,
         "pot": 61.5
       },
-      "team": null,
+      "team": "NYG",
       "trueValue": 52.7,
       "weightLb": 230.0
     },
@@ -27452,7 +24980,7 @@
         "ovr": 49.8,
         "pot": 49.8
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 62.0,
       "weightLb": 295.0
     },
@@ -27500,7 +25028,7 @@
         "ovr": 59.1,
         "pot": 60.7
       },
-      "team": null,
+      "team": "MIN",
       "trueValue": 41.2,
       "weightLb": 250.0
     },
@@ -27567,25 +25095,6 @@
       "weightLb": 307.0
     },
     {
-      "birthYear": 1994,
-      "college": "Hawaii",
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0033750",
-      "name": "Leo Koloamatangi",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 41.6,
-        "pot": 42.2
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 310.0
-    },
-    {
       "birthYear": 1996,
       "college": "Boise State",
       "draft": {
@@ -27605,7 +25114,7 @@
         "ovr": 61.9,
         "pot": 64.4
       },
-      "team": null,
+      "team": "PHI",
       "trueValue": 45.3,
       "weightLb": 172.0
     },
@@ -27677,7 +25186,7 @@
         "ovr": 82.9,
         "pot": 85.1
       },
-      "team": "DEN",
+      "team": null,
       "trueValue": 57.1,
       "weightLb": 216.0
     },
@@ -27931,7 +25440,7 @@
         "ovr": 57.8,
         "pot": 60.0
       },
-      "team": null,
+      "team": "SF",
       "trueValue": 41.4,
       "weightLb": 214.0
     },
@@ -28185,7 +25694,7 @@
         "ovr": 65.1,
         "pot": 69.9
       },
-      "team": "ARI",
+      "team": null,
       "trueValue": 65.8,
       "weightLb": 190.0
     },
@@ -28233,7 +25742,7 @@
         "ovr": 69.4,
         "pot": 71.9
       },
-      "team": "NYG",
+      "team": null,
       "trueValue": 64.5,
       "weightLb": 250.0
     },
@@ -28491,7 +26000,7 @@
         "ovr": 46.8,
         "pot": 62.5
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 57.1,
       "weightLb": 246.0
     },
@@ -28515,7 +26024,7 @@
         "ovr": 77.5,
         "pot": 80.2
       },
-      "team": "SF",
+      "team": null,
       "trueValue": 67.6,
       "weightLb": 214.0
     },
@@ -28534,7 +26043,7 @@
         "ovr": 45.6,
         "pot": 45.6
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 65.5,
       "weightLb": 240.0
     },
@@ -28553,7 +26062,7 @@
         "ovr": 45.6,
         "pot": 45.6
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 67.2,
       "weightLb": 310.0
     },
@@ -28572,7 +26081,7 @@
         "ovr": 49.8,
         "pot": 56.7
       },
-      "team": null,
+      "team": "CAR",
       "trueValue": 62.2,
       "weightLb": 210.0
     },
@@ -28596,25 +26105,6 @@
       "weightLb": 185.0
     },
     {
-      "birthYear": 1997,
-      "college": "San Diego",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0036052",
-      "name": "Reid Sinnett",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 44.4,
-        "pot": 44.4
-      },
-      "team": "MIA",
-      "trueValue": 42.3,
-      "weightLb": 225.0
-    },
-    {
       "birthYear": 1996,
       "college": "West Georgia",
       "draft": null,
@@ -28629,7 +26119,7 @@
         "ovr": 49.2,
         "pot": 49.2
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 48.5,
       "weightLb": 320.0
     },
@@ -28768,7 +26258,7 @@
         "ovr": 52.5,
         "pot": 57.0
       },
-      "team": null,
+      "team": "LAC",
       "trueValue": 71.6,
       "weightLb": 206.0
     },
@@ -28864,7 +26354,7 @@
         "ovr": 62.7,
         "pot": 66.6
       },
-      "team": null,
+      "team": "DAL",
       "trueValue": 64.6,
       "weightLb": 308.0
     },
@@ -28912,7 +26402,7 @@
         "ovr": 62.1,
         "pot": 68.6
       },
-      "team": null,
+      "team": "HOU",
       "trueValue": 48.5,
       "weightLb": 250.0
     },
@@ -28965,25 +26455,6 @@
       "weightLb": 307.0
     },
     {
-      "birthYear": 1998,
-      "college": "Rhode Island",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0035870",
-      "name": "Kyle Murphy",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.21,
-        "ovr": 49.2,
-        "pot": 63.5
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 302.0
-    },
-    {
       "birthYear": 1994,
       "college": "Tennessee",
       "draft": null,
@@ -28998,7 +26469,7 @@
         "ovr": 51.6,
         "pot": 53.1
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 73.4,
       "weightLb": 255.0
     },
@@ -29036,7 +26507,7 @@
         "ovr": 49.7,
         "pot": 49.7
       },
-      "team": null,
+      "team": "JAX",
       "trueValue": 82.1,
       "weightLb": 220.0
     },
@@ -29084,7 +26555,7 @@
         "ovr": 60.5,
         "pot": 62.3
       },
-      "team": null,
+      "team": "NE",
       "trueValue": 74.3,
       "weightLb": 215.0
     },
@@ -29285,7 +26756,7 @@
         "ovr": 57.6,
         "pot": 64.9
       },
-      "team": "CAR",
+      "team": null,
       "trueValue": 57.8,
       "weightLb": 310.0
     },
@@ -29568,7 +27039,7 @@
         "ovr": 58.0,
         "pot": 62.5
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 74.8,
       "weightLb": 308.0
     },
@@ -29894,7 +27365,7 @@
         "ovr": 51.7,
         "pot": 53.2
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 61.0,
       "weightLb": 221.0
     },
@@ -29961,7 +27432,7 @@
         "ovr": 61.2,
         "pot": 61.3
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 207.0
     },
@@ -30071,7 +27542,7 @@
         "ovr": 60.8,
         "pot": 64.5
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 63.4,
       "weightLb": 251.0
     },
@@ -30272,25 +27743,6 @@
       "weightLb": 175.0
     },
     {
-      "birthYear": 1992,
-      "college": "Illinois State",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0032849",
-      "name": "Tre Roberson",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.61,
-        "ovr": 42.3,
-        "pot": 42.3
-      },
-      "team": null,
-      "trueValue": 40.7,
-      "weightLb": 205.0
-    },
-    {
       "birthYear": 1994,
       "college": "Holy Cross",
       "draft": null,
@@ -30396,25 +27848,6 @@
       "weightLb": 226.0
     },
     {
-      "birthYear": 1994,
-      "college": "Toledo",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0032830",
-      "name": "Rolan Milligan",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.84,
-        "ovr": 54.3,
-        "pot": 54.3
-      },
-      "team": null,
-      "trueValue": 40.9,
-      "weightLb": 200.0
-    },
-    {
       "birthYear": 1997,
       "college": "Washington",
       "draft": {
@@ -30458,7 +27891,7 @@
         "ovr": 59.2,
         "pot": 62.5
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 54.3,
       "weightLb": 290.0
     },
@@ -30549,7 +27982,7 @@
         "ovr": 67.7,
         "pot": 70.1
       },
-      "team": "IND",
+      "team": null,
       "trueValue": 63.9,
       "weightLb": 248.0
     },
@@ -30616,7 +28049,7 @@
         "ovr": 55.4,
         "pot": 55.4
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 60.2,
       "weightLb": 202.0
     },
@@ -30635,7 +28068,7 @@
         "ovr": 55.6,
         "pot": 55.6
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 64.2,
       "weightLb": 225.0
     },
@@ -30937,7 +28370,7 @@
         "ovr": 63.0,
         "pot": 63.0
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 60.6,
       "weightLb": 203.0
     },
@@ -30961,7 +28394,7 @@
         "ovr": 55.8,
         "pot": 60.2
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 56.8,
       "weightLb": 293.0
     },
@@ -30980,7 +28413,7 @@
         "ovr": 60.2,
         "pot": 61.9
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 74.4,
       "weightLb": 229.0
     },
@@ -31004,7 +28437,7 @@
         "ovr": 68.6,
         "pot": 68.6
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 64.7,
       "weightLb": 210.0
     },
@@ -31148,7 +28581,7 @@
         "ovr": 57.7,
         "pot": 62.1
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 56.2,
       "weightLb": 186.0
     },
@@ -31263,7 +28696,7 @@
         "ovr": 76.4,
         "pot": 76.7
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 50.2,
       "weightLb": 196.0
     },
@@ -31311,7 +28744,7 @@
         "ovr": 78.1,
         "pot": 78.1
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 71.7,
       "weightLb": 310.0
     },
@@ -31426,7 +28859,7 @@
         "ovr": 64.6,
         "pot": 65.0
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 70.6,
       "weightLb": 228.0
     },
@@ -31464,7 +28897,7 @@
         "ovr": 47.9,
         "pot": 47.9
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 66.7,
       "weightLb": 270.0
     },
@@ -31657,25 +29090,6 @@
     },
     {
       "birthYear": 1997,
-      "college": "Texas Christian",
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0036178",
-      "name": "Anthony McKinney",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.17,
-        "ovr": 49.1,
-        "pot": 49.1
-      },
-      "team": null,
-      "trueValue": 42.2,
-      "weightLb": 314.0
-    },
-    {
-      "birthYear": 1997,
       "college": "Florida International",
       "draft": null,
       "heightIn": 74.0,
@@ -31795,30 +29209,6 @@
     },
     {
       "birthYear": 1993,
-      "college": "Penn State",
-      "draft": {
-        "pick": 204,
-        "round": 6,
-        "season": 2016,
-        "team": "MIA"
-      },
-      "heightIn": 73.0,
-      "id": "00-0032797",
-      "name": "Jordan Lucas",
-      "pos": "S",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.86,
-        "ovr": 59.2,
-        "pot": 59.2
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 190.0
-    },
-    {
-      "birthYear": 1993,
       "college": "Stanford",
       "draft": null,
       "heightIn": 74.0,
@@ -31832,7 +29222,7 @@
         "ovr": 45.3,
         "pot": 45.3
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 61.3,
       "weightLb": 254.0
     },
@@ -31971,7 +29361,7 @@
         "ovr": 63.9,
         "pot": 67.6
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 41.5,
       "weightLb": 178.0
     },
@@ -32206,7 +29596,7 @@
         "ovr": 67.3,
         "pot": 67.5
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 52.6,
       "weightLb": 296.0
     },
@@ -32278,7 +29668,7 @@
         "ovr": 60.8,
         "pot": 65.3
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 64.6,
       "weightLb": 220.0
     },
@@ -32300,25 +29690,6 @@
       "team": null,
       "trueValue": 56.0,
       "weightLb": 202.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "South Carolina",
-      "draft": null,
-      "heightIn": 74.0,
-      "id": "00-0034090",
-      "name": "Skai Moore",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 57.1,
-        "pot": 58.6
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 225.0
     },
     {
       "birthYear": 1996,
@@ -32402,7 +29773,7 @@
         "ovr": 50.3,
         "pot": 57.5
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 61.9,
       "weightLb": 220.0
     },
@@ -32579,25 +29950,6 @@
       "weightLb": 238.0
     },
     {
-      "birthYear": 1998,
-      "college": "Iowa",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0036058",
-      "name": "Cedrick Lattimore",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.22,
-        "ovr": 48.8,
-        "pot": 71.0
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 295.0
-    },
-    {
       "birthYear": 1996,
       "college": "Texas",
       "draft": {
@@ -32660,7 +30012,7 @@
         "ovr": 47.9,
         "pot": 50.8
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 63.7,
       "weightLb": 314.0
     },
@@ -32708,7 +30060,7 @@
         "ovr": 53.9,
         "pot": 55.6
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 44.2,
       "weightLb": 223.0
     },
@@ -32759,25 +30111,6 @@
       "team": "PIT",
       "trueValue": 71.6,
       "weightLb": 181.0
-    },
-    {
-      "birthYear": 1995,
-      "college": "Houston",
-      "draft": null,
-      "heightIn": 70.0,
-      "id": "00-0036054",
-      "name": "Patrick Carr",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 47.0,
-        "pot": 47.0
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 205.0
     },
     {
       "birthYear": 1997,
@@ -32861,7 +30194,7 @@
         "ovr": 41.1,
         "pot": 42.6
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 59.4,
       "weightLb": 245.0
     },
@@ -32904,7 +30237,7 @@
         "ovr": 61.4,
         "pot": 61.5
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 56.1,
       "weightLb": 205.0
     },
@@ -32923,28 +30256,9 @@
         "ovr": 41.0,
         "pot": 45.4
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 66.6,
       "weightLb": 311.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Missouri",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0035070",
-      "name": "Emanuel Hall",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 40.9,
-        "pot": 43.9
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 195.0
     },
     {
       "birthYear": 1993,
@@ -33014,25 +30328,6 @@
       "weightLb": 250.0
     },
     {
-      "birthYear": 1992,
-      "college": "Texas Tech",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0033024",
-      "name": "Branden Jackson",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.89,
-        "ovr": 64.9,
-        "pot": 64.9
-      },
-      "team": "SEA",
-      "trueValue": 41.4,
-      "weightLb": 295.0
-    },
-    {
       "birthYear": 1995,
       "college": "Tarleton State",
       "draft": {
@@ -33071,7 +30366,7 @@
         "ovr": 45.3,
         "pot": 46.8
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 48.5,
       "weightLb": 193.0
     },
@@ -33090,28 +30385,9 @@
         "ovr": 50.3,
         "pot": 50.3
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 54.2,
       "weightLb": 210.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "North Carolina-Charlotte",
-      "draft": null,
-      "heightIn": 69.0,
-      "id": "00-0036117",
-      "name": "Benny LeMay",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 52.3,
-        "pot": 52.3
-      },
-      "team": null,
-      "trueValue": 42.0,
-      "weightLb": 218.0
     },
     {
       "birthYear": 1997,
@@ -33157,7 +30433,7 @@
         "ovr": 52.9,
         "pot": 56.9
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 70.0,
       "weightLb": 201.0
     },
@@ -33181,7 +30457,7 @@
         "ovr": 58.8,
         "pot": 62.4
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 49.3,
       "weightLb": 322.0
     },
@@ -33387,7 +30663,7 @@
         "ovr": 42.8,
         "pot": 45.1
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 67.7,
       "weightLb": 215.0
     },
@@ -33641,7 +30917,7 @@
         "ovr": 55.2,
         "pot": 55.7
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 59.0,
       "weightLb": 306.0
     },
@@ -33765,7 +31041,7 @@
         "ovr": 56.4,
         "pot": 58.2
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 59.0,
       "weightLb": 366.0
     },
@@ -34019,30 +31295,6 @@
       "weightLb": 269.0
     },
     {
-      "birthYear": 1994,
-      "college": "Florida",
-      "draft": {
-        "pick": 185,
-        "round": 6,
-        "season": 2017,
-        "team": "CLE"
-      },
-      "heightIn": 74.0,
-      "id": "00-0033962",
-      "name": "Caleb Brantley",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 52.6,
-        "pot": 52.6
-      },
-      "team": null,
-      "trueValue": 42.3,
-      "weightLb": 307.0
-    },
-    {
       "birthYear": 1999,
       "college": "Louisiana State",
       "draft": {
@@ -34081,7 +31333,7 @@
         "ovr": 41.5,
         "pot": 44.4
       },
-      "team": null,
+      "team": "PIT",
       "trueValue": 56.5,
       "weightLb": 295.0
     },
@@ -34465,25 +31717,6 @@
       "weightLb": 320.0
     },
     {
-      "birthYear": 1994,
-      "college": "Grand Canyon",
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0035756",
-      "name": "Darion Clark",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.18,
-        "ovr": 51.1,
-        "pot": 51.1
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 235.0
-    },
-    {
       "birthYear": 1995,
       "college": "Louisiana State",
       "draft": {
@@ -34506,30 +31739,6 @@
       "team": "SEA",
       "trueValue": 80.4,
       "weightLb": 320.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Notre Dame",
-      "draft": {
-        "pick": 52,
-        "round": 2,
-        "season": 2017,
-        "team": "CLE"
-      },
-      "heightIn": 76.0,
-      "id": "00-0033899",
-      "name": "DeShone Kizer",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 61.7,
-        "pot": 62.1
-      },
-      "team": "TEN",
-      "trueValue": 41.8,
-      "weightLb": 233.0
     },
     {
       "birthYear": 1996,
@@ -34719,7 +31928,7 @@
         "ovr": 62.9,
         "pot": 66.1
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 64.8,
       "weightLb": 230.0
     },
@@ -34911,7 +32120,7 @@
         "ovr": 43.0,
         "pot": 43.4
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 65.0,
       "weightLb": 310.0
     },
@@ -34938,30 +32147,6 @@
       "team": "SEA",
       "trueValue": 79.8,
       "weightLb": 222.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Southern California",
-      "draft": {
-        "pick": 144,
-        "round": 5,
-        "season": 2019,
-        "team": "IND"
-      },
-      "heightIn": 74.0,
-      "id": "00-0035534",
-      "name": "Marvell Tell",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.59,
-        "ovr": 63.8,
-        "pot": 65.9
-      },
-      "team": "IND",
-      "trueValue": 41.8,
-      "weightLb": 198.0
     },
     {
       "birthYear": 1992,
@@ -35029,30 +32214,6 @@
       "team": "SEA",
       "trueValue": 42.6,
       "weightLb": 253.0
-    },
-    {
-      "birthYear": 1989,
-      "college": "California, Pa.",
-      "draft": {
-        "pick": 170,
-        "round": 6,
-        "season": 2013,
-        "team": "KC"
-      },
-      "heightIn": 76.0,
-      "id": "00-0030094",
-      "name": "Eric Kush",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 65.1,
-        "pot": 65.5
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 317.0
     },
     {
       "birthYear": 1992,
@@ -35294,25 +32455,6 @@
       "weightLb": 214.0
     },
     {
-      "birthYear": 1998,
-      "college": "Louisiana State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0036023",
-      "name": "Thaddeus Moss",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.17,
-        "ovr": 47.3,
-        "pot": 47.3
-      },
-      "team": "WAS",
-      "trueValue": 41.6,
-      "weightLb": 249.0
-    },
-    {
       "birthYear": 1992,
       "college": "Southern Illinois",
       "draft": {
@@ -35335,25 +32477,6 @@
       "team": "TEN",
       "trueValue": 70.1,
       "weightLb": 243.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Colorado",
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0036022",
-      "name": "Steven Montez",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 45.5,
-        "pot": 59.8
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 230.0
     },
     {
       "birthYear": 1990,
@@ -35908,30 +33031,6 @@
     },
     {
       "birthYear": 1991,
-      "college": "Notre Dame",
-      "draft": {
-        "pick": 38,
-        "round": 2,
-        "season": 2013,
-        "team": "LAC"
-      },
-      "heightIn": 73.0,
-      "id": "00-0030278",
-      "name": "Manti Te'o",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 63.9,
-        "pot": 64.0
-      },
-      "team": "CHI",
-      "trueValue": 40.8,
-      "weightLb": 241.0
-    },
-    {
-      "birthYear": 1991,
       "college": "Michigan",
       "draft": {
         "pick": 11,
@@ -35950,7 +33049,7 @@
         "ovr": 75.2,
         "pot": 76.0
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 79.2,
       "weightLb": 309.0
     },
@@ -35998,30 +33097,6 @@
       "weightLb": 252.0
     },
     {
-      "birthYear": 1994,
-      "college": "Louisville",
-      "draft": {
-        "pick": 230,
-        "round": 7,
-        "season": 2017,
-        "team": "WAS"
-      },
-      "heightIn": 76.0,
-      "id": "00-0033532",
-      "name": "Josh Harvey-Clemons",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.74,
-        "ovr": 60.1,
-        "pot": 60.1
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 245.0
-    },
-    {
       "birthYear": 1989,
       "college": "Arizona",
       "draft": {
@@ -36060,7 +33135,7 @@
         "ovr": 65.9,
         "pot": 65.9
       },
-      "team": "CHI",
+      "team": null,
       "trueValue": 55.8,
       "weightLb": 190.0
     },
@@ -36271,33 +33346,9 @@
         "ovr": 65.4,
         "pot": 65.6
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 63.3,
       "weightLb": 233.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Stanford",
-      "draft": {
-        "pick": 112,
-        "round": 4,
-        "season": 2019,
-        "team": "WAS"
-      },
-      "heightIn": 69.0,
-      "id": "00-0035256",
-      "name": "Bryce Love",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.27,
-        "ovr": 60.5,
-        "pot": 63.5
-      },
-      "team": "WAS",
-      "trueValue": 42.3,
-      "weightLb": 205.0
     },
     {
       "birthYear": 1993,
@@ -36343,7 +33394,7 @@
         "ovr": 64.9,
         "pot": 64.9
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 51.0,
       "weightLb": 195.0
     },
@@ -36370,30 +33421,6 @@
       "team": "WAS",
       "trueValue": 71.3,
       "weightLb": 204.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "North Carolina State",
-      "draft": {
-        "pick": 206,
-        "round": 6,
-        "season": 2019,
-        "team": "WAS"
-      },
-      "heightIn": 74.0,
-      "id": "00-0035297",
-      "name": "Kelvin Harmon",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.62,
-        "ovr": 67.1,
-        "pot": 69.1
-      },
-      "team": "WAS",
-      "trueValue": 41.5,
-      "weightLb": 213.0
     },
     {
       "birthYear": 1991,
@@ -36442,54 +33469,6 @@
       "team": "CHI",
       "trueValue": 61.2,
       "weightLb": 238.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Alabama",
-      "draft": {
-        "pick": 10,
-        "round": 1,
-        "season": 2013,
-        "team": "TEN"
-      },
-      "heightIn": 74.0,
-      "id": "00-0030593",
-      "name": "Chance Warmack",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.91,
-        "ovr": 52.7,
-        "pot": 53.4
-      },
-      "team": null,
-      "trueValue": 41.2,
-      "weightLb": 323.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Alabama",
-      "draft": {
-        "pick": 31,
-        "round": 1,
-        "season": 2017,
-        "team": "SF"
-      },
-      "heightIn": 73.0,
-      "id": "00-0033887",
-      "name": "Reuben Foster",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 69.6,
-        "pot": 70.2
-      },
-      "team": "WAS",
-      "trueValue": 42.5,
-      "weightLb": 228.0
     },
     {
       "birthYear": 1991,
@@ -36544,7 +33523,7 @@
         "ovr": 67.9,
         "pot": 68.4
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 70.2,
       "weightLb": 256.0
     },
@@ -36571,25 +33550,6 @@
       "team": "IND",
       "trueValue": 75.7,
       "weightLb": 215.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Texas Christian",
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0036027",
-      "name": "Darius Anderson",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.16,
-        "ovr": 49.0,
-        "pot": 49.0
-      },
-      "team": null,
-      "trueValue": 42.4,
-      "weightLb": 212.0
     },
     {
       "birthYear": 1990,
@@ -36678,30 +33638,6 @@
       "weightLb": 250.0
     },
     {
-      "birthYear": 1991,
-      "college": "Oklahoma",
-      "draft": {
-        "pick": 114,
-        "round": 4,
-        "season": 2014,
-        "team": "JAX"
-      },
-      "heightIn": 72.0,
-      "id": "00-0031259",
-      "name": "Aaron Colvin",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 67.8,
-        "pot": 67.8
-      },
-      "team": null,
-      "trueValue": 42.5,
-      "weightLb": 191.0
-    },
-    {
       "birthYear": 1990,
       "college": "Mississippi State",
       "draft": null,
@@ -36783,7 +33719,7 @@
         "ovr": 58.2,
         "pot": 62.2
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 52.5,
       "weightLb": 242.0
     },
@@ -36831,7 +33767,7 @@
         "ovr": 61.8,
         "pot": 63.2
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 69.5,
       "weightLb": 214.0
     },
@@ -36931,7 +33867,7 @@
         "ovr": 49.3,
         "pot": 51.4
       },
-      "team": null,
+      "team": "CHI",
       "trueValue": 76.8,
       "weightLb": 160.0
     },
@@ -37199,7 +34135,7 @@
         "ovr": 59.2,
         "pot": 62.4
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 58.6,
       "weightLb": 205.0
     },
@@ -37218,7 +34154,7 @@
         "ovr": 57.8,
         "pot": 59.3
       },
-      "team": null,
+      "team": "TEN",
       "trueValue": 46.4,
       "weightLb": 203.0
     },
@@ -37314,30 +34250,6 @@
       "weightLb": 320.0
     },
     {
-      "birthYear": 1996,
-      "college": "Wisconsin",
-      "draft": {
-        "pick": 110,
-        "round": 4,
-        "season": 2018,
-        "team": "LV"
-      },
-      "heightIn": 71.0,
-      "id": "00-0034767",
-      "name": "Nick Nelson",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.64,
-        "ovr": 49.4,
-        "pot": 51.5
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 205.0
-    },
-    {
       "birthYear": 1997,
       "college": "Tulsa",
       "draft": {
@@ -37405,7 +34317,7 @@
         "ovr": 65.5,
         "pot": 65.9
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 60.5,
       "weightLb": 328.0
     },
@@ -37472,7 +34384,7 @@
         "ovr": 70.9,
         "pot": 73.5
       },
-      "team": "SEA",
+      "team": null,
       "trueValue": 56.4,
       "weightLb": 220.0
     },
@@ -37664,7 +34576,7 @@
         "ovr": 58.2,
         "pot": 60.2
       },
-      "team": null,
+      "team": "IND",
       "trueValue": 58.4,
       "weightLb": 190.0
     },
@@ -37846,7 +34758,7 @@
         "ovr": 64.0,
         "pot": 66.0
       },
-      "team": "TEN",
+      "team": null,
       "trueValue": 53.0,
       "weightLb": 195.0
     },
@@ -37870,7 +34782,7 @@
         "ovr": 51.9,
         "pot": 55.1
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 71.8,
       "weightLb": 291.0
     },
@@ -38033,7 +34945,7 @@
         "ovr": 55.3,
         "pot": 55.4
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 59.9,
       "weightLb": 260.0
     },
@@ -38134,30 +35046,6 @@
       "weightLb": 214.0
     },
     {
-      "birthYear": 1997,
-      "college": "West Virginia",
-      "draft": {
-        "pick": 120,
-        "round": 4,
-        "season": 2019,
-        "team": "SEA"
-      },
-      "heightIn": 73.0,
-      "id": "00-0035589",
-      "name": "Gary Jennings",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 53.4,
-        "pot": 56.6
-      },
-      "team": null,
-      "trueValue": 42.1,
-      "weightLb": 215.0
-    },
-    {
       "birthYear": 1990,
       "college": "Ohio State",
       "draft": {
@@ -38177,7 +35065,7 @@
         "ovr": 61.2,
         "pot": 61.3
       },
-      "team": null,
+      "team": "SEA",
       "trueValue": 76.1,
       "weightLb": 229.0
     },
@@ -38354,7 +35242,7 @@
         "ovr": 51.6,
         "pot": 52.0
       },
-      "team": null,
+      "team": "WAS",
       "trueValue": 66.3,
       "weightLb": 328.0
     },
@@ -38507,7 +35395,7 @@
         "ovr": 65.9,
         "pot": 65.9
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 57.3,
       "weightLb": 223.0
     },
@@ -38574,7 +35462,7 @@
         "ovr": 78.3,
         "pot": 85.3
       },
-      "team": "PIT",
+      "team": null,
       "trueValue": 76.9,
       "weightLb": 233.0
     },
@@ -38877,30 +35765,6 @@
     },
     {
       "birthYear": 1997,
-      "college": "Southern California",
-      "draft": {
-        "pick": 127,
-        "round": 4,
-        "season": 2019,
-        "team": "BAL"
-      },
-      "heightIn": 73.0,
-      "id": "00-0034979",
-      "name": "Iman Marshall",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 59.3,
-        "pot": 61.4
-      },
-      "team": null,
-      "trueValue": 42.0,
-      "weightLb": 210.0
-    },
-    {
-      "birthYear": 1997,
       "college": "Southeast Missouri",
       "draft": {
         "pick": 189,
@@ -39034,25 +35898,6 @@
       "weightLb": 314.0
     },
     {
-      "birthYear": 1993,
-      "college": "Incarnate Word",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0032562",
-      "name": "Cole Wick",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 46.6,
-        "pot": 46.6
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 255.0
-    },
-    {
       "birthYear": 1997,
       "college": "Oklahoma",
       "draft": {
@@ -39163,7 +36008,7 @@
         "ovr": 49.3,
         "pot": 51.4
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 76.9,
       "weightLb": 200.0
     },
@@ -39240,25 +36085,6 @@
       "weightLb": 246.0
     },
     {
-      "birthYear": 1993,
-      "college": "Harvard",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0032567",
-      "name": "Anthony Fabiano",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.81,
-        "ovr": 41.3,
-        "pot": 41.7
-      },
-      "team": null,
-      "trueValue": 41.3,
-      "weightLb": 303.0
-    },
-    {
       "birthYear": 1997,
       "college": "Oklahoma",
       "draft": {
@@ -39326,7 +36152,7 @@
         "ovr": 57.9,
         "pot": 59.7
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 66.3,
       "weightLb": 200.0
     },
@@ -39518,30 +36344,6 @@
       "weightLb": 196.0
     },
     {
-      "birthYear": 1995,
-      "college": "Louisville",
-      "draft": {
-        "pick": 205,
-        "round": 6,
-        "season": 2018,
-        "team": "LAR"
-      },
-      "heightIn": 76.0,
-      "id": "00-0034811",
-      "name": "Trevon Young",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.63,
-        "ovr": 41.5,
-        "pot": 43.2
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 259.0
-    },
-    {
       "birthYear": 1997,
       "college": "Arkansas-Pine Bluff",
       "draft": null,
@@ -39628,7 +36430,7 @@
         "ovr": 61.9,
         "pot": 64.1
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 42.2,
       "weightLb": 219.0
     },
@@ -39700,7 +36502,7 @@
         "ovr": 65.4,
         "pot": 65.4
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 61.8,
       "weightLb": 215.0
     },
@@ -39767,7 +36569,7 @@
         "ovr": 54.7,
         "pot": 56.2
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 70.8,
       "weightLb": 205.0
     },
@@ -39796,25 +36598,6 @@
       "weightLb": 311.0
     },
     {
-      "birthYear": 1996,
-      "college": "Eastern Illinois",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0035104",
-      "name": "Alexander Hollins",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.56,
-        "ovr": 65.3,
-        "pot": 67.3
-      },
-      "team": "CLE",
-      "trueValue": 42.0,
-      "weightLb": 166.0
-    },
-    {
       "birthYear": 1995,
       "college": "Tennessee",
       "draft": {
@@ -39837,25 +36620,6 @@
       "team": "NO",
       "trueValue": 92.1,
       "weightLb": 215.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Ferris State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0032689",
-      "name": "Jason Vander Laan",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.82,
-        "ovr": 56.6,
-        "pot": 56.6
-      },
-      "team": null,
-      "trueValue": 40.8,
-      "weightLb": 244.0
     },
     {
       "birthYear": 1996,
@@ -39996,7 +36760,7 @@
         "ovr": 41.0,
         "pot": 42.5
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 66.2,
       "weightLb": 200.0
     },
@@ -40188,7 +36952,7 @@
         "ovr": 62.2,
         "pot": 62.3
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 58.4,
       "weightLb": 200.0
     },
@@ -40207,7 +36971,7 @@
         "ovr": 60.6,
         "pot": 62.3
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 67.9,
       "weightLb": 230.0
     },
@@ -40303,7 +37067,7 @@
         "ovr": 56.0,
         "pot": 57.6
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 79.5,
       "weightLb": 244.0
     },
@@ -40509,25 +37273,6 @@
       "weightLb": 285.0
     },
     {
-      "birthYear": 1995,
-      "college": "Ohio State",
-      "draft": null,
-      "heightIn": 78.0,
-      "id": "00-0035463",
-      "name": "Malcolm Pridgeon",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.4,
-        "pot": 43.5
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 310.0
-    },
-    {
       "birthYear": 1994,
       "college": "Illinois",
       "draft": {
@@ -40681,7 +37426,7 @@
         "ovr": 67.1,
         "pot": 67.4
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 41.3,
       "weightLb": 328.0
     },
@@ -40916,30 +37661,6 @@
       "weightLb": 196.0
     },
     {
-      "birthYear": 1993,
-      "college": "Oregon",
-      "draft": {
-        "pick": 124,
-        "round": 4,
-        "season": 2014,
-        "team": "KC"
-      },
-      "heightIn": 68.0,
-      "id": "00-0031060",
-      "name": "De'Anthony Thomas",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 60.9,
-        "pot": 60.9
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 176.0
-    },
-    {
       "birthYear": 1994,
       "college": "Delaware",
       "draft": null,
@@ -41155,7 +37876,7 @@
         "ovr": 53.9,
         "pot": 54.0
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 61.8,
       "weightLb": 215.0
     },
@@ -41179,7 +37900,7 @@
         "ovr": 59.0,
         "pot": 59.0
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 54.6,
       "weightLb": 311.0
     },
@@ -41241,7 +37962,7 @@
         "ovr": 64.7,
         "pot": 64.7
       },
-      "team": "CLE",
+      "team": null,
       "trueValue": 51.7,
       "weightLb": 153.0
     },
@@ -41748,7 +38469,7 @@
         "ovr": 44.3,
         "pot": 44.3
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 66.0,
       "weightLb": 290.0
     },
@@ -42126,7 +38847,7 @@
         "ovr": 60.5,
         "pot": 66.4
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 62.0,
       "weightLb": 325.0
     },
@@ -42265,25 +38986,6 @@
       "weightLb": 204.0
     },
     {
-      "birthYear": 1996,
-      "college": "Southern Mississippi",
-      "draft": null,
-      "heightIn": 79.0,
-      "id": "00-0036113",
-      "name": "Drake Dorbeck",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.17,
-        "ovr": 45.5,
-        "pot": 45.5
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 320.0
-    },
-    {
       "birthYear": 1998,
       "college": "Boise State",
       "draft": {
@@ -42354,25 +39056,6 @@
       "team": "LAR",
       "trueValue": 49.4,
       "weightLb": 212.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Oregon",
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0036154",
-      "name": "Jacob Breeland",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.16,
-        "ovr": 49.7,
-        "pot": 49.7
-      },
-      "team": null,
-      "trueValue": 42.3,
-      "weightLb": 250.0
     },
     {
       "birthYear": 1988,
@@ -42456,25 +39139,6 @@
       "weightLb": 248.0
     },
     {
-      "birthYear": 1990,
-      "college": "Stanford",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0029065",
-      "name": "Johnson Bademosi",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2012,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 57.6,
-        "pot": 57.6
-      },
-      "team": "NO",
-      "trueValue": 42.2,
-      "weightLb": 219.0
-    },
-    {
       "birthYear": 1987,
       "college": "Ohio State",
       "draft": null,
@@ -42489,7 +39153,7 @@
         "ovr": 64.6,
         "pot": 65.0
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 42.7,
       "weightLb": 235.0
     },
@@ -42757,25 +39421,6 @@
       "weightLb": 210.0
     },
     {
-      "birthYear": 1997,
-      "college": "South Carolina",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0035817",
-      "name": "Kyle Markway",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 49.5,
-        "pot": 60.3
-      },
-      "team": null,
-      "trueValue": 42.2,
-      "weightLb": 250.0
-    },
-    {
       "birthYear": 1987,
       "college": "South Carolina",
       "draft": {
@@ -42996,7 +39641,7 @@
         "ovr": 51.0,
         "pot": 51.0
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 62.8,
       "weightLb": 208.0
     },
@@ -43279,7 +39924,7 @@
         "ovr": 59.0,
         "pot": 62.1
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 43.0,
       "weightLb": 193.0
     },
@@ -43303,7 +39948,7 @@
         "ovr": 57.2,
         "pot": 61.2
       },
-      "team": null,
+      "team": "LAR",
       "trueValue": 54.1,
       "weightLb": 315.0
     },
@@ -43619,7 +40264,7 @@
         "ovr": 65.5,
         "pot": 67.0
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 61.6,
       "weightLb": 200.0
     },
@@ -43689,30 +40334,6 @@
       "team": "LAR",
       "trueValue": 97.7,
       "weightLb": 280.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Central Florida",
-      "draft": {
-        "pick": 3,
-        "round": 1,
-        "season": 2014,
-        "team": "JAX"
-      },
-      "heightIn": 77.0,
-      "id": "00-0031407",
-      "name": "Blake Bortles",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 66.6,
-        "pot": 67.0
-      },
-      "team": "LAR",
-      "trueValue": 41.9,
-      "weightLb": 236.0
     },
     {
       "birthYear": 1998,
@@ -43806,7 +40427,7 @@
         "ovr": 69.5,
         "pot": 73.3
       },
-      "team": "LAR",
+      "team": null,
       "trueValue": 69.2,
       "weightLb": 232.0
     },
@@ -43830,7 +40451,7 @@
         "ovr": 65.2,
         "pot": 66.9
       },
-      "team": null,
+      "team": "BAL",
       "trueValue": 70.2,
       "weightLb": 178.0
     },
@@ -43878,7 +40499,7 @@
         "ovr": 59.0,
         "pot": 59.1
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 51.8,
       "weightLb": 215.0
     },
@@ -43953,25 +40574,6 @@
       "team": "CLE",
       "trueValue": 58.8,
       "weightLb": 238.0
-    },
-    {
-      "birthYear": 1991,
-      "college": "Alabama",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0031511",
-      "name": "DeAndrew White",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.94,
-        "ovr": 43.5,
-        "pot": 43.5
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 195.0
     },
     {
       "birthYear": 1994,
@@ -44151,7 +40753,7 @@
         "ovr": 70.6,
         "pot": 74.7
       },
-      "team": null,
+      "team": "NO",
       "trueValue": 76.7,
       "weightLb": 208.0
     },
@@ -44175,27 +40777,8 @@
         "ovr": 61.9,
         "pot": 65.9
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 64.9,
-      "weightLb": 240.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Sacramento State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0036119",
-      "name": "George Obinna",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 49.9,
-        "pot": 49.9
-      },
-      "team": null,
-      "trueValue": 41.3,
       "weightLb": 240.0
     },
     {
@@ -44237,28 +40820,9 @@
         "ovr": 73.4,
         "pot": 73.8
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 77.0,
       "weightLb": 233.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "South Carolina State",
-      "draft": null,
-      "heightIn": 80.0,
-      "id": "00-0036120",
-      "name": "Alex Taylor",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.15,
-        "ovr": 49.4,
-        "pot": 49.4
-      },
-      "team": null,
-      "trueValue": 41.8,
-      "weightLb": 294.0
     },
     {
       "birthYear": 1998,
@@ -44447,7 +41011,7 @@
         "ovr": 65.6,
         "pot": 65.6
       },
-      "team": "BAL",
+      "team": null,
       "trueValue": 53.7,
       "weightLb": 207.0
     },
@@ -44471,7 +41035,7 @@
         "ovr": 60.7,
         "pot": 65.2
       },
-      "team": null,
+      "team": "CLE",
       "trueValue": 73.2,
       "weightLb": 208.0
     },
@@ -44815,28 +41379,9 @@
         "ovr": 71.4,
         "pot": 71.6
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 42.0,
       "weightLb": 318.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Ball State",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0035790",
-      "name": "Ray Wilborn",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.15,
-        "ovr": 47.2,
-        "pot": 47.2
-      },
-      "team": null,
-      "trueValue": 41.6,
-      "weightLb": 224.0
     },
     {
       "birthYear": 1990,
@@ -44858,7 +41403,7 @@
         "ovr": 67.3,
         "pot": 67.5
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 59.9,
       "weightLb": 179.0
     },
@@ -44925,7 +41470,7 @@
         "ovr": 71.0,
         "pot": 71.5
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 68.6,
       "weightLb": 324.0
     },
@@ -44973,7 +41518,7 @@
         "ovr": 50.0,
         "pot": 53.5
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 68.0,
       "weightLb": 250.0
     },
@@ -45208,7 +41753,7 @@
         "ovr": 68.3,
         "pot": 70.2
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 41.7,
       "weightLb": 251.0
     },
@@ -45232,7 +41777,7 @@
         "ovr": 62.9,
         "pot": 67.5
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 60.9,
       "weightLb": 253.0
     },
@@ -45275,7 +41820,7 @@
         "ovr": 66.8,
         "pot": 68.4
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 55.8,
       "weightLb": 190.0
     },
@@ -45505,7 +42050,7 @@
         "ovr": 41.3,
         "pot": 41.3
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 47.4,
       "weightLb": 300.0
     },
@@ -45553,7 +42098,7 @@
         "ovr": 61.2,
         "pot": 62.9
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 63.3,
       "weightLb": 240.0
     },
@@ -45625,7 +42170,7 @@
         "ovr": 58.7,
         "pot": 60.5
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 71.6,
       "weightLb": 185.0
     },
@@ -45730,28 +42275,9 @@
         "ovr": 47.6,
         "pot": 62.8
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 63.8,
       "weightLb": 255.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Colorado",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0035079",
-      "name": "Kabion Ento",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 42.1,
-        "pot": 43.6
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 187.0
     },
     {
       "birthYear": 1997,
@@ -45797,7 +42323,7 @@
         "ovr": 60.2,
         "pot": 64.8
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 41.9,
       "weightLb": 209.0
     },
@@ -45859,7 +42385,7 @@
         "ovr": 41.7,
         "pot": 43.4
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 53.9,
       "weightLb": 236.0
     },
@@ -45902,7 +42428,7 @@
         "ovr": 59.7,
         "pot": 60.2
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 47.2,
       "weightLb": 320.0
     },
@@ -45926,7 +42452,7 @@
         "ovr": 56.0,
         "pot": 57.5
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 60.0,
       "weightLb": 196.0
     },
@@ -45988,7 +42514,7 @@
         "ovr": 42.1,
         "pot": 43.6
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 69.1,
       "weightLb": 216.0
     },
@@ -46079,7 +42605,7 @@
         "ovr": 48.6,
         "pot": 48.6
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 71.5,
       "weightLb": 235.0
     },
@@ -46141,7 +42667,7 @@
         "ovr": 57.2,
         "pot": 61.6
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 59.4,
       "weightLb": 300.0
     },
@@ -46168,30 +42694,6 @@
       "team": "BUF",
       "trueValue": 68.8,
       "weightLb": 323.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Michigan",
-      "draft": {
-        "pick": 41,
-        "round": 2,
-        "season": 2015,
-        "team": "CAR"
-      },
-      "heightIn": 76.0,
-      "id": "00-0032055",
-      "name": "Devin Funchess",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2015,
-      "scouting": {
-        "confidence": 0.91,
-        "ovr": 73.2,
-        "pot": 73.4
-      },
-      "team": "GB",
-      "trueValue": 42.5,
-      "weightLb": 225.0
     },
     {
       "birthYear": 1989,
@@ -46299,7 +42801,7 @@
         "ovr": 42.1,
         "pot": 46.8
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 68.1,
       "weightLb": 237.0
     },
@@ -46528,7 +43030,7 @@
         "ovr": 55.4,
         "pot": 55.4
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 43.0,
       "weightLb": 322.0
     },
@@ -46648,7 +43150,7 @@
         "ovr": 75.5,
         "pot": 77.5
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 80.1,
       "weightLb": 240.0
     },
@@ -46672,7 +43174,7 @@
         "ovr": 49.2,
         "pot": 52.4
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 60.4,
       "weightLb": 240.0
     },
@@ -46699,30 +43201,6 @@
       "team": "GB",
       "trueValue": 81.0,
       "weightLb": 196.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Missouri",
-      "draft": {
-        "pick": 188,
-        "round": 6,
-        "season": 2014,
-        "team": "LAR"
-      },
-      "heightIn": 70.0,
-      "id": "00-0031394",
-      "name": "E.J. Gaines",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 70.7,
-        "pot": 70.7
-      },
-      "team": "BUF",
-      "trueValue": 41.4,
-      "weightLb": 185.0
     },
     {
       "birthYear": 1997,
@@ -47041,7 +43519,7 @@
         "ovr": 56.3,
         "pot": 58.2
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 63.9,
       "weightLb": 233.0
     },
@@ -47065,7 +43543,7 @@
         "ovr": 69.3,
         "pot": 69.7
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 72.7,
       "weightLb": 321.0
     },
@@ -47161,7 +43639,7 @@
         "ovr": 57.2,
         "pot": 61.0
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 60.0,
       "weightLb": 206.0
     },
@@ -47180,7 +43658,7 @@
         "ovr": 55.4,
         "pot": 57.5
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 63.8,
       "weightLb": 318.0
     },
@@ -47228,7 +43706,7 @@
         "ovr": 59.9,
         "pot": 63.7
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 66.4,
       "weightLb": 321.0
     },
@@ -47252,7 +43730,7 @@
         "ovr": 61.9,
         "pot": 63.4
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 42.6,
       "weightLb": 180.0
     },
@@ -47271,7 +43749,7 @@
         "ovr": 75.1,
         "pot": 75.1
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 64.9,
       "weightLb": 192.0
     },
@@ -47362,7 +43840,7 @@
         "ovr": 60.2,
         "pot": 60.6
       },
-      "team": "BUF",
+      "team": null,
       "trueValue": 60.4,
       "weightLb": 330.0
     },
@@ -47482,7 +43960,7 @@
         "ovr": 60.1,
         "pot": 63.0
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 42.4,
       "weightLb": 311.0
     },
@@ -47501,7 +43979,7 @@
         "ovr": 50.0,
         "pot": 50.0
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 61.5,
       "weightLb": 292.0
     },
@@ -47611,7 +44089,7 @@
         "ovr": 59.9,
         "pot": 63.1
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 42.1,
       "weightLb": 297.0
     },
@@ -47664,30 +44142,6 @@
       "weightLb": 314.0
     },
     {
-      "birthYear": 1991,
-      "college": "Brigham Young",
-      "draft": {
-        "pick": 70,
-        "round": 3,
-        "season": 2016,
-        "team": "BAL"
-      },
-      "heightIn": 78.0,
-      "id": "00-0033117",
-      "name": "Bronson Kaufusi",
-      "pos": "TE",
-      "real": true,
-      "rookieSeason": 2016,
-      "scouting": {
-        "confidence": 0.82,
-        "ovr": 61.9,
-        "pot": 62.1
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 275.0
-    },
-    {
       "birthYear": 1997,
       "college": "Utah",
       "draft": {
@@ -47726,7 +44180,7 @@
         "ovr": 76.8,
         "pot": 76.8
       },
-      "team": "GB",
+      "team": null,
       "trueValue": 52.9,
       "weightLb": 230.0
     },
@@ -47798,7 +44252,7 @@
         "ovr": 51.0,
         "pot": 51.0
       },
-      "team": null,
+      "team": "BUF",
       "trueValue": 47.7,
       "weightLb": 195.0
     },
@@ -47822,7 +44276,7 @@
         "ovr": 59.0,
         "pot": 64.0
       },
-      "team": null,
+      "team": "GB",
       "trueValue": 56.2,
       "weightLb": 250.0
     },
@@ -48071,7 +44525,7 @@
         "ovr": 58.7,
         "pot": 63.1
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 70.1,
       "weightLb": 320.0
     },
@@ -48119,7 +44573,7 @@
         "ovr": 57.5,
         "pot": 59.6
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 43.0,
       "weightLb": 215.0
     },
@@ -48275,25 +44729,6 @@
       "team": "TB",
       "trueValue": 75.5,
       "weightLb": 198.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "Florida Atlantic",
-      "draft": null,
-      "heightIn": 73.0,
-      "id": "00-0034705",
-      "name": "John Franklin",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2018,
-      "scouting": {
-        "confidence": 0.64,
-        "ovr": 55.9,
-        "pot": 57.4
-      },
-      "team": null,
-      "trueValue": 41.7,
-      "weightLb": 186.0
     },
     {
       "birthYear": 1989,
@@ -48679,49 +45114,6 @@
       "weightLb": 265.0
     },
     {
-      "birthYear": 1998,
-      "college": "Washington State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0035988",
-      "name": "Anthony Gordon",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.2,
-        "ovr": 50.9,
-        "pot": 61.4
-      },
-      "team": "KC",
-      "trueValue": 41.5,
-      "weightLb": 210.0
-    },
-    {
-      "birthYear": 1992,
-      "college": "Washington State",
-      "draft": {
-        "pick": 27,
-        "round": 1,
-        "season": 2014,
-        "team": "ARI"
-      },
-      "heightIn": 73.0,
-      "id": "00-0031366",
-      "name": "Deone Bucannon",
-      "pos": "LB",
-      "real": true,
-      "rookieSeason": 2014,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 63.0,
-        "pot": 63.2
-      },
-      "team": "TB",
-      "trueValue": 41.7,
-      "weightLb": 211.0
-    },
-    {
       "birthYear": 1996,
       "college": "Middle Tennessee",
       "draft": null,
@@ -48789,49 +45181,6 @@
       "weightLb": 305.0
     },
     {
-      "birthYear": 1989,
-      "college": "Tulane",
-      "draft": null,
-      "heightIn": 77.0,
-      "id": "00-0029857",
-      "name": "Ryan Griffin",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2013,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 54.0,
-        "pot": 54.0
-      },
-      "team": "TB",
-      "trueValue": 41.9,
-      "weightLb": 210.0
-    },
-    {
-      "birthYear": 1987,
-      "college": "North Carolina State",
-      "draft": {
-        "pick": 205,
-        "round": 6,
-        "season": 2010,
-        "team": "NE"
-      },
-      "heightIn": 75.0,
-      "id": "00-0027607",
-      "name": "Ted Larsen",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2010,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 57.4,
-        "pot": 57.9
-      },
-      "team": "TB",
-      "trueValue": 40.6,
-      "weightLb": 323.0
-    },
-    {
       "birthYear": 1992,
       "college": "Iowa",
       "draft": {
@@ -48870,7 +45219,7 @@
         "ovr": 54.4,
         "pot": 55.9
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 42.4,
       "weightLb": 190.0
     },
@@ -48894,7 +45243,7 @@
         "ovr": 58.5,
         "pot": 61.2
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 41.0,
       "weightLb": 310.0
     },
@@ -48961,7 +45310,7 @@
         "ovr": 45.5,
         "pot": 47.0
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 60.1,
       "weightLb": 239.0
     },
@@ -48980,7 +45329,7 @@
         "ovr": 42.0,
         "pot": 43.9
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 51.7,
       "weightLb": 251.0
     },
@@ -49066,7 +45415,7 @@
         "ovr": 45.4,
         "pot": 47.3
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 54.9,
       "weightLb": 312.0
     },
@@ -49354,30 +45703,6 @@
       "weightLb": 307.0
     },
     {
-      "birthYear": 1994,
-      "college": "Grambling",
-      "draft": {
-        "pick": 98,
-        "round": 3,
-        "season": 2017,
-        "team": "ARI"
-      },
-      "heightIn": 74.0,
-      "id": "00-0033933",
-      "name": "Chad Williams",
-      "pos": "WR",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.72,
-        "ovr": 48.2,
-        "pot": 48.3
-      },
-      "team": null,
-      "trueValue": 42.7,
-      "weightLb": 204.0
-    },
-    {
       "birthYear": 1998,
       "college": "Texas Christian",
       "draft": {
@@ -49397,7 +45722,7 @@
         "ovr": 63.0,
         "pot": 67.8
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 42.0,
       "weightLb": 328.0
     },
@@ -49498,25 +45823,6 @@
       "weightLb": 289.0
     },
     {
-      "birthYear": 1984,
-      "college": "Oregon State",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0025708",
-      "name": "Matt Moore",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 63.3,
-        "pot": 63.3
-      },
-      "team": "KC",
-      "trueValue": 41.8,
-      "weightLb": 219.0
-    },
-    {
       "birthYear": 1998,
       "college": "Missouri S&amp;T",
       "draft": null,
@@ -49531,7 +45837,7 @@
         "ovr": 45.5,
         "pot": 46.6
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 69.5,
       "weightLb": 255.0
     },
@@ -49553,30 +45859,6 @@
       "team": "KC",
       "trueValue": 61.8,
       "weightLb": 176.0
-    },
-    {
-      "birthYear": 1984,
-      "college": "Michigan State",
-      "draft": {
-        "pick": 43,
-        "round": 2,
-        "season": 2007,
-        "team": "DET"
-      },
-      "heightIn": 75.0,
-      "id": "00-0025430",
-      "name": "Drew Stanton",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2007,
-      "scouting": {
-        "confidence": 0.95,
-        "ovr": 42.1,
-        "pot": 42.1
-      },
-      "team": null,
-      "trueValue": 40.4,
-      "weightLb": 226.0
     },
     {
       "birthYear": 1993,
@@ -49620,25 +45902,6 @@
       "team": null,
       "trueValue": 64.2,
       "weightLb": 330.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "Southern Methodist",
-      "draft": null,
-      "heightIn": 72.0,
-      "id": "00-0035878",
-      "name": "Rodney Clemons",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.23,
-        "ovr": 49.1,
-        "pot": 71.0
-      },
-      "team": null,
-      "trueValue": 41.5,
-      "weightLb": 205.0
     },
     {
       "birthYear": 1991,
@@ -49703,7 +45966,7 @@
         "ovr": 52.7,
         "pot": 53.1
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 57.0,
       "weightLb": 306.0
     },
@@ -49883,25 +46146,6 @@
       "team": "KC",
       "trueValue": 66.7,
       "weightLb": 255.0
-    },
-    {
-      "birthYear": 1996,
-      "college": "South Carolina State",
-      "draft": null,
-      "heightIn": 71.0,
-      "id": "00-0035634",
-      "name": "Alex Brown",
-      "pos": "CB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.55,
-        "ovr": 56.6,
-        "pot": 58.6
-      },
-      "team": "KC",
-      "trueValue": 41.3,
-      "weightLb": 170.0
     },
     {
       "birthYear": 1996,
@@ -50139,7 +46383,7 @@
         "ovr": 41.9,
         "pot": 41.9
       },
-      "team": null,
+      "team": "KC",
       "trueValue": 67.2,
       "weightLb": 222.0
     },
@@ -50182,7 +46426,7 @@
         "ovr": 61.9,
         "pot": 65.1
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 58.0,
       "weightLb": 324.0
     },
@@ -50257,30 +46501,6 @@
       "team": "TB",
       "trueValue": 79.2,
       "weightLb": 281.0
-    },
-    {
-      "birthYear": 1994,
-      "college": "North Carolina",
-      "draft": {
-        "pick": 179,
-        "round": 5,
-        "season": 2017,
-        "team": "ARI"
-      },
-      "heightIn": 71.0,
-      "id": "00-0033789",
-      "name": "T.J. Logan",
-      "pos": "RB",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.77,
-        "ovr": 49.2,
-        "pot": 49.2
-      },
-      "team": null,
-      "trueValue": 41.9,
-      "weightLb": 195.0
     },
     {
       "birthYear": 1996,
@@ -50407,7 +46627,7 @@
         "ovr": 74.9,
         "pot": 75.3
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 75.3,
       "weightLb": 240.0
     },
@@ -50450,7 +46670,7 @@
         "ovr": 64.6,
         "pot": 64.6
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 57.9,
       "weightLb": 255.0
     },
@@ -50613,30 +46833,6 @@
       "weightLb": 206.0
     },
     {
-      "birthYear": 1993,
-      "college": "Villanova",
-      "draft": {
-        "pick": 236,
-        "round": 7,
-        "season": 2017,
-        "team": "TEN"
-      },
-      "heightIn": 80.0,
-      "id": "00-0033795",
-      "name": "Brad Seaton",
-      "pos": "OL",
-      "real": true,
-      "rookieSeason": 2017,
-      "scouting": {
-        "confidence": 0.25,
-        "ovr": 53.3,
-        "pot": 55.6
-      },
-      "team": "TB",
-      "trueValue": 41.8,
-      "weightLb": 330.0
-    },
-    {
       "birthYear": 1991,
       "college": "Colorado State-Pueblo",
       "draft": null,
@@ -50718,28 +46914,9 @@
         "ovr": 58.1,
         "pot": 61.3
       },
-      "team": null,
+      "team": "TB",
       "trueValue": 56.6,
       "weightLb": 230.0
-    },
-    {
-      "birthYear": 1998,
-      "college": "Georgia",
-      "draft": null,
-      "heightIn": 76.0,
-      "id": "00-0035796",
-      "name": "Tyler Clark",
-      "pos": "DL",
-      "real": true,
-      "rookieSeason": 2020,
-      "scouting": {
-        "confidence": 0.19,
-        "ovr": 47.0,
-        "pot": 51.1
-      },
-      "team": null,
-      "trueValue": 41.4,
-      "weightLb": 300.0
     },
     {
       "birthYear": 1995,
@@ -50895,7 +47072,7 @@
         "ovr": 65.2,
         "pot": 65.6
       },
-      "team": "KC",
+      "team": null,
       "trueValue": 68.1,
       "weightLb": 291.0
     },
@@ -50919,7 +47096,7 @@
         "ovr": 59.8,
         "pot": 59.8
       },
-      "team": "TB",
+      "team": null,
       "trueValue": 61.2,
       "weightLb": 195.0
     },
@@ -50965,25 +47142,6 @@
       "team": "TB",
       "trueValue": 59.8,
       "weightLb": 246.0
-    },
-    {
-      "birthYear": 1997,
-      "college": "Mississippi",
-      "draft": null,
-      "heightIn": 75.0,
-      "id": "00-0035735",
-      "name": "Jordan Ta'amu",
-      "pos": "QB",
-      "real": true,
-      "rookieSeason": 2019,
-      "scouting": {
-        "confidence": 0.54,
-        "ovr": 41.3,
-        "pot": 42.9
-      },
-      "team": null,
-      "trueValue": 41.1,
-      "weightLb": 221.0
     },
     {
       "birthYear": 1998,

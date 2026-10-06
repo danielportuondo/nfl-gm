@@ -50,6 +50,12 @@ assert sum(ROSTER_TEMPLATE_53.values()) == 53
 # RET/TRC/TRD/E14/TRT/...). Never used to drop a player from players.json, only to order fill.
 _STATUS_PRIORITY_GOOD = frozenset({"ACT", "RES", "INA"})
 
+# A player who took the field in at least this share of his team's games really belonged to the
+# team's opening-day group. The roster snapshot lists ~66 players per team (injured reserve,
+# mid-season signings) for 53 slots, and consensus ovr alone ranked rookies and role players who
+# played 12+ games behind veterans who spent the year on IR, stranding them in the free-agent pool.
+PARTICIPATION_AVAILABILITY = 0.5
+
 
 def _status_priority(status: object) -> int:
     if status is None or (isinstance(status, float) and pd.isna(status)):
@@ -157,6 +163,7 @@ def _select_rosters(
     depth_ranks: dict[tuple[str, str, str], int],
     snaps: dict[tuple[str, str], float],
     ovr_by_id: dict[str, float] | None = None,
+    participants: set[str] | None = None,
 ) -> dict[str, list[str]]:
     """Opening-day 53 per team: fill ROSTER_TEMPLATE_53, then top up to 53.
 
@@ -164,7 +171,8 @@ def _select_rosters(
     `pos_group_by_id` (players that made it into players.json). Every player is a candidate for at
     most one team, since `start` has one row per player league-wide.
 
-    Ranking is roster status first (ACT/RES/INA before CUT/DEV), then consensus ovr, then depth.
+    Ranking is real participation first (`participants`: played at least half the games, or drafted
+    this season), then roster status (ACT/RES/INA before CUT/DEV), then consensus ovr, then depth.
     Depth alone put a star who spent the year on injured reserve (no snaps, buried on the depth
     chart) behind every healthy backup and dropped him into the free-agent pool, where a user could
     sign him on day one; ovr keeps him on the team he was really under contract with.
@@ -182,6 +190,7 @@ def _select_rosters(
                 "gsis_id": row.gsis_id,
                 "pos_group": pos_group,
                 "depth": depth_ranks.get((row.team_canon, pos_group, row.gsis_id), 10**6),
+                "participant": 0 if row.gsis_id in (participants or ()) else 1,
                 "status_priority": _status_priority(row.status),
                 "ovr": float((ovr_by_id or {}).get(row.gsis_id, 0.0)),
                 "snap": snaps.get(key, 0.0),
@@ -191,38 +200,36 @@ def _select_rosters(
 
     rosters: dict[str, list[str]] = {}
     for team, candidates in by_team.items():
-        by_pos: dict[str, list[dict]] = {}
-        for c in candidates:
-            by_pos.setdefault(c["pos_group"], []).append(c)
-
-        selected: list[str] = []
-        selected_ids: set[str] = set()
-        for pos_group, count in ROSTER_TEMPLATE_53.items():
-            pool = sorted(
-                by_pos.get(pos_group, []),
-                key=lambda c: (c["status_priority"], -c["ovr"], c["depth"], c["gsis_id"]),
-            )
-            for c in pool[:count]:
-                selected.append(c["gsis_id"])
-                selected_ids.add(c["gsis_id"])
-
-        leftover = [c for c in candidates if c["gsis_id"] not in selected_ids]
-        leftover.sort(
-            key=lambda c: (
-                c["status_priority"],
-                -c["ovr"],
-                c["depth"],
-                -c["snap"],
-                -c["years_exp"],
-                c["gsis_id"],
-            )
-        )
-        slots = max(53 - len(selected), 0)
-        for c in leftover[:slots]:
-            selected.append(c["gsis_id"])
-
-        rosters[team] = selected
+        rosters[team] = _select_team(candidates)
     return rosters
+
+
+def _candidate_rank(c: dict) -> tuple:
+    return (c["status_priority"], -c["ovr"], c["depth"], -c["snap"], -c["years_exp"], c["gsis_id"])
+
+
+def _select_team(candidates: list[dict]) -> list[str]:
+    """One team's 53. Everyone who really played goes first, template order so a position keeps
+    its starters, then the surplus who played; idle players (never took the field) fill the
+    template's unmet slots, then the best of the rest. The template is a floor for roster shape,
+    not a cap on a position that played deep (a 3-4 team's ninth linebacker really played)."""
+    played = sorted((c for c in candidates if c["participant"] == 0), key=_candidate_rank)
+    idle = sorted((c for c in candidates if c["participant"] == 1), key=_candidate_rank)
+    selected: list[dict] = []
+
+    def take(pool: list[dict], limit: int) -> None:
+        chosen = {c["gsis_id"] for c in selected}
+        fresh = [c for c in pool if c["gsis_id"] not in chosen]
+        selected.extend(fresh[: max(min(limit, 53 - len(selected)), 0)])
+
+    for pos_group, count in ROSTER_TEMPLATE_53.items():
+        take([c for c in played if c["pos_group"] == pos_group], count)
+    take(played, 53)
+    for pos_group, count in ROSTER_TEMPLATE_53.items():
+        have = sum(1 for c in selected if c["pos_group"] == pos_group)
+        take([c for c in idle if c["pos_group"] == pos_group], count - have)
+    take(idle, 53)
+    return [c["gsis_id"] for c in selected]
 
 
 def _contract_index(master: PlayerMaster) -> dict[str, list[tuple[int, int, float]]]:
@@ -300,6 +307,7 @@ def _season_membership_mask(
     season: int,
     master: PlayerMaster,
     contract_idx: dict[str, list[tuple[int, int, float]]],
+    ratings=None,
 ) -> pd.Series:
     """A player belongs in season S only with a real roster stint, a draft slot, or a contract in S.
 
@@ -310,13 +318,23 @@ def _season_membership_mask(
     `_contract_ties_to_season`) is noise rather than a real participant — drop it rather than let
     it inflate the free-agent pool. A `good` status (ACT/RES/INA, see `_status_priority`) always
     counts as a real stint.
+
+    A player who never takes the field in S or any later season (`ratings.retired_before`) is out
+    of the league: a preseason release, a retirement announced in August (Anquan Boldin, 2017) or a
+    final year spent on injured reserve. He is dropped even with a camp contract or a good status,
+    since the free-agent pool would otherwise offer a retiree at his last public consensus. Players
+    drafted in S stay: a rookie cut in camp has no career to be over yet.
     """
     good_status = start["status"].map(_status_priority) == 0
     drafted_this_season = start["gsis_id"].map(
         lambda g: (master.draft_by_gsis.get(g) or {}).get("season") == season
     )
     contracted = start["gsis_id"].map(lambda g: _contract_ties_to_season(contract_idx, g, season))
-    return good_status | drafted_this_season | contracted
+    tied = good_status | drafted_this_season | contracted
+    if ratings is None:
+        return tied
+    still_playing = ~start["gsis_id"].map(lambda g: ratings.retired_before(g, season))
+    return tied & (still_playing | drafted_this_season)
 
 
 def build_season_rosters_and_players(
@@ -332,7 +350,7 @@ def build_season_rosters_and_players(
     stints = season_roster_stints(season)
     start = season_start_roster(stints)
     contract_idx = _contract_index(master)
-    start = start[_season_membership_mask(start, season, master, contract_idx)]
+    start = start[_season_membership_mask(start, season, master, contract_idx, ratings)]
     snaps = _snap_score(season, master)
     depth_ranks = compute_depth_ranks(season, start, master, snaps)
 
@@ -371,7 +389,15 @@ def build_season_rosters_and_players(
         pos_group_by_id[row.gsis_id] = rec["pos"]
 
     ovr_by_id = {rec["id"]: float(rec["scouting"]["ovr"]) for rec in players}
-    team_rosters = _select_rosters(start, pos_group_by_id, depth_ranks, snaps, ovr_by_id)
+    participants = {
+        rec["id"]
+        for rec in players
+        if (ratings.availability(rec["id"], season) or 0.0) >= PARTICIPATION_AVAILABILITY
+        or (rec["draft"] or {}).get("season") == season
+    }
+    team_rosters = _select_rosters(
+        start, pos_group_by_id, depth_ranks, snaps, ovr_by_id, participants
+    )
     selected_by_team = {team: set(ids) for team, ids in team_rosters.items()}
 
     rosters: dict[str, list[dict]] = {}

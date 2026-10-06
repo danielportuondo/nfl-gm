@@ -179,6 +179,11 @@ def test_season_membership_keeps_contracted_or_drafted_despite_bad_status(master
         bad_status["gsis_id"].map(drafted_this_season)
         | bad_status["gsis_id"].map(lambda g: _contract_ties_to_season(contract_idx, g, season))
     ]
+    # A player who never takes the field again is out of the league, tie or not (test_pool.py).
+    tied = tied[
+        tied["gsis_id"].map(drafted_this_season)
+        | ~tied["gsis_id"].map(lambda g: ratings.retired_before(g, season))
+    ]
     assert len(tied) > 0
 
     _, players_obj = build_season_rosters_and_players(season, master, ratings)

@@ -320,3 +320,29 @@ def test_trajectories_carry_availability_parallel_to_values(artifacts, names_by_
     missed_2017 = 2017 - luck["start"]
     assert luck["avail"][missed_2017] == 0
     assert luck["avail"][missed_2017 - 1] > 0.9
+
+
+def test_retirement_year_is_the_last_season_a_game_was_played() -> None:
+    """A zero-game final roster row (preseason cut, August retirement) is not a season of career."""
+    from gridiron_pipeline.model.trajectories import build_trajectories
+
+    rows = pd.DataFrame(
+        {
+            "gsis_id": ["vet", "vet", "vet", "rookie", "star"],
+            "season": [2014, 2015, 2016, 2016, 2025],
+            "pos": ["WR"] * 5,
+            "true_value": [70.0, 71.0, 41.0, 41.0, 41.0],
+            "games": [16, 16, 0, 0, 0],
+        }
+    )
+    by_player = build_trajectories(rows, list(range(2010, 2026)), "x")["byPlayer"]
+    assert by_player["vet"]["retiresAfter"] == 2015
+    assert by_player["vet"]["values"] == [70.0, 71.0]
+    assert by_player["rookie"]["retiresAfter"] == 2016  # never played: first row stays covered
+    assert by_player["star"]["retiresAfter"] is None  # the data's last season has no future yet
+
+
+def test_boldin_retired_before_the_2017_season(artifacts, names_by_id) -> None:
+    by_player = artifacts["trajectories"]["byPlayer"]
+    (boldin,) = [by_player[i] for i in _ids_named(names_by_id, "Anquan Boldin") if i in by_player]
+    assert boldin["retiresAfter"] == 2016

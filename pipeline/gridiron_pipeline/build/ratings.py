@@ -14,6 +14,7 @@ import logging
 import pandas as pd
 
 from gridiron_pipeline import CACHE_DIR
+from gridiron_pipeline.model.data import availability
 
 log = logging.getLogger(__name__)
 
@@ -57,6 +58,40 @@ class Ratings:
             if self._true_values is not None
             else {}
         )
+        self._availability, self._last_played, self.latest_season = self._real_participation()
+
+    def _real_participation(
+        self,
+    ) -> tuple[dict[tuple[str, int], float], dict[str, int], int | None]:
+        """Share of the season each player was on the field, and the last season he played at all.
+
+        Both come from the model's `games` column, i.e. real participation, never from roster
+        snapshots (which keep camp bodies and players who retired in August).
+        """
+        if self._true_values is None:
+            return {}, {}, None
+        tv = self._true_values
+        avail = availability(tv)
+        by_season = {
+            (gsis_id, int(season)): float(a)
+            for gsis_id, season, a in zip(tv["gsis_id"], tv["season"], avail, strict=True)
+        }
+        last_played = tv[tv["games"] > 0].groupby("gsis_id")["season"].max()
+        return by_season, {g: int(s) for g, s in last_played.items()}, int(tv["season"].max())
+
+    def availability(self, gsis_id: str, season: int) -> float | None:
+        return self._availability.get((gsis_id, season))
+
+    def retired_before(self, gsis_id: str, season: int) -> bool:
+        """True when the player never takes the field in `season` or later (real data only).
+
+        Always False for the last real season: nobody has a future yet, so "never again" is unknown.
+        """
+        if self.latest_season is None or season >= self.latest_season:
+            return False
+        if (gsis_id, season) not in self._availability:
+            return False  # unrated: no evidence either way
+        return self._last_played.get(gsis_id, 0) < season
 
     @staticmethod
     def _load(path) -> pd.DataFrame | None:
