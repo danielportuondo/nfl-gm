@@ -36,7 +36,15 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
 - The draft no longer skips real first- and second-round prospects.
 - Relocated teams show the right name for the season (Oakland in 2017).
 
+- The offseason cap check uses next season's books. Typing the asking price you see works, and a blocked signing says why.
+- A trade adds the new player to the end of your depth chart instead of re-sorting it.
+- The capital C reads as C, and Standings cards no longer clip.
+- Safeties show up in draft classes and free agency again.
+- Player ratings are steadier from year to year, and running quarterbacks and backs get credit for their rushing.
+- A week your team doesn't play says why, for example the 2017 Dolphins' week-1 game moved by Hurricane Irma, or the canceled 2022 Bills-Bengals game.
+
 ### Added
+- A Reset to consensus button for the depth chart.
 - The Draft Room pauses on every pick. "Sim next pick" advances one pick, and you can trade for the pick on the clock.
 - Player cards show season-by-season stats.
 - Releasing a player shows the dead money first.

@@ -454,3 +454,30 @@ A playthrough agent played MIA from the 2017 draft (titles in 2018 and 2019). A 
   - `retiresAfter` is the last season with a game.
   - Real fullbacks carry `role: 'FB'` (`pos` stays RB).
 - **In-season AI offers** reach the Trades screen. The store generates them after each sim with the same generator and seed as "Check for offers".
+
+## 2026-10-06 — Second QA fix batch
+
+- **The offseason signing gate uses next season's books.** In offseason phases, `fa.resign` and `fa.offer` compare `capFor(season + 1)` with the deals still on the books (`seasonsLeft ≥ 1`), which is the same rule as trade's `capBook`. The user-facing cap tiles show that gate ("Cap next season").
+  - Asks display rounded up to $0.1M, and re-signs accept $0.05M under (`faConstants.askTolerance`).
+  - `fa.offer` returns an optional plain-words `reason`.
+  - Still open: AI free agency and AI re-signing gate on this season's cap. Changing it shifts balance, so it is deferred.
+- **A trade appends to the user's depth chart.** It does not re-sort the user's chart. AI charts still sort by consensus. The Roster screen has "Reset to consensus" (whole chart, injured players last).
+- **Capital C comes from Tiny5.** Pixelify Sans draws C as a notched O. A one-glyph Tiny5 face (OFL; 532 B, inlined) supplies U+0043 ahead of it. Standings cards span the row from 721–1199px and show abbreviations at phone width.
+- **Unlabelled DBs resolve to S or CB** (build and model, `build/db_career.py`). Order: the row or draft label, then the combine, then a career vote across rosters, depth charts, players and NGS, then 202 lb. League S:CB is 0.72–0.89.
+- **True value rework (`model/truevalue.py`):**
+  - Production per game or try, shrunk to the pool.
+  - Snap share z-scored, not ranked.
+  - Pay counts only post-debut deals, imputed when missing, ranked within sub-groups.
+  - QB rushing counts like passing, and RBs have their own rushing measures.
+  - Units are position-specific.
+  - K is distance-adjusted; P uses net average and inside-20 rate.
+  - Seasons under 4 games lean on the player's previous full season.
+
+  Regulars' year-over-year correlation went from 0.570 to 0.667. Win correlation vs real seasons (2015/2017/2019) is 0.839 / 0.845 / 0.802. The 2014 redraft is 95.3% historical.
+  - Open proposal: `PRIOR_SEASON_GAMES = 2` reaches 0.738, but that is cross-season smoothing, which §6.2 rules out, so it needs Daniel's call.
+- **Draft-class position-mix test pools five seeded classes.** One class's L1 swings 0.08–0.21 by seed.
+- **Weeks without a game explain themselves** (`screens/shared/scheduleNotes.ts`). The reported "week 2 after break camp" was the Dashboard's next-opponent line: the 2017 Dolphins had no week-1 game. The real disruptions in 2010–2025 are:
+  - 2017 MIA/TB, week 1 (Hurricane Irma; played in week 11)
+  - 2022 BUF/CIN, week 17 (canceled after Damar Hamlin's cardiac arrest)
+
+  Any other week off reads as a bye. A test scans every shipped schedule.
