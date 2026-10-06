@@ -79,8 +79,16 @@ describe('lifecycle.generateDraftClass vs. a real class', () => {
   })
 
   it('position mix has L1 distance <= 0.15 from the real class', () => {
+    // One sampled class swings 0.08-0.21 on L1 by seed alone, so compare the mix pooled over a few
+    // seeded classes: the generator's mix, not one draw's luck, is what this checks.
+    const classes = ['a', 'b', 'c', 'd', 'e'].map((seed) => {
+      const state = fakeStateAt(COMPARISON_SEASON, `draft-class-mix-${seed}`)
+      const rng = ctx.modules.rng.fromSeed(state.seed, state.season, 'draftClass')
+      return lifecycle.generateDraftClass(state, ctx, rng).prospects
+    })
+    const pooled = classes.flat()
     const positions = [
-      ...new Set([...real.prospects.map((p) => p.pos), ...generated.prospects.map((p) => p.pos)]),
+      ...new Set([...real.prospects.map((p) => p.pos), ...pooled.map((p) => p.pos)]),
     ]
     const mixOf = (prospects: { pos: string }[]) => {
       const counts = new Map<string, number>()
@@ -88,7 +96,7 @@ describe('lifecycle.generateDraftClass vs. a real class', () => {
       return (pos: string) => (counts.get(pos) ?? 0) / prospects.length
     }
     const realMix = mixOf(real.prospects)
-    const genMix = mixOf(generated.prospects)
+    const genMix = mixOf(pooled)
     const l1 = positions.reduce((sum, pos) => sum + Math.abs(realMix(pos) - genMix(pos)), 0)
     expect(l1).toBeLessThanOrEqual(0.15)
   })
