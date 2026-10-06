@@ -263,6 +263,49 @@ describe('releaseMany', () => {
   })
 })
 
+describe("the user's depth chart follows roster moves", () => {
+  it('drops a released player and adds a signing right away', async () => {
+    const base = mockLeague()
+    const offer = (state: LeagueState, teamId: TeamId, playerId: PlayerId) => {
+      const team = state.teams[teamId]!
+      const slot = { ...team.roster[0]!, playerId }
+      return {
+        accepted: true,
+        state: {
+          ...state,
+          teams: { ...state.teams, [teamId]: { ...team, roster: [...team.roster, slot] } },
+          freeAgents: state.freeAgents.filter((id) => id !== playerId),
+        },
+      }
+    }
+    const store = createGameStore({
+      mode: 'mock',
+      modules: {
+        fa: { ...defaultEngineModules.fa, release: fakeRosterRelease, offer: offer as never },
+      },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    const league = store.getState().state!
+    const user = league.teams[league.userTeam]!
+    const cut = user.roster[0]!.playerId
+    const signee = league.freeAgents[0]!
+    const signeePos = league.players[signee]!.pos
+
+    await store.getState().actions.release(cut)
+    const afterCut = store.getState().state!.teams[league.userTeam]!.depthChart
+    expect(Object.values(afterCut).flat()).not.toContain(cut)
+
+    await store.getState().actions.offerContract(signee, user.roster[0]!.contract)
+    const afterSign = store.getState().state!.teams[league.userTeam]!.depthChart
+    expect(afterSign[signeePos]).toContain(signee)
+  })
+})
+
 describe('exportSave', () => {
   it('is a no-op without state', () => {
     const store = createGameStore({ mode: 'mock' })

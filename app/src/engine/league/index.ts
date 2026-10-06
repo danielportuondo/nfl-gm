@@ -1054,6 +1054,7 @@ export const league: LeagueModule = {
   newGame: newGameImpl,
   simWeek: (state, ctx) => simWeekImpl(reconcileUserDepthChart(state), ctx),
   advancePhase: (state, ctx) => reconcileUserDepthChart(advancePhaseImpl(state, ctx)),
+  reconcileDepthChart,
   standings: standingsImpl,
   playoffFormat: (season: Season): PlayoffFormat => {
     const fmt = leagueFormat(season)

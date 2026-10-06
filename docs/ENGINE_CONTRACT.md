@@ -686,6 +686,14 @@ export interface LeagueModule {
   /** Best-available depth chart by consensus ovr per STARTER_TEMPLATE; healthy players first. */
   autoDepthChart(state: LeagueState, teamId: TeamId): DepthChart
 
+  /**
+   * Bring `teamId`'s depth chart in line with its roster without reordering it: players no longer
+   * rostered drop out, new ones are appended at their position by consensus ovr. Pure; returns
+   * `state` unchanged when the chart already matches. The store runs it on the user's team after
+   * every move so the hand-ordered chart never goes stale.
+   */
+  reconcileDepthChart(state: LeagueState, teamId: TeamId): LeagueState
+
   /** Convenience passthrough to sim.teamStrength for the store/UI. */
   teamStrength(state: LeagueState, teamId: TeamId, ctx: EngineContext): TeamStrength
 
@@ -702,6 +710,7 @@ export const leagueStub: LeagueModule = {
   seedPlayoffs: () => notImplemented('league.seedPlayoffs'),
   buildSchedule: () => notImplemented('league.buildSchedule'),
   autoDepthChart: () => notImplemented('league.autoDepthChart'),
+  reconcileDepthChart: () => notImplemented('league.reconcileDepthChart'),
   teamStrength: () => notImplemented('league.teamStrength'),
   summarizeSeason: () => notImplemented('league.summarizeSeason'),
 }

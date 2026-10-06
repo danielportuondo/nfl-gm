@@ -105,7 +105,19 @@ export function createGameStore(config: StoreConfig = {}) {
   if (typeof document !== 'undefined') applyTheme(initialTheme)
   const initialRoute = currentRoute()
 
-  return create<GameStoreState>()((set, get, api) => {
+  return create<GameStoreState>()((rawSet, get, api) => {
+    /**
+     * Every roster move (draft pick, signing, release, trade) lands in `state` through here; the
+     * user's hand-ordered depth chart has to follow it now, not at the next phase or week.
+     */
+    const set = ((partial: Parameters<typeof rawSet>[0]) =>
+      rawSet((s) => {
+        const patch = typeof partial === 'function' ? partial(s) : partial
+        const next = patch.state
+        if (!next || next === s.state) return patch
+        return { ...patch, state: modules.league.reconcileDepthChart(next, next.userTeam) }
+      })) as typeof rawSet
+
     function addToast(text: string, tone: ToastItem['tone'] = 'info') {
       set((s) => ({ toasts: [...s.toasts, { id: makeToastId(), text, tone }] }))
     }
