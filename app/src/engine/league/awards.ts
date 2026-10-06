@@ -17,7 +17,20 @@ import {
   type TeamId,
   type TeamRecord,
 } from '@contracts/index'
-import { COY_PROJECTION, DEFENSE_SCORE_WEIGHTS, MVP_WIN_PCT_BASE } from './constants'
+import {
+  COY_PROJECTION,
+  DEFENSE_BENCHMARK,
+  DEFENSE_SCORE_WEIGHTS,
+  DPOY_POSITION_WEIGHT,
+  DROY_POSITION_WEIGHT,
+  MVP_POSITION_WEIGHT,
+  MVP_TEAM_SUCCESS,
+  NOTE_MIN_SECONDARY_YARDS,
+  OFFENSE_BENCHMARK,
+  OFFENSE_SCORE_WEIGHTS,
+  OPOY_POSITION_WEIGHT,
+  OROY_POSITION_WEIGHT,
+} from './constants'
 
 const ZERO_RECORD: TeamRecord = { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
 
@@ -55,6 +68,7 @@ type OffenseTotals = {
   passInt: number
   rushYds: number
   rushTd: number
+  rec: number
   recYds: number
   recTd: number
 }
@@ -74,6 +88,7 @@ const zeroOffense = (): OffenseTotals => ({
   passInt: 0,
   rushYds: 0,
   rushTd: 0,
+  rec: 0,
   recYds: 0,
   recTd: 0,
 })
@@ -93,6 +108,7 @@ const OFFENSE_KEYS: (keyof PlayerGameLine)[] = [
   'passInt',
   'rushYds',
   'rushTd',
+  'rec',
   'recYds',
   'recTd',
 ]
@@ -146,6 +162,7 @@ function collectSeasonTotals(state: LeagueState): {
         t.passInt += line.passInt ?? 0
         t.rushYds += line.rushYds ?? 0
         t.rushTd += line.rushTd ?? 0
+        t.rec += line.rec ?? 0
         t.recYds += line.recYds ?? 0
         t.recTd += line.recTd ?? 0
         offense.set(line.playerId, t)
@@ -170,14 +187,16 @@ function collectSeasonTotals(state: LeagueState): {
 }
 
 function offenseScore(t: OffenseTotals): number {
+  const w = OFFENSE_SCORE_WEIGHTS
   return (
-    t.passYds / 25 +
-    t.passTd * 4 -
-    t.passInt * 2 +
-    t.rushYds / 10 +
-    t.rushTd * 6 +
-    t.recYds / 10 +
-    t.recTd * 6
+    t.passYds * w.passYd +
+    t.passTd * w.passTd +
+    t.passInt * w.passInt +
+    t.rushYds * w.rushYd +
+    t.rushTd * w.rushTd +
+    t.rec * w.rec +
+    t.recYds * w.recYd +
+    t.recTd * w.recTd
   )
 }
 
@@ -193,21 +212,38 @@ function defenseScore(t: DefenseTotals): number {
   )
 }
 
-/** Yards fragment is always shown; the TD fragment is omitted rather than rendering "0 TD". */
+/** Yards fragments always say what the yards are; the TD fragment is omitted rather than "0 TD". A
+ * ball carrier shows rushing and receiving separately once the smaller part is worth showing. */
 export function offenseNote(pos: Position, t: OffenseTotals): string {
-  const [yds, td] =
-    pos === 'QB' ? [t.passYds, t.passTd] : [t.rushYds + t.recYds, t.rushTd + t.recTd]
-  const parts = [`${formatNumber(yds)} yds`]
+  const parts: string[] = []
+  let td = t.passTd + t.rushTd + t.recTd
+  if (pos === 'QB') {
+    parts.push(`${formatNumber(t.passYds)} pass yds`)
+    td = t.passTd
+  } else {
+    const rush = t.rushYds
+    const rec = t.recYds
+    const showRush = rush >= NOTE_MIN_SECONDARY_YARDS || rush >= rec
+    const showRec = rec >= NOTE_MIN_SECONDARY_YARDS || rec > rush
+    if (showRush && showRec) {
+      parts.push(`${formatNumber(rush)} rush, ${formatNumber(rec)} rec yds`)
+    } else if (showRush) {
+      parts.push(`${formatNumber(rush)} rush yds`)
+    } else {
+      parts.push(`${formatNumber(rec)} rec yds`)
+    }
+  }
   if (td > 0) parts.push(`${td} TD`)
   return parts.join(', ')
 }
 
-/** Only the non-zero counting stats among sacks/INT/forced fumbles are shown, in that order; a
+/** Only the non-zero counting stats among sacks/INT/PD/forced fumbles are shown, in that order; a
  * defender with none of those (e.g. a coverage corner with zero sacks) falls back to tackles. */
 export function defenseNote(t: DefenseTotals): string {
   const parts: string[] = []
   if (t.sacks > 0) parts.push(`${formatNumber(t.sacks)} sacks`)
   if (t.ints > 0) parts.push(`${t.ints} INT`)
+  if (t.passesDefended > 0) parts.push(`${t.passesDefended} PD`)
   if (t.forcedFumbles > 0) parts.push(`${t.forcedFumbles} FF`)
   return parts.length > 0 ? parts.join(', ') : `${formatNumber(t.tackles)} tackles`
 }
@@ -235,37 +271,61 @@ function rank<C>(
 // Major awards
 // -------------------------------------------------------------------------------------------
 
-interface OffenseCandidate {
+interface Candidate<T> {
   id: PlayerId
   player: Player
   teamId: TeamId
-  totals: OffenseTotals
-  score: number
+  totals: T
+  /** Raw production score; only comparable within a position. */
+  raw: number
+  /** raw / the position's benchmark: "how many typical top performers", comparable across positions. */
+  adjusted: number
 }
 
-interface DefenseCandidate {
-  id: PlayerId
-  player: Player
-  teamId: TeamId
-  totals: DefenseTotals
-  score: number
+type OffenseCandidate = Candidate<OffenseTotals>
+type DefenseCandidate = Candidate<DefenseTotals>
+
+interface BenchmarkRule {
+  depth: number
+  floor: number
 }
 
+/** Mean raw score of the top `depth` at the position, never below the rule's floor. */
+function benchmark(raws: number[], rule: BenchmarkRule): number {
+  const top = [...raws].sort((a, b) => b - a).slice(0, rule.depth)
+  const mean = top.length > 0 ? top.reduce((a, b) => a + b, 0) / top.length : 0
+  return Math.max(mean, rule.floor)
+}
+
+/** Candidates at the positions in `rules` only, each scored against their own position's benchmark. */
 function buildCandidates<T>(
   state: LeagueState,
   totals: Map<PlayerId, T>,
   teamOf: Map<PlayerId, TeamId>,
   score: (t: T) => number,
-): { id: PlayerId; player: Player; teamId: TeamId; totals: T; score: number }[] {
-  const out: { id: PlayerId; player: Player; teamId: TeamId; totals: T; score: number }[] = []
+  rules: Partial<Record<Position, BenchmarkRule>>,
+): Candidate<T>[] {
+  const scored: { id: PlayerId; player: Player; teamId: TeamId; totals: T; raw: number }[] = []
   for (const id of [...totals.keys()].sort()) {
     const player = state.players[id]
     const teamId = teamOf.get(id)
-    if (!player || !teamId) continue // skip candidates whose player record is missing
+    if (!player || !teamId || !rules[player.pos]) continue // skip missing records and off-award positions
     const t = totals.get(id)!
-    out.push({ id, player, teamId, totals: t, score: score(t) })
+    scored.push({ id, player, teamId, totals: t, raw: score(t) })
   }
-  return out
+  const benchmarks = new Map<Position, number>()
+  for (const pos of POSITIONS) {
+    const rule = rules[pos]
+    if (!rule) continue
+    benchmarks.set(
+      pos,
+      benchmark(
+        scored.filter((c) => c.player.pos === pos).map((c) => c.raw),
+        rule,
+      ),
+    )
+  }
+  return scored.map((c) => ({ ...c, adjusted: c.raw / benchmarks.get(c.player.pos)! }))
 }
 
 function playerAward(
@@ -333,18 +393,31 @@ function coyAward(state: LeagueState, ctx: EngineContext): Award | null {
   }
 }
 
+const weightOf = (weights: Partial<Record<Position, number>>, pos: Position): number =>
+  weights[pos] ?? 0
+
+/** Team factor for MVP: a winning team lifts a candidate, a losing one holds him back. */
+function teamSuccess(record: TeamRecord): number {
+  const { weight, floor } = MVP_TEAM_SUCCESS
+  return Math.max(floor, 1 + weight * (winPct(record) - 0.5))
+}
+
 /** The six major, consensus/box-score-derived awards, in MVP/OPOY/DPOY/OROY/DROY/COY order. */
 function majorAwards(state: LeagueState, ctx: EngineContext): Award[] {
   const { teamOf, offense, defense } = collectSeasonTotals(state)
-  const offenseCandidates = buildCandidates(state, offense, teamOf, offenseScore)
-  const defenseCandidates = buildCandidates(state, defense, teamOf, defenseScore)
+  const offenseCandidates = buildCandidates(state, offense, teamOf, offenseScore, OFFENSE_BENCHMARK)
+  const defenseCandidates = buildCandidates(state, defense, teamOf, defenseScore, DEFENSE_BENCHMARK)
   const teamWins = (c: { teamId: TeamId }): number => recordOf(state, c.teamId).wins
+  const byWeight =
+    (weights: Partial<Record<Position, number>>) =>
+    (c: Candidate<unknown>): number =>
+      c.adjusted * weightOf(weights, c.player.pos)
 
   const awards: Award[] = []
 
   const mvpRanked = rank(
     offenseCandidates,
-    (c) => c.score * (MVP_WIN_PCT_BASE + winPct(recordOf(state, c.teamId))),
+    (c) => byWeight(MVP_POSITION_WEIGHT)(c) * teamSuccess(recordOf(state, c.teamId)),
     teamWins,
     (c) => c.id,
   )
@@ -356,7 +429,7 @@ function majorAwards(state: LeagueState, ctx: EngineContext): Award[] {
 
   const opoyRanked = rank(
     offenseCandidates.filter((c) => c.id !== mvp?.id),
-    (c) => c.score,
+    byWeight(OPOY_POSITION_WEIGHT),
     teamWins,
     (c) => c.id,
   )
@@ -372,20 +445,18 @@ function majorAwards(state: LeagueState, ctx: EngineContext): Award[] {
     )
   }
 
-  const dpoyRanked = rank(
-    defenseCandidates,
-    (c) => c.score,
-    teamWins,
-    (c) => c.id,
-  )
+  const dpoyRanked = rank(defenseCandidates, byWeight(DPOY_POSITION_WEIGHT), teamWins, (c) => c.id)
   const dpoy = dpoyRanked[0]
   if (dpoy) {
     awards.push(playerAward('DPOY', 'Defensive player of the year', defenseNote(dpoy.totals), dpoy))
   }
 
+  const rookies = <T>(cs: Candidate<T>[]): Candidate<T>[] =>
+    cs.filter((c) => c.player.rookieSeason === state.season && c.raw > 0)
+
   const oroyRanked = rank(
-    offenseCandidates.filter((c) => c.player.rookieSeason === state.season && c.score > 0),
-    (c) => c.score,
+    rookies(offenseCandidates),
+    byWeight(OROY_POSITION_WEIGHT),
     teamWins,
     (c) => c.id,
   )
@@ -402,8 +473,8 @@ function majorAwards(state: LeagueState, ctx: EngineContext): Award[] {
   }
 
   const droyRanked = rank(
-    defenseCandidates.filter((c) => c.player.rookieSeason === state.season && c.score > 0),
-    (c) => c.score,
+    rookies(defenseCandidates),
+    byWeight(DROY_POSITION_WEIGHT),
     teamWins,
     (c) => c.id,
   )

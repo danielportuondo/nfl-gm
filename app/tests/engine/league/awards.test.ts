@@ -237,9 +237,35 @@ function ctx() {
 
 describe('offenseNote / defenseNote — zero-stat fragments are omitted', () => {
   it('omits "0 TD" when there are no touchdowns', () => {
-    const totals = { passYds: 0, passTd: 0, passInt: 0, rushYds: 0, rushTd: 0, recYds: 0, recTd: 0 }
-    expect(offenseNote('QB', { ...totals, passYds: 250 })).toBe('250 yds')
-    expect(offenseNote('WR', { ...totals, recYds: 80 })).toBe('80 yds')
+    const totals = {
+      passYds: 0,
+      passTd: 0,
+      passInt: 0,
+      rushYds: 0,
+      rushTd: 0,
+      rec: 0,
+      recYds: 0,
+      recTd: 0,
+    }
+    expect(offenseNote('QB', { ...totals, passYds: 250 })).toBe('250 pass yds')
+    expect(offenseNote('WR', { ...totals, recYds: 80 })).toBe('80 rec yds')
+  })
+
+  it('labels rushing and receiving yards separately for a ball carrier', () => {
+    const totals = {
+      passYds: 0,
+      passTd: 0,
+      passInt: 0,
+      rushYds: 1621,
+      rushTd: 18,
+      rec: 85,
+      recYds: 791,
+      recTd: 9,
+    }
+    expect(offenseNote('RB', totals)).toBe('1,621 rush, 791 rec yds, 27 TD')
+    expect(offenseNote('WR', { ...totals, rushYds: 43, rushTd: 0, recYds: 1411, recTd: 15 })).toBe(
+      '1,411 rec yds, 15 TD',
+    )
   })
 
   it('shows only the non-zero counting stats, in sacks/INT/FF order', () => {
@@ -261,7 +287,7 @@ describe('seasonAwards — major awards', () => {
     const mvp = awards.find((a) => a.id === 'MVP')
     expect(mvp?.playerId).toBe('qb1')
     expect(mvp?.teamId).toBe('AAA')
-    expect(mvp?.note).toMatch(/^4,000 yds, 30 TD, 14-3$/)
+    expect(mvp?.note).toMatch(/^4,000 pass yds, 30 TD, 14-3$/)
   })
 
   it('OPOY is the highest raw offense score excluding the MVP winner, and is not the MVP', () => {
