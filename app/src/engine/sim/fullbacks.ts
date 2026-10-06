@@ -3,8 +3,9 @@ import type { EngineContext, LeagueState, PlayerId, Season, SeasonData } from '@
 const taggedInChunk = new WeakMap<SeasonData, ReadonlySet<PlayerId>>()
 
 /**
- * Fullbacks tagged in the season chunk. Fallback for players whose `role` did not survive into
- * `state.players` (the league/history/draft player builders copy a fixed field list).
+ * Fullbacks tagged in this season's chunk. `Player.role` is set once, when the player enters the
+ * league; the chunk tag is per season, so it also catches RB/FB switchers and saves from before
+ * `role` existed.
  */
 function chunkFullbacks(ctx: EngineContext, season: Season): ReadonlySet<PlayerId> {
   let chunk: SeasonData | undefined

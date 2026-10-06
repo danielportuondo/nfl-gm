@@ -72,6 +72,7 @@ function asUndraftedPlayer(p: Prospect): Player {
     draft: null,
     real: p.real,
     rookieSeason: p.rookieSeason,
+    ...(p.role ? { role: p.role } : {}),
   }
 }
 

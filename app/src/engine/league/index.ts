@@ -111,6 +111,7 @@ function buildPlayersFromSeason(
       draft: sp.draft,
       real: sp.real,
       rookieSeason: sp.rookieSeason,
+      ...(sp.role ? { role: sp.role } : {}),
     }
     players[player.id] = player
     scouting[player.id] = sp.scouting

@@ -32,6 +32,7 @@ function toPlayer(sp: SeasonPlayer): Player {
     draft: sp.draft,
     real: sp.real,
     rookieSeason: sp.rookieSeason,
+    ...(sp.role ? { role: sp.role } : {}),
   }
 }
 
