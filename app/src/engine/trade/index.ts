@@ -22,10 +22,11 @@ import type {
 import { acceptanceConstants, tradeConstants } from './constants'
 import { evaluateImpl, mirror } from './evaluate'
 import { fairnessImpl } from './fairness'
+import { valueSides } from './lineup'
 import { generateAiOffersImpl } from './offers'
 import { suggestTradesImpl } from './suggest'
 import { logUserTrade } from './transactions'
-import { matchesRef, outgoingValue, pickValueImpl, playerValueImpl, refKey, refOf } from './value'
+import { matchesRef, pickValueImpl, playerValueImpl, refKey, refOf } from './value'
 
 const keyOfExtra = (extra: { player?: PlayerId; pick?: PickRef }): string =>
   extra.player ?? (extra.pick ? refKey(extra.pick) : '')
@@ -114,7 +115,9 @@ function raiseAnnoyance(state: LeagueState, teamId: TeamId): LeagueState {
 
 /**
  * On a decline, the AI may ask for one more asset from the proposer's side — the cheapest single
- * asset that closes the gap, so the counter is the least insulting one available.
+ * asset that closes the gap, so the counter is the least insulting one available. A player is worth
+ * what he adds to the AI's side of this deal, so a bench body it would discount is not asked for at
+ * full price, and a starter who covers the hole it is opening is worth more than his own value.
  */
 function counterFor(
   state: LeagueState,
@@ -132,14 +135,17 @@ function counterFor(
   const proposer = proposal.offer.teamId
   const ai = proposal.request.teamId
   const alreadyOffered = new Set(proposal.offer.players)
+  const net = (offer: TradeProposal['offer']) => {
+    const sides = valueSides(state, ai, offer, proposal.request, ctx)
+    return sides.valueIn - sides.valueOut
+  }
+  const baseNet = net(proposal.offer)
 
   const candidates: { extra: { player?: PlayerId; pick?: PickRef }; value: number }[] = []
   for (const slot of state.teams[proposer]?.roster ?? []) {
     if (alreadyOffered.has(slot.playerId)) continue
-    candidates.push({
-      extra: { player: slot.playerId },
-      value: outgoingValue(state, slot.playerId, ctx),
-    })
+    const offer = { ...proposal.offer, players: [...proposal.offer.players, slot.playerId] }
+    candidates.push({ extra: { player: slot.playerId }, value: net(offer) - baseNet })
   }
   for (const pick of state.picks) {
     if (pick.owner !== proposer || pick.playerId) continue

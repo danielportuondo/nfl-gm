@@ -7,7 +7,9 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import type { EngineContext, LeagueState, TeamId } from '@contracts/index'
 import { trade } from '@engine/trade'
 import { mirror } from '@engine/trade/evaluate'
-import { suggestionNeeds } from '@engine/trade/suggest'
+import { suggestionConstants } from '@engine/trade/constants'
+import { isStarter } from '@engine/trade/lineup'
+import { suggestionNeeds, weakestStarterOvr } from '@engine/trade/suggest'
 import { loadRealContext } from '../../../scripts/lib/publicData'
 
 const SETTINGS = {
@@ -31,15 +33,6 @@ describe('trade.suggestTrades (real 2015 league)', () => {
     )
   }
 
-  function bestOvrAt(state: LeagueState, teamId: TeamId, pos: string): number {
-    return Math.max(
-      0,
-      ...state.teams[teamId]!.roster.filter((r) => state.players[r.playerId]!.pos === pos).map(
-        (r) => state.scouting[r.playerId]!.ovr,
-      ),
-    )
-  }
-
   it('fills a top need with an upgrade the AI would accept, and accepting is guaranteed', () => {
     let total = 0
     for (const team of TEAMS) {
@@ -49,7 +42,7 @@ describe('trade.suggestTrades (real 2015 league)', () => {
         ctx,
         ctx.modules.rng.fromSeed(state.seed, 2015, 0, 'suggest'),
       )
-      const needs = new Set(suggestionNeeds(state, team, ctx))
+      const needs = new Set(suggestionNeeds(state, team))
       expect(suggestions.length).toBeLessThanOrEqual(4)
       for (const s of suggestions) {
         expect(s.initiatedBy).toBe('AI')
@@ -58,8 +51,15 @@ describe('trade.suggestTrades (real 2015 league)', () => {
         const incoming = s.offer.players[0]!
         const pos = state.players[incoming]!.pos
         expect(needs.has(pos)).toBe(true)
-        expect(state.scouting[incoming]!.ovr).toBeGreaterThan(bestOvrAt(state, team, pos))
-        for (const id of s.request.players) expect(needs.has(state.players[id]!.pos)).toBe(false)
+        // Re-banded 2026-10-05 (M10): was "beats the user's best at the position", which never let a
+        // WR or CB suggestion fill the third starting slot; now it must clearly beat the weakest starter.
+        expect(state.scouting[incoming]!.ovr).toBeGreaterThanOrEqual(
+          weakestStarterOvr(state, team, pos) + suggestionConstants.minUpgrade,
+        )
+        for (const id of s.request.players) {
+          expect(needs.has(state.players[id]!.pos)).toBe(false)
+          expect(isStarter(state, team, id), state.players[id]!.name).toBe(false)
+        }
 
         expect(trade.evaluate(state, mirror(s), ctx).p).toBeGreaterThanOrEqual(0.5)
         const user = trade.evaluate(state, s, ctx)

@@ -1,54 +1,56 @@
 /**
  * Suggested trades (Phase 6). The AI proposes and the user accepts or dismisses: a suggestion sends the
- * user a player at one of their top consensus needs from a team that is not short there, and asks for
- * the user's surplus — players off their need positions, preferably at the AI's own needs — plus pick
+ * user a player who clearly upgrades the weakest starter at one of their real needs (a starting slot
+ * below `needConstants.starterTarget`), from a team that is not short there, and asks for the user's
+ * surplus — never one of their starters, preferably players at the AI's own needs — plus pick
  * sweeteners until the AI's own p clears `offerConstants.minAiP`. The same plausibility band as AI
  * offers applies from the user's side. AI-initiated, so accepting one always executes. Consensus only.
  */
-import type {
-  EngineContext,
-  LeagueState,
-  PlayerId,
-  Position,
-  Rng,
-  TeamId,
-  TradeProposal,
+import {
+  STARTER_TEMPLATE,
+  type EngineContext,
+  type LeagueState,
+  type PlayerId,
+  type Position,
+  type Rng,
+  type TeamId,
+  type TradeProposal,
 } from '@contracts/index'
-import { offerConstants, suggestionConstants } from './constants'
+import { needConstants, offerConstants, pickConstants, suggestionConstants } from './constants'
 import { acceptableToAi, aiTeams, assemble, propose, tradeablePicks } from './offers'
-import { incomingValue, needsFor, outgoingValue, topByOvrAtPosition } from './value'
+import { depthAt, incomingValueFor, isStarter, outgoingValueFor, startingSlots } from './lineup'
+import { needsFor, topByOvrAtPosition } from './value'
 
 interface Valued {
   id: PlayerId
   value: number
 }
 
-/** The user's need positions worth suggesting for: deficit order, specialists excluded. */
-export function suggestionNeeds(
-  state: LeagueState,
-  teamId: TeamId,
-  ctx: EngineContext,
-): Position[] {
-  const needs = needsFor(state, teamId, ctx)
-  const skip = new Set(suggestionConstants.skipPositions)
-  return (Object.keys(needs.byPos) as Position[])
-    .filter((pos) => !skip.has(pos) && (needs.byPos[pos] ?? 0) > 0)
-    .sort((a, b) => (needs.byPos[b] ?? 0) - (needs.byPos[a] ?? 0) || a.localeCompare(b))
-    .slice(0, suggestionConstants.needsConsidered)
+/** Consensus ovr of `teamId`'s weakest starter at `pos` — an empty slot reads as replacement level. */
+export function weakestStarterOvr(state: LeagueState, teamId: TeamId, pos: Position): number {
+  const id = depthAt(state, teamId, pos)[startingSlots(pos) - 1]
+  return id === undefined
+    ? pickConstants.replacementOvr
+    : (state.scouting[id]?.ovr ?? pickConstants.replacementOvr)
 }
 
-function bestOvrAt(state: LeagueState, teamId: TeamId, pos: Position): number {
-  let best = 0
-  for (const slot of state.teams[teamId]?.roster ?? []) {
-    if (state.players[slot.playerId]?.pos !== pos) continue
-    best = Math.max(best, state.scouting[slot.playerId]?.ovr ?? 0)
-  }
-  return best
+/**
+ * The user's real needs: positions whose weakest starter sits at least `minNeedDeficit` below
+ * `needConstants.starterTarget`, biggest hole first, specialists excluded.
+ */
+export function suggestionNeeds(state: LeagueState, teamId: TeamId): Position[] {
+  const skip = new Set(suggestionConstants.skipPositions)
+  const deficit = (pos: Position) =>
+    needConstants.starterTarget - weakestStarterOvr(state, teamId, pos)
+  return (Object.keys(STARTER_TEMPLATE) as Position[])
+    .filter((pos) => !skip.has(pos) && deficit(pos) >= suggestionConstants.minNeedDeficit)
+    .sort((a, b) => deficit(b) - deficit(a) || a.localeCompare(b))
+    .slice(0, suggestionConstants.needsConsidered)
 }
 
 /**
  * One suggestion from `aiTeam` at `pos`, or null. The AI keeps its top consensus player at the position
- * and offers the next ones down; each must actually be an upgrade on the user's best there.
+ * and offers the next ones down; each must beat the user's weakest starter there by `minUpgrade`.
  */
 function suggestionFor(
   state: LeagueState,
@@ -74,11 +76,14 @@ function suggestionFor(
         !slot.injured &&
         !usedIncoming.has(slot.playerId),
     )
-    .map((slot) => ({ id: slot.playerId, value: outgoingValue(state, slot.playerId, ctx) }))
+    .map((slot) => ({
+      id: slot.playerId,
+      value: outgoingValueFor(state, aiTeam, slot.playerId, ctx),
+    }))
     .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id))
     .slice(0, suggestionConstants.candidatesScanned)
 
-  const userBest = bestOvrAt(state, state.userTeam, pos)
+  const mustBeat = weakestStarterOvr(state, state.userTeam, pos) + suggestionConstants.minUpgrade
   const userRoster = state.teams[state.userTeam]?.roster ?? []
   const skip = new Set(suggestionConstants.skipPositions)
   const payRatio =
@@ -86,7 +91,7 @@ function suggestionFor(
     rng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
 
   for (const give of surplus) {
-    if ((state.scouting[give.id]?.ovr ?? 0) <= userBest) continue
+    if ((state.scouting[give.id]?.ovr ?? 0) < mustBeat) continue
     const ask = give.value / payRatio
     const sendable = userRoster
       .filter((slot) => {
@@ -96,12 +101,13 @@ function suggestionFor(
           !userWanted.has(p) &&
           !skip.has(p) &&
           !slot.injured &&
-          !usedOutgoing.has(slot.playerId)
+          !usedOutgoing.has(slot.playerId) &&
+          !isStarter(state, state.userTeam, slot.playerId)
         )
       })
       .map((slot) => ({
         id: slot.playerId,
-        value: incomingValue(state, slot.playerId, ctx),
+        value: incomingValueFor(state, aiTeam, slot.playerId, ctx),
         fillsNeed: aiWanted.has(posOf(slot.playerId)!),
       }))
       .filter((c) => c.value <= ask * suggestionConstants.askSlack)
@@ -142,7 +148,7 @@ export function suggestTradesImpl(
   rng: Rng,
 ): TradeProposal[] {
   if (!state.teams[state.userTeam]) return []
-  const wanted = suggestionNeeds(state, state.userTeam, ctx)
+  const wanted = suggestionNeeds(state, state.userTeam)
   if (wanted.length === 0) return []
   const userWanted = new Set(wanted)
   const usedIncoming = new Set<PlayerId>()

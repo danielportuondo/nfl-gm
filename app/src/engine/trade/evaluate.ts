@@ -12,14 +12,15 @@ import type {
   TradeEvaluation,
   TradeProposal,
 } from '@contracts/index'
-import { acceptanceConstants, needConstants, tradeConstants } from './constants'
+import { acceptanceConstants, lineupConstants, needConstants, tradeConstants } from './constants'
+import { valueSides, type SideValuation } from './lineup'
+import { tradeLockReason } from './lock'
 import {
+  controlSeasons,
   findPick,
-  incomingValue,
   injuryWeeks,
   needsFor,
   outgoingValue,
-  pickValueImpl,
   refKey,
   rosterIndex,
 } from './value'
@@ -70,29 +71,58 @@ function assetErrors(state: LeagueState, side: TradeProposal['offer']): string[]
   return errors
 }
 
-function payrollDelta(state: LeagueState, incoming: PlayerId[], outgoing: PlayerId[]): number {
+/**
+ * The cap a trade is measured against. In season: this season's cap and payroll, dead money included.
+ * In the offseason: next season's cap against the contracts that will still be on the books when it
+ * starts — those with a season of control left (`controlSeasons` ≥ 1, the engine's real expiry: the
+ * camp rollover drops every deal with `years` = 1, except in the opening offseason). Dead money resets
+ * at that rollover, so it is left out.
+ */
+interface CapBook {
+  cap: number
+  salary: (playerId: PlayerId) => number
+  payroll: (teamId: TeamId) => number
+  label: string
+}
+
+function capBook(state: LeagueState, ctx: EngineContext): CapBook {
   const roster = rosterIndex(state)
-  const sum = (ids: PlayerId[]) =>
-    ids.reduce((total, id) => total + (roster.get(id)?.contract.apy ?? 0), 0)
-  return sum(incoming) - sum(outgoing)
+  if (isInSeason(state)) {
+    return {
+      cap: ctx.modules.fa.capFor(state.season, ctx),
+      salary: (id) => roster.get(id)?.contract.apy ?? 0,
+      payroll: (teamId) => ctx.modules.fa.payroll(state, teamId),
+      label: '',
+    }
+  }
+  const salary = (id: PlayerId) => {
+    const contract = roster.get(id)?.contract
+    return contract && controlSeasons(state, contract) >= 1 ? contract.apy : 0
+  }
+  return {
+    cap: ctx.modules.fa.capFor(state.season + 1, ctx),
+    salary,
+    payroll: (teamId) =>
+      (state.teams[teamId]?.roster ?? []).reduce((sum, slot) => sum + salary(slot.playerId), 0),
+    label: ' next season',
+  }
 }
 
 /**
- * Salary the trade would add beyond what the team can absorb, or null when it fits (a
- * payroll-neutral or payroll-shedding trade always fits) or when fa cannot answer yet.
+ * Salary the trade would add beyond what the team can absorb, or null when it fits. A payroll-neutral
+ * or payroll-shedding trade always fits, even for a team already over.
  */
 function capOverageFrom(
-  state: LeagueState,
+  book: CapBook,
   teamId: TeamId,
   incoming: PlayerId[],
   outgoing: PlayerId[],
-  ctx: EngineContext,
 ): number | null {
-  const delta = payrollDelta(state, incoming, outgoing)
+  const sum = (ids: PlayerId[]) => ids.reduce((total, id) => total + book.salary(id), 0)
+  const delta = sum(incoming) - sum(outgoing)
   if (delta <= 0) return null
   const allowance =
-    Math.max(0, ctx.modules.fa.capSpace(state, teamId, ctx)) +
-    acceptanceConstants.capSlackPct * ctx.modules.fa.capFor(state.season, ctx)
+    Math.max(0, book.cap - book.payroll(teamId)) + acceptanceConstants.capSlackPct * book.cap
   return delta > allowance ? delta - allowance : null
 }
 
@@ -112,10 +142,10 @@ function rosterSizeError(state: LeagueState, teamId: TeamId, delta: number): str
 function needAdjustment(
   state: LeagueState,
   proposal: TradeProposal,
-  valueIn: number,
-  valueOut: number,
+  sides: SideValuation,
   ctx: EngineContext,
 ): number {
+  const { valueIn, valueOut } = sides
   const evaluator = proposal.request.teamId
   const needs = needsFor(state, evaluator, ctx)
   const top = new Set(needs.top.slice(0, needConstants.topNeeds))
@@ -124,7 +154,7 @@ function needAdjustment(
   for (const id of proposal.offer.players) {
     const pos = state.players[id]?.pos
     if (!pos) continue
-    const value = incomingValue(state, id, ctx)
+    const value = sides.incoming.get(id) ?? 0
     if (top.has(pos)) adj -= needConstants.topNeedBonusPct * value
     if (saturated.has(pos)) adj += needConstants.saturatedPenaltyPct * value
   }
@@ -160,19 +190,26 @@ export function evaluateImpl(
   ]
   if (structural.length) return invalid(structural)
 
+  const locked = [...proposal.offer.players, ...proposal.request.players]
+    .map((id) => tradeLockReason(state, id))
+    .filter((reason): reason is string => reason !== null)
+  if (locked.length) return invalid(locked)
+
   const reasons: string[] = []
-  const valueIn =
-    proposal.offer.players.reduce((total, id) => total + incomingValue(state, id, ctx), 0) +
-    proposal.offer.picks.reduce((total, ref) => total + pickValueImpl(state, ref, ctx), 0)
-  const valueOut =
-    proposal.request.players.reduce((total, id) => total + outgoingValue(state, id, ctx), 0) +
-    proposal.request.picks.reduce((total, ref) => total + pickValueImpl(state, ref, ctx), 0)
+  const sides = valueSides(state, evaluator, proposal.offer, proposal.request, ctx)
+  const { valueIn, valueOut } = sides
 
   for (const id of proposal.offer.players) {
     const weeks = injuryWeeks(state, id)
     if (weeks > 0)
       reasons.push(`${state.players[id]?.name ?? id} is out ${weeks} week(s) — discounted`)
   }
+  for (const [pos, charge] of sides.starterLoss) {
+    if (charge >= lineupConstants.reasonMinCharge)
+      reasons.push(`${evaluator} would lose a starter at ${pos}`)
+  }
+  for (const id of sides.fillers)
+    reasons.push(`${state.players[id]?.name ?? id} would not start for ${evaluator} — discounted`)
 
   // Anti-exploit: no team mortgages more than two first-rounders at once. The user is not gated —
   // their own roster is their problem, and an AI-initiated offer must not fail on the user's side.
@@ -200,24 +237,19 @@ export function evaluateImpl(
   ].filter((e): e is string => e !== null)
   if (sizeErrors.length) return invalid(sizeErrors, valueIn, valueOut)
 
-  if (isInSeason(state)) {
-    const overages: [TeamId, number | null][] = [
-      [
-        evaluator,
-        capOverageFrom(state, evaluator, proposal.offer.players, proposal.request.players, ctx),
-      ],
-      [
-        proposer,
-        capOverageFrom(state, proposer, proposal.request.players, proposal.offer.players, ctx),
-      ],
-    ]
-    const capErrors = overages
-      .filter((entry): entry is [TeamId, number] => entry[1] !== null)
-      .map(([teamId, over]) => `${teamId} cannot absorb $${over.toFixed(1)}M more salary`)
-    if (capErrors.length) return invalid(capErrors, valueIn, valueOut)
-  }
+  const book = capBook(state, ctx)
+  const overages: [TeamId, number | null][] = [
+    [evaluator, capOverageFrom(book, evaluator, proposal.offer.players, proposal.request.players)],
+    [proposer, capOverageFrom(book, proposer, proposal.request.players, proposal.offer.players)],
+  ]
+  const capErrors = overages
+    .filter((entry): entry is [TeamId, number] => entry[1] !== null)
+    .map(
+      ([teamId, over]) => `${teamId} cannot absorb $${over.toFixed(1)}M more salary${book.label}`,
+    )
+  if (capErrors.length) return invalid(capErrors, valueIn, valueOut)
 
-  const needAdj = needAdjustment(state, proposal, valueIn, valueOut, ctx)
+  const needAdj = needAdjustment(state, proposal, sides, ctx)
   if (needAdj < 0)
     reasons.push(`${evaluator} needs help at ${needsFor(state, evaluator, ctx).top.join('/')}`)
   else if (needAdj > 0) reasons.push(`${evaluator} is not short at those positions`)

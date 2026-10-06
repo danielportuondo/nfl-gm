@@ -17,15 +17,8 @@ import type {
 } from '@contracts/index'
 import { evaluateImpl, mirror } from './evaluate'
 import { offerConstants } from './constants'
-import {
-  incomingValue,
-  needsFor,
-  outgoingValue,
-  pickValueImpl,
-  refKey,
-  refOf,
-  topByOvrAtPosition,
-} from './value'
+import { incomingValueFor, outgoingValueFor } from './lineup'
+import { needsFor, pickValueImpl, refKey, refOf, topByOvrAtPosition } from './value'
 
 interface Valued {
   ref: PickRef
@@ -172,7 +165,10 @@ function seasonOffer(
       const pos = posOf(slot.playerId)
       return pos !== undefined && wanted.has(pos) && !slot.injured
     })
-    .map((slot) => ({ id: slot.playerId, value: incomingValue(state, slot.playerId, ctx) }))
+    .map((slot) => ({
+      id: slot.playerId,
+      value: incomingValueFor(state, teamId, slot.playerId, ctx),
+    }))
     .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id))
     .slice(0, offerConstants.candidatesScanned)
   if (targets.length === 0) return null
@@ -181,16 +177,21 @@ function seasonOffer(
     offerConstants.payRatioMin +
     rng.next() * (offerConstants.payRatioMax - offerConstants.payRatioMin)
 
+  // Never gut the position the AI is trying to fix: the player it sends comes from elsewhere,
+  // and never its starter anywhere else either.
+  const sendPool = ownRoster
+    .filter((slot) => {
+      const pos = posOf(slot.playerId)
+      return pos !== undefined && !wanted.has(pos) && !kept.has(slot.playerId)
+    })
+    .map((slot) => ({
+      id: slot.playerId,
+      value: outgoingValueFor(state, teamId, slot.playerId, ctx),
+    }))
+
   for (const target of targets) {
     const budget = target.value * payRatio
-    // Never gut the position the AI is trying to fix: the player it sends comes from elsewhere,
-    // and never its starter anywhere else either.
-    const sendable = ownRoster
-      .filter((slot) => {
-        const pos = posOf(slot.playerId)
-        return pos !== undefined && !wanted.has(pos) && !kept.has(slot.playerId)
-      })
-      .map((slot) => ({ id: slot.playerId, value: outgoingValue(state, slot.playerId, ctx) }))
+    const sendable = [...sendPool]
       .sort(
         (a, b) =>
           Math.abs(a.value - budget) - Math.abs(b.value - budget) || a.id.localeCompare(b.id),

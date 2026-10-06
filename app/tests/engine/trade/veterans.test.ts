@@ -15,7 +15,15 @@ import type {
 } from '@contracts/index'
 import { trade } from '@engine/trade'
 import { mirror } from '@engine/trade/evaluate'
-import { AI, pickOwnedBy, putPlayer, scenario, userProposal, type PlayerSpec } from './helpers'
+import {
+  AI,
+  pickOwnedBy,
+  putKept,
+  putPlayer,
+  scenario,
+  userProposal,
+  type PlayerSpec,
+} from './helpers'
 
 const STRICTNESS: GameSettings['tradeStrictness'][] = ['lenient', 'balanced', 'strict', 'ruthless']
 
@@ -26,17 +34,6 @@ const withStrictness = (state: LeagueState, level: GameSettings['tradeStrictness
 
 function capShare(state: LeagueState, ctx: EngineContext, pct: number): number {
   return (ctx.data.cap.bySeason[String(state.season)] ?? 200) * pct
-}
-
-/** `putPlayer`, then move the new man to the front so the next `putPlayer` does not drop him. */
-function putKept(state: LeagueState, teamId: TeamId, spec: PlayerSpec): LeagueState {
-  const next = putPlayer(state, teamId, spec)
-  const team = next.teams[teamId]!
-  const added = team.roster[team.roster.length - 1]!
-  return {
-    ...next,
-    teams: { ...next.teams, [teamId]: { ...team, roster: [added, ...team.roster.slice(0, -1)] } },
-  }
 }
 
 /** Room under the cap to take on a big contract: everyone else on `teamId` drops to a minimum deal. */

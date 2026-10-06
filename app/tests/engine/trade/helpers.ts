@@ -91,6 +91,17 @@ export function putPlayer(state: LeagueState, teamId: TeamId, spec: PlayerSpec):
   }
 }
 
+/** `putPlayer`, then move the new man to the front so the next `putPlayer` does not drop him. */
+export function putKept(state: LeagueState, teamId: TeamId, spec: PlayerSpec): LeagueState {
+  const next = putPlayer(state, teamId, spec)
+  const team = next.teams[teamId]!
+  const added = team.roster[team.roster.length - 1]!
+  return {
+    ...next,
+    teams: { ...next.teams, [teamId]: { ...team, roster: [added, ...team.roster.slice(0, -1)] } },
+  }
+}
+
 /** Cut the roster down so the team has room to take a player on. */
 export function trimRoster(state: LeagueState, teamId: TeamId, size: number): LeagueState {
   const team = state.teams[teamId]!

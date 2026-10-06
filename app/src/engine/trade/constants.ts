@@ -140,6 +140,66 @@ export const pickConstants = {
   replacementOvr: 45,
 }
 
+/**
+ * Lineup-aware valuation, AI teams only (2026-10-05 playthrough: NE sold Tom Brady, its only starting
+ * QB, for four players it then benched or cut and started Hoyer). Starters are the top
+ * STARTER_TEMPLATE[pos] players at a position by consensus ovr.
+ */
+export const lineupConstants = {
+  /**
+   * Share of the starting lineup's talent drop (`slotTalent`, before age and contract) added to what
+   * the AI gives up when a starter leaves. The rating curve is flat low and steep high, so this bites
+   * for elite starters and barely registers for average ones or when a comparable starter comes back.
+   */
+  starterLossShare: 0.5,
+  /** Share of his value an incoming player keeps when he would not crack the AI's lineup. */
+  fillerShare: 0.5,
+  /** Charges below this many value points are too small to mention in the evaluation's reasons. */
+  reasonMinCharge: 1,
+}
+
+/**
+ * Value by remaining control (2018 playthrough: 1-year free agents signed at the ask were flipped the
+ * same day for 25–75 points, and their deals expired at the camp rollover weeks later). Seasons of
+ * control follow the engine's real expiry, not the `years` label: outside the opening offseason the
+ * camp rollover takes a year off every contract, so in the offseason a deal covers `years − 1` seasons.
+ */
+export const controlConstants = {
+  /** Share of full value carried by the 1st, 2nd and 3rd season of control; 3+ seasons = today's value. */
+  seasonWeights: [0.6, 0.25, 0.15] as readonly number[],
+  regularSeasonWeeks: 17,
+  /** Share of a season still to play once the playoffs start. */
+  playoffShare: 0.1,
+  /**
+   * An expiring player still on the roster at the next re-sign window carries re-signing rights, worth
+   * this share of his value on a fresh market deal — so buying an expiring star cheap and re-signing
+   * him at the ask is not free.
+   */
+  rightsShare: 0.6,
+}
+
+/** Players the user signed as free agents cannot be flipped straight away. */
+export const tradeLockConstants = {
+  /** An offseason or preseason signing is tradeable from this regular-season week. */
+  offseasonUnlockWeek: 1,
+  /** An in-season signing is tradeable this many weeks after he signed. */
+  inSeasonLockWeeks: 4,
+}
+
+/**
+ * Draft-slot anchor (QA M2, 2026-10-05): straight off the draft the rating model priced a first-rounder
+ * at ~30% of the pick that took him (Mahomes 29.6 against a #10 slot worth 54), so selling picks before
+ * the draft and buying the draftees after was a 3× arbitrage. A drafted player is worth at least
+ * `slotShare` × his slot's chart value, fading by `decayByYear` as consensus catches up. Years count
+ * from the draft: 0 for the offseason he was drafted in, 1 through his rookie season, 2 his second.
+ */
+export const rookieConstants = {
+  slotShare: 0.8,
+  decayByYear: [1, 0.6, 0.25] as readonly number[],
+  /** Anchored rookies from these rounds are prospects, not bench filler, to a buying AI. */
+  fillerExemptMaxRound: 2,
+}
+
 export const needConstants = {
   /** Consensus ovr a team wants from a starter; the shortfall below it is the need. */
   starterTarget: 72,
@@ -209,4 +269,11 @@ export const suggestionConstants = {
   candidatesScanned: 6,
   /** The user is never asked for a player worth more than the deal; a little slack for rounding. */
   askSlack: 1.05,
+  /**
+   * QA M10 (2026-10-05): day-1 suggestions asked MIA for Suh and Landry to "fill" a 0.04 OL need. A
+   * need is a starting slot this many ovr below `needConstants.starterTarget`, and the incoming player
+   * must beat the user's weakest starter there by `minUpgrade`.
+   */
+  minNeedDeficit: 2,
+  minUpgrade: 3,
 }

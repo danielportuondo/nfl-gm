@@ -13,6 +13,7 @@ import {
   giftPickAt,
   giftPicks,
   pickOwnedBy,
+  putKept,
   putPlayer,
   scenario,
   trimRoster,
@@ -65,19 +66,35 @@ describe('trade.evaluate — scenario bands at balanced', () => {
     expect(evaluation.p).toBeLessThanOrEqual(0.05)
   })
 
-  it('a late first for a good starter is in band', () => {
+  function lateFirstForStarter(backupOvr: number | null) {
     const base = scenario()
     let state = trimRoster(base.state, base.state.userTeam, 52)
+    if (backupOvr !== null)
+      state = putKept(state, AI, { ...STARTER, id: 'backup', ovr: backupOvr, apy: 1 })
     state = putPlayer(state, AI, { ...STARTER, id: 'target', apy: 1 })
     const gifted = giftPickAt(state, state.userTeam, 30)
-    const evaluation = trade.evaluate(
+    return trade.evaluate(
       gifted.state,
       userProposal(gifted.state, { picks: [gifted.ref] }, { players: ['target'] }),
       base.ctx,
     )
+  }
+
+  it('a late first for a good starter with a comparable backup is in band', () => {
+    const evaluation = lateFirstForStarter(77)
     expect(evaluation.valid).toBe(true)
     expect(evaluation.p).toBeGreaterThan(0.25)
     expect(evaluation.p).toBeLessThan(0.8)
+  })
+
+  // Re-banded 2026-10-05 (was 0.25–0.8 with no backup): the 78 is DAL's WR3 and its WR4 is a 66, so
+  // the starter-loss charge prices the 12-point hole and a late first alone now falls short.
+  it('a late first for a good starter with a hole behind him is usually declined', () => {
+    const evaluation = lateFirstForStarter(null)
+    expect(evaluation.valid).toBe(true)
+    expect(evaluation.p).toBeGreaterThan(0.05)
+    expect(evaluation.p).toBeLessThan(0.4)
+    expect(evaluation.reasons.join(' ')).toMatch(/lose a starter at WR/)
   })
 })
 

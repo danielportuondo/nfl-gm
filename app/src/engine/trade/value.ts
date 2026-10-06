@@ -16,14 +16,17 @@ import {
   type PickRef,
   type PlayerId,
   type Position,
+  type Contract,
   type RosterSlot,
   type ScoutingView,
   type TeamId,
 } from '@contracts/index'
 import {
+  controlConstants,
   dropConstants,
   needConstants,
   pickConstants,
+  rookieConstants,
   tradeConstants,
   valueConstants,
 } from './constants'
@@ -32,6 +35,8 @@ const rosterIndexCache = new WeakMap<object, Map<PlayerId, RosterSlot>>()
 const startOvrCache = new WeakMap<object, Map<PlayerId, number>>()
 const orderRankCache = new WeakMap<object, Map<TeamId, number>>()
 const needsCache = new WeakMap<object, Map<TeamId, NeedProfile>>()
+/** Keyed on the state object, so a module-level cache stays pure: a new state is a new entry. */
+const valueCache = new WeakMap<object, Map<string, number>>()
 
 /** Every rostered player's slot (contract + injury), keyed by player id. */
 export function rosterIndex(state: LeagueState): Map<PlayerId, RosterSlot> {
@@ -49,8 +54,49 @@ export function capFor(state: LeagueState, ctx: EngineContext): number {
   return ctx.modules.fa.capFor(state.season, ctx)
 }
 
+const OFFSEASON_PHASES: readonly string[] = [
+  'OFFSEASON_RESIGN',
+  'DRAFT',
+  'UDFA',
+  'FREE_AGENCY',
+  'TRAINING_CAMP',
+]
+
+export function isOffseasonPhase(phase: string): boolean {
+  return OFFSEASON_PHASES.includes(phase)
+}
+
+/** The season a trade is for: the one being played, or in the offseason the one coming up. */
+export function leagueYear(state: LeagueState): number {
+  return isOffseasonPhase(state.phase) ? state.season + 1 : state.season
+}
+
+/** Age in the league year, so a 39-year-old in the offseason is valued at the 40 he will play at. */
 export function ageOf(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number {
-  return ctx.modules.lifecycle.age(state, playerId)
+  return ctx.modules.lifecycle.age(state, playerId, leagueYear(state))
+}
+
+/**
+ * Seasons the holder actually gets out of `contract` from now on, by the engine's expiry rule: the
+ * camp rollover takes a year off every deal (except in the opening offseason, whose contracts were
+ * built for the coming season), so in the offseason a deal covers `years − 1` seasons; in season it
+ * covers what is left of this one plus `years − 1`.
+ */
+export function controlSeasons(state: LeagueState, contract: Pick<Contract, 'years'>): number {
+  const ahead = contract.years - 1
+  if (isOffseasonPhase(state.phase)) return isOpeningOffseason(state) ? contract.years : ahead
+  if (state.phase === 'PRESEASON') return contract.years
+  if (state.phase === 'PLAYOFFS') return ahead + controlConstants.playoffShare
+  const played = Math.max(0, state.week - 1) / controlConstants.regularSeasonWeeks
+  return ahead + Math.max(controlConstants.playoffShare, 1 - played)
+}
+
+/** Share of full value that `seasons` of control carry: 1 from the third season on. */
+export function controlFactor(seasons: number): number {
+  return controlConstants.seasonWeights.reduce(
+    (total, weight, i) => total + weight * Math.min(1, Math.max(0, seasons - i)),
+    0,
+  )
 }
 
 /**
@@ -85,6 +131,11 @@ function ratingCurve(effectiveOvr: number): number {
   return Math.pow(x, ovrExp) * ovrPeakValue
 }
 
+/** What one starting slot is worth with a player of consensus `ovr` in it: talent only, no age or contract. */
+export function slotTalent(pos: Position, ovr: number): number {
+  return ratingCurve(ovr) * valueConstants.posMultiplier[pos]
+}
+
 function ageMultiplier(pos: Position, age: number): number {
   const past = Math.max(0, age - valueConstants.peakAge[pos])
   const rate =
@@ -92,10 +143,11 @@ function ageMultiplier(pos: Position, age: number): number {
   return Math.max(valueConstants.declineFloor, 1 - rate * past)
 }
 
-function contractCost(slot: RosterSlot | undefined, cap: number): number {
-  if (!slot || cap <= 0) return 0
-  const capPct = (slot.contract.apy / cap) * 100
-  const years = Math.min(slot.contract.years, valueConstants.costMaxYears)
+/** Salary cost at full control; `controlFactor` scales it with the talent it pays for. */
+function contractCost(apy: number, seasons: number, cap: number): number {
+  if (cap <= 0) return 0
+  const capPct = (apy / cap) * 100
+  const years = Math.min(Math.max(1, seasons), valueConstants.costMaxYears)
   return valueConstants.costPerCapPct * capPct * (1 + valueConstants.costExtraPerYear * (years - 1))
 }
 
@@ -110,31 +162,110 @@ function injuryMultiplier(weeks: number): number {
 }
 
 /**
- * Talent-and-cost value of a player from consensus alone. `asView` values the same player under a
- * different consensus (used for the season-start re-valuation) without cloning the league.
+ * Talent and cost of a player from consensus alone, over the seasons of control the holder gets.
+ * `asView` values the same player under a different consensus (the season-start re-valuation)
+ * without cloning the league. `fullCost` is the buying AI's read: salary is charged in full, so an
+ * albatross is worth less than nothing to take on. Without it (what the player is worth on the
+ * market, and to a seller) cost takes at most `maxCostShareOfTalent` and the floor is "worthless" —
+ * uncapped, a starter on a market deal fell to the floor and the AI dealt him for a body.
  */
 export function playerValueImpl(
   state: LeagueState,
   playerId: PlayerId,
   ctx: EngineContext,
   asView?: ScoutingView,
+  fullCost = false,
+): number {
+  if (asView) return computePlayerValue(state, playerId, ctx, asView, fullCost)
+  let cache = valueCache.get(state)
+  if (!cache) {
+    cache = new Map()
+    valueCache.set(state, cache)
+  }
+  const key = fullCost ? `${playerId}:full` : playerId
+  const hit = cache.get(key)
+  if (hit !== undefined) return hit
+  const value = computePlayerValue(state, playerId, ctx, undefined, fullCost)
+  cache.set(key, value)
+  return value
+}
+
+function computePlayerValue(
+  state: LeagueState,
+  playerId: PlayerId,
+  ctx: EngineContext,
+  asView: ScoutingView | undefined,
+  fullCost: boolean,
 ): number {
   const player = state.players[playerId]
   const view = asView ?? state.scouting[playerId]
   if (!player || !view) return 0
+  const slot = rosterIndex(state).get(playerId)
+  const health = injuryMultiplier(slot?.injured?.weeksOut ?? 0)
+  const healthy = talentOf(state, playerId, view, ctx) * health
+  const anchor = rookieSlotAnchor(state, playerId) * health
+  const cap = capFor(state, ctx)
+  const contract = slot?.contract
+  const seasons = contract ? controlSeasons(state, contract) : 1
+  const cost = contract ? contractCost(contract.apy, seasons, cap) : 0
+  const controlled =
+    controlFactor(seasons) * (healthy - (fullCost ? cost : cappedCost(cost, healthy)))
+  const value = controlled + reSigningRights(state, playerId, healthy, ctx)
+  if (fullCost) return anchor > 0 ? Math.max(anchor, value) : value
+  return Math.max(valueConstants.minPlayerValue, value, anchor)
+}
+
+function talentOf(
+  state: LeagueState,
+  playerId: PlayerId,
+  view: ScoutingView,
+  ctx: EngineContext,
+): number {
+  const pos = state.players[playerId]!.pos
   const age = ageOf(state, playerId, ctx)
   const effectiveOvr = view.ovr + Math.max(0, view.pot - view.ovr) * potShare(age)
-  const talent =
-    ratingCurve(effectiveOvr) *
-    ageMultiplier(player.pos, age) *
-    valueConstants.posMultiplier[player.pos]
-  const slot = rosterIndex(state).get(playerId)
-  const healthy = talent * injuryMultiplier(slot?.injured?.weeksOut ?? 0)
-  const cost = Math.min(
-    contractCost(slot, capFor(state, ctx)),
-    valueConstants.maxCostShareOfTalent * healthy,
-  )
-  return Math.max(valueConstants.minPlayerValue, healthy - cost)
+  return ratingCurve(effectiveOvr) * ageMultiplier(pos, age) * valueConstants.posMultiplier[pos]
+}
+
+function cappedCost(cost: number, talent: number): number {
+  return Math.min(cost, valueConstants.maxCostShareOfTalent * talent)
+}
+
+/**
+ * A player whose deal runs out at the next re-sign window his team will see (an expiring player in
+ * season, or during OFFSEASON_RESIGN) can be re-signed: the rights are worth a share of what he is
+ * worth on the market deal the fa module would write for him.
+ */
+function reSigningRights(
+  state: LeagueState,
+  playerId: PlayerId,
+  talent: number,
+  ctx: EngineContext,
+): number {
+  const contract = rosterIndex(state).get(playerId)?.contract
+  if (!contract || contract.years !== 1 || isOpeningOffseason(state)) return 0
+  if (isOffseasonPhase(state.phase) && state.phase !== 'OFFSEASON_RESIGN') return 0
+  const market = ctx.modules.fa.synthesizeContract(state, playerId, leagueYear(state), ctx)
+  // Re-signed in the offseason, the new deal loses a year at the camp rollover like any other.
+  const seasons = market.years - 1
+  if (seasons <= 0) return 0
+  const cost = contractCost(market.apy, seasons, capFor(state, ctx))
+  const value = controlFactor(seasons) * (talent - cappedCost(cost, talent))
+  return controlConstants.rightsShare * Math.max(0, value)
+}
+
+/**
+ * The floor a recent draftee's draft slot puts under his value (0 for anyone else). The slot is
+ * public knowledge, so this stays consensus-only. Draft-year convention: the draft held during
+ * season S is the S+1 class, so a player drafted this offseason is in year 0.
+ */
+export function rookieSlotAnchor(state: LeagueState, playerId: PlayerId): number {
+  const draft = state.players[playerId]?.draft
+  if (!draft) return 0
+  const decay = rookieConstants.decayByYear[state.season + 1 - draft.season] ?? 0
+  if (decay <= 0) return 0
+  const slotValue = chartPoints(draft.pick) * (pickConstants.scalePerThousand / 1000)
+  return slotValue * rookieConstants.slotShare * decay
 }
 
 /**
@@ -164,13 +295,18 @@ export function consensusDrop(state: LeagueState, playerId: PlayerId, ctx: Engin
 }
 
 /**
- * Value of a player the AI would be ACQUIRING. Injuries are already priced by `playerValue`; a
+ * Value of a player the AI would be ACQUIRING, salary charged in full. Injuries are already priced by `playerValue`; a
  * sharp in-season consensus drop takes an extra haircut on top, because the AI treats a cratering
  * player as likelier to keep cratering than consensus admits.
  */
-export function incomingValue(state: LeagueState, playerId: PlayerId, ctx: EngineContext): number {
-  const base = playerValueImpl(state, playerId, ctx)
-  if (consensusDrop(state, playerId, ctx) < dropConstants.sharpDropPoints) return base
+export function incomingValue(
+  state: LeagueState,
+  playerId: PlayerId,
+  ctx: EngineContext,
+  fullCost = true,
+): number {
+  const base = playerValueImpl(state, playerId, ctx, undefined, fullCost)
+  if (base <= 0 || consensusDrop(state, playerId, ctx) < dropConstants.sharpDropPoints) return base
   return base * (1 - dropConstants.buyExtraDiscount)
 }
 
