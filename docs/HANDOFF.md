@@ -490,6 +490,7 @@ Open issues backlog (2026-10-05):
   - "$-37.1M free" (2019 L2).
   - The Standings card clips (2019 L3).
   - The mandate completes in year 2 (2018 L4).
+- **Generated draft classes can put kickers and punters in round 1.** `lifecycle/draftClass.ts` assigns positions per slot at random and the draft AI ranks by potential (2027 sim: kickers at picks 6 and 11). K/P prospects should get late-round grades. The cut-and-reclaim loop it exposed is fixed.
 - **The AI's own signings can't be trade-locked,** because transactions log only the user's moves. In the 2025 chunk, 544 team-less camp bodies can't be tested for retirement.
 
 ---
