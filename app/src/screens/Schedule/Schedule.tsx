@@ -3,6 +3,7 @@ import type { GameResult, LeagueState, StaticData, TeamId } from '@contracts/ind
 import { Button, Panel, Table, type Column } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { teamAbbr } from '../shared/teamLabel'
+import { isOffseasonPhase } from '@screens/shared/phaseLabel'
 
 export interface ScheduleProps {
   state: LeagueState
@@ -124,7 +125,7 @@ export function Schedule({
             columns={columns}
             rows={userGames}
             rowKey={(r) => `${r.week}`}
-            caption={`${teamAbbr(data, state.userTeam, state.season)} ${state.season} schedule`}
+            caption={`${teamAbbr(data, state.userTeam, state.season)} ${state.season} ${isOffseasonPhase(state.phase) ? 'season results' : 'schedule'}`}
             dense
           />
         </Panel>

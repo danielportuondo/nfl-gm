@@ -98,6 +98,27 @@
   background: var(--surface-3);
   border-left-color: var(--team-primary);
 }
+.gg-nav-badge {
+  display: inline-block;
+  min-width: 1.4em;
+  margin-left: var(--sp-2);
+  padding: 0 var(--sp-1);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+.gg-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 .gg-rail__item:disabled {
   color: var(--text-3);
   cursor: not-allowed;

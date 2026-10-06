@@ -24,6 +24,7 @@ import { formatRating } from '@ui/primitives/Table'
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { describePick } from '../shared/pickLabel'
 import { teamAbbr } from '../shared/teamLabel'
+import { playerLabel } from '../shared/playerLabel'
 import { PickBoard } from './PickBoard'
 import { TradeUpPanel } from './TradeUpPanel'
 
@@ -62,10 +63,7 @@ const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 
 function describeSide(state: LeagueState, data: StaticData, side: TradeSide): string {
   const parts: string[] = []
-  for (const id of side.players) {
-    const p = state.players[id]
-    if (p) parts.push(p.name)
-  }
+  for (const id of side.players) parts.push(playerLabel(state, id))
   for (const pick of side.picks) {
     parts.push(describePick(data, pick))
   }

@@ -16,6 +16,8 @@ import {
   type Column,
   type SortState,
 } from '@ui/primitives'
+import { isOffseasonPhase } from '../shared/phaseLabel'
+import { useReleaseConfirm, type ReleaseImpact } from '../shared/ReleaseConfirm'
 
 export interface FreeAgencyProps {
   state: LeagueState
@@ -25,6 +27,8 @@ export interface FreeAgencyProps {
   onOfferContract: (playerId: PlayerId, contract: Contract) => void
   onResign: (playerId: PlayerId, contract: Contract) => void
   onRelease: (playerId: PlayerId) => void
+  /** Cap effect of releasing these players, shown in the confirm. */
+  releaseImpact?: (ids: PlayerId[]) => ReleaseImpact | null
   onSignUdfa: (playerIds: PlayerId[]) => void
   onResignAsk: (playerId: PlayerId) => number | null
   /** Acceptance odds before the offer is made (docs/DECISIONS.md Phase 5 follow-ups). Null when not built yet. */
@@ -54,10 +58,12 @@ export function FreeAgency({
   onOfferContract,
   onResign,
   onRelease,
+  releaseImpact,
   onSignUdfa,
   onResignAsk,
   onOfferOdds,
 }: FreeAgencyProps) {
+  const { askToRelease, releaseDialog } = useReleaseConfirm()
   const team = state.teams[state.userTeam]
   const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
   const capSpace = cap - payroll - (team?.deadMoney ?? 0)
@@ -175,7 +181,10 @@ export function FreeAgency({
               gap: 'var(--sp-4)',
             }}
           >
-            <StatTile value={formatMoney(cap)} label="Cap this season" />
+            <StatTile
+              value={formatMoney(cap)}
+              label={isOffseasonPhase(state.phase) ? 'Cap now' : 'Cap this season'}
+            />
             <StatTile
               value={formatMoney(capSpace)}
               label="Cap space"
@@ -271,7 +280,14 @@ export function FreeAgency({
                         variant="danger"
                         busy={busy}
                         busyLabel="Working…"
-                        onClick={() => onRelease(slot.playerId)}
+                        onClick={() =>
+                          askToRelease({
+                            title: `Release ${player.name}?`,
+                            confirmLabel: 'Release',
+                            impact: releaseImpact?.([slot.playerId]) ?? null,
+                            onConfirm: () => onRelease(slot.playerId),
+                          })
+                        }
                       >
                         Release
                       </Button>
@@ -456,6 +472,7 @@ export function FreeAgency({
           )}
         </Panel>
       </div>
+      {releaseDialog}
     </>
   )
 }

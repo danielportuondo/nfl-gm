@@ -10,6 +10,7 @@ import type {
 } from '@contracts/index'
 import { AcceptanceBar, Button, Panel } from '@ui/primitives'
 import { describePick } from '../shared/pickLabel'
+import { teamAbbr } from '../shared/teamLabel'
 
 export interface TradeUpPanelProps {
   state: LeagueState
@@ -75,7 +76,7 @@ export function TradeUpPanel({
           week: state.week,
         }
   const evaluation = proposal ? onEvaluate(proposal) : null
-  const partner = data.teams[slot.owner]?.abbr ?? slot.owner
+  const partner = teamAbbr(data, slot.owner, slot.season)
 
   const toggle = (key: string) =>
     setSelected((prev) => {

@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/vitest'
 import type { CutdownPlan, CutdownSuggestion, LeagueState, PlayerId } from '@contracts/index'
 import { mockLeague, mockStatic } from '@fixtures/mockLeague'
 import { Roster } from '@screens/Roster'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -118,7 +118,7 @@ describe('Roster cutdown panel', () => {
     expect(screen.getByRole('checkbox', { name: `Cut ${keptPlayer.name}` })).not.toBeChecked()
   })
 
-  it('releases exactly the checked ids and clears protect on click', async () => {
+  it('releases exactly the checked ids once the user confirms', async () => {
     const state = mockLeague()
     const data = mockStatic()
     const cuts = fixtureCuts(state)
@@ -136,7 +136,34 @@ describe('Roster cutdown panel', () => {
     )
 
     await userEvent.click(screen.getByRole('button', { name: 'Release 2 players' }))
+    expect(onReleaseMany).not.toHaveBeenCalled()
+
+    const dialog = screen.getByRole('dialog', { name: 'Release 2 players?' })
+    expect(dialog).toHaveTextContent('Dead money $0.5M this season, frees $3.5M.')
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Release 2 players' }))
 
     expect(onReleaseMany).toHaveBeenCalledWith(cuts.map((c) => c.playerId))
+  })
+
+  it('keeps everyone when the user cancels', async () => {
+    const state = mockLeague()
+    const cuts = fixtureCuts(state)
+    const onReleaseMany = vi.fn()
+    render(
+      <Roster
+        state={state}
+        data={mockStatic()}
+        onSelectPlayer={vi.fn()}
+        onReorderDepthChart={vi.fn()}
+        cutdownPlan={fakePlan(state, cuts)}
+        onReleaseMany={onReleaseMany}
+      />,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: 'Release 2 players' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+    expect(onReleaseMany).not.toHaveBeenCalled()
+    expect(screen.queryByRole('dialog')).toBeNull()
   })
 })

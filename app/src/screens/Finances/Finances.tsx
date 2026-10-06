@@ -10,6 +10,8 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
+import { isOffseasonPhase } from '../shared/phaseLabel'
+import { useReleaseConfirm, type ReleaseImpact } from '../shared/ReleaseConfirm'
 
 export interface FinancesProps {
   state: LeagueState
@@ -21,6 +23,8 @@ export interface FinancesProps {
   busy?: boolean
   onRelease: (playerId: PlayerId) => void
   onSelectPlayer?: (id: PlayerId) => void
+  /** Cap effect of releasing these players, shown in the confirm. */
+  releaseImpact?: (ids: PlayerId[]) => ReleaseImpact | null
 }
 
 interface PayrollRow {
@@ -45,7 +49,10 @@ export function Finances({
   busy,
   onRelease,
   onSelectPlayer,
+  releaseImpact,
 }: FinancesProps) {
+  const { askToRelease, releaseDialog } = useReleaseConfirm()
+  const offseason = isOffseasonPhase(state.phase)
   const [sort, setSort] = useState<SortState>({ key: 'apy', dir: 'desc' })
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
@@ -119,7 +126,12 @@ export function Finances({
           aria-label={`Release ${r.name}`}
           onClick={(e) => {
             e.stopPropagation()
-            onRelease(r.id)
+            askToRelease({
+              title: `Release ${r.name}?`,
+              confirmLabel: 'Release',
+              impact: releaseImpact?.([r.id]) ?? null,
+              onConfirm: () => onRelease(r.id),
+            })
           }}
         >
           Release
@@ -143,10 +155,10 @@ export function Finances({
               gap: 'var(--sp-4)',
             }}
           >
-            <StatTile value={formatMoney(cap)} label="Cap this season" />
+            <StatTile value={formatMoney(cap)} label={offseason ? 'Cap now' : 'Cap this season'} />
             <StatTile
               value={formatMoney(capSpace)}
-              label="Cap space this season"
+              label={offseason ? 'Cap space now' : 'Cap space this season'}
               tone={capSpace < 0 ? 'danger' : 'default'}
             />
             <StatTile
@@ -156,7 +168,7 @@ export function Finances({
             />
             <StatTile
               value={capSpaceNext == null ? '—' : formatMoney(capSpaceNext)}
-              label="Cap space next season"
+              label={offseason ? `Cap space ${state.season + 1}` : 'Cap space next season'}
               tone={capSpaceNext != null && capSpaceNext < 0 ? 'danger' : 'default'}
             />
           </div>
@@ -184,7 +196,9 @@ export function Finances({
         <Panel title="Contracts expiring" variant="sunken" revealIndex={2}>
           {expiring.length === 0 ? (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>
-              No contracts expire after this season.
+              {offseason
+                ? `No contracts end before the ${state.season + 1} season.`
+                : 'No contracts expire after this season.'}
             </p>
           ) : (
             <ul style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
@@ -197,6 +211,7 @@ export function Finances({
           )}
         </Panel>
       </div>
+      {releaseDialog}
     </TeamScope>
   )
 }

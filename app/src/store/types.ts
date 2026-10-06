@@ -145,6 +145,8 @@ export interface GameStoreState {
     offerContract: (playerId: PlayerId, contract: Contract) => Promise<void>
     resign: (playerId: PlayerId, contract: Contract) => Promise<void>
     release: (playerId: PlayerId) => Promise<void>
+    /** Cap effect of releasing these players (engine dead-money rules); pure, for the confirm dialog. */
+    releaseImpact: (playerIds: PlayerId[]) => { deadMoney: number; frees: number } | null
     /** Releases several players in one action (Roster cutdown panel); one toast, one state update. */
     releaseMany: (playerIds: PlayerId[]) => Promise<void>
     signUdfa: (playerIds: PlayerId[]) => Promise<void>

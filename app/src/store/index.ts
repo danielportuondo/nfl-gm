@@ -34,6 +34,8 @@ import { applyTheme, loadTheme, persistTheme, type Theme } from '../ui/frame'
 import type { ToastItem } from '../ui/primitives'
 import { defaultEngineModules, defaultPersistence } from './engineDefaults'
 import { teamAbbr } from '@screens/shared/teamLabel'
+import { injurySummary, isInjuryEventText, userInjuries } from './injurySummary'
+import { pruneStaleOffers } from './offers'
 import { buildHash, currentRoute, type ScreenId } from './router'
 import type { GameStoreState, NewGameInput, StoreConfig } from './types'
 
@@ -42,6 +44,9 @@ export type { ScreenId } from './router'
 
 /** newGame needs the start season plus the next two draft classes (contracts/engine/draft.ts convention). */
 const DRAFTS_AHEAD = 2
+
+/** The region shows three; anything older would only sit in the queue and reappear later. */
+const MAX_QUEUED_TOASTS = 3
 
 function makeToastId(): string {
   return `toast-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`
@@ -116,11 +121,20 @@ export function createGameStore(config: StoreConfig = {}) {
         const patch = typeof partial === 'function' ? partial(s) : partial
         const next = patch.state
         if (!next || next === s.state) return patch
-        return { ...patch, state: modules.league.reconcileDepthChart(next, next.userTeam) }
+        const reconciled = modules.league.reconcileDepthChart(next, next.userTeam)
+        const offers = patch.tradeOffers ?? s.tradeOffers
+        const live = pruneStaleOffers(reconciled, offers)
+        return {
+          ...patch,
+          state: reconciled,
+          ...(live === offers ? {} : { tradeOffers: live }),
+        }
       })) as typeof rawSet
 
     function addToast(text: string, tone: ToastItem['tone'] = 'info') {
-      set((s) => ({ toasts: [...s.toasts, { id: makeToastId(), text, tone }] }))
+      set((s) => ({
+        toasts: [...s.toasts, { id: makeToastId(), text, tone }].slice(-MAX_QUEUED_TOASTS),
+      }))
     }
 
     function reportNotBuilt(fallback: string, err: unknown) {
@@ -132,14 +146,43 @@ export function createGameStore(config: StoreConfig = {}) {
         )
     }
 
-    /** Toasts events touching the user's team; everything else goes to `alerts` (Phase 3E follow-up). */
+    /**
+     * Toasts events touching the user's team; everything else goes to `alerts` (Phase 3E follow-up).
+     * Per-game injury strings cover both teams, so they go to `alerts` and the user's own injuries
+     * get one summary toast per sim action instead (`toastUserInjuries`).
+     */
     function routeEvents(events: string[], resultState: LeagueState) {
       const toastEvents: string[] = []
       const otherEvents: string[] = []
       for (const e of events)
-        (eventMentionsUser(e, resultState) ? toastEvents : otherEvents).push(e)
+        (eventMentionsUser(e, resultState) && !isInjuryEventText(e)
+          ? toastEvents
+          : otherEvents
+        ).push(e)
       if (otherEvents.length > 0) set((s) => ({ alerts: [...s.alerts, ...otherEvents] }))
       for (const e of toastEvents) addToast(e, 'info')
+    }
+
+    function toastUserInjuries(before: LeagueState, after: LeagueState) {
+      // Past the last playoff game the injuries no longer matter, and the recap is about to open.
+      if (before.phase === 'PLAYOFFS' && after.phase !== 'PLAYOFFS') return
+      const summary = injurySummary(
+        userInjuries(after.results.slice(before.results.length), after.userTeam),
+        after,
+      )
+      if (summary) addToast(summary, 'warn')
+    }
+
+    /** AI calls for the user's new week, built by the same generator and seed as "Check for offers". */
+    function weeklyOffers(league: LeagueState): TradeProposal[] {
+      if (league.phase !== 'REGULAR' && league.phase !== 'PLAYOFFS') return []
+      try {
+        const rng = modules.rng.fromSeed(league.seed, league.season, league.week, 'aiOffers')
+        return modules.trade.generateAiOffers(league, buildCtx(), rng, 'season')
+      } catch (err) {
+        reportSelectorError(err)
+        return []
+      }
     }
 
     /**
@@ -147,9 +190,12 @@ export function createGameStore(config: StoreConfig = {}) {
      * the Season Recap; a terminal outcome (Super Bowl win or horizon expiry) takes over the screen.
      */
     function routeAfterSim(before: LeagueState, after: LeagueState) {
+      // The recap and the end screen carry the result themselves; a toast would sit on the bracket.
       if (before.outcome === 'IN_PROGRESS' && after.outcome !== 'IN_PROGRESS') {
+        set({ toasts: [] })
         get().actions.goTo('end-game')
       } else if (before.phase === 'PLAYOFFS' && after.phase !== 'PLAYOFFS') {
+        set({ toasts: [] })
         get().actions.goTo('season-recap')
       }
     }
@@ -408,12 +454,17 @@ export function createGameStore(config: StoreConfig = {}) {
         async simWeek() {
           const league = get().state
           if (!league) return
-          set((s) => ({ busy: { ...s.busy, simWeek: true } }))
+          set((s) => ({ busy: { ...s.busy, simWeek: true }, toasts: [] }))
           try {
             const ctx = buildCtx()
             const report = modules.league.simWeek(league, ctx)
-            set({ state: report.state, suggestedTrades: [] })
+            set({
+              state: report.state,
+              suggestedTrades: [],
+              tradeOffers: weeklyOffers(report.state),
+            })
             routeEvents(report.events, report.state)
+            toastUserInjuries(league, report.state)
             routeAfterSim(league, report.state)
             if (report.state.phase !== league.phase || report.state.week % 4 === 0)
               void autosave(report.state)
@@ -434,7 +485,7 @@ export function createGameStore(config: StoreConfig = {}) {
             await ensureLoaded(league.season + 1, league.season + 1 + DRAFTS_AHEAD)
             const ctx = buildCtx()
             const next = modules.league.advancePhase(league, ctx)
-            set({ state: next, suggestedTrades: [] })
+            set({ state: next, suggestedTrades: [], tradeOffers: [] })
             void autosave(next)
           } catch (err) {
             reportNotBuilt('Could not advance the phase.', err)
@@ -970,6 +1021,26 @@ export function createGameStore(config: StoreConfig = {}) {
           }
         },
 
+        releaseImpact(playerIds: PlayerId[]) {
+          const league = get().state
+          if (!league || playerIds.length === 0) return null
+          try {
+            const ctx = buildCtx()
+            const team = league.teams[league.userTeam]
+            let after = league
+            for (const id of playerIds) after = modules.fa.release(after, league.userTeam, id, ctx)
+            const deadMoney =
+              (after.teams[league.userTeam]?.deadMoney ?? 0) - (team?.deadMoney ?? 0)
+            const apy = (team?.roster ?? [])
+              .filter((slot) => playerIds.includes(slot.playerId))
+              .reduce((sum, slot) => sum + slot.contract.apy, 0)
+            return { deadMoney, frees: apy - deadMoney }
+          } catch (err) {
+            reportSelectorError(err)
+            return null
+          }
+        },
+
         async release(playerId: PlayerId) {
           const league = get().state
           if (!league) return
@@ -1079,7 +1150,7 @@ export function createGameStore(config: StoreConfig = {}) {
         async simToNextEvent() {
           const league = get().state
           if (!league) return
-          set((s) => ({ busy: { ...s.busy, simToNextEvent: true } }))
+          set((s) => ({ busy: { ...s.busy, simToNextEvent: true }, toasts: [] }))
           try {
             let current = league
             const startPhase = current.phase
@@ -1088,13 +1159,21 @@ export function createGameStore(config: StoreConfig = {}) {
               if (current.phase !== 'REGULAR' && current.phase !== 'PLAYOFFS') break
               const ctx = buildCtx()
               const report = modules.league.simWeek(current, ctx)
+              const hurt = userInjuries(
+                report.state.results.slice(current.results.length),
+                league.userTeam,
+              )
               current = report.state
               routeEvents(report.events, current)
               set({ state: current })
               if (current.phase !== startPhase) break
-              if (report.events.some((e) => eventMentionsUser(e, current))) break
+              if (hurt.length > 0) break
+              if (report.events.some((e) => !isInjuryEventText(e) && eventMentionsUser(e, current)))
+                break
             }
             if (current !== league) {
+              set({ tradeOffers: weeklyOffers(current) })
+              toastUserInjuries(league, current)
               void autosave(current)
               routeAfterSim(league, current)
             }
@@ -1108,7 +1187,7 @@ export function createGameStore(config: StoreConfig = {}) {
         async simSeason() {
           const league = get().state
           if (!league) return
-          set((s) => ({ busy: { ...s.busy, simSeason: true } }))
+          set((s) => ({ busy: { ...s.busy, simSeason: true }, toasts: [] }))
           try {
             let current = league
             const MAX_WEEKS = 40
@@ -1125,7 +1204,11 @@ export function createGameStore(config: StoreConfig = {}) {
               // Season Recap / End Game the moment it crosses that boundary (docs/HANDOFF.md item 6).
               routeAfterSim(before, current)
             }
-            if (current !== league) void autosave(current)
+            if (current !== league) {
+              set({ tradeOffers: weeklyOffers(current) })
+              toastUserInjuries(league, current)
+              void autosave(current)
+            }
           } catch (err) {
             reportNotBuilt('Could not sim the season.', err)
           } finally {

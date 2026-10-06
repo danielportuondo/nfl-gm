@@ -967,7 +967,7 @@ describe('LeagueBrowser', () => {
 })
 
 describe('Finances', () => {
-  it('renders the payroll table and cap tiles, and allows a release', () => {
+  it('renders the payroll table and cap tiles, and allows a release', async () => {
     const state = mockLeague()
     const data = mockStatic()
     const onRelease = vi.fn()
@@ -977,7 +977,9 @@ describe('Finances', () => {
     expect(screen.getByText('Payroll')).toBeInTheDocument()
     expect(screen.getByText('Cap space next season')).toBeInTheDocument()
     const releaseButtons = screen.getAllByRole('button', { name: /Release/ })
-    releaseButtons[0]!.click()
+    await userEvent.click(releaseButtons[0]!)
+    expect(onRelease).not.toHaveBeenCalled()
+    await userEvent.click(await screen.findByRole('button', { name: 'Release' }))
     expect(onRelease).toHaveBeenCalled()
   })
 })

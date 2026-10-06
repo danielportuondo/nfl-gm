@@ -2,6 +2,7 @@ import type { Game, LeagueState, StaticData } from '@contracts/index'
 import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { formatMoney } from '@screens/shared/formatMoney'
+import { horizonProgress, isOffseasonPhase } from '@screens/shared/phaseLabel'
 import { injuredWeeksLabel } from '@screens/shared/playerStatus'
 import { teamLabel } from '@screens/shared/teamLabel'
 import type { ScreenId } from '@store/router'
@@ -17,6 +18,8 @@ export interface DashboardProps {
   advanceBusy?: boolean
   /** Routes an alert to the screen that can fix it (docs/HANDOFF.md Phase 5A brief item 5). */
   onNavigate?: (screen: ScreenId) => void
+  /** AI trade offers waiting for an answer; shown as an alert that leads to the Trades screen. */
+  tradeOfferCount?: number
 }
 
 interface Alert {
@@ -65,6 +68,7 @@ export function Dashboard({
   simBusy,
   advanceBusy,
   onNavigate,
+  tradeOfferCount = 0,
 }: DashboardProps) {
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
@@ -81,8 +85,7 @@ export function Dashboard({
     : null
   const opponentInfo = opponentId ? data.teams[opponentId] : null
 
-  const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
-  const horizonElapsed = Math.min(horizonTotal, Math.max(0, state.season - state.startSeason))
+  const { index: seasonIndex, total: horizonTotal } = horizonProgress(state)
 
   const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
   const capSpace = cap - payroll - (team?.deadMoney ?? 0)
@@ -124,9 +127,20 @@ export function Dashboard({
       screen: 'roster',
     })
   }
+  if (tradeOfferCount > 0) {
+    alerts.unshift({
+      text: `${tradeOfferCount} trade offer${tradeOfferCount === 1 ? '' : 's'} waiting.`,
+      detail: 'Answer them in Trades.',
+      screen: 'trade',
+    })
+  }
   if (expiring > 0) {
     alerts.push({
-      text: `${expiring} contract${expiring === 1 ? '' : 's'} expiring after this season.`,
+      text: `${expiring} contract${expiring === 1 ? '' : 's'} ${
+        isOffseasonPhase(state.phase)
+          ? `ending before the ${state.season + 1} season`
+          : 'expiring after this season'
+      }.`,
       detail: 'Re-sign them in Free agency or let them walk.',
       screen: 'free-agency',
     })
@@ -184,8 +198,8 @@ export function Dashboard({
             </div>
           )}
           <Meter
-            value={horizonTotal === 0 ? 0 : horizonElapsed / horizonTotal}
-            label={`Season ${horizonElapsed + 1} of ${horizonTotal}`}
+            value={(seasonIndex - 1) / horizonTotal}
+            label={`Season ${seasonIndex} of ${horizonTotal}`}
           />
           <div
             style={{

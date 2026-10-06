@@ -4,6 +4,8 @@ export interface NavItem {
   id: string
   label: string
   disabled?: boolean
+  /** Waiting items (e.g. trade offers); shown as a count, hidden at zero. */
+  badge?: number
 }
 
 interface RailProps {
@@ -13,6 +15,23 @@ interface RailProps {
 }
 
 const TAB_SLOTS = 4
+
+function plural(n: number): string {
+  return `${n} offer${n === 1 ? '' : 's'}`
+}
+
+function NavLabel({ label, badge }: { label: string; badge?: number }) {
+  if (!badge || badge <= 0) return <>{label}</>
+  return (
+    <>
+      {label}
+      <span className="gg-nav-badge" aria-hidden="true">
+        {badge}
+      </span>
+      <span className="gg-visually-hidden">, {plural(badge)}</span>
+    </>
+  )
+}
 
 /** Left rail (desktop) and bottom tab bar (≤720px), same nav data, arrow-key roving tabindex. */
 export function Rail({ items, current, onSelect }: RailProps) {
@@ -79,7 +98,7 @@ export function Rail({ items, current, onSelect }: RailProps) {
             onClick={() => !it.disabled && onSelect(it.id)}
             onKeyDown={(e) => move(railRefs, items, e, 'ArrowDown', 'ArrowUp')}
           >
-            {it.label}
+            <NavLabel label={it.label} badge={it.badge} />
           </button>
         ))}
       </nav>
@@ -97,7 +116,7 @@ export function Rail({ items, current, onSelect }: RailProps) {
             onClick={() => !it.disabled && onSelect(it.id)}
             onKeyDown={(e) => move(tabRefs, primary, e, 'ArrowRight', 'ArrowLeft')}
           >
-            {it.label}
+            <NavLabel label={it.label} badge={it.badge} />
           </button>
         ))}
         {overflow.length > 0 && (
@@ -119,7 +138,7 @@ export function Rail({ items, current, onSelect }: RailProps) {
                       }
                     }}
                   >
-                    {it.label}
+                    <NavLabel label={it.label} badge={it.badge} />
                   </button>
                 ))}
               </div>
@@ -132,7 +151,10 @@ export function Rail({ items, current, onSelect }: RailProps) {
               aria-haspopup="menu"
               onClick={() => setMoreOpen((v) => !v)}
             >
-              More
+              <NavLabel
+                label="More"
+                badge={overflow.reduce((sum, it) => sum + (it.badge ?? 0), 0)}
+              />
             </button>
           </div>
         )}

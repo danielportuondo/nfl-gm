@@ -21,6 +21,7 @@ import {
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { formatMoney } from '@screens/shared/formatMoney'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
+import { useReleaseConfirm, type ReleaseImpact } from '@screens/shared/ReleaseConfirm'
 
 /** Phases in which the roster must be legal to sim (docs/DECISIONS.md 2026-09-20 cutdown helper). */
 const CAP_GATED_PHASES = new Set<LeagueState['phase']>(['PRESEASON', 'REGULAR', 'PLAYOFFS'])
@@ -42,6 +43,8 @@ export interface RosterProps {
   cutdownPlan?: (protect: readonly PlayerId[]) => CutdownPlan | null
   /** Releases every checked cutdown row in one action. */
   onReleaseMany?: (ids: PlayerId[]) => void
+  /** Cap effect of releasing these players, shown in the confirm. */
+  releaseImpact?: (ids: PlayerId[]) => ReleaseImpact | null
 }
 
 interface Row {
@@ -85,10 +88,12 @@ export function Roster({
   cap,
   cutdownPlan,
   onReleaseMany,
+  releaseImpact,
 }: RosterProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
   const [sort, setSort] = useState<SortState>({ key: 'ovr', dir: 'desc' })
   const [protect, setProtect] = useState<PlayerId[]>([])
+  const { askToRelease, releaseDialog } = useReleaseConfirm()
   const team = state.teams[state.userTeam]
 
   const plan = cutdownPlan ? cutdownPlan(protect) : null
@@ -225,7 +230,12 @@ export function Roster({
                 aria-label={`Release ${r.name}`}
                 onClick={(e) => {
                   e.stopPropagation()
-                  onRelease(r.slot.playerId)
+                  askToRelease({
+                    title: `Release ${r.name}?`,
+                    confirmLabel: 'Release',
+                    impact: releaseImpact?.([r.slot.playerId]) ?? null,
+                    onConfirm: () => onRelease(r.slot.playerId),
+                  })
                 }}
               >
                 Release
@@ -387,10 +397,20 @@ export function Roster({
               busy={releaseBusy}
               busyLabel="Releasing…"
               disabled={checkedIds.length === 0}
-              onClick={() => {
-                onReleaseMany?.(checkedIds)
-                setProtect([])
-              }}
+              onClick={() =>
+                askToRelease({
+                  title: `${releaseLabel}?`,
+                  confirmLabel: releaseLabel,
+                  impact: {
+                    deadMoney: plan?.cuts.reduce((sum, c) => sum + c.deadMoney, 0) ?? 0,
+                    frees: plan?.cuts.reduce((sum, c) => sum + c.netSavings, 0) ?? 0,
+                  },
+                  onConfirm: () => {
+                    onReleaseMany?.(checkedIds)
+                    setProtect([])
+                  },
+                })
+              }
             >
               {releaseLabel}
             </Button>
@@ -504,6 +524,7 @@ export function Roster({
           </div>
         </Panel>
       </div>
+      {releaseDialog}
     </TeamScope>
   )
 }

@@ -4,7 +4,7 @@ import type { Theme } from '@ui/frame'
 import { Button, Modal, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
-import { phaseLabel, seasonText } from '../shared/phaseLabel'
+import { horizonProgress, phaseLabel, seasonText } from '../shared/phaseLabel'
 import { teamLabel } from '../shared/teamLabel'
 import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
@@ -52,8 +52,7 @@ export function Settings({
   const picker = useSaveFilePicker(setPendingImport)
   const team = data.teams[state.userTeam]
   const teamName = team ? teamLabel(data, state.userTeam, state.season).full : state.userTeam
-  const total = Math.max(1, state.horizonEnd - state.startSeason + 1)
-  const index = Math.min(total, Math.max(1, state.season - state.startSeason + 1))
+  const { index, total } = horizonProgress(state)
   const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
   const where =
     inSeason && state.week > 0

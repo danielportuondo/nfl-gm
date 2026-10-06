@@ -35,6 +35,22 @@ export function leagueYear(season: number, phase: string): number {
   return OFFSEASON_PHASES.has(phase) ? season + 1 : season
 }
 
+export function isOffseasonPhase(phase: string): boolean {
+  return OFFSEASON_PHASES.has(phase)
+}
+
+/** "Season 2 of 3", counted in league years so it agrees with the header the whole way round. */
+export function horizonProgress(state: {
+  season: number
+  phase: string
+  startSeason: number
+  horizonEnd: number
+}): { index: number; total: number } {
+  const total = Math.max(1, state.horizonEnd - state.startSeason + 1)
+  const index = leagueYear(state.season, state.phase) - state.startSeason + 1
+  return { index: Math.min(total, Math.max(1, index)), total }
+}
+
 /** Strip readout parts: "2013 offseason · Draft", "2013 · Regular season". */
 export function seasonPhaseLabel(
   season: number,

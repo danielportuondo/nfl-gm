@@ -17,7 +17,7 @@ import { SeasonRecap } from '@screens/SeasonRecap'
 import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
-import { seasonPhaseLabel } from '@screens/shared/phaseLabel'
+import { horizonProgress, seasonPhaseLabel } from '@screens/shared/phaseLabel'
 import { teamAbbr } from '@screens/shared/teamLabel'
 
 const NAV_ITEMS: NavItem[] = [
@@ -107,8 +107,7 @@ export function App() {
   const cap = actions.capThisSeason() ?? data.cap.bySeason[String(state.season)] ?? 0
   const payroll =
     (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0) + (team?.deadMoney ?? 0)
-  const horizonTotal = Math.max(1, state.horizonEnd - state.startSeason + 1)
-  const horizonElapsed = Math.min(horizonTotal, Math.max(0, state.season - state.startSeason))
+  const { index: seasonIndex, total: horizonTotal } = horizonProgress(state)
 
   const room = state.draftRoom
   const onClock = Boolean(
@@ -132,7 +131,7 @@ export function App() {
             ? `${record.wins}-${record.losses}-${record.ties}`
             : `${record.wins}-${record.losses}`,
         capSpaceText: `$${(cap - payroll).toFixed(1)}M free`,
-        horizonText: `${horizonElapsed + 1}/${horizonTotal} seasons`,
+        horizonText: `${seasonIndex}/${horizonTotal} seasons`,
         inSeason,
         onClock,
         end: (
@@ -145,7 +144,9 @@ export function App() {
           </Button>
         ),
       }}
-      navItems={NAV_ITEMS}
+      navItems={NAV_ITEMS.map((item) =>
+        item.id === 'trade' ? { ...item, badge: tradeOffers.length } : item,
+      )}
       currentScreen={
         screen === 'player'
           ? 'roster'
@@ -168,6 +169,7 @@ export function App() {
           releaseBusy={busy.fa}
           cutdownPlan={actions.cutdownPlan}
           onReleaseMany={actions.releaseMany}
+          releaseImpact={actions.releaseImpact}
         />
       )}
       {screen === 'player' && selectedPlayerId && (
@@ -203,6 +205,7 @@ export function App() {
           simBusy={busy.simWeek}
           advanceBusy={busy.advancePhase}
           onNavigate={actions.goTo}
+          tradeOfferCount={tradeOffers.length}
         />
       )}
       {screen === 'end-game' && (
@@ -222,6 +225,7 @@ export function App() {
           capNextSeason={actions.capFor(state.season + 1)}
           busy={busy.fa}
           onRelease={actions.release}
+          releaseImpact={actions.releaseImpact}
           onSelectPlayer={actions.selectPlayer}
         />
       )}
@@ -267,6 +271,7 @@ export function App() {
           onOfferContract={actions.offerContract}
           onResign={actions.resign}
           onRelease={actions.release}
+          releaseImpact={actions.releaseImpact}
           onSignUdfa={actions.signUdfa}
           onResignAsk={actions.resignAsk}
           onOfferOdds={actions.offerOdds}

@@ -20,6 +20,7 @@ import { AcceptanceBar, Button, OfferCard, Panel, PositionBadge } from '@ui/prim
 import { TeamScope } from '@ui/sprites'
 import { describePick } from '../shared/pickLabel'
 import { teamAbbr, teamLabel } from '../shared/teamLabel'
+import { playerLabel } from '../shared/playerLabel'
 
 export interface TradeCenterProps {
   state: LeagueState
@@ -46,14 +47,18 @@ function toRef(p: DraftPick): PickRef {
 
 function describeSide(state: LeagueState, data: StaticData, side: TradeSide): string {
   const parts: string[] = []
-  for (const id of side.players) {
-    const p = state.players[id]
-    if (p) parts.push(p.name)
-  }
+  for (const id of side.players) parts.push(playerLabel(state, id))
   for (const pick of side.picks) {
     parts.push(describePick(data, pick))
   }
   return parts.length > 0 ? parts.join(', ') : 'Nothing'
+}
+
+const EMPTY_OFFERS_COPY: Record<string, string> = {
+  DRAFT: 'No offers yet. Teams call when your pick lines up with their biggest need.',
+  REGULAR: 'No offers this week. Teams can call after each game week.',
+  PLAYOFFS: 'No offers this week. Teams can call after each game week.',
+  default: 'No offers right now. Check for offers to hear what teams would pay.',
 }
 
 function makeProposalId(): string {
@@ -479,7 +484,7 @@ export function TradeCenter({
         >
           {tradeOffers.length === 0 ? (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>
-              No offers yet. Teams call when your pick lines up with their biggest need.
+              {EMPTY_OFFERS_COPY[state.phase] ?? EMPTY_OFFERS_COPY.default}
             </p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
