@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { GameResult, PlayoffBracket, StaticData, TeamId } from '@contracts/index'
 import { TeamScope } from '@ui/sprites'
+import { teamAbbr } from '../shared/teamLabel'
 import { buildBracketTree, type BracketSlot, type ConferenceBracket } from './bracketTree'
 
 export interface BracketProps {
@@ -34,10 +35,6 @@ function conferenceCells(conf: ConferenceBracket, rowOffset: number): CellSpec[]
   ]
 }
 
-function abbrOf(data: StaticData, teamId: TeamId): string {
-  return data.teams[teamId]?.abbr ?? teamId
-}
-
 function seedOf(bracket: PlayoffBracket, teamId: TeamId): number | undefined {
   return bracket.seeds.find((s) => s.teamId === teamId)?.seed
 }
@@ -62,7 +59,7 @@ function BracketCard({
     slot.kind === 'bye' ? (
       <div className="gg-bracket__row tabular-nums">
         <span className="gg-bracket__seed">{slot.seed}</span>
-        <span className="gg-bracket__team">{abbrOf(data, slot.teamId)}</span>
+        <span className="gg-bracket__team">{teamAbbr(data, slot.teamId, bracket.season)}</span>
         <span className="gg-bracket__score">Bye</span>
       </div>
     ) : (
@@ -80,7 +77,7 @@ function BracketCard({
             className={`gg-bracket__row tabular-nums ${isWinner ? 'gg-bracket__row--winner' : 'gg-bracket__row--loser'}`}
           >
             <span className="gg-bracket__seed">{seedOf(bracket, teamId) ?? ''}</span>
-            <span className="gg-bracket__team">{abbrOf(data, teamId)}</span>
+            <span className="gg-bracket__team">{teamAbbr(data, teamId, bracket.season)}</span>
             <span className="gg-bracket__score">{score ?? '–'}</span>
           </div>
         )

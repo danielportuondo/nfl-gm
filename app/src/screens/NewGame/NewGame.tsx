@@ -12,6 +12,7 @@ import { HelmetSprite, TeamScope } from '@ui/sprites'
 import type { NewGameInput } from '@store/types'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
 import { phaseLabel, seasonText } from '../shared/phaseLabel'
+import { teamLabel } from '../shared/teamLabel'
 import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
 export interface NewGameProps {
@@ -149,7 +150,7 @@ export function NewGame({
                 <HelmetSprite pos="QB" size={6} />
                 <div className="gg-mandate__text">
                   <h2 className="gg-mandate__team">
-                    {team.city} {team.name}, {startSeason}
+                    {teamLabel(data, userTeam, startSeason).full}, {startSeason}
                   </h2>
                   <p className="gg-mandate__lead">
                     Your mandate: win the Super Bowl by {endYear}. That's {horizonSeasons}{' '}
@@ -207,7 +208,7 @@ export function NewGame({
                         type="button"
                         className="gg-team-tile"
                         aria-pressed={t.id === userTeam}
-                        aria-label={`${t.city} ${t.name}`}
+                        aria-label={teamLabel(data, t.id, startSeason).full}
                         onClick={() => setUserTeam(t.id)}
                       >
                         <HelmetSprite pos="QB" size={4} />

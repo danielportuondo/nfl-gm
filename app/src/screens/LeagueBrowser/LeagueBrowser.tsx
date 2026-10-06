@@ -18,6 +18,7 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { teamAbbr, teamLabel } from '../shared/teamLabel'
 
 const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 
@@ -163,17 +164,18 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
             {TEAM_IDS.map((id) => {
               const t = data.teams[id]
               if (!t) return null
+              const label = teamLabel(data, id, state.season)
               return (
                 <TeamScope key={id} colors={t.colors}>
                   <button
                     type="button"
                     className="gg-nameplate"
                     aria-selected={id === selectedTeam}
-                    aria-label={`${t.city} ${t.name}`}
+                    aria-label={label.full}
                     onClick={() => setSelectedTeam(id)}
                     style={{ justifyContent: 'center' }}
                   >
-                    <TeamBadge abbr={t.abbr} />
+                    <TeamBadge abbr={label.abbr} />
                   </button>
                 </TeamScope>
               )
@@ -185,7 +187,11 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
       {info && team && (
         <TeamScope colors={info.colors} as="div" style={{ display: 'contents' }}>
           <div className="gg-col-4">
-            <Panel variant="plate" title={`${info.city} ${info.name}`} revealIndex={1}>
+            <Panel
+              variant="plate"
+              title={teamLabel(data, selectedTeam, state.season).full}
+              revealIndex={1}
+            >
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-4)' }}>
                 <StatTile
                   value={`${team.record.wins}-${team.record.losses}-${team.record.ties}`}
@@ -210,7 +216,7 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
                     <li key={`${p.season}-${p.round}-${p.originalTeam}-${p.pick ?? i}`}>
                       {p.season} round {p.round}
                       {p.originalTeam !== selectedTeam
-                        ? ` (via ${data.teams[p.originalTeam]?.abbr ?? p.originalTeam})`
+                        ? ` (via ${teamAbbr(data, p.originalTeam, p.season)})`
                         : ''}
                     </li>
                   ))}

@@ -3,6 +3,7 @@ import type { DraftPick, DraftRoomState, LeagueState, StaticData, TeamId } from 
 import { PositionBadge, Table, type Column } from '@ui/primitives'
 import { formatRating, type RowTone } from '@ui/primitives/Table'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { teamAbbr } from '../shared/teamLabel'
 
 export interface PickBoardProps {
   state: LeagueState
@@ -17,10 +18,6 @@ interface PickRow {
 }
 
 const FALLBACK_COLORS = { primary: '#1F4334', secondary: '#F3ECD2' }
-
-function teamAbbr(data: StaticData, id: TeamId): string {
-  return data.teams[id]?.abbr ?? id
-}
 
 /** League-wide pick board for the Draft Room's Pick board tab (docs/DESIGN.md §5.3). */
 export function PickBoard({ state, data, room, userTeam }: PickBoardProps) {
@@ -78,10 +75,10 @@ export function PickBoard({ state, data, room, userTeam }: PickBoardProps) {
         const isYours = pick.owner === userTeam
         return (
           <span style={{ display: 'flex', flexDirection: 'column' }}>
-            <span>{teamAbbr(data, pick.owner)}</span>
+            <span>{teamAbbr(data, pick.owner, pick.season)}</span>
             {pick.owner !== pick.originalTeam && (
               <span style={{ color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
-                from {teamAbbr(data, pick.originalTeam)}
+                from {teamAbbr(data, pick.originalTeam, pick.season)}
               </span>
             )}
             {isOnClockRow(index) && (

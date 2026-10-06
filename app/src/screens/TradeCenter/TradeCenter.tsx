@@ -19,6 +19,7 @@ import {
 import { AcceptanceBar, Button, OfferCard, Panel, PositionBadge } from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
 import { describePick } from '../shared/pickLabel'
+import { teamAbbr, teamLabel } from '../shared/teamLabel'
 
 export interface TradeCenterProps {
   state: LeagueState
@@ -360,7 +361,7 @@ export function TradeCenter({
             <select value={opponent} onChange={(e) => changeOpponent(e.target.value as TeamId)}>
               {otherTeams.map((id) => (
                 <option key={id} value={id}>
-                  {data.teams[id]?.city} {data.teams[id]?.name}
+                  {teamLabel(data, id, state.season).full}
                 </option>
               ))}
             </select>
@@ -448,7 +449,7 @@ export function TradeCenter({
               {suggestedTrades.map((offer, i) => (
                 <OfferCard
                   key={offer.id}
-                  title={`Deal with ${data.teams[offer.offer.teamId]?.abbr ?? offer.offer.teamId}`}
+                  title={`Deal with ${teamAbbr(data, offer.offer.teamId, state.season)}`}
                   youGet={describeSide(state, data, offer.offer)}
                   youGive={describeSide(state, data, offer.request)}
                   evaluation={onEvaluate(offer)}
@@ -485,7 +486,7 @@ export function TradeCenter({
               {tradeOffers.map((offer, i) => (
                 <OfferCard
                   key={offer.id}
-                  title={`${data.teams[offer.offer.teamId]?.abbr ?? offer.offer.teamId} offers`}
+                  title={`${teamAbbr(data, offer.offer.teamId, state.season)} offers`}
                   youGet={describeSide(state, data, offer.offer)}
                   youGive={describeSide(state, data, offer.request)}
                   evaluation={onEvaluate(offer)}

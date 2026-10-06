@@ -16,6 +16,8 @@ export interface NamePlateProps {
   onMoveDown?: () => void
   /** Depth-chart rows: no position badge (the column says it), a quieter ovr, full name on hover. */
   compact?: boolean
+  /** Award cards: the full name and meta wrap onto extra lines instead of truncating. */
+  wrap?: boolean
 }
 
 /** Draft-board tile: bust sprite, name, position badge, consensus ovr/pot (docs/DESIGN.md §8). */
@@ -30,8 +32,15 @@ export function NamePlate({
   onMoveUp,
   onMoveDown,
   compact,
+  wrap,
 }: NamePlateProps) {
-  const className = compact ? 'gg-nameplate gg-nameplate--compact' : 'gg-nameplate'
+  const className = [
+    'gg-nameplate',
+    compact && 'gg-nameplate--compact',
+    wrap && 'gg-nameplate--wrap',
+  ]
+    .filter(Boolean)
+    .join(' ')
   const content = (
     <>
       <BustSprite pos={pos} size={2} number={number} status={status} />

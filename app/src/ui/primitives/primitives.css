@@ -469,6 +469,33 @@ button.gg-nameplate:hover {
   font-weight: 500;
   color: var(--text-2);
 }
+/* Award cards: bust | name | position, with the stat line on its own row. Nothing truncates. */
+.gg-nameplate--wrap {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--sp-2);
+  row-gap: var(--sp-1);
+}
+.gg-nameplate--wrap > :first-child {
+  grid-row: 1 / span 2;
+}
+.gg-nameplate--wrap .gg-nameplate__name {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+.gg-nameplate--wrap .gg-nameplate__meta {
+  grid-column: 2 / -1;
+  display: block;
+  flex-shrink: 1;
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  font-weight: 500;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
 .gg-nameplate__reorder {
   display: flex;
   flex-direction: column;

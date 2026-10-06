@@ -3,6 +3,7 @@ import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { formatMoney } from '@screens/shared/formatMoney'
 import { injuredWeeksLabel } from '@screens/shared/playerStatus'
+import { teamLabel } from '@screens/shared/teamLabel'
 import type { ScreenId } from '@store/router'
 
 export interface DashboardProps {
@@ -158,7 +159,8 @@ export function Dashboard({
       <div className="gg-col-8">
         <Panel title="Season hub" variant="default" revealIndex={0} className="gg-yardlines">
           <p style={{ margin: '0 0 var(--sp-4)', fontSize: 'var(--fs-3)' }}>
-            {teamInfo?.city} {teamInfo?.name} · <span className="tabular-nums">{recordText}</span>
+            {teamLabel(data, state.userTeam, state.season).full} ·{' '}
+            <span className="tabular-nums">{recordText}</span>
           </p>
           {teamInfo && opponentInfo && (
             <div
@@ -178,9 +180,7 @@ export function Dashboard({
               <TeamScope colors={opponentInfo.colors}>
                 <HelmetSprite pos="QB" size={4} />
               </TeamScope>
-              <span>
-                {opponentInfo.city} {opponentInfo.name}
-              </span>
+              <span>{teamLabel(data, opponentId!, state.season).full}</span>
             </div>
           )}
           <Meter

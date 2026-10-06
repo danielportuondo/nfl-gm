@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { GameResult, LeagueState, StaticData, TeamId } from '@contracts/index'
 import { Button, Panel, Table, type Column } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
+import { teamAbbr } from '../shared/teamLabel'
 
 export interface ScheduleProps {
   state: LeagueState
@@ -74,7 +75,7 @@ export function Schedule({
               <HelmetSprite pos="QB" size={2} />
             </TeamScope>
           )}
-          {r.home ? 'vs' : '@'} {data.teams[r.opponent]?.abbr ?? r.opponent}
+          {r.home ? 'vs' : '@'} {teamAbbr(data, r.opponent, state.season)}
         </span>
       ),
     },
@@ -123,7 +124,7 @@ export function Schedule({
             columns={columns}
             rows={userGames}
             rowKey={(r) => `${r.week}`}
-            caption={`${state.userTeam} ${state.season} schedule`}
+            caption={`${teamAbbr(data, state.userTeam, state.season)} ${state.season} schedule`}
             dense
           />
         </Panel>
@@ -167,7 +168,7 @@ export function Schedule({
                 const result = state.results.find((r) => r.gameId === g.id)
                 return (
                   <li key={g.id} className="tabular-nums">
-                    {data.teams[g.away]?.abbr ?? g.away} @ {data.teams[g.home]?.abbr ?? g.home}
+                    {teamAbbr(data, g.away, g.season)} @ {teamAbbr(data, g.home, g.season)}
                     {result
                       ? ` — ${result.awayScore}-${result.homeScore}${result.overtime ? ' OT' : ''}`
                       : ' — not played'}

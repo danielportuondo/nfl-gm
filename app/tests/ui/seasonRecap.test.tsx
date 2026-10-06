@@ -9,12 +9,15 @@ import type {
   PlayoffBracket,
   SeasonSummary,
   StandingRow,
+  TeamInfo,
 } from '@contracts/index'
 import { DIVISIONS, TEAM_IDS } from '@contracts/index'
 import { mockLeague, mockStatic } from '@fixtures/mockLeague'
 import { SeasonRecap } from '@screens/SeasonRecap'
 import { buildBracketTree } from '@screens/SeasonRecap/bracketTree'
 import { cleanup, render, screen } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 
 afterEach(cleanup)
@@ -390,5 +393,116 @@ describe('SeasonRecap awards', () => {
     const leaderText = screen.getByText(/Rushing yards leader/)
     expect(leaderText.closest('li')).not.toBeNull()
     expect(leaderText.closest('.gg-nameplate')).toBeNull()
+  })
+})
+
+/** mockStatic plus the real franchise relocations (teams.json `eras`), so era labels are exercised. */
+function staticWithRelocations() {
+  const data = mockStatic()
+  const real = JSON.parse(
+    readFileSync(resolve(__dirname, '../../public/data/teams.json'), 'utf8'),
+  ) as { teams: TeamInfo[] }
+  for (const id of ['LV', 'LAC', 'LAR']) {
+    data.teams[id] = { ...data.teams[id]!, eras: real.teams.find((t) => t.id === id)!.eras }
+  }
+  return data
+}
+
+describe('SeasonRecap team labels by season', () => {
+  function bracketText(season: number): string {
+    const state = mockLeague()
+    const data = staticWithRelocations()
+    const afcTeams = ['LV', ...AFC_TEAMS.filter((t) => t !== 'LV')].slice(0, 7)
+    const { bracket, games, results } = buildBracketFixture(season, afcTeams, NFC_TEAMS.slice(0, 7))
+    const withHistory: LeagueState = {
+      ...state,
+      schedule: [...state.schedule, ...games],
+      results: [...state.results, ...results],
+      history: [buildSummary(state, season, bracket, [])],
+    }
+    const { container } = render(<SeasonRecap state={withHistory} data={data} />)
+    return container.querySelector('.gg-bracket')!.textContent ?? ''
+  }
+
+  it('shows the 2017 Raiders as OAK in the bracket', () => {
+    const text = bracketText(2017)
+    expect(text).toContain('OAK')
+    expect(text).not.toContain('LV')
+  })
+
+  it('shows the 2020 Raiders as LV in the bracket', () => {
+    const text = bracketText(2020)
+    expect(text).toContain('LV')
+    expect(text).not.toContain('OAK')
+  })
+})
+
+describe('SeasonRecap final standings', () => {
+  it('groups by division with no league-wide rank numbers, ordered by division rank', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const standings = fixtureStandings().map((row) => ({ ...row, wins: 8, losses: 8, pct: 0.5 }))
+    const afcNorth: string[] = TEAM_IDS.filter(
+      (t) => DIVISIONS[t].conf === 'AFC' && DIVISIONS[t].div === 'North',
+    )
+    standings.forEach((row) => {
+      const i = afcNorth.indexOf(row.teamId)
+      if (i >= 0) Object.assign(row, { divRank: i + 1, wins: 11 - i * 2, losses: 5 + i * 2 })
+    })
+    const summary = { ...buildSummary(state, state.season, undefined, []), standings }
+    render(<SeasonRecap state={{ ...state, history: [summary] }} data={data} />)
+
+    const panel = screen.getByText('Final standings').closest('section')!
+    expect(panel.querySelector('ol')).toBeNull()
+    expect(panel.textContent).toContain('AFC North')
+    expect(panel.textContent).toContain('NFC West')
+    const group = Array.from(panel.querySelectorAll('[data-division="AFC-North"] li')).map(
+      (li) => li.textContent,
+    )
+    expect(group).toHaveLength(4)
+    expect(group[0]).toContain(afcNorth[0]!)
+    expect(group[0]).toContain('11-5-0')
+  })
+})
+
+describe('SeasonRecap award cards', () => {
+  const longNote = '1,621 rush, 791 rec yds, 27 TD'
+  const longName = 'Quincy Montgomery-Washington III'
+
+  it('renders the full player name and note on a wrapping plate', () => {
+    const state = mockLeague()
+    const data = mockStatic()
+    const awards: Award[] = [
+      {
+        id: 'OPOY',
+        name: 'Offensive player of the year',
+        playerName: longName,
+        pos: 'RB',
+        teamId: AFC_TEAMS[0]!,
+        note: longNote,
+      },
+    ]
+    const summary = buildSummary(state, state.season, undefined, awards)
+    const { container } = render(
+      <SeasonRecap state={{ ...state, history: [summary] }} data={data} />,
+    )
+
+    const plate = container.querySelector('.gg-nameplate')!
+    expect(plate.textContent).toContain(longName)
+    expect(plate.textContent).toContain(longNote)
+    expect(plate.classList.contains('gg-nameplate--wrap')).toBe(true)
+  })
+
+  it('has no ellipsis or nowrap on the wrapping plate in the shipped stylesheet', () => {
+    const css = readFileSync(resolve(__dirname, '../../src/ui/primitives/primitives.css'), 'utf8')
+    const rules = [...css.matchAll(/([^{}]*gg-nameplate--wrap[^{}]*)\{([^}]*)\}/g)]
+    expect(rules.length).toBeGreaterThan(0)
+    for (const [, selector, body] of rules) {
+      expect(body, selector).not.toMatch(/text-overflow:\s*ellipsis/)
+      expect(body, selector).not.toMatch(/white-space:\s*nowrap/)
+    }
+    const nameRule = rules.find(([, s]) => s!.includes('__name'))
+    expect(nameRule?.[2]).toMatch(/white-space:\s*normal/)
+    expect(nameRule?.[2]).toMatch(/text-overflow:\s*clip/)
   })
 })

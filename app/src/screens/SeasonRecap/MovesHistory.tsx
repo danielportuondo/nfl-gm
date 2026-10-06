@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import type { LeagueState, PlayerId, StaticData, TradeSide, Transaction } from '@contracts/index'
 import { Panel } from '@ui/primitives'
 import { describePick } from '../shared/pickLabel'
+import { teamAbbr } from '../shared/teamLabel'
 import { formatMoney } from '../shared/formatMoney'
 import {
   MOVE_FILTERS,
@@ -20,10 +21,6 @@ export interface MovesHistoryProps {
   state: LeagueState
   data: StaticData
   revealIndex?: number
-}
-
-function teamAbbr(data: StaticData, teamId: string): string {
-  return data.teams[teamId]?.abbr ?? teamId
 }
 
 function playerLabel(state: LeagueState, id: PlayerId): { name: string; pos: string } {
@@ -224,7 +221,7 @@ function EntryLine({ t, state, data }: { t: Transaction; state: LeagueState; dat
           <div
             style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)', minWidth: 0 }}
           >
-            <span>with {teamAbbr(data, t.got.teamId)}</span>
+            <span>with {teamAbbr(data, t.got.teamId, leagueYear(t.season, t.phase))}</span>
             <p style={{ margin: 0 }}>
               <span style={{ fontWeight: 600 }}>Gave: </span>
               {renderSide(t.gave, state, data, t.ovrAtMove, false)}

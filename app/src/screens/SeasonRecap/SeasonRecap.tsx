@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import type {
   Award,
+  Conference,
+  Division,
   Game,
   GameType,
   LeagueState,
@@ -10,6 +12,7 @@ import type {
 } from '@contracts/index'
 import { NamePlate, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
+import { teamAbbr, teamLabel } from '../shared/teamLabel'
 import { Bracket } from './Bracket'
 import { MovesHistory } from './MovesHistory'
 
@@ -36,12 +39,24 @@ const ROUND_LABEL: Record<GameType, string> = {
 }
 const ROUND_ORDER: GameType[] = ['WC', 'DIV', 'CONF', 'SB']
 
-function teamLabel(data: StaticData, teamId: string): string {
-  return data.teams[teamId]?.abbr ?? teamId
-}
+const DIVISION_GROUPS: Array<{ conf: Conference; div: Division }> = (
+  ['AFC', 'NFC'] as Conference[]
+).flatMap((conf) =>
+  (['East', 'North', 'South', 'West'] as Division[]).map((div) => ({ conf, div })),
+)
 
 /** One award tile: a NamePlate for a player major, a helmet block for Coach of the year. */
-function AwardTile({ award, state, data }: { award: Award; state: LeagueState; data: StaticData }) {
+function AwardTile({
+  award,
+  state,
+  data,
+  season,
+}: {
+  award: Award
+  state: LeagueState
+  data: StaticData
+  season: number
+}) {
   const caption = (
     <p
       style={{
@@ -67,7 +82,7 @@ function AwardTile({ award, state, data }: { award: Award; state: LeagueState; d
           <HelmetSprite pos="QB" size={4} />
           <div>
             <p style={{ margin: 0, fontWeight: 600 }}>
-              {team ? `${team.city} ${team.name}` : award.teamId}
+              {team ? teamLabel(data, award.teamId, season).full : award.teamId}
             </p>
             {award.note && (
               <p style={{ margin: 0, color: 'var(--text-2)', fontSize: 'var(--fs-1)' }}>
@@ -86,9 +101,10 @@ function AwardTile({ award, state, data }: { award: Award; state: LeagueState; d
     award.playerId ??
     '—'
   const pos = award.pos ?? (award.playerId ? state.players[award.playerId]?.pos : undefined)
-  const metaParts = [award.note, award.teamId ? teamLabel(data, award.teamId) : undefined].filter(
-    Boolean,
-  )
+  const metaParts = [
+    award.note,
+    award.teamId ? teamAbbr(data, award.teamId, season) : undefined,
+  ].filter(Boolean)
   const meta = metaParts.length > 0 ? metaParts.join(' · ') : undefined
 
   if (!pos) {
@@ -103,7 +119,7 @@ function AwardTile({ award, state, data }: { award: Award; state: LeagueState; d
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)', minWidth: 220 }}>
       {caption}
-      <NamePlate name={name} pos={pos} meta={meta} />
+      <NamePlate name={name} pos={pos} meta={meta} wrap />
     </div>
   )
 }
@@ -200,12 +216,16 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
   function scoreFor(game: Game): string {
     const result = state.results.find((r) => r.gameId === game.id)
     if (!result) return 'Not played'
-    return `${teamLabel(data, game.away)} ${result.awayScore} – ${result.homeScore} ${teamLabel(data, game.home)}${result.overtime ? ' OT' : ''}`
+    return `${teamAbbr(data, game.away, game.season)} ${result.awayScore} – ${result.homeScore} ${teamAbbr(data, game.home, game.season)}${result.overtime ? ' OT' : ''}`
   }
 
-  const sortedStandings = [...summary.standings].sort(
-    (a, b) => a.divRank - b.divRank || b.pct - a.pct,
-  )
+  const userLabel = teamLabel(data, summary.userTeam, summary.season)
+  const standingsByDivision = DIVISION_GROUPS.map((g) => ({
+    ...g,
+    rows: summary.standings
+      .filter((r) => data.teams[r.teamId]?.conf === g.conf && data.teams[r.teamId]?.div === g.div)
+      .sort((a, b) => a.divRank - b.divRank || b.pct - a.pct),
+  })).filter((g) => g.rows.length > 0)
 
   return (
     <TeamScope
@@ -267,8 +287,8 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
                 )}
                 <div>
                   <p style={{ margin: 0, fontSize: 'var(--fs-3)' }}>
-                    {teamInfo?.city} {teamInfo?.name} finished {summary.userRecord.wins}-
-                    {summary.userRecord.losses}-{summary.userRecord.ties}.
+                    {userLabel.full} finished {summary.userRecord.wins}-{summary.userRecord.losses}-
+                    {summary.userRecord.ties}.
                   </p>
                   <p style={{ margin: 0, color: 'var(--text-2)' }}>
                     {EXIT_LABEL[summary.userPlayoffExit]}
@@ -283,11 +303,11 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
                 }}
               >
                 <StatTile
-                  value={summary.champion ? teamLabel(data, summary.champion) : '—'}
+                  value={summary.champion ? teamAbbr(data, summary.champion, summary.season) : '—'}
                   label="Champion"
                 />
                 <StatTile
-                  value={summary.runnerUp ? teamLabel(data, summary.runnerUp) : '—'}
+                  value={summary.runnerUp ? teamAbbr(data, summary.runnerUp, summary.season) : '—'}
                   label="Runner-up"
                 />
               </div>
@@ -346,7 +366,13 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
                       {summary.awards
                         .filter((a) => a.id)
                         .map((a) => (
-                          <AwardTile key={a.id} award={a} state={state} data={data} />
+                          <AwardTile
+                            key={a.id}
+                            award={a}
+                            state={state}
+                            data={data}
+                            season={summary.season}
+                          />
                         ))}
                     </div>
                   )}
@@ -371,7 +397,7 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
                               {a.playerId
                                 ? `: ${state.players[a.playerId]?.name ?? a.playerId}`
                                 : ''}
-                              {a.teamId ? ` (${teamLabel(data, a.teamId)})` : ''}
+                              {a.teamId ? ` (${teamAbbr(data, a.teamId, summary.season)})` : ''}
                               {a.note ? ` — ${a.note}` : ''}
                             </li>
                           ))}
@@ -385,13 +411,36 @@ export function SeasonRecap({ state, data }: SeasonRecapProps) {
 
           <div className="gg-col-6">
             <Panel title="Final standings" variant="sunken" revealIndex={3}>
-              <ol style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
-                {sortedStandings.map((row) => (
-                  <li key={row.teamId} className="tabular-nums">
-                    {teamLabel(data, row.teamId)} — {row.wins}-{row.losses}-{row.ties}
-                  </li>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                  gap: 'var(--sp-4)',
+                }}
+              >
+                {standingsByDivision.map((g) => (
+                  <div key={`${g.conf}-${g.div}`} data-division={`${g.conf}-${g.div}`}>
+                    <h4
+                      style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: 'var(--fs-1)',
+                        color: 'var(--text-2)',
+                        margin: '0 0 var(--sp-1)',
+                      }}
+                    >
+                      {g.conf} {g.div}
+                    </h4>
+                    <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+                      {g.rows.map((row) => (
+                        <li key={row.teamId} className="tabular-nums">
+                          {teamAbbr(data, row.teamId, summary.season)} — {row.wins}-{row.losses}-
+                          {row.ties}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ol>
+              </div>
             </Panel>
           </div>
         </div>

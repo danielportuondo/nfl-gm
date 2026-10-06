@@ -1,6 +1,7 @@
 import type { LeagueState, StaticData } from '@contracts/index'
 import { Button, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
+import { teamLabel } from '../shared/teamLabel'
 
 export interface EndGameProps {
   state: LeagueState
@@ -71,7 +72,9 @@ export function EndGame({ state, data, cap, onKeepPlaying }: EndGameProps) {
                 lineHeight: 'var(--lh-display)',
               }}
             >
-              {champion ? `${teamInfo?.city ?? state.userTeam} champions` : 'Horizon reached'}
+              {champion
+                ? `${teamLabel(data, state.userTeam, state.season).city || state.userTeam} champions`
+                : 'Horizon reached'}
             </p>
             <p style={{ margin: 'var(--sp-2) 0 0', color: 'var(--text-2)' }}>
               {champion

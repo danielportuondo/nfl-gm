@@ -5,6 +5,7 @@ import { Button, Modal, Panel } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { GameSettingsFields } from '../shared/GameSettingsFields'
 import { phaseLabel, seasonText } from '../shared/phaseLabel'
+import { teamLabel } from '../shared/teamLabel'
 import { useSaveFilePicker } from '../shared/useSaveFilePicker'
 
 export interface SettingsProps {
@@ -50,7 +51,7 @@ export function Settings({
   const [pendingImport, setPendingImport] = useState<string | null>(null)
   const picker = useSaveFilePicker(setPendingImport)
   const team = data.teams[state.userTeam]
-  const teamName = team ? `${team.city} ${team.name}` : state.userTeam
+  const teamName = team ? teamLabel(data, state.userTeam, state.season).full : state.userTeam
   const total = Math.max(1, state.horizonEnd - state.startSeason + 1)
   const index = Math.min(total, Math.max(1, state.season - state.startSeason + 1))
   const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'

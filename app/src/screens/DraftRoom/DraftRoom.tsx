@@ -23,6 +23,7 @@ import {
 import { formatRating } from '@ui/primitives/Table'
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { describePick } from '../shared/pickLabel'
+import { teamAbbr } from '../shared/teamLabel'
 import { PickBoard } from './PickBoard'
 
 export interface DraftRoomProps {
@@ -52,10 +53,6 @@ interface ProspectRow {
 }
 
 const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
-
-function teamAbbr(data: StaticData, id: TeamId): string {
-  return data.teams[id]?.abbr ?? id
-}
 
 function describeSide(state: LeagueState, data: StaticData, side: TradeSide): string {
   const parts: string[] = []
@@ -291,8 +288,8 @@ export function DraftRoom({
         {!onClock && !complete && currentPick && (
           <Panel revealIndex={0}>
             <p style={{ margin: 0 }}>
-              On the clock: {teamAbbr(data, currentPick.owner)} — round {currentPick.round}, pick{' '}
-              {currentPick.pick ?? room.currentPickIndex + 1}
+              On the clock: {teamAbbr(data, currentPick.owner, room.season)} — round{' '}
+              {currentPick.round}, pick {currentPick.pick ?? room.currentPickIndex + 1}
             </p>
           </Panel>
         )}
@@ -447,7 +444,7 @@ export function DraftRoom({
             <ol style={{ margin: 0, paddingLeft: 'var(--sp-4)' }}>
               {[...room.log].reverse().map((entry) => (
                 <li key={entry.pick}>
-                  Pick {entry.pick} ({teamAbbr(data, entry.team)}):{' '}
+                  Pick {entry.pick} ({teamAbbr(data, entry.team, room.season)}):{' '}
                   {state.players[entry.playerId]?.name ?? entry.playerId}
                 </li>
               ))}
@@ -485,7 +482,7 @@ export function DraftRoom({
               {room.pendingOffers.map((proposal, i) => (
                 <OfferCard
                   key={proposal.id}
-                  title={`${teamAbbr(data, proposal.offer.teamId)} offers`}
+                  title={`${teamAbbr(data, proposal.offer.teamId, room.season)} offers`}
                   youGet={describeSide(state, data, proposal.offer)}
                   youGive={describeSide(state, data, proposal.request)}
                   evaluation={onEvaluate(proposal)}

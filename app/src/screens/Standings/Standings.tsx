@@ -2,10 +2,13 @@ import { useMemo, useState } from 'react'
 import type { Conference, Division, StandingRow, StaticData } from '@contracts/index'
 import { Panel, StatusBadge, Table, type Column, type SortState } from '@ui/primitives'
 import { TeamScope, HelmetSprite } from '@ui/sprites'
+import { teamAbbr, teamLabel } from '../shared/teamLabel'
 
 export interface StandingsProps {
   data: StaticData
   rows: StandingRow[]
+  /** Season the rows describe, so relocated franchises show their name of the day. */
+  season?: number
 }
 
 const GROUPS: Array<{ conf: Conference; div: Division }> = (['AFC', 'NFC'] as Conference[]).flatMap(
@@ -20,7 +23,7 @@ function clinchBadge(row: StandingRow) {
 }
 
 /** Eight division tables with clinch badges, sortable (docs/DESIGN.md §11). */
-export function Standings({ data, rows }: StandingsProps) {
+export function Standings({ data, rows, season }: StandingsProps) {
   const [sort, setSort] = useState<SortState>({ key: 'pct', dir: 'desc' })
 
   function sortRows(group: StandingRow[]): StandingRow[] {
@@ -39,7 +42,7 @@ export function Standings({ data, rows }: StandingsProps) {
   function sortValue(row: StandingRow, key: string): number | string {
     switch (key) {
       case 'team':
-        return data.teams[row.teamId]?.abbr ?? row.teamId
+        return teamAbbr(data, row.teamId, season)
       case 'record':
         return row.wins
       case 'pct':
@@ -58,7 +61,7 @@ export function Standings({ data, rows }: StandingsProps) {
       key: 'team',
       header: 'Team',
       frozen: true,
-      sortValue: (r) => data.teams[r.teamId]?.abbr ?? r.teamId,
+      sortValue: (r) => teamAbbr(data, r.teamId, season),
       render: (r) => {
         const info = data.teams[r.teamId]
         return (
@@ -68,7 +71,7 @@ export function Standings({ data, rows }: StandingsProps) {
                 <HelmetSprite pos="QB" size={2} />
               </TeamScope>
             )}
-            {info?.city} {info?.name}
+            {teamLabel(data, r.teamId, season).full}
           </span>
         )
       },

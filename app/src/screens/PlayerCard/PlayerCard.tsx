@@ -9,6 +9,7 @@ import {
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
+import { teamAbbr } from '@screens/shared/teamLabel'
 
 export interface PlayerCardProps {
   state: LeagueState
@@ -83,7 +84,7 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
               <PositionBadge pos={player.pos} />
               {teamInfo && (
                 <TeamScope colors={teamInfo.colors}>
-                  <TeamBadgePrimitive abbr={teamInfo.abbr} />
+                  <TeamBadgePrimitive abbr={teamAbbr(data, teamInfo.id, state.season)} />
                 </TeamScope>
               )}
               {isRookie(player, state) && <StatusBadge status="rookie" />}
