@@ -61,6 +61,7 @@ function makeProposalId(): string {
 
 interface AssetPickerProps {
   state: LeagueState
+  data: StaticData
   teamId: TeamId
   selectedPlayers: Set<PlayerId>
   selectedPicks: Set<string>
@@ -76,6 +77,7 @@ const ASSET_SORTS = [
 
 function AssetPicker({
   state,
+  data,
   teamId,
   selectedPlayers,
   selectedPicks,
@@ -221,8 +223,7 @@ function AssetPicker({
                     checked={selectedPicks.has(key)}
                     onChange={() => onTogglePick(key)}
                   />
-                  {p.season} round {p.round}
-                  {p.pick != null ? ` (pick ${p.pick})` : ''}
+                  {describePick(data, p)}
                 </label>
               )
             })}
@@ -270,6 +271,13 @@ export function TradeCenter({
     setter(next)
   }
 
+  function changeOpponent(next: TeamId) {
+    if (next === opponent) return
+    setOpponent(next)
+    setTheirPlayers(new Set())
+    setTheirPicks(new Set())
+  }
+
   const proposal: TradeProposal = useMemo(() => {
     const myPickRefs: PickRef[] = state.picks
       .filter((p) => p.owner === state.userTeam && myPicks.has(pickKey(p)))
@@ -304,8 +312,10 @@ export function TradeCenter({
       proposal.request.picks.length >
     0
   const evaluation = hasAssets ? onEvaluate(proposal) : null
+  const canOffer = evaluation !== null && evaluation.valid
 
   function submit() {
+    if (!canOffer) return
     onProposeTrade({ ...proposal, id: makeProposalId() })
     setMyPlayers(new Set())
     setMyPicks(new Set())
@@ -320,6 +330,7 @@ export function TradeCenter({
           <Panel variant="plate" title="Your offer" revealIndex={0}>
             <AssetPicker
               state={state}
+              data={data}
               teamId={state.userTeam}
               selectedPlayers={myPlayers}
               selectedPicks={myPicks}
@@ -346,7 +357,7 @@ export function TradeCenter({
             }}
           >
             Team
-            <select value={opponent} onChange={(e) => setOpponent(e.target.value as TeamId)}>
+            <select value={opponent} onChange={(e) => changeOpponent(e.target.value as TeamId)}>
               {otherTeams.map((id) => (
                 <option key={id} value={id}>
                   {data.teams[id]?.city} {data.teams[id]?.name}
@@ -356,6 +367,7 @@ export function TradeCenter({
           </label>
           <AssetPicker
             state={state}
+            data={data}
             teamId={opponent}
             selectedPlayers={theirPlayers}
             selectedPicks={theirPicks}
@@ -379,6 +391,11 @@ export function TradeCenter({
               Add players or picks on both sides to see how they'd respond.
             </p>
           )}
+          {evaluation && !evaluation.valid && evaluation.reasons.length === 0 && (
+            <p role="status" style={{ margin: 'var(--sp-2) 0 0', color: 'var(--danger)' }}>
+              This deal cannot go through as it stands.
+            </p>
+          )}
           {evaluation && evaluation.reasons.length > 0 && (
             <ul
               style={{
@@ -399,7 +416,7 @@ export function TradeCenter({
               variant="primary"
               busy={busy}
               busyLabel="Working…"
-              disabled={!hasAssets}
+              disabled={!canOffer}
               onClick={submit}
             >
               Offer trade
