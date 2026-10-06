@@ -33,7 +33,7 @@ function injuredState(
       playerId: 'hurt-1',
       teamId: 'IND',
       contract: { years: 1, apy: 1, guaranteedPct: 0, signedSeason: SEASON, rookie: false },
-      injured: { weeksOut: 1, kind: 'knee', season: SEASON, week: WEEK - weeksOutAtInjury + 1 },
+      injured: { weeksOut: 1, kind: 'knee', season: SEASON, week: WEEK - weeksOutAtInjury },
     },
   ]
   const team: TeamState = {

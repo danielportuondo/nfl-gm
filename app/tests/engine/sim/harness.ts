@@ -102,14 +102,14 @@ export function runSeason(
     const results = regular
       .filter((g) => g.week === week)
       .map((game) => tally(current, game, ctx, onResult, totals))
-    current = lifecycle.applyInjuryEvents(
-      current,
-      results.flatMap((r) => r.injuries),
-    )
     current = lifecycle.tickInjuries(
       current,
       ctx,
       ctx.modules.rng.fromSeed(current.seed, current.season, week, 'injuries'),
+    )
+    current = lifecycle.applyInjuryEvents(
+      current,
+      results.flatMap((r) => r.injuries),
     )
   }
   return totals

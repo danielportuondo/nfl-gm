@@ -313,7 +313,7 @@ function tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueS
         // The injury clears this week. If it was long (elapsed >= minWeeks; a season boundary in
         // between counts as long — no weekly ticks run over the offseason), roll for permanent loss.
         const elapsed =
-          slot.injured.season === state.season ? state.week - slot.injured.week + 1 : Infinity
+          slot.injured.season === state.season ? state.week - slot.injured.week : Infinity
         if (elapsed >= model.minWeeks && rng.fork(slot.playerId).chance(model.p)) {
           const traj = truth[slot.playerId]
           const key = String(state.season)

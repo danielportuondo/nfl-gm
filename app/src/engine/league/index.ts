@@ -725,8 +725,8 @@ function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
   let newState: LeagueState = { ...state, results: [...state.results, ...results] }
   newState = applyRegResults(newState, gamesThisWeek, results)
 
-  const allInjuries: InjuryEvent[] = results.flatMap((r) => r.injuries)
-  newState = ctx.modules.lifecycle.applyInjuryEvents(newState, allInjuries)
+  // Tick before applying: an injury rolled "N weeks" in this week's games must still be N weeks out
+  // when next week's games are played. Ticking after applying would take a week off it immediately.
   const injuryRng = ctx.modules.rng.fromSeed(
     newState.seed,
     newState.season,
@@ -734,6 +734,8 @@ function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
     'injuries',
   )
   newState = ctx.modules.lifecycle.tickInjuries(newState, ctx, injuryRng)
+  const allInjuries: InjuryEvent[] = results.flatMap((r) => r.injuries)
+  newState = ctx.modules.lifecycle.applyInjuryEvents(newState, allInjuries)
 
   const tradeRng = ctx.modules.rng.fromSeed(
     newState.seed,
@@ -799,6 +801,27 @@ function resetSeasonCounters(teams: Record<TeamId, TeamState>): Record<TeamId, T
     Object.entries(teams).map(([id, t]) => [
       id,
       { ...t, record: { ...ZERO_RECORD }, tradeAnnoyance: 0 },
+    ]),
+  )
+}
+
+/**
+ * No weekly ticks run between seasons, so an injury still open at the final whistle would otherwise
+ * cost games in September. The offseason is longer than the longest sampled absence (maxWeeksOut).
+ */
+function healOffseasonInjuries(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
+  return Object.fromEntries(
+    Object.entries(teams).map(([id, t]) => [
+      id,
+      {
+        ...t,
+        roster: t.roster.map((slot) => {
+          if (!slot.injured) return slot
+          const healthy = { ...slot }
+          delete healthy.injured
+          return healthy
+        }),
+      },
     ]),
   )
 }
@@ -896,7 +919,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
         for (const teamId of TEAM_IDS)
           if (teamId !== s.userTeam) s = fitPayrollToCap(s, teamId, ctx)
       }
-      s = { ...s, teams: resetSeasonCounters(s.teams) }
+      s = { ...s, teams: healOffseasonInjuries(resetSeasonCounters(s.teams)) }
       s = ensureFuturePicks(s, ctx)
       const newGames = buildScheduleImpl(s, ctx)
       s = { ...s, schedule: [...s.schedule, ...newGames], phase: 'PRESEASON' }
