@@ -419,3 +419,38 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
 - Known minor gaps: an old-save transaction that names a real pick number may not link to the
   drafted player in the season recap, and a pending proposal naming an old pick number won't match
   after renumbering.
+
+## 2026-10-06 — Fixes from the 2017 Dolphins playthrough QA
+
+A playthrough agent played MIA from the 2017 draft (titles in 2018 and 2019). A QA agent reviewed each season. Daniel picked which findings to fix.
+
+- **Draft room pauses on every pick** (supersedes the 2026-09-18 note "startDraft runs AI picks until the
+  user is on the clock").
+  - `startDraft` and `makePick` no longer run the AI ahead.
+  - `DraftModule.advance` takes `{ single: true }` for "Sim next pick".
+  - While an AI team is on the clock, the user can trade for that pick.
+- **Vetoed draft anchors stay in contention** in sim-order drafts. Later slots take an overdue real prospect, so real top-64 picks land within about ±8 of their slot. Opening drafts are unchanged.
+- **History snap never adds players to the user's roster.** Draftees of picks the user traded stay with the team that used the pick.
+  - Open (backlog): the snap still moves AI draftees to their real teams, so the AI draft is cosmetic.
+- **Real absences become announced injuries.** A consensus starter whose real availability for the season is under 0.5 starts the season injured for the share of games he really missed. `LifecycleModule.applyHistoricalAbsences` does this; lifecycle reads truth, and the depth chart only sees an ordinary injury. Calibration win correlation vs real seasons went from 0.76 to 0.83–0.87.
+- **Injuries cost the full number of weeks rolled.** Injuries tick before new ones apply, and a bye counts as a week served. Injuries carried into the offseason heal at camp for every team; before this, only AI players' injuries healed, because the snap rebuilt their roster slots.
+- **Contract `years` = seasons the player will actually play.** Offseason deals are stamped `signedSeason = season + 1`, and the camp rollover skips them. `fa.seasonsLeft` / `fa.isExpiringDeal` encode the rule. Synthesized contracts end by age 36 (QB/K/P: 39).
+- **AI rosters stay legal.** Cutdowns keep position minimums (2 QB, 1 K, 1 P, …), weigh value against net cap savings, and keep year-1 R1–R3 rookies. AI teams refill holes from FA at cutdown and before each in-season week.
+- **Trade valuation:**
+  - An AI team charges for the lineup drop when it gives up a starter (`starterLossShare` 0.5).
+  - Incoming non-starters count at half (`fillerShare` 0.5); R1–R2 rookies are exempt.
+  - Rookies are anchored at ≥ 80% of their slot value, fading over two years.
+  - Value scales with seasons of control, and a buying AI charges salary in full, so bad contracts are negative.
+  - Players signed in free agency can't be traded until week 1 (in-season: 4 weeks).
+  - The cap check runs in every phase. Offseason trades are checked against next season's books.
+  - Suggestions never ask for a user starter.
+  - tradeExploit (strict) pooled true surplus went from 18.6% to −4.3%.
+- **Fairness bar** is never "Fair" below an even deal: <40% Against you, 40–50% Slightly against you, 50–60% Fair, >60% Favors you.
+- **Awards score players relative to their position.** Each score is a ratio to the position's top N, times a position weight; MVP adds a team-record factor. MVP was a QB in 71 of 72 seeded seasons.
+- **Box score** splits pass and rush at real NFL rates. It draws from its own RNG stream, so outcomes are unchanged.
+- **Data:**
+  - Opening rosters take players who actually played (availability ≥ 0.5) and the season's draftees first.
+  - Players who never play again are dropped from season chunks unless just drafted.
+  - `retiresAfter` is the last season with a game.
+  - Real fullbacks carry `role: 'FB'` (`pos` stays RB).
+- **In-season AI offers** reach the Trades screen. The store generates them after each sim with the same generator and seed as "Check for offers".

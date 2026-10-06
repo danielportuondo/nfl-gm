@@ -474,6 +474,23 @@ v2 backlog: coaching staff & schemes; morale/holdouts; drive-by-drive highlights
 Open issues backlog (2026-10-05):
 - **Barely-played draft picks scout too low.** A drafted player whose only games are a tiny sample (Mahomes 2017: 1 game, availability 0.06) falls back to that one-game true value the next year (Mahomes 2018 consensus 66 / 70 vs. true 88.2), because the blend weight is under `CONSENSUS_MIN_BLEND_WEIGHT` and `hasNotPlayedYet` needs exactly zero games. Fix: keep the draft-based rookie view when the games are too few to blend (pipeline `model/consensus.py` + `lifecycle` `refreshScouting`). Open choice: fold in the long-absence veteran fix (fall back to the last season with real games; Blackmon 2017–20, Bridgewater 2025).
 - **Week counter at break camp.** Reported: after break camp the header read "Regular season · week 2"; one Sim week click left it at week 2; the next went to week 3 with one game on the record. Not reproduced on any start year 2010–2025, a second season, or the browser flow. Reporter's game: **MIA**, started 2017, reached the 2018 offseason. Likely cause: 2017 week 1 has 15 games (MIA–TB moved by Hurricane Harvey), so a Dolphins user plays nothing that week, and after two sims the record shows one game. Still to explain: the "week 2" right after break camp, and whether the header should say so when the user's team has no game that week.
+- **History snap undoes the AI draft (2018 QA M2, deferred by Daniel).** In sim-order drafts, 178 of 224 draftees end the camp snap on another team (Mayfield drafted by NYG, now CLE), so the AI draft is cosmetic. Options: (a) draftees stay with the team that drafted them, and history drifts each year; (b) keep restoring real rosters.
+- **Hindsight is solved in one trade window (2017 H2, 2019 H1).** MIA reached z +4.6 true strength and went 19-0 twice, and by 2019 it also led on consensus. Ideas: arbitrage cost that rises with trade volume, a star-stacking ceiling, AI counter-play. Re-measure after the 2026-10-06 trade fixes.
+- **User trades deplete AI partners for good (2019 H2).** KC lost 0.2, then 7.3, then 8.2 true-strength points over 2017–2019. Partners' wins vs real correlate 0.08–0.40 (untouched teams: 0.57–0.78). Ideas: an AI "need" pass at camp; never sell a franchise QB without getting a QB back.
+- **AI FA signs real-life absentees (2019 M1).** Luck, at 3 × $14.4M with real availability 0. AI FA should skip players with real availability under about 0.3 for the coming season.
+- **Trade moves re-sort the user's depth chart by stale consensus (2019 M2).** `trade/index.ts` `withInChart`: Lamar landed above Mahomes. It should append instead of re-sorting, and the Roster screen should get a "reset to consensus" button.
+- **Offseason cap gate and signing feedback (2019 M4, M5):**
+  - Re-sign and FA offers check this season's cap and full payroll instead of next season's commitments.
+  - Asks print rounded down, so typing the shown number fails.
+  - `fa.offer` reports cap failures as "passed on the offer".
+- **Margins too predictable at the top (2018 M7)** and **true values noisy year to year (2018 M8, 2017 L6)**, including undervalued rushing QBs and RBs (2019 L4).
+- **UDFA pool carries no consensus signal (2019 M7)**, and safeties are scarce in classes because `positions.py` maps "DB" to CB (2019 L6).
+- **Small UI items:**
+  - The display font draws C like O (2019 L1).
+  - "$-37.1M free" (2019 L2).
+  - The Standings card clips (2019 L3).
+  - The mandate completes in year 2 (2018 L4).
+- **The AI's own signings can't be trade-locked,** because transactions log only the user's moves. In the 2025 chunk, 544 team-less camp bodies can't be tested for retirement.
 
 ---
 

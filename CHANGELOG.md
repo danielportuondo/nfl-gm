@@ -18,8 +18,34 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
 - A new game started while an older save existed was never saved: every autosave was refused as
   if another tab owned the game, so a refresh brought back the old save.
 
+- Injuries last as long as they say: an injury rolled as N weeks used to cost N−1 games, and half of all injuries cost none.
+- Players who really sat out a season (Andrew Luck 2017) start it injured, so AI teams no longer start them all year.
+- Box scores pass and run at real NFL rates. There are about 10 1,000-yard rushers a season instead of 22, and fullbacks no longer lead the league in rushing.
+- Awards go to the right kind of player: MVP is almost always a quarterback, and defensive awards weigh sacks, not just interceptions.
+- Players drafted with picks you traded away stay with the team that drafted them, and history no longer adds real players to your roster at camp.
+- AI teams keep legal rosters: two quarterbacks, one kicker, one punter, and they refill holes after your trades.
+- Contract lengths mean what they say: a 1-year deal signed in the offseason plays one season, and old players no longer get 5–7 year deals.
+- The trade AI prices players properly:
+  - Prying a starter loose costs much more, and packages of backups count for less.
+  - Fresh draft picks are worth close to the pick that took them.
+  - Expiring and bad contracts are cheap or negative, and free agents can't be flipped the day they sign.
+- Offseason trades respect next season's cap.
+- Trade Center: changing teams clears their side, Offer trade only works on a valid deal, and picks name their original team.
+- AI trade offers during the season now show up on the Trades screen.
+- Real players no longer go missing from rosters, and retired players are no longer in free agency.
+- The draft no longer skips real first- and second-round prospects.
+- Relocated teams show the right name for the season (Oakland in 2017).
+
+### Added
+- The Draft Room pauses on every pick. "Sim next pick" advances one pick, and you can trade for the pick on the clock.
+- Player cards show season-by-season stats.
+- Releasing a player shows the dead money first.
+
 ### Changed
 - Depth chart rows drop the position badge and show a smaller rating, so full names fit.
+- One injury summary toast per sim, about your team only.
+- The fairness bar never calls a deal below even "Fair".
+- Season recap standings are grouped by division, and award cards show full names.
 
 ## 1.6.0 — 2026-09-28
 
