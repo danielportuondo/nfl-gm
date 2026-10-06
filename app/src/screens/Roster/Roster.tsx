@@ -19,6 +19,7 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { isExpiring, seasonsLeft } from '@screens/shared/contractStatus'
 import { formatMoney } from '@screens/shared/formatMoney'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 import { useReleaseConfirm, type ReleaseImpact } from '@screens/shared/ReleaseConfirm'
@@ -112,12 +113,12 @@ export function Roster({
         age: state.season - player.birthYear,
         ovr: scouting.ovr,
         pot: scouting.pot,
-        years: slot.contract.years,
+        years: seasonsLeft(state, slot.contract),
         apy: slot.contract.apy,
         rookie: isRookie(player, state),
         injured: Boolean(slot.injured),
         injuredWeeks: injuredWeeksLabel(slot.injured),
-        expiring: slot.contract.years <= 1,
+        expiring: isExpiring(state, slot.contract),
       }
     })
   }, [team, state])

@@ -18,6 +18,7 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { seasonsLeft } from '../shared/contractStatus'
 import { teamAbbr, teamLabel } from '../shared/teamLabel'
 
 const FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
@@ -64,7 +65,7 @@ export function LeagueBrowser({ state, data, onSelectPlayer }: LeagueBrowserProp
         ovr: scouting.ovr,
         pot: scouting.pot,
         apy: slot.contract.apy,
-        years: slot.contract.years,
+        years: seasonsLeft(state, slot.contract),
       }
     })
     .filter((r): r is Row => r !== null)

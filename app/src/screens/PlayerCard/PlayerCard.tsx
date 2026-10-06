@@ -1,4 +1,4 @@
-import type { LeagueState, PlayerId, StaticData, TeamId } from '@contracts/index'
+import type { Contract, LeagueState, PlayerId, StaticData, TeamId } from '@contracts/index'
 import {
   Button,
   Meter,
@@ -9,6 +9,7 @@ import {
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { PlayerStats } from './PlayerStats'
+import { seasonsLeft } from '@screens/shared/contractStatus'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 import { teamAbbr } from '@screens/shared/teamLabel'
 
@@ -17,6 +18,12 @@ export interface PlayerCardProps {
   data: StaticData
   playerId: PlayerId
   onBack: () => void
+}
+
+function contractLeft(state: LeagueState, contract: Contract): string {
+  const left = seasonsLeft(state, contract)
+  if (left <= 0) return 'Expiring'
+  return `${left} year${left === 1 ? '' : 's'} left`
 }
 
 function findTeam(state: LeagueState, playerId: PlayerId): TeamId | null {
@@ -126,8 +133,7 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
         <Panel title="Contract" variant="sunken" revealIndex={2}>
           {slot ? (
             <p style={{ margin: 0 }}>
-              {slot.contract.years} year{slot.contract.years === 1 ? '' : 's'} left · $
-              {slot.contract.apy.toFixed(1)}M / year ·{' '}
+              {contractLeft(state, slot.contract)} · ${slot.contract.apy.toFixed(1)}M / year ·{' '}
               {Math.round(slot.contract.guaranteedPct * 100)}% guaranteed
             </p>
           ) : (

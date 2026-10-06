@@ -10,6 +10,7 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { TeamScope } from '@ui/sprites'
+import { isExpiring, seasonsLeft, staysNextSeason } from '../shared/contractStatus'
 import { isOffseasonPhase } from '../shared/phaseLabel'
 import { useReleaseConfirm, type ReleaseImpact } from '../shared/ReleaseConfirm'
 
@@ -34,6 +35,7 @@ interface PayrollRow {
   apy: number
   years: number
   expiring: boolean
+  staysNextSeason: boolean
 }
 
 function formatMoney(m: number): string {
@@ -64,8 +66,9 @@ export function Finances({
       name: player?.name ?? slot.playerId,
       pos: player?.pos ?? null,
       apy: slot.contract.apy,
-      years: slot.contract.years,
-      expiring: slot.contract.years <= 1,
+      years: seasonsLeft(state, slot.contract),
+      expiring: isExpiring(state, slot.contract),
+      staysNextSeason: staysNextSeason(state, slot.contract),
     }
   })
 
@@ -83,8 +86,9 @@ export function Finances({
   const payroll = allRows.reduce((sum, r) => sum + r.apy, 0)
   const deadMoney = team?.deadMoney ?? 0
   const capSpace = cap - payroll - deadMoney
-  // Contracts with years > 1 remain on the books next season; this season's expiring deals fall off.
-  const payrollNextSeason = allRows.filter((r) => r.years > 1).reduce((sum, r) => sum + r.apy, 0)
+  const payrollNextSeason = allRows
+    .filter((r) => r.staysNextSeason)
+    .reduce((sum, r) => sum + r.apy, 0)
   const capSpaceNext = capNextSeason == null ? null : capNextSeason - payrollNextSeason
   const expiring = allRows.filter((r) => r.expiring)
 

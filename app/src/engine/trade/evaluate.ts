@@ -75,8 +75,8 @@ function assetErrors(state: LeagueState, side: TradeProposal['offer']): string[]
  * The cap a trade is measured against. In season: this season's cap and payroll, dead money included.
  * In the offseason: next season's cap against the contracts that will still be on the books when it
  * starts — those with a season of control left (`controlSeasons` ≥ 1, the engine's real expiry: the
- * camp rollover drops every deal with `years` = 1, except in the opening offseason). Dead money resets
- * at that rollover, so it is left out.
+ * camp rollover drops every older deal on its last year, but a deal signed this offseason carries all
+ * its years). Dead money resets at that rollover, so it is left out.
  */
 interface CapBook {
   cap: number

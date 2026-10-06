@@ -11,7 +11,7 @@ import { trade } from '@engine/trade'
 import { controlSeasons, incomingValue } from '@engine/trade/value'
 import { loadRealContext } from '../../../scripts/lib/publicData'
 import { emptyLog, userCutdowns, userDraft, userResign } from '../../../scripts/lib/scriptedGm'
-import { userProposal } from './helpers'
+import { putPlayer, scenario, userProposal } from './helpers'
 
 const SETTINGS = {
   tradeStrictness: 'balanced' as const,
@@ -42,6 +42,8 @@ function playToSecondFreeAgency(ctx: EngineContext): LeagueState {
   s = league.advancePhase(s, ctx) // → UDFA
   return league.advancePhase(s, ctx) // → FREE_AGENCY
 }
+
+const OLD_DEAL: Contract = { years: 1, apy: 1, guaranteedPct: 0.5, signedSeason: 0, rookie: false }
 
 function withContract(
   state: LeagueState,
@@ -84,7 +86,7 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
   it('is a non-opening offseason, where a 1-year deal expires at the camp rollover', () => {
     expect(state.phase).toBe('FREE_AGENCY')
     expect(state.season).toBe(2017)
-    expect(controlSeasons(state, { years: 1 })).toBe(0)
+    expect(controlSeasons(state, { ...OLD_DEAL, years: 1, signedSeason: state.season })).toBe(0)
   })
 
   it('a star signed at his ask on a 1-year deal cannot be flipped the same day', () => {
@@ -136,8 +138,12 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
     expect(evaluation.reasons.join(' ')).toMatch(
       /signed this offseason — can't be traded until week 1/,
     )
-    // Even unlocked, a deal that ends at the camp rollover carries nothing to a buyer.
-    expect(incomingValue(signed!, star, ctx)).toBeLessThan(1)
+    // Unlocked, the 1-year deal still plays the coming season (1 season of control, not 0), but a
+    // buyer pays well under what the same man would fetch with three more seasons.
+    const oneYear = incomingValue(signed!, star, ctx)
+    const fourYears = incomingValue(withContract(signed!, 'MIA', star, { years: 4 }), star, ctx)
+    expect(oneYear).toBeGreaterThan(1)
+    expect(oneYear).toBeLessThan(0.75 * fourYears)
   })
 
   it('an expiring veteran is worth a fraction of the same man with three more seasons', () => {
@@ -304,5 +310,45 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
     )
     expect(trade.playerValue(state, star, ctx)).toBeGreaterThan(30)
     expect(trade.playerValue(state, star, ctx) / longer).toBeGreaterThan(0.95)
+  })
+})
+
+describe('trade — control of deals signed this offseason (contract years mean seasons played)', () => {
+  const { state: base, ctx } = scenario()
+  const offseason: LeagueState = { ...base, phase: 'FREE_AGENCY' }
+  const deal = (years: number, signedSeason: number): Contract => ({
+    ...OLD_DEAL,
+    years,
+    signedSeason,
+  })
+
+  it('a fresh deal covers all its years; an older deal has already used the season just played', () => {
+    const next = offseason.season + 1
+    expect(controlSeasons(offseason, deal(1, next))).toBe(1)
+    expect(controlSeasons(offseason, deal(3, next))).toBe(3)
+    expect(controlSeasons(offseason, deal(1, offseason.season))).toBe(0)
+    expect(controlSeasons(offseason, deal(3, offseason.season))).toBe(2)
+  })
+
+  it('a deal means the same in season, whenever it was signed', () => {
+    const inSeason: LeagueState = { ...base, phase: 'PRESEASON' }
+    expect(controlSeasons(inSeason, deal(1, inSeason.season))).toBe(1)
+    expect(controlSeasons(inSeason, deal(3, inSeason.season - 1))).toBe(3)
+  })
+
+  it('a star on a fresh 1-year deal is worth more than the same star on an expiring one', () => {
+    const star = { id: 'star', pos: 'WR' as const, ovr: 88, age: 27, apy: 1, years: 1 }
+    const placed = putPlayer(offseason, 'DAL', star)
+    const withSigned = (signedSeason: number): LeagueState => {
+      const team = placed.teams['DAL']!
+      const roster = team.roster.map((r) =>
+        r.playerId === 'star' ? { ...r, contract: { ...r.contract, signedSeason } } : r,
+      )
+      return { ...placed, teams: { ...placed.teams, DAL: { ...team, roster } } }
+    }
+    const fresh = trade.playerValue(withSigned(offseason.season + 1), 'star', ctx)
+    const expiring = trade.playerValue(withSigned(offseason.season), 'star', ctx)
+    expect(expiring).toBeLessThan(1)
+    expect(fresh).toBeGreaterThan(5)
   })
 })

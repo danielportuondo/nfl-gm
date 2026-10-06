@@ -16,6 +16,7 @@ import {
   type Column,
   type SortState,
 } from '@ui/primitives'
+import { isExpiring } from '../shared/contractStatus'
 import { isOffseasonPhase } from '../shared/phaseLabel'
 import { useReleaseConfirm, type ReleaseImpact } from '../shared/ReleaseConfirm'
 
@@ -164,7 +165,7 @@ export function FreeAgency({
         })
       : null
 
-  const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1)
+  const expiring = (team?.roster ?? []).filter((slot) => isExpiring(state, slot.contract))
   const udfaPool = state.phase === 'UDFA' ? (state.draftRoom?.udfaPool ?? []) : []
   // draft.runUdfa finalizes every team's UDFA signings in one shot and clears draftRoom (by design);
   // an empty pool while still in the UDFA phase means signings are done, not that nothing loaded.

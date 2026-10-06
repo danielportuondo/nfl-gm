@@ -161,8 +161,8 @@ export const lineupConstants = {
 /**
  * Value by remaining control (2018 playthrough: 1-year free agents signed at the ask were flipped the
  * same day for 25–75 points, and their deals expired at the camp rollover weeks later). Seasons of
- * control follow the engine's real expiry, not the `years` label: outside the opening offseason the
- * camp rollover takes a year off every contract, so in the offseason a deal covers `years − 1` seasons.
+ * control follow the engine's real expiry (`fa.seasonsLeft`), not the `years` label: in the offseason
+ * a deal signed before it has used up the season just played, one signed in it plays every year.
  */
 export const controlConstants = {
   /** Share of full value carried by the 1st, 2nd and 3rd season of control; 3+ seasons = today's value. */

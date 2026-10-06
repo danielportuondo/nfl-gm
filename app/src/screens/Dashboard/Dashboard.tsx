@@ -1,6 +1,7 @@
 import type { Game, LeagueState, StaticData } from '@contracts/index'
 import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
+import { isExpiring } from '@screens/shared/contractStatus'
 import { formatMoney } from '@screens/shared/formatMoney'
 import { horizonProgress, isOffseasonPhase } from '@screens/shared/phaseLabel'
 import { injuredWeeksLabel } from '@screens/shared/playerStatus'
@@ -113,7 +114,7 @@ export function Dashboard({
   }
 
   const injuredSlots = (team?.roster ?? []).filter((slot) => slot.injured)
-  const expiring = (team?.roster ?? []).filter((slot) => slot.contract.years <= 1).length
+  const expiring = (team?.roster ?? []).filter((slot) => isExpiring(state, slot.contract)).length
   if (injuredSlots.length > 0) {
     const worst = injuredSlots
       .map((slot) => ({

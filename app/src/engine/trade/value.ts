@@ -21,6 +21,7 @@ import {
   type ScoutingView,
   type TeamId,
 } from '@contracts/index'
+import { isExpiringDeal, seasonsLeft } from '../fa/internal'
 import {
   controlConstants,
   dropConstants,
@@ -77,15 +78,15 @@ export function ageOf(state: LeagueState, playerId: PlayerId, ctx: EngineContext
 }
 
 /**
- * Seasons the holder actually gets out of `contract` from now on, by the engine's expiry rule: the
- * camp rollover takes a year off every deal (except in the opening offseason, whose contracts were
- * built for the coming season), so in the offseason a deal covers `years − 1` seasons; in season it
- * covers what is left of this one plus `years − 1`.
+ * Seasons the holder actually gets out of `contract` from now on. `fa.seasonsLeft` knows the expiry
+ * rule: a deal signed in an offseason phase plays all its years, an older one has already used the
+ * season just played until the camp rollover. In season that count includes the current season, of
+ * which only the unplayed share is left.
  */
-export function controlSeasons(state: LeagueState, contract: Pick<Contract, 'years'>): number {
-  const ahead = contract.years - 1
-  if (isOffseasonPhase(state.phase)) return isOpeningOffseason(state) ? contract.years : ahead
-  if (state.phase === 'PRESEASON') return contract.years
+export function controlSeasons(state: LeagueState, contract: Contract): number {
+  const left = seasonsLeft(state, contract)
+  if (isOffseasonPhase(state.phase) || state.phase === 'PRESEASON') return left
+  const ahead = left - 1
   if (state.phase === 'PLAYOFFS') return ahead + controlConstants.playoffShare
   const played = Math.max(0, state.week - 1) / controlConstants.regularSeasonWeeks
   return ahead + Math.max(controlConstants.playoffShare, 1 - played)
@@ -243,11 +244,13 @@ function reSigningRights(
   ctx: EngineContext,
 ): number {
   const contract = rosterIndex(state).get(playerId)?.contract
-  if (!contract || contract.years !== 1 || isOpeningOffseason(state)) return 0
-  if (isOffseasonPhase(state.phase) && state.phase !== 'OFFSEASON_RESIGN') return 0
+  if (!contract || isOpeningOffseason(state)) return 0
+  if (isOffseasonPhase(state.phase)) {
+    if (state.phase !== 'OFFSEASON_RESIGN' || !isExpiringDeal(state, contract)) return 0
+  } else if (contract.years !== 1) return 0
   const market = ctx.modules.fa.synthesizeContract(state, playerId, leagueYear(state), ctx)
-  // Re-signed in the offseason, the new deal loses a year at the camp rollover like any other.
-  const seasons = market.years - 1
+  // Signed in the re-sign window, the new deal is stamped for next season and plays all its years.
+  const seasons = market.years
   if (seasons <= 0) return 0
   const cost = contractCost(market.apy, seasons, capFor(state, ctx))
   const value = controlFactor(seasons) * (talent - cappedCost(cost, talent))
