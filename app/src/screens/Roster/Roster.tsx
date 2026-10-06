@@ -443,7 +443,7 @@ export function Roster({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
               gap: 'var(--sp-4)',
             }}
           >
@@ -474,6 +474,7 @@ export function Roster({
                           key={id}
                           name={player.name}
                           pos={player.pos}
+                          compact
                           meta={`${scouting.ovr} ovr`}
                           onMoveUp={
                             i > 0

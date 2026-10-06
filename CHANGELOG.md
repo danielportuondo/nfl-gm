@@ -13,6 +13,11 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
   dropping to about 41.
 - Draft order follows how teams finished the previous sim season, not the real-life order. The
   opening draft still uses the real order.
+- Players you draft or sign now show up in your depth chart, and players who leave drop out of it;
+  your own ordering is kept.
+
+### Changed
+- Depth chart rows drop the position badge and show a smaller rating, so full names fit.
 
 ## 1.6.0 — 2026-09-28
 

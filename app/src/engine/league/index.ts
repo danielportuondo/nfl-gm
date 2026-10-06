@@ -52,6 +52,7 @@ import {
 } from '@contracts/index'
 import { DIVISION_ROUND_TEMPLATE, DIVISION_ROUND_WEEKS } from './constants'
 import { seasonAwards } from './awards'
+import { reconcileDepthChart } from './depthChart'
 
 const EPOCH = '1970-01-01T00:00:00.000Z'
 const ZERO_RECORD = { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
@@ -696,6 +697,11 @@ function applyRegResults(state: LeagueState, games: Game[], results: GameResult[
   return { ...state, teams }
 }
 
+/** The user edits their own chart by hand; everything that changes their roster leaves it behind. */
+function reconcileUserDepthChart(state: LeagueState): LeagueState {
+  return reconcileDepthChart(state, state.userTeam)
+}
+
 function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
   if (state.phase !== 'REGULAR' && state.phase !== 'PLAYOFFS') {
     return {
@@ -1046,8 +1052,8 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
 
 export const league: LeagueModule = {
   newGame: newGameImpl,
-  simWeek: simWeekImpl,
-  advancePhase: advancePhaseImpl,
+  simWeek: (state, ctx) => simWeekImpl(reconcileUserDepthChart(state), ctx),
+  advancePhase: (state, ctx) => reconcileUserDepthChart(advancePhaseImpl(state, ctx)),
   standings: standingsImpl,
   playoffFormat: (season: Season): PlayoffFormat => {
     const fmt = leagueFormat(season)

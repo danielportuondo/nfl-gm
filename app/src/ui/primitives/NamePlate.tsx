@@ -14,6 +14,8 @@ export interface NamePlateProps {
   /** Keyboard/pointer reorder within a depth-chart column (docs/DESIGN.md §11). */
   onMoveUp?: () => void
   onMoveDown?: () => void
+  /** Depth-chart rows: no position badge (the column says it), a quieter ovr, full name on hover. */
+  compact?: boolean
 }
 
 /** Draft-board tile: bust sprite, name, position badge, consensus ovr/pot (docs/DESIGN.md §8). */
@@ -27,19 +29,23 @@ export function NamePlate({
   onClick,
   onMoveUp,
   onMoveDown,
+  compact,
 }: NamePlateProps) {
+  const className = compact ? 'gg-nameplate gg-nameplate--compact' : 'gg-nameplate'
   const content = (
     <>
       <BustSprite pos={pos} size={2} number={number} status={status} />
-      <span className="gg-nameplate__name">{name}</span>
-      <span className="gg-badge gg-badge--position">{pos}</span>
+      <span className="gg-nameplate__name" title={compact ? name : undefined}>
+        {name}
+      </span>
+      {!compact && <span className="gg-badge gg-badge--position">{pos}</span>}
       {meta && <span className="gg-nameplate__meta">{meta}</span>}
     </>
   )
 
   if (onMoveUp || onMoveDown) {
     return (
-      <div className="gg-nameplate" aria-selected={selected} role="listitem">
+      <div className={className} aria-selected={selected} role="listitem">
         {content}
         <span className="gg-nameplate__reorder">
           <button
@@ -69,14 +75,14 @@ export function NamePlate({
 
   if (onClick) {
     return (
-      <button type="button" className="gg-nameplate" onClick={onClick} aria-selected={selected}>
+      <button type="button" className={className} onClick={onClick} aria-selected={selected}>
         {content}
       </button>
     )
   }
 
   return (
-    <div className="gg-nameplate" aria-selected={selected}>
+    <div className={className} aria-selected={selected}>
       {content}
     </div>
   )

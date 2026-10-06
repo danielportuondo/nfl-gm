@@ -459,6 +459,16 @@ button.gg-nameplate:hover {
   font-size: var(--fd-1);
   flex-shrink: 0;
 }
+.gg-nameplate--compact {
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+}
+.gg-nameplate--compact .gg-nameplate__meta {
+  font-family: var(--font-body);
+  font-size: var(--fs-1);
+  font-weight: 500;
+  color: var(--text-2);
+}
 .gg-nameplate__reorder {
   display: flex;
   flex-direction: column;
