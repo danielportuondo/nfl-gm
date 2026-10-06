@@ -3,6 +3,7 @@
  * `submit` rolls against p, raises annoyance on declined lowballs, and honours AI-initiated offers.
  */
 import { describe, expect, it } from 'vitest'
+import type { LeagueState, PlayerId, Position, TeamId } from '@contracts/index'
 import { rng } from '@engine/rng'
 import { trade } from '@engine/trade'
 import {
@@ -10,7 +11,9 @@ import {
   ELITE,
   SCRUB,
   STARTER,
+  USER,
   giftPickAt,
+  putKept,
   putPlayer,
   scenario,
   trimRoster,
@@ -171,5 +174,45 @@ describe('compensatory picks', () => {
       .map((p) => [p.pick, p.owner])
     expect(owners).toContainEqual([comp.pick, state.userTeam])
     expect(owners).toContainEqual([own.pick, AI])
+  })
+})
+
+/**
+ * QA 2019 M2: an offseason trade re-sorted MIA's QBs by pre-camp consensus (Lamar 68.6 over Mahomes
+ * 66.0), and reconcileDepthChart kept that order into the season. The user's chart is theirs.
+ */
+describe('trade.execute — depth charts', () => {
+  function withChart(state: LeagueState, teamId: TeamId, pos: Position, ids: PlayerId[]) {
+    const team = state.teams[teamId]!
+    const depthChart = { ...team.depthChart, [pos]: ids }
+    return { ...state, teams: { ...state.teams, [teamId]: { ...team, depthChart } } }
+  }
+
+  it("appends a newcomer to the user's chart and keeps the user's order", () => {
+    const base = scenario()
+    let state = putKept(base.state, USER, { id: 'mahomes', pos: 'QB', ovr: 66 })
+    state = putKept(state, USER, { id: 'backup', pos: 'QB', ovr: 70 })
+    state = putKept(state, USER, { id: 'mine', pos: 'QB', ovr: 62 })
+    state = putPlayer(state, AI, { id: 'newcomer', pos: 'QB', ovr: 69 })
+    state = withChart(state, USER, 'QB', ['mahomes', 'mine', 'backup'])
+
+    const proposal = userProposal(state, { players: ['mine'] }, { players: ['newcomer'] })
+    const after = trade.execute(state, proposal, base.ctx)
+
+    expect(after.teams[USER]!.depthChart.QB).toEqual(['mahomes', 'backup', 'newcomer'])
+  })
+
+  it('an AI team still slots the newcomer by consensus', () => {
+    const base = scenario()
+    let state = putKept(base.state, USER, { id: 'star', pos: 'QB', ovr: 90 })
+    state = putPlayer(state, AI, { ...SCRUB, id: 'theirs' })
+
+    const proposal = userProposal(state, { players: ['star'] }, { players: ['theirs'] })
+    const after = trade.execute(state, proposal, base.ctx)
+
+    const qbs = after.teams[AI]!.depthChart.QB!
+    const ovr = (id: PlayerId) => after.scouting[id]!.ovr
+    expect(qbs[0]).toBe('star')
+    expect(qbs.map(ovr)).toEqual([...qbs.map(ovr)].sort((a, b) => b - a))
   })
 })

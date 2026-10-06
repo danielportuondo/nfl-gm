@@ -165,6 +165,7 @@ export function App() {
           cap={cap}
           onSelectPlayer={actions.selectPlayer}
           onReorderDepthChart={actions.setDepthChart}
+          onResetDepthChart={actions.resetDepthChart}
           onRelease={actions.release}
           releaseBusy={busy.fa}
           cutdownPlan={actions.cutdownPlan}

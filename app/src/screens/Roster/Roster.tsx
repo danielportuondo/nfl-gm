@@ -35,6 +35,8 @@ export interface RosterProps {
   data: StaticData
   onSelectPlayer: (id: PlayerId) => void
   onReorderDepthChart: (pos: Position, order: PlayerId[]) => void
+  /** Rebuilds the whole chart by current consensus, injured players last. */
+  onResetDepthChart?: () => void
   /** Cut a player (dead money applies); the store gates who can be released. */
   onRelease?: (id: PlayerId) => void
   releaseBusy?: boolean
@@ -84,6 +86,7 @@ export function Roster({
   data,
   onSelectPlayer,
   onReorderDepthChart,
+  onResetDepthChart,
   onRelease,
   releaseBusy,
   cap,
@@ -460,7 +463,18 @@ export function Roster({
       </div>
 
       <div className="gg-col-12">
-        <Panel title="Depth chart" variant="sunken" revealIndex={revealBase + 1}>
+        <Panel
+          title="Depth chart"
+          variant="sunken"
+          revealIndex={revealBase + 1}
+          action={
+            onResetDepthChart && (
+              <Button type="button" variant="ghost" onClick={onResetDepthChart}>
+                Reset to consensus
+              </Button>
+            )
+          }
+        >
           <div
             style={{
               display: 'grid',

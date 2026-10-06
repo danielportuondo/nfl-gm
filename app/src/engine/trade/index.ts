@@ -37,14 +37,19 @@ function withoutFromChart(chart: DepthChart, pos: Position, playerId: PlayerId):
   return { ...chart, [pos]: ids.filter((id) => id !== playerId) }
 }
 
+/**
+ * The user's chart is hand-ordered, so a newcomer joins at the back (league.reconcileDepthChart's
+ * rule); re-sorting would also apply stale pre-camp consensus to the players already there.
+ */
 function withInChart(
   chart: DepthChart,
   pos: Position,
   playerId: PlayerId,
   ovrOf: (id: PlayerId) => number,
+  handOrdered: boolean,
 ): DepthChart {
   const ids = [...(chart[pos] ?? []).filter((id) => id !== playerId), playerId]
-  ids.sort((a, b) => ovrOf(b) - ovrOf(a) || a.localeCompare(b))
+  if (!handOrdered) ids.sort((a, b) => ovrOf(b) - ovrOf(a) || a.localeCompare(b))
   return { ...chart, [pos]: ids }
 }
 
@@ -70,7 +75,7 @@ function movePlayer(
   teams[to] = {
     ...toTeam,
     roster: [...toTeam.roster, { ...slot, teamId: to }],
-    depthChart: withInChart(toTeam.depthChart, pos, playerId, ovrOf),
+    depthChart: withInChart(toTeam.depthChart, pos, playerId, ovrOf, to === state.userTeam),
   }
 }
 

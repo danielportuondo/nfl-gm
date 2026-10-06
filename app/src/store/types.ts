@@ -87,6 +87,8 @@ export interface GameStoreState {
     setTheme: (theme: Theme) => void
     /** Reorders the user's own depth chart (docs/DESIGN.md §11 Roster). Local to LeagueState; no engine call. */
     setDepthChart: (pos: Position, order: PlayerId[]) => void
+    /** Rebuilds the user's whole depth chart by current consensus via league.autoDepthChart. */
+    resetDepthChart: () => void
     simWeek: () => Promise<void>
     advancePhase: () => Promise<void>
     save: () => Promise<void>

@@ -523,6 +523,24 @@ export function createGameStore(config: StoreConfig = {}) {
           })
         },
 
+        resetDepthChart() {
+          const league = get().state
+          if (!league) return
+          const team = league.teams[league.userTeam]
+          if (!team) return
+          try {
+            const depthChart = modules.league.autoDepthChart(league, league.userTeam)
+            set({
+              state: {
+                ...league,
+                teams: { ...league.teams, [league.userTeam]: { ...team, depthChart } },
+              },
+            })
+          } catch (err) {
+            reportNotBuilt('Could not reset the depth chart.', err)
+          }
+        },
+
         dismissToast(id: string) {
           set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
         },
