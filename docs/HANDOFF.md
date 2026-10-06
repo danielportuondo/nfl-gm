@@ -471,6 +471,10 @@ Simplifications, documented in README: a real player's value in season S is thei
 
 v2 backlog: coaching staff & schemes; morale/holdouts; drive-by-drive highlights with pixel field; pre-2010 start years (rosters back to 1936 exist; per-season stats end 1999; draft 1980); detailed contracts (OTC data); multiple-user leagues; achievements; shareable "GM résumé" export.
 
+Open issues backlog (2026-10-05):
+- **Barely-played draft picks scout too low.** A drafted player whose only games are a tiny sample (Mahomes 2017: 1 game, availability 0.06) falls back to that one-game true value the next year (Mahomes 2018 consensus 66 / 70 vs. true 88.2), because the blend weight is under `CONSENSUS_MIN_BLEND_WEIGHT` and `hasNotPlayedYet` needs exactly zero games. Fix: keep the draft-based rookie view when the games are too few to blend (pipeline `model/consensus.py` + `lifecycle` `refreshScouting`). Open choice: fold in the long-absence veteran fix (fall back to the last season with real games; Blackmon 2017–20, Bridgewater 2025).
+- **Week counter at break camp.** Reported: after break camp the header read "Regular season · week 2"; one Sim week click left it at week 2; the next went to week 3 with one game on the record. Not reproduced on any start year 2010–2025, a second season, or the browser flow. Reporter's game: KC, started 2017, now in 2018. Open question: did it happen in 2017 or 2018? Lead: 2017 week 1 has 15 games (MIA–TB moved by Hurricane Harvey), so a MIA/TB user plays nothing that week.
+
 ---
 
 ## 9. Definition of done
