@@ -77,7 +77,9 @@ Every player with a real tie to that season: a season-start stint with an active
 contracts release both include practice-squad, futures and minimum-tender churn (and the three-year
 minimum every undrafted rookie signs), so a `CUT`/`DEV`-only row on a minimum deal is dropped rather than
 exported as a day-one free agent: the 2019 pool fell from 1,326 to 494 unsigned players and 2023 from 1,337
-to 482; pre-2016 pools are 240–275. `Player` fields (`id`, `name`, `pos`, `birthYear`, `college`,
+to 482; pre-2016 pools are 240–275. A player who never takes the field in this season or any later one is
+excluded unless he was drafted this season (retired or never-signed roster rows, e.g. Boldin 2017), so
+the free-agent pool holds only players who could really play. `Player` fields (`id`, `name`, `pos`, `birthYear`, `college`,
 `heightIn`, `weightLb`, `draft` = `{season, round, pick, team}` or `null` for UDFA, `real: true`,
 `rookieSeason`) plus:
 - `scouting` — consensus **at season start**, computed only from information public at that point.
@@ -90,8 +92,11 @@ to 482; pre-2016 pools are 240–275. `Player` fields (`id`, `name`, `pos`, `bir
 per team and every player at most once league-wide, so `league.newGame` starts from a legal roster and
 `history.snapToHistory` can place players without cutting. Candidates are each player's season-start
 stint (nflverse `roster_{season}.csv`, earliest-week row per player); the 53 are filled by position from
-`contracts/teams.ts#ROSTER_TEMPLATE_53`, then the remaining slots, both ranked by roster status
-(`ACT`/`RES`/`INA` before `CUT`/`DEV`), then consensus `ovr`, then depth rank, snap share and experience.
+`contracts/teams.ts#ROSTER_TEMPLATE_53` (a floor per position, not a cap), then the remaining slots.
+Participation ranks first: players who played at least half the team's games that season (`avail ≥ 0.5`)
+and that season's draftees come before everyone else, then roster status (`ACT`/`RES`/`INA` before
+`CUT`/`DEV`), then consensus `ovr`, then depth rank, snap share and experience. Ranking by `ovr` first
+stranded 1,814 real contributors (Mack and Foreman 2017) as team-less across 2010–2025.
 Status and rating come before depth so a starter who spent the season on injured reserve stays on the
 team that held his contract instead of surfacing as a day-one free agent. A team exports fewer than 53
 only when the source has fewer. Everyone else that season appears in `players.json` with `team: null`.
@@ -120,7 +125,8 @@ The only cross-season file and the only place the hidden truth is stored. `byPla
 `{start, values[], avail[], retiresAfter}` where `values[i]` is the true value in season `start + i`,
 `null` for seasons the player was not in the league (gaps), `avail[i]` is the share of the team's games
 the player played that season (0–1, `null` on gaps; public, used to weight consensus), and
-`retiresAfter` is the last real roster season. Covers every player who appears in any season chunk. Compact arrays, no names.
+`retiresAfter` is the last season with a game played (arrays are trimmed to it); it stays `null`
+when the player's last roster row is the final data season. Covers every player who appears in any season chunk. Compact arrays, no names.
 
 ## Save file — schema `savedLeague`
 `LeagueState` serialized: `divergence` is an array (a `Set` in memory), `savedAt` is added on save,
