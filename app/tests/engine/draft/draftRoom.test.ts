@@ -14,6 +14,7 @@ import {
 } from '@contracts/index'
 import { draft } from '@engine/draft'
 import { settleOrder } from '@engine/draft/order'
+import { trade as realTrade } from '@engine/trade'
 import { fakeTrade } from '../fakes'
 import { CLASS_SEASON, draftContext, stateAtDraft } from './fixture'
 
@@ -94,6 +95,98 @@ describe('mid-draft ownership', () => {
     ).toBe(true)
     // The AI ran on past the traded slot, so the user is no longer the blocker at index 0.
     expect(after.draftRoom!.currentPickIndex).toBeGreaterThan(0)
+  })
+})
+
+/**
+ * QA M3: the room pauses on every pick so the user can trade up while an AI team is on the clock.
+ * 2014 order: HOU at #1; IND (the user here) traded its first, so it is first up in round 2.
+ */
+describe('pausing between picks', () => {
+  const offer: TradeProposal = {
+    id: 'offer-up',
+    offer: { teamId: 'CLE', players: [], picks: [] },
+    request: { teamId: 'IND', players: [], picks: [] },
+    initiatedBy: 'AI',
+    season: CLASS_SEASON,
+    week: 0,
+  }
+  let ctx: EngineContext
+  let started: LeagueState
+
+  beforeAll(async () => {
+    ctx = await draftContext({ trade: { ...fakeTrade, generateAiOffers: () => [offer] } })
+    started = draft.startDraft(stateAtDraft(ctx, 'IND'), ctx)
+  })
+
+  it('starts with the first pick on the clock and nothing simmed', () => {
+    const room = started.draftRoom!
+    expect(room.status).toBe('ON_CLOCK')
+    expect(room.currentPickIndex).toBe(0)
+    expect(room.order[0]!.owner).toBe('HOU')
+    expect(room.log).toEqual([])
+    expect(room.pendingOffers).toEqual([])
+  })
+
+  it('advances exactly one AI pick with { single: true }', () => {
+    const once = draft.advance(started, ctx, { single: true })
+    expect(once.draftRoom!.currentPickIndex).toBe(1)
+    expect(once.draftRoom!.log.map((e) => e.team)).toEqual(['HOU'])
+    const twice = draft.advance(once, ctx, { single: true })
+    expect(twice.draftRoom!.currentPickIndex).toBe(2)
+    expect(twice.draftRoom!.log).toHaveLength(2)
+  })
+
+  it('still sims to the user with a plain advance, offers waiting', () => {
+    const atUser = draft.advance(started, ctx)
+    const room = atUser.draftRoom!
+    expect(room.order[room.currentPickIndex]!.owner).toBe('IND')
+    expect(room.log).toHaveLength(room.currentPickIndex)
+    expect(room.log.every((e) => e.team !== 'IND')).toBe(true)
+    expect(room.pendingOffers).toEqual([offer])
+    // Sim next pick with the user on the clock makes no pick for them.
+    expect(draft.advance(atUser, ctx, { single: true }).draftRoom!.log).toEqual(room.log)
+  })
+
+  it('puts the user on the clock after trading for the on-clock pick', () => {
+    const onClock = started.draftRoom!.order[0]!
+    const ourPick = started.picks.find(
+      (p) => p.season === CLASS_SEASON && p.owner === 'IND' && p.round === 2,
+    )!
+    const tradeUp: TradeProposal = {
+      id: 'trade-up',
+      offer: {
+        teamId: 'IND',
+        players: [],
+        picks: [{ season: ourPick.season, round: 2, originalTeam: ourPick.originalTeam }],
+      },
+      request: {
+        teamId: 'HOU',
+        players: [],
+        picks: [
+          {
+            season: onClock.season,
+            round: onClock.round,
+            originalTeam: onClock.originalTeam,
+            pick: onClock.pick,
+          },
+        ],
+      },
+      initiatedBy: 'USER',
+      season: started.season,
+      week: started.week,
+    }
+    const traded = realTrade.execute(started, tradeUp, ctx)
+    const after = draft.advance(traded, ctx, { single: true })
+    const room = after.draftRoom!
+    expect(room.currentPickIndex).toBe(0)
+    expect(room.order[0]!.owner).toBe('IND')
+    expect(room.log).toEqual([])
+    expect(room.pendingOffers).toEqual([offer])
+
+    const picked = draft.userPick(after, room.available[0]!, ctx)
+    expect(picked.draftRoom!.log[0]!.team).toBe('IND')
+    expect(picked.draftRoom!.currentPickIndex).toBe(1)
   })
 })
 

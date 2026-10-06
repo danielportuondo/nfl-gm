@@ -155,17 +155,23 @@ export function createGameStore(config: StoreConfig = {}) {
     }
 
     /**
-     * A trade that moves the on-clock pick away from the user leaves an AI team on the clock, and
-     * the engine leaves running the draft on to its caller (`draft.advance` re-syncs owners). Do
-     * here what "Sim to my pick" does; a trade that keeps the user on the clock leaves the room,
-     * and its remaining offers, alone.
+     * The engine leaves running the draft on after a trade to its caller (`draft.advance` re-syncs
+     * owners). Trading the on-clock pick away: the new owner makes that pick and the room stops on
+     * the next one. Trading for the on-clock pick: the user is on the clock and gets offers. Any
+     * other trade leaves the room, and its remaining offers, alone — re-running `advance` with the
+     * user on the clock would regenerate declined offers, since they are seeded by pick index.
      */
-    function resumeDraftAfterTrade(league: LeagueState, ctx: EngineContext): LeagueState {
-      const room = league.draftRoom
-      if (!room || room.status !== 'ON_CLOCK') return league
-      const slot = room.order[room.currentPickIndex]
-      if (!slot || slot.owner === league.userTeam) return league
-      return modules.draft.advance(league, ctx)
+    function resumeDraftAfterTrade(
+      before: LeagueState,
+      after: LeagueState,
+      ctx: EngineContext,
+    ): LeagueState {
+      const wasOnClock = isUserOnClock(before)
+      const nowOnClock = isUserOnClock(after)
+      if (wasOnClock && !nowOnClock && after.draftRoom?.status === 'ON_CLOCK')
+        return modules.draft.advance(after, ctx, { single: true })
+      if (!wasOnClock && nowOnClock) return modules.draft.advance(after, ctx)
+      return after
     }
 
     const seasonData: EngineContext['seasonData'] =
@@ -645,7 +651,9 @@ export function createGameStore(config: StoreConfig = {}) {
           try {
             const ctx = buildCtx()
             const picked = modules.draft.userPick(league, playerId, ctx)
-            const next = modules.draft.advance(picked, ctx)
+            // The room stops on the next pick so the user can trade for it; `advance` with the user
+            // on the clock again (back-to-back picks) only fetches offers.
+            const next = isUserOnClock(picked) ? modules.draft.advance(picked, ctx) : picked
             set({ state: next })
           } catch (err) {
             reportNotBuilt('Could not make the pick.', err)
@@ -664,6 +672,22 @@ export function createGameStore(config: StoreConfig = {}) {
             set({ state: next })
           } catch (err) {
             reportNotBuilt('Could not auto-pick.', err)
+          } finally {
+            set((s) => ({ busy: { ...s.busy, draft: false } }))
+          }
+        },
+
+        async simNextPick() {
+          const league = get().state
+          if (!league?.draftRoom || league.draftRoom.status !== 'ON_CLOCK') return
+          if (isUserOnClock(league)) return
+          set((s) => ({ busy: { ...s.busy, draft: true } }))
+          try {
+            const ctx = buildCtx()
+            const next = modules.draft.advance(league, ctx, { single: true })
+            set({ state: next })
+          } catch (err) {
+            reportNotBuilt('Could not sim the next pick.', err)
           } finally {
             set((s) => ({ busy: { ...s.busy, draft: false } }))
           }
@@ -771,7 +795,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const outcome = modules.trade.submit(league, proposal, ctx, rng)
             const counter = outcome.counter
             const resultState = outcome.accepted
-              ? resumeDraftAfterTrade(outcome.state, ctx)
+              ? resumeDraftAfterTrade(league, outcome.state, ctx)
               : outcome.state
             // A counter is an AI-initiated proposal; it joins the incoming offers so the user can
             // accept it from the same card as any other offer.
@@ -846,7 +870,7 @@ export function createGameStore(config: StoreConfig = {}) {
                 }
               : outcome.state
             const resultState = outcome.accepted
-              ? resumeDraftAfterTrade(withoutOffer, ctx)
+              ? resumeDraftAfterTrade(league, withoutOffer, ctx)
               : withoutOffer
             set((s) => ({
               state: resultState,

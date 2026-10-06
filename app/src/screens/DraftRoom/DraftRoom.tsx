@@ -25,6 +25,7 @@ import { BustSprite, TeamScope } from '@ui/sprites'
 import { describePick } from '../shared/pickLabel'
 import { teamAbbr } from '../shared/teamLabel'
 import { PickBoard } from './PickBoard'
+import { TradeUpPanel } from './TradeUpPanel'
 
 export interface DraftRoomProps {
   state: LeagueState
@@ -33,6 +34,8 @@ export interface DraftRoomProps {
   onStartDraft: () => void
   onMakePick: (playerId: PlayerId) => void
   onAutoPick: () => void
+  /** Exactly one AI pick; the room then waits on the next slot. */
+  onSimNextPick: () => void
   onSimToMyPick: () => void
   onFinishDraft: () => void
   onRespondToOffer: (proposal: TradeProposal, accept: boolean) => void
@@ -40,6 +43,9 @@ export interface DraftRoomProps {
   /** trade.fairness for an incoming AI offer; drives its meter instead of onEvaluate's acceptance p. */
   onFairness: (proposal: TradeProposal) => number
   onTeamNeeds: (teamId: TeamId) => NeedProfile | null
+  /** A user proposal, here for the pick an AI team is on the clock with. */
+  onProposeTrade: (proposal: TradeProposal) => void
+  onOpenTradeCenter: () => void
 }
 
 interface ProspectRow {
@@ -74,12 +80,15 @@ export function DraftRoom({
   onStartDraft,
   onMakePick,
   onAutoPick,
+  onSimNextPick,
   onSimToMyPick,
   onFinishDraft,
   onRespondToOffer,
   onEvaluate,
   onFairness,
   onTeamNeeds,
+  onProposeTrade,
+  onOpenTradeCenter,
 }: DraftRoomProps) {
   const [filter, setFilter] = useState<Position | 'ALL'>('ALL')
   const [selected, setSelected] = useState<PlayerId | null>(null)
@@ -119,6 +128,7 @@ export function DraftRoom({
     room && room.status === 'ON_CLOCK' && currentPick?.owner === state.userTeam,
   )
   const complete = room?.status === 'COMPLETE'
+  const aiOnClock = !onClock && !complete && currentPick !== undefined
 
   // Coming on the clock always snaps back to Prospects; otherwise the user's tab choice sticks.
   const wasOnClock = useRef(onClock)
@@ -285,11 +295,14 @@ export function DraftRoom({
           </Panel>
         )}
 
-        {!onClock && !complete && currentPick && (
+        {aiOnClock && currentPick && (
           <Panel revealIndex={0}>
             <p style={{ margin: 0 }}>
               On the clock: {teamAbbr(data, currentPick.owner, room.season)} — round{' '}
               {currentPick.round}, pick {currentPick.pick ?? room.currentPickIndex + 1}
+            </p>
+            <p style={{ margin: 'var(--sp-2) 0 0', color: 'var(--text-2)' }}>
+              Trade for this pick, or sim on.
             </p>
           </Panel>
         )}
@@ -419,6 +432,16 @@ export function DraftRoom({
             busy={busy}
             busyLabel="Working…"
             disabled={complete || onClock}
+            onClick={onSimNextPick}
+          >
+            Sim next pick
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            busy={busy}
+            busyLabel="Working…"
+            disabled={complete || onClock}
             onClick={onSimToMyPick}
           >
             Sim to my pick
@@ -454,6 +477,23 @@ export function DraftRoom({
       </div>
 
       <div className="gg-col-4">
+        {aiOnClock && currentPick && (
+          <>
+            <TradeUpPanel
+              key={room.currentPickIndex}
+              state={state}
+              data={data}
+              room={room}
+              slot={currentPick}
+              busy={busy}
+              onEvaluate={onEvaluate}
+              onProposeTrade={onProposeTrade}
+              onOpenTradeCenter={onOpenTradeCenter}
+            />
+            <div style={{ height: 'var(--sp-4)' }} />
+          </>
+        )}
+
         <Panel title="Your picks" revealIndex={3}>
           {yourPicks.length === 0 ? (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>No picks remaining.</p>

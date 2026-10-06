@@ -572,6 +572,87 @@ describe('DraftRoom', () => {
     )
   }
 
+  /** QA M3: the room waits on an AI pick so the user can sim one pick at a time or trade for it. */
+  describe('with an AI team on the clock', () => {
+    function renderAiOnClock() {
+      const state = mockLeague()
+      const data = mockStatic()
+      const base = fixtureDraftRoom(state)
+      const room = { ...base, currentPickIndex: base.currentPickIndex + 1, pendingOffers: [] }
+      const withRoom = { ...state, draftRoom: room, phase: 'DRAFT' as const }
+      const handlers = {
+        onSimNextPick: vi.fn(),
+        onSimToMyPick: vi.fn(),
+        onProposeTrade: vi.fn(),
+        onOpenTradeCenter: vi.fn(),
+      }
+      render(
+        <DraftRoom
+          state={withRoom}
+          data={data}
+          onStartDraft={vi.fn()}
+          onMakePick={vi.fn()}
+          onAutoPick={vi.fn()}
+          onFinishDraft={vi.fn()}
+          onRespondToOffer={vi.fn()}
+          onEvaluate={() => FIXTURE_EVALUATION}
+          onFairness={() => 0.74}
+          onTeamNeeds={() => null}
+          {...handlers}
+        />,
+      )
+      return { state: withRoom, slot: room.order[room.currentPickIndex]!, handlers }
+    }
+
+    it('sims one pick or runs to the user’s pick', () => {
+      const { handlers } = renderAiOnClock()
+      expect(screen.queryByText('ON THE CLOCK')).not.toBeInTheDocument()
+      fireEvent.click(screen.getByRole('button', { name: 'Sim next pick' }))
+      expect(handlers.onSimNextPick).toHaveBeenCalledTimes(1)
+      fireEvent.click(screen.getByRole('button', { name: 'Sim to my pick' }))
+      expect(handlers.onSimToMyPick).toHaveBeenCalledTimes(1)
+    })
+
+    it('proposes the user’s picks for the on-clock pick', () => {
+      const { state, slot, handlers } = renderAiOnClock()
+      const offerButton = screen.getByRole('button', { name: 'Offer trade' })
+      expect(offerButton).toBeDisabled()
+
+      const group = screen.getByRole('group', { name: 'Your picks to offer' })
+      fireEvent.click(within(group).getAllByRole('button')[0]!)
+      fireEvent.click(offerButton)
+
+      expect(handlers.onProposeTrade).toHaveBeenCalledTimes(1)
+      const proposal = handlers.onProposeTrade.mock.calls[0]![0] as TradeProposal
+      expect(proposal.initiatedBy).toBe('USER')
+      expect(proposal.offer.teamId).toBe(state.userTeam)
+      expect(proposal.offer.picks).toHaveLength(1)
+      expect(proposal.request).toEqual({
+        teamId: slot.owner,
+        players: [],
+        picks: [
+          {
+            season: slot.season,
+            round: slot.round,
+            originalTeam: slot.originalTeam,
+            pick: slot.pick,
+          },
+        ],
+      })
+
+      fireEvent.click(screen.getByRole('button', { name: 'Open trades' }))
+      expect(handlers.onOpenTradeCenter).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it('hides the trade-up panel and Sim next pick while the user is on the clock', () => {
+    const state = mockLeague()
+    const room = fixtureDraftRoom(state)
+    renderDraftRoom({ ...state, draftRoom: room, phase: 'DRAFT' as const }, mockStatic())
+    expect(screen.getByRole('button', { name: 'Sim next pick' })).toBeDisabled()
+    expect(screen.queryByText('Trade for this pick')).not.toBeInTheDocument()
+  })
+
   it('shows the current round of the pick board with owner abbrs and a traded pick', () => {
     const state = mockLeague()
     const data = mockStatic()

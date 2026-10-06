@@ -116,6 +116,8 @@ export interface GameStoreState {
     startDraft: () => Promise<void>
     makePick: (playerId: PlayerId) => Promise<void>
     autoPick: () => Promise<void>
+    /** Makes exactly one AI pick; a no-op while the user is on the clock. */
+    simNextPick: () => Promise<void>
     simToMyPick: () => Promise<void>
     finishDraft: () => Promise<void>
     /** Consensus-only positional need, for the board's need badges. Null when not built yet. */

@@ -531,11 +531,12 @@ describe('trades during the draft', () => {
   const DRAFT_SEASON = 2015
   const AI_TEAM = 'CLE'
 
-  /** The user's round-1 pick on the clock at index 0, the AI's round-1 pick right behind it. */
-  function withDraftRoom(state: LeagueState): LeagueState {
+  /** Round 1 with the user's pick (or the AI's) on the clock at index 0 and the other right behind. */
+  function withDraftRoom(state: LeagueState, first: 'user' | 'ai' = 'user'): LeagueState {
+    const firstTeam = first === 'user' ? state.userTeam : AI_TEAM
     const order = state.picks
       .filter((p) => p.season === DRAFT_SEASON && p.round === 1)
-      .sort((a, b) => (a.owner === state.userTeam ? -1 : b.owner === state.userTeam ? 1 : 0))
+      .sort((a, b) => (a.owner === firstTeam ? -1 : b.owner === firstTeam ? 1 : 0))
     return {
       ...state,
       phase: 'DRAFT',
@@ -582,12 +583,16 @@ describe('trades during the draft', () => {
     state: defaultEngineModules.trade.execute(state, proposal, ctx),
   })
 
-  async function draftStore() {
+  /** Makes one AI pick; with the user on the clock it changes nothing (the real one adds offers). */
+  const fakeAdvance = (state: LeagueState, _ctx?: unknown, _opts?: { single?: boolean }) => {
+    const room = state.draftRoom!
+    if (room.order[room.currentPickIndex]?.owner === state.userTeam) return state
+    return { ...state, draftRoom: { ...room, currentPickIndex: room.currentPickIndex + 1 } }
+  }
+
+  async function draftStore(first: 'user' | 'ai' = 'user') {
     const base = mockLeague()
-    const advance = vi.fn((state: LeagueState) => ({
-      ...state,
-      draftRoom: { ...state.draftRoom!, currentPickIndex: state.draftRoom!.currentPickIndex + 1 },
-    }))
+    const advance = vi.fn(fakeAdvance)
     const store = createGameStore({
       mode: 'mock',
       modules: {
@@ -601,7 +606,7 @@ describe('trades during the draft', () => {
       horizonSeasons: 3,
       settings: base.settings,
     })
-    store.setState((s) => ({ state: withDraftRoom(s.state!) }))
+    store.setState((s) => ({ state: withDraftRoom(s.state!, first) }))
     return { store, advance }
   }
 
@@ -616,6 +621,8 @@ describe('trades during the draft', () => {
 
     expect(advance).toHaveBeenCalledTimes(1)
     const handedOver = advance.mock.calls[0]![0]
+    // The new owner makes the pick and the room stops on the next one.
+    expect(advance.mock.calls[0]![2]).toEqual({ single: true })
     expect(handedOver.draftRoom!.order[0]!.owner).toBe(AI_TEAM)
     expect(handedOver.draftRoom!.pendingOffers).toEqual([])
     expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(1)
@@ -667,8 +674,139 @@ describe('trades during the draft', () => {
     await store.getState().actions.proposeTrade(proposal)
 
     expect(advance).toHaveBeenCalledTimes(1)
+    expect(advance.mock.calls[0]![2]).toEqual({ single: true })
     expect(advance.mock.calls[0]![0].draftRoom!.order[0]!.owner).toBe(AI_TEAM)
     expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(1)
+  })
+
+  /** QA M3: trading up for the pick an AI team is on the clock with. */
+  it('puts the user on the clock after trading for the on-clock pick', async () => {
+    const { store, advance } = await draftStore('ai')
+    const state = store.getState().state!
+    const onClock = state.draftRoom!.order[0]!
+    expect(onClock.owner).toBe(AI_TEAM)
+    const ours = state.draftRoom!.order.find((p) => p.owner === state.userTeam)!
+    const proposal: TradeProposal = {
+      id: 'user-trade-up',
+      offer: {
+        teamId: state.userTeam,
+        players: [],
+        picks: [{ season: ours.season, round: ours.round, originalTeam: ours.originalTeam }],
+      },
+      request: {
+        teamId: AI_TEAM,
+        players: [],
+        picks: [
+          { season: onClock.season, round: onClock.round, originalTeam: onClock.originalTeam },
+        ],
+      },
+      initiatedBy: 'USER',
+      season: state.season,
+      week: state.week,
+    }
+
+    await store.getState().actions.proposeTrade(proposal)
+
+    // A plain advance with the user on the clock only fetches offers; no pick is made.
+    expect(advance).toHaveBeenCalledTimes(1)
+    expect(advance.mock.calls[0]![2]).toBeUndefined()
+    const room = store.getState().state!.draftRoom!
+    expect(room.currentPickIndex).toBe(0)
+    expect(room.order[0]!.owner).toBe(state.userTeam)
+  })
+
+  it('does not sim on after a trade that leaves the same AI team on the clock', async () => {
+    const { store, advance } = await draftStore('ai')
+    const playerDeal = { ...fixtureProposal(store.getState().state!), initiatedBy: 'USER' as const }
+
+    await store.getState().actions.proposeTrade(playerDeal)
+
+    expect(advance).not.toHaveBeenCalled()
+    expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(0)
+  })
+})
+
+/** QA M3: the room pauses on every pick instead of running the AI to the user's next one. */
+describe('draft room pacing', () => {
+  function room(owners: TeamId[]): DraftRoomState {
+    return {
+      season: 2016,
+      status: 'ON_CLOCK',
+      currentPickIndex: 0,
+      order: owners.map((owner, i) => ({
+        season: 2016,
+        round: 1,
+        pick: i + 1,
+        originalTeam: owner,
+        owner,
+        playerId: null,
+      })),
+      available: [],
+      udfaPool: [],
+      log: [],
+      pendingOffers: [],
+    }
+  }
+
+  async function pacedStore(owners: (user: TeamId, ai: TeamId) => TeamId[]) {
+    const base = mockLeague()
+    const aiTeam = TEAM_IDS.find((t) => t !== base.userTeam)!
+    const advance = vi.fn(
+      (state: LeagueState, _ctx?: unknown, _opts?: { single?: boolean }) => state,
+    )
+    const userPick = vi.fn((state: LeagueState) => ({
+      ...state,
+      draftRoom: { ...state.draftRoom!, currentPickIndex: state.draftRoom!.currentPickIndex + 1 },
+    }))
+    const store = createGameStore({
+      mode: 'mock',
+      modules: { draft: { ...defaultEngineModules.draft, advance, userPick } },
+    })
+    await store.getState().actions.newGame({
+      startSeason: base.season,
+      userTeam: base.userTeam,
+      horizonSeasons: 3,
+      settings: base.settings,
+    })
+    store.setState((s) => ({
+      state: { ...s.state!, phase: 'DRAFT', draftRoom: room(owners(base.userTeam, aiTeam)) },
+    }))
+    return { store, advance }
+  }
+
+  it('stops on the next pick after the user picks', async () => {
+    const { store, advance } = await pacedStore((user, ai) => [user, ai, ai, user])
+
+    await store.getState().actions.makePick('p1')
+
+    expect(advance).not.toHaveBeenCalled()
+    expect(store.getState().state!.draftRoom!.currentPickIndex).toBe(1)
+  })
+
+  it('fetches offers when the user picks again right away', async () => {
+    const { store, advance } = await pacedStore((user, ai) => [user, user, ai])
+
+    await store.getState().actions.makePick('p1')
+
+    expect(advance).toHaveBeenCalledTimes(1)
+    expect(advance.mock.calls[0]![2]).toBeUndefined()
+  })
+
+  it('sims exactly one AI pick with Sim next pick', async () => {
+    const { store, advance } = await pacedStore((user, ai) => [ai, ai, user])
+
+    await store.getState().actions.simNextPick()
+
+    expect(advance).toHaveBeenCalledTimes(1)
+    expect(advance.mock.calls[0]![2]).toEqual({ single: true })
+  })
+
+  it('does nothing on Sim next pick while the user is on the clock', async () => {
+    const { store, advance } = await pacedStore((user, ai) => [user, ai])
+
+    await store.getState().actions.simNextPick()
+
+    expect(advance).not.toHaveBeenCalled()
   })
 })
 

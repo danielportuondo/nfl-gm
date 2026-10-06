@@ -834,7 +834,11 @@ export interface DraftModule {
    */
   loadProspects(state: LeagueState, ctx: EngineContext): LeagueState
 
-  /** Enter DRAFT phase: state.draftRoom = ON_CLOCK at pick index 0, board sorted by consensus pot. */
+  /**
+   * Enter DRAFT phase: state.draftRoom = ON_CLOCK at pick index 0, board sorted by consensus pot. No
+   * pick is made; pendingOffers are populated when the user holds pick 1. On a room already open for
+   * the season it re-syncs owners and offers without making a pick.
+   */
   startDraft(state: LeagueState, ctx: EngineContext): LeagueState
 
   /**
@@ -857,8 +861,14 @@ export interface DraftModule {
    * draftRoom.pendingOffers via trade.generateAiOffers(…, 'draft'). Runs consecutive AI picks until
    * the user is on the clock or the draft is COMPLETE. Returns the new state. Every pick the user's
    * team makes, auto-picks included, appends a DRAFT Transaction to state.transactions.
+   * `single`: resolve at most one pick and stop on the next slot (the Draft Room's "Sim next pick");
+   * with the user on the clock and no `auto` it only populates offers, like the plain call.
    */
-  advance(state: LeagueState, ctx: EngineContext, opts?: { auto?: boolean }): LeagueState
+  advance(
+    state: LeagueState,
+    ctx: EngineContext,
+    opts?: { auto?: boolean; single?: boolean },
+  ): LeagueState
 
   /** Sim the rest of the draft with the user auto-picking; convenience for headless/tests. */
   autoDraftToEnd(state: LeagueState, ctx: EngineContext): LeagueState

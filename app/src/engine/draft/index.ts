@@ -38,7 +38,7 @@ import {
   settleOrder,
   simOrderPicks,
 } from './order'
-import { chooseProspect } from './picking'
+import { chooseProspect, type PickContext } from './picking'
 import { draftSeasonOf, loadClass, splitBoard } from './prospects'
 import { logUserDraftPick } from './transactions'
 import { runUdfaPhase } from './udfa'
@@ -194,14 +194,56 @@ function applySelection(
   return next
 }
 
+/** What the AI weighs at the slot on the clock; sim-order drafts in history also rescue stranded anchors. */
+function pickContextAt(
+  state: LeagueState,
+  room: DraftRoomState,
+  slot: DraftPick,
+  anchors: ReadonlyMap<number, PlayerId>,
+): PickContext {
+  const pickNumber = slot.pick ?? room.currentPickIndex + 1
+  const rescue =
+    anchors.size > 0 && !isOpeningDraft(state, room.season)
+      ? {
+          pickNumber,
+          realPicks: new Map([...anchors].map(([pick, id]) => [id, pick])),
+          orderLength: room.order.length,
+        }
+      : undefined
+  return {
+    teamId: slot.owner,
+    season: room.season,
+    round: slot.round,
+    available: room.available,
+    anchor: anchors.get(pickNumber) ?? null,
+    rescue,
+  }
+}
+
 function offersFor(state: LeagueState, ctx: EngineContext, rng: Rng): TradeProposal[] {
   return ctx.modules.trade.generateAiOffers(state, ctx, rng, 'draft')
+}
+
+/** Re-sync owners; with the user on the clock and no offers pending, ask the AI teams for offers. */
+function settleClock(state: LeagueState, ctx: EngineContext): LeagueState {
+  const room = syncOwners(state, roomOf(state, 'advance'))
+  const s = withRoom(state, room)
+  const slot = currentSlot(room)
+  if (room.status === 'COMPLETE' || !slot || slot.owner !== s.userTeam) return s
+  if (room.pendingOffers.length > 0) return s
+  const offerRng = ctx.modules.rng.fromSeed(
+    s.seed,
+    room.season,
+    'draftOffers',
+    room.currentPickIndex,
+  )
+  return withRoom(s, { ...room, pendingOffers: offersFor(s, ctx, offerRng) })
 }
 
 function advanceImpl(
   state: LeagueState,
   ctx: EngineContext,
-  opts?: { auto?: boolean },
+  opts?: { auto?: boolean; single?: boolean },
 ): LeagueState {
   let s = state
   const season = roomOf(s, 'advance').season
@@ -215,33 +257,19 @@ function advanceImpl(
     const slot = currentSlot(room)
     if (!slot) return withRoom(s, { ...room, status: 'COMPLETE' })
 
-    if (slot.owner === s.userTeam && !opts?.auto) {
-      if (room.pendingOffers.length > 0) return s
-      const offerRng = ctx.modules.rng.fromSeed(
-        s.seed,
-        season,
-        'draftOffers',
-        room.currentPickIndex,
-      )
-      return withRoom(s, { ...room, pendingOffers: offersFor(s, ctx, offerRng) })
-    }
+    if (slot.owner === s.userTeam && !opts?.auto) return settleClock(s, ctx)
 
     const rng = ctx.modules.rng.fromSeed(s.seed, season, 'draft', room.currentPickIndex)
-    const chosen = chooseProspect(s, ctx, rng, {
-      teamId: slot.owner,
-      season,
-      round: slot.round,
-      available: room.available,
-      anchor: anchors.get(slot.pick ?? room.currentPickIndex + 1) ?? null,
-    })
+    const chosen = chooseProspect(s, ctx, rng, pickContextAt(s, room, slot, anchors))
     s = applySelection(s, ctx, chosen, anchors, { explicitUserPick: false })
+    if (opts?.single) return opts.auto ? s : settleClock(s, ctx)
   }
   throw new Error('draft.advance: draft failed to terminate')
 }
 
 function startDraftImpl(state: LeagueState, ctx: EngineContext): LeagueState {
   const season = draftSeasonOf(state)
-  if (state.draftRoom && state.draftRoom.season === season) return advanceImpl(state, ctx, {})
+  if (state.draftRoom && state.draftRoom.season === season) return settleClock(state, ctx)
 
   let s = loadClass(state, ctx)
   const order = settleOrder(unsettledPicks(s, season, ctx), s)
@@ -258,7 +286,7 @@ function startDraftImpl(state: LeagueState, ctx: EngineContext): LeagueState {
     log: [],
     pendingOffers: [],
   })
-  return advanceImpl(s, ctx, {})
+  return settleClock(s, ctx)
 }
 
 function userPickImpl(state: LeagueState, playerId: PlayerId, ctx?: EngineContext): LeagueState {
@@ -283,13 +311,7 @@ function aiPickImpl(state: LeagueState, ctx: EngineContext, rng: Rng): PlayerId 
   const slot = currentSlot(room)
   if (!slot) throw new Error('draft.aiPick: the draft is over')
   const anchors = historicalOccupants(room.season, ctx)
-  return chooseProspect(state, ctx, rng, {
-    teamId: slot.owner,
-    season: room.season,
-    round: slot.round,
-    available: room.available,
-    anchor: anchors.get(slot.pick ?? room.currentPickIndex + 1) ?? null,
-  })
+  return chooseProspect(state, ctx, rng, pickContextAt(state, room, slot, anchors))
 }
 
 function autoDraftToEndImpl(state: LeagueState, ctx: EngineContext): LeagueState {

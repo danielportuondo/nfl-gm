@@ -41,6 +41,16 @@ export interface DraftConstants {
    * absurd, which is exactly what §6.4 asks the fallback to prevent.
    */
   anchorVetoMaxRound: number
+  /**
+   * Sim-order drafts: a real draftee this many picks past his real slot outranks the slot's own
+   * anchor (QA 2018 M1). Lower pulls stranded talent back sooner but displaces more real picks.
+   */
+  strandedOverrideLead: number
+  /**
+   * Sim-order drafts: a slot that can use neither its own anchor nor a stranded one takes the next
+   * real draftee due within this many picks who fits, so its stranded anchor has a gap to land in.
+   */
+  pullForwardWindow: number
   /** NeedProfile.top: positions with need ≥ topMin, at most topCount, never saturated. */
   topMin: number
   topCount: number
@@ -71,6 +81,8 @@ export const draftConstants: DraftConstants = {
   satQuality: 80,
   satPenalty: 0.8,
   anchorVetoMaxRound: 2,
+  strandedOverrideLead: 24,
+  pullForwardWindow: 16,
   topMin: 0.15,
   topCount: 3,
   posImportance: importance({ QB: 1.3, DL: 1.1, OL: 1.1, CB: 1.05, K: 0.35, P: 0.3 }),
