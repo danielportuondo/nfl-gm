@@ -4,6 +4,7 @@ import { Button, Panel, Table, type Column } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { teamAbbr } from '../shared/teamLabel'
 import { isOffseasonPhase } from '@screens/shared/phaseLabel'
+import { noGameNote, offWeeks } from '@screens/shared/scheduleNotes'
 
 export interface ScheduleProps {
   state: LeagueState
@@ -16,9 +17,11 @@ export interface ScheduleProps {
 
 interface UserGameRow {
   week: number
-  opponent: TeamId
+  /** null for a week the user's team does not play; `note` says why. */
+  opponent: TeamId | null
   home: boolean
   result: GameResult | null
+  note?: string
 }
 
 function resultText(row: UserGameRow): string {
@@ -48,6 +51,10 @@ export function Schedule({
       const result = state.results.find((r) => r.gameId === g.id) ?? null
       rows.push({ week: g.week, opponent, home, result })
     }
+    for (const week of offWeeks(state.schedule, state.season, state.userTeam)) {
+      const note = noGameNote(state.schedule, state.season, state.userTeam, week)
+      rows.push({ week, opponent: null, home: false, result: null, ...(note ? { note } : {}) })
+    }
     return rows.sort((a, b) => a.week - b.week)
   }, [state.schedule, state.results, state.season, state.userTeam])
 
@@ -69,16 +76,19 @@ export function Schedule({
     {
       key: 'opponent',
       header: 'Opponent',
-      render: (r) => (
-        <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-          {data.teams[r.opponent] && (
-            <TeamScope colors={data.teams[r.opponent]!.colors}>
-              <HelmetSprite pos="QB" size={2} />
-            </TeamScope>
-          )}
-          {r.home ? 'vs' : '@'} {teamAbbr(data, r.opponent, state.season)}
-        </span>
-      ),
+      render: (r) =>
+        r.opponent === null ? (
+          <span style={{ color: 'var(--text-2)' }}>{r.note ?? 'No game'}</span>
+        ) : (
+          <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
+            {data.teams[r.opponent] && (
+              <TeamScope colors={data.teams[r.opponent]!.colors}>
+                <HelmetSprite pos="QB" size={2} />
+              </TeamScope>
+            )}
+            {r.home ? 'vs' : '@'} {teamAbbr(data, r.opponent, state.season)}
+          </span>
+        ),
     },
     { key: 'result', header: 'Result', render: (r) => resultText(r) },
   ]

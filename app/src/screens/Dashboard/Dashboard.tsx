@@ -7,6 +7,7 @@ import { horizonProgress, isOffseasonPhase } from '@screens/shared/phaseLabel'
 import { injuredWeeksLabel } from '@screens/shared/playerStatus'
 import { teamLabel } from '@screens/shared/teamLabel'
 import type { ScreenId } from '@store/router'
+import { noGameNote } from '../shared/scheduleNotes'
 
 export interface DashboardProps {
   state: LeagueState
@@ -79,6 +80,10 @@ export function Dashboard({
       ? `${record.wins}-${record.losses}-${record.ties}`
       : `${record.wins}-${record.losses}`
   const upcoming = nextGame(state)
+  const offWeekNote =
+    state.phase === 'REGULAR'
+      ? noGameNote(state.schedule, state.season, state.userTeam, state.week)
+      : null
   const opponentId = upcoming
     ? upcoming.home === state.userTeam
       ? upcoming.away
@@ -177,6 +182,11 @@ export function Dashboard({
             {teamLabel(data, state.userTeam, state.season).full} ·{' '}
             <span className="tabular-nums">{recordText}</span>
           </p>
+          {offWeekNote && (
+            <p style={{ margin: '0 0 var(--sp-3)', color: 'var(--text-2)' }}>
+              Week {state.week}: {offWeekNote}
+            </p>
+          )}
           {teamInfo && opponentInfo && (
             <div
               style={{

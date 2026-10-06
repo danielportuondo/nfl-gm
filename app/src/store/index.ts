@@ -38,6 +38,7 @@ import { injurySummary, isInjuryEventText, userInjuries } from './injurySummary'
 import { pruneStaleOffers } from './offers'
 import { buildHash, currentRoute, type ScreenId } from './router'
 import type { GameStoreState, NewGameInput, StoreConfig } from './types'
+import { noGameNote } from '@screens/shared/scheduleNotes'
 
 export type { GameStoreState, NewGameInput, StoreConfig, Mode, DataStatus } from './types'
 export type { ScreenId } from './router'
@@ -178,6 +179,13 @@ export function createGameStore(config: StoreConfig = {}) {
         after,
       )
       if (summary) addToast(summary, 'warn')
+    }
+
+    /** A simmed week the user's team sat out says why: a bye, or a real-life schedule disruption. */
+    function toastNoGameWeek(before: LeagueState) {
+      if (before.phase !== 'REGULAR') return
+      const note = noGameNote(before.schedule, before.season, before.userTeam, before.week)
+      if (note) addToast(`Week ${before.week}: ${note}`, 'info')
     }
 
     /** AI calls for the user's new week, built by the same generator and seed as "Check for offers". */
@@ -472,6 +480,7 @@ export function createGameStore(config: StoreConfig = {}) {
             })
             routeEvents(report.events, report.state)
             toastUserInjuries(league, report.state)
+            toastNoGameWeek(league)
             routeAfterSim(league, report.state)
             if (report.state.phase !== league.phase || report.state.week % 4 === 0)
               void autosave(report.state)
