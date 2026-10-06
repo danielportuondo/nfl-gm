@@ -17,11 +17,13 @@ from gridiron_pipeline.model.build import build_model
 from gridiron_pipeline.model.consensus import blended_prior_value, drafted_without_games
 from gridiron_pipeline.model.data import (
     MODEL_CACHE_DIR,
+    availability,
     load_contracts,
     load_draft_picks,
     load_players,
 )
 from gridiron_pipeline.model.names import generate_name_lists, real_full_names
+from gridiron_pipeline.model.truevalue import market_apy_cap_pct, shrink_toward_prior
 from gridiron_pipeline.model.validate import starter_value_correlations
 from gridiron_pipeline.schemas import validate
 
@@ -31,6 +33,29 @@ MIN_CORRELATION = 0.55
 MAX_TRAJECTORIES_GZIP = 3 * 1024 * 1024
 MAX_BIG_SWING_SHARE = 0.03
 BIG_SWING = 20.0
+
+STABILITY_PAIRS = (2012, 2022)  # season N of each adjacent (N, N+1) pair
+REGULAR_AVAILABILITY = 0.8
+# Without cross-season smoothing (HANDOFF §6.2) the measurement alone reaches ~0.67; the model
+# before the stability rework was 0.57, with kickers at 0.28, punters 0.45 and QBs 0.39.
+MIN_REGULAR_STABILITY = 0.66
+MIN_SPECIALIST_AND_QB_STABILITY = 0.45
+# Mean / sd of active (>= 1 game) true values by position before the stability rework; the sim's
+# calibration depends on this spread, so it must not drift.
+ACTIVE_DISTRIBUTION_BEFORE = {
+    "QB": (66.0, 10.9),
+    "RB": (66.1, 11.1),
+    "WR": (66.1, 11.1),
+    "TE": (66.1, 11.0),
+    "OL": (66.1, 11.2),
+    "DL": (66.1, 11.1),
+    "LB": (66.1, 11.1),
+    "CB": (66.1, 11.1),
+    "S": (66.1, 11.1),
+    "K": (66.0, 10.6),
+    "P": (66.0, 10.5),
+}
+DISTRIBUTION_TOLERANCE = 1.5
 
 TRUE_VALUE_COLUMNS = ["gsis_id", "season", "pos", "true_value", "games"]
 CONSENSUS_COLUMNS = ["gsis_id", "season", "ovr", "pot", "confidence"]
@@ -102,6 +127,110 @@ def test_starter_value_tracks_point_differential(artifacts) -> None:
     assert weakest >= MIN_CORRELATION, (
         f"weakest season r = {weakest:.3f} (median {correlations.median():.3f})"
     )
+
+
+def _regular_pairs(values: pd.DataFrame) -> pd.DataFrame:
+    """Same player, same position, adjacent seasons, on the field >= 80% of both."""
+    seasons = values.assign(avail=availability(values))
+    following = seasons.assign(season=seasons["season"] - 1)
+    pairs = seasons.merge(following, on=["gsis_id", "season"], suffixes=("", "_next"))
+    first, last = STABILITY_PAIRS
+    return pairs[
+        pairs["season"].between(first, last)
+        & (pairs["avail"] >= REGULAR_AVAILABILITY)
+        & (pairs["avail_next"] >= REGULAR_AVAILABILITY)
+        & (pairs["pos"] == pairs["pos_next"])
+    ]
+
+
+def test_true_value_is_stable_where_regulars_are(artifacts) -> None:
+    pairs = _regular_pairs(artifacts["true_values"])
+    overall = pairs["true_value"].corr(pairs["true_value_next"])
+    assert overall >= MIN_REGULAR_STABILITY, f"regulars year-over-year r = {overall:.3f}"
+    for pos in ("QB", "K", "P"):
+        at_pos = pairs[pairs["pos"] == pos]
+        r = at_pos["true_value"].corr(at_pos["true_value_next"])
+        assert r >= MIN_SPECIALIST_AND_QB_STABILITY, f"{pos} year-over-year r = {r:.3f}"
+
+
+def test_true_value_distribution_holds_per_position(artifacts) -> None:
+    values = artifacts["true_values"]
+    active = values[values["games"] >= 1]
+    for pos, (mean_before, sd_before) in ACTIVE_DISTRIBUTION_BEFORE.items():
+        at_pos = active[active["pos"] == pos]["true_value"]
+        assert abs(at_pos.mean() - mean_before) <= DISTRIBUTION_TOLERANCE, pos
+        assert abs(at_pos.std() - sd_before) <= DISTRIBUTION_TOLERANCE, pos
+
+
+def _value(values: pd.DataFrame, names: pd.Series, name: str, season: int, pos: str) -> float:
+    rows = values[
+        (values["season"] == season)
+        & (values["pos"] == pos)
+        & values["gsis_id"].isin(_ids_named(names, name))
+    ]
+    assert len(rows) == 1, f"expected one {season} {pos} row for {name}"
+    return float(rows["true_value"].iat[0])
+
+
+def test_landmark_seasons_rate_where_they_happened(artifacts, names_by_id) -> None:
+    values = artifacts["true_values"]
+
+    best_qb_2019 = values[(values["season"] == 2019) & (values["pos"] == "QB")]["true_value"].max()
+    assert _value(values, names_by_id, "Lamar Jackson", 2019, "QB") >= best_qb_2019 - 1.0
+    assert "Derrick Henry" in _top(values, names_by_id, 2019, "RB", 3)
+
+    # 2016 was a full season; in 2017 he broke an ankle in week 2, and two games lean on 2016.
+    assert _value(values, names_by_id, "Marshal Yanda", 2016, "OL") >= 85
+    assert _value(values, names_by_id, "Marshal Yanda", 2017, "OL") >= 80
+
+    # A good season after an MVP season is a step down, not a 20-point cliff.
+    brady_2017 = _value(values, names_by_id, "Tom Brady", 2017, "QB")
+    brady_2018 = _value(values, names_by_id, "Tom Brady", 2018, "QB")
+    assert brady_2018 >= 75
+    assert brady_2017 - brady_2018 < 10
+
+
+def test_market_pay_counts_extensions_and_ignores_entry_deals(names_by_id) -> None:
+    (brady,) = _ids_named(names_by_id, "Tom Brady")
+    lamar = [i for i in _ids_named(names_by_id, "Lamar Jackson") if i.startswith("00-0034")]
+    # OTC books Brady's 2016 extension as two new years on top of the running deal.
+    assert market_apy_cap_pct(2018, pd.Index([brady])).iat[0] > 0.1
+    # A rookie-scale deal is priced by draft slot, not play: it is not a quality signal.
+    assert market_apy_cap_pct(2019, pd.Index(lamar)).isna().all()
+
+
+def test_tiny_samples_lean_on_the_players_own_past_only() -> None:
+    frame = pd.DataFrame(
+        [
+            ("star", 2016, 88.0, 16),
+            ("star", 2017, 70.0, 2),
+            ("rookie", 2017, 60.0, 2),
+            ("later_star", 2017, 60.0, 2),
+            ("later_star", 2018, 90.0, 16),
+            ("missed", 2016, 85.0, 16),
+            ("missed", 2017, 41.0, 0),
+            ("long_ago", 2013, 90.0, 16),
+            ("long_ago", 2017, 60.0, 1),
+        ],
+        columns=["gsis_id", "season", "true_value", "games"],
+    )
+    keys = zip(frame["gsis_id"], frame["season"], strict=True)
+    shrunk = dict(zip(keys, shrink_toward_prior(frame), strict=True))
+    assert shrunk[("star", 2017)] == pytest.approx(0.5 * 70.0 + 0.5 * 88.0)
+    assert shrunk[("star", 2016)] == 88.0
+    assert shrunk[("rookie", 2017)] == 60.0
+    assert shrunk[("later_star", 2017)] == 60.0  # never borrows from the future
+    assert shrunk[("missed", 2017)] == 41.0  # a season not played is not a small sample
+    assert shrunk[("long_ago", 2017)] == 60.0  # a prior older than the lookback is not used
+
+
+def test_defensive_backs_split_into_safeties_and_corners(artifacts) -> None:
+    values = artifacts["true_values"]
+    active = values[values["games"] >= 1]
+    for season in range(2016, 2020):
+        rows = active[active["season"] == season]
+        ratio = (rows["pos"] == "S").sum() / (rows["pos"] == "CB").sum()
+        assert 0.65 <= ratio <= 1.0, f"{season} S:CB {ratio:.2f}"
 
 
 def test_consensus_never_leaks_the_future(artifacts, names_by_id) -> None:

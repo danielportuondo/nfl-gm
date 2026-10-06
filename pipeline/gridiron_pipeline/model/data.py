@@ -16,6 +16,8 @@ import pandas as pd
 import requests
 
 from gridiron_pipeline import CACHE_DIR
+from gridiron_pipeline.build.db_career import db_career
+from gridiron_pipeline.build.positions import db_group, fallback_db_group
 
 RAW_DIR = CACHE_DIR / "raw"
 MODEL_CACHE_DIR = CACHE_DIR / "model"
@@ -171,16 +173,24 @@ def _specific_group(codes: pd.Series) -> pd.Series:
     return groups
 
 
+def _is_unspecified_db(codes: pd.Series) -> pd.Series:
+    return codes.astype("string").str.strip().str.upper().isin(AMBIGUOUS_CODES).fillna(False)
+
+
 @cache
 def load_roster(season: int) -> pd.DataFrame:
     df = _read(ROSTER_URL.format(season=season))
     df = df.dropna(subset=["gsis_id"])
     # From 2016 the roster release codes `position` coarsely (every defensive back is "DB"), so the
-    # depth-chart slot and the players master are consulted before falling back to it.
+    # depth-chart slot is consulted first. A "DB" neither label pins down takes the player's career
+    # S/CB vote, then the weight cut — the build's rule, so model and export agree on the group.
+    row_group = _specific_group(df["depth_chart_position"]).fillna(_specific_group(df["position"]))
+    unresolved_db = row_group.isna() & _is_unspecified_db(df["position"])
+    weight_split = df["weight"].map(fallback_db_group) if "weight" in df.columns else "CB"
+    career_db = df["gsis_id"].map(db_career()).fillna(weight_split)
     master = df["gsis_id"].map(load_players().set_index("gsis_id")["position"])
     df["pos"] = (
-        _specific_group(df["depth_chart_position"])
-        .fillna(_specific_group(df["position"]))
+        row_group.where(~unresolved_db, career_db)
         .fillna(_specific_group(master))
         .fillna(df["position"].map(position_group))
     )
@@ -235,7 +245,14 @@ def load_depth_charts(season: int) -> pd.DataFrame:
 @cache
 def load_draft_picks() -> pd.DataFrame:
     df = _read(DRAFT_URL)
-    df["pos"] = df["position"].map(position_group)
+    # A pick listed only as "DB" takes the combine's label, then the career vote, as the build does.
+    combine = load_combine().dropna(subset=["gsis_id"])
+    combine_db = combine.assign(group=combine["pos"].map(db_group)).dropna(subset=["group"])
+    combine_db = combine_db.drop_duplicates("gsis_id").set_index("gsis_id")["group"]
+    resolved_db = df["gsis_id"].map(combine_db).fillna(df["gsis_id"].map(db_career())).fillna("CB")
+    df["pos"] = (
+        df["position"].map(position_group).where(~_is_unspecified_db(df["position"]), resolved_db)
+    )
     df["team"] = df["team"].map(canonical_team)
     return df
 

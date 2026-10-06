@@ -419,13 +419,30 @@ def _default_retirement() -> dict[str, float]:
 
 
 def position_mix(frames: ModelFrames, fit_seasons: tuple[int, int]) -> dict[str, float]:
+    """Shares of a whole incoming class — drafted picks and undrafted rookies, in `class_size`
+    proportions — since a procedural class draws both from this one mix. Undrafted rookies carry
+    more safeties and specialists than the draft does."""
     draft = load_draft_picks()
     lo, hi = fit_seasons
     classes = draft[draft["season"].between(lo, hi)].copy()
     resolved = frames.values.drop_duplicates("gsis_id").set_index("gsis_id")["pos"]
     classes["pos"] = classes["gsis_id"].map(resolved).fillna(classes["pos"])
-    shares = classes.dropna(subset=["pos"])["pos"].value_counts(normalize=True)
-    mix = {pos: float(shares.get(pos, 0.0)) for pos in POSITIONS}
+    drafted = classes.dropna(subset=["pos"])["pos"].value_counts(normalize=True)
+
+    careers = career_years(frames)
+    rookies = careers[
+        (careers["career_year"] == 1)
+        & careers["pick"].isna()
+        & careers["first_season"].between(lo, min(hi, PRE_PRACTICE_SQUAD_SEASON))
+    ]
+    undrafted = rookies.drop_duplicates("gsis_id")["pos"].value_counts(normalize=True)
+
+    sizes = class_size(frames, fit_seasons)
+    mix = {
+        pos: sizes["drafted"] * float(drafted.get(pos, 0.0))
+        + sizes["udfa"] * float(undrafted.get(pos, 0.0))
+        for pos in POSITIONS
+    }
     total = sum(mix.values()) or 1.0
     return {pos: round(share / total, 4) for pos, share in mix.items()}
 

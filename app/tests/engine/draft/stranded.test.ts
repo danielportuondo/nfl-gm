@@ -107,4 +107,5 @@ describe('opening draft unchanged', () => {
   })
 })
 
-const OPENING_FINGERPRINTS = ['5a6ce791', 'a28ac26d']
+// Re-recorded after the S/CB split and true-value rework changed the 2014 board (95.3% historical).
+const OPENING_FINGERPRINTS = ['467646f9', 'eb61980b']
