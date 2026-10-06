@@ -487,6 +487,20 @@ describe('AcceptanceBar', () => {
     render(<AcceptanceBar p={0.9} valid={false} />)
     expect(screen.getAllByText('Invalid').length).toBeGreaterThan(0)
   })
+
+  it('never calls a deal below even Fair in fairness mode', () => {
+    const cases: [number, string][] = [
+      [0.3, 'Against you'],
+      [0.47, 'Slightly against you'],
+      [0.55, 'Fair'],
+      [0.7, 'Favors you'],
+    ]
+    for (const [p, text] of cases) {
+      render(<AcceptanceBar p={p} valid mode="fairness" />)
+      expect(screen.getByText(text)).toBeInTheDocument()
+      cleanup()
+    }
+  })
 })
 
 describe('DraftRoom', () => {

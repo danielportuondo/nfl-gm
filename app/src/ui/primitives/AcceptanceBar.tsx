@@ -16,8 +16,10 @@ export interface AcceptanceBarProps {
 
 function band(p: number, mode: 'acceptance' | 'fairness'): string {
   if (mode === 'fairness') {
-    if (p < 0.35) return 'Against you'
-    if (p <= 0.65) return 'Fair'
+    // Never "Fair" below an even deal: a 47% suggestion read as Fair while it cost the user value.
+    if (p < 0.4) return 'Against you'
+    if (p < 0.5) return 'Slightly against you'
+    if (p <= 0.6) return 'Fair'
     return 'Favors you'
   }
   if (p < 0.35) return 'Unlikely'
@@ -25,9 +27,10 @@ function band(p: number, mode: 'acceptance' | 'fairness'): string {
   return 'Likely'
 }
 
-function toneFor(p: number): 'danger' | 'accent' | 'positive' {
-  if (p < 0.35) return 'danger'
-  if (p <= 0.65) return 'accent'
+function toneFor(p: number, mode: 'acceptance' | 'fairness'): 'danger' | 'accent' | 'positive' {
+  const [low, high] = mode === 'fairness' ? [0.4, 0.6] : [0.35, 0.65]
+  if (p < low) return 'danger'
+  if (p <= high) return 'accent'
   return 'positive'
 }
 
@@ -51,7 +54,7 @@ export function AcceptanceBar({
 }: AcceptanceBarProps) {
   const clamped = Math.min(1, Math.max(0, p))
   const filledCount = valid ? Math.round(clamped * SEGMENTS) : 0
-  const tone = toneFor(clamped)
+  const tone = toneFor(clamped, mode)
   return (
     <div className="gg-meter">
       <div
