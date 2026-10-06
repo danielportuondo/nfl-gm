@@ -77,3 +77,10 @@ export const BUST_MAX_CAREER_YEARS = 4
 /** Guard: an injury reappearing after a season boundary (no weekly ticks over the offseason) is
  * treated as long regardless of the calendar gap. */
 export const CROSS_SEASON_INJURY_IS_LONG = true
+
+// --- applyHistoricalAbsences (QA M6) ------------------------------------------------------------
+
+/** A starter whose real availability for the season was below this misses the matching share of it. */
+export const HISTORICAL_ABSENCE_MAX_AVAIL = 0.5
+/** Shown as the injury kind; the real cause (surgery recovery, suspension, release) is not in the data. */
+export const HISTORICAL_ABSENCE_KIND = 'Offseason recovery'

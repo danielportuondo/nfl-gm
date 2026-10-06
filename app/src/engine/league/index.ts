@@ -53,6 +53,7 @@ import {
 import { DIVISION_ROUND_TEMPLATE, DIVISION_ROUND_WEEKS } from './constants'
 import { seasonAwards } from './awards'
 import { reconcileDepthChart } from './depthChart'
+import { applyHistoricalAbsences } from '../lifecycle/absences'
 
 const EPOCH = '1970-01-01T00:00:00.000Z'
 const ZERO_RECORD = { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
@@ -154,6 +155,24 @@ function autoDepthChartImpl(state: LeagueState, teamId: TeamId): DepthChart {
     chart[pos] = ids
   }
   return chart
+}
+
+/**
+ * The preseason chart is ordered by consensus alone: a player announced out for part of the season
+ * (a real-life absence) keeps his rightful slot and is skipped while injured, instead of landing
+ * at the bottom of the chart for good when he comes back.
+ */
+function autoDepthChartIgnoringInjuries(state: LeagueState, teamId: TeamId): DepthChart {
+  const team = state.teams[teamId]!
+  const roster = team.roster.map((slot) => {
+    const healthy = { ...slot }
+    delete healthy.injured
+    return healthy
+  })
+  return autoDepthChartImpl(
+    { ...state, teams: { ...state.teams, [teamId]: { ...team, roster } } },
+    teamId,
+  )
 }
 
 // -------------------------------------------------------------------------------------------
@@ -921,6 +940,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       }
       s = { ...s, teams: healOffseasonInjuries(resetSeasonCounters(s.teams)) }
       s = ensureFuturePicks(s, ctx)
+      s = applyHistoricalAbsences(s)
       const newGames = buildScheduleImpl(s, ctx)
       s = { ...s, schedule: [...s.schedule, ...newGames], phase: 'PRESEASON' }
       return s
@@ -934,7 +954,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
         if (teamId === s.userTeam) continue
         updatedTeams[teamId] = {
           ...updatedTeams[teamId]!,
-          depthChart: autoDepthChartImpl(s, teamId),
+          depthChart: autoDepthChartIgnoringInjuries(s, teamId),
         }
       }
       s = { ...s, teams: updatedTeams }
@@ -1054,7 +1074,7 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
       ...ctx.modules.draft.buildDraftOrder(state, S + 1, ctx),
       ...ctx.modules.draft.buildDraftOrder(state, S + 2, ctx),
     ]
-    state = { ...state, picks }
+    state = applyHistoricalAbsences({ ...state, picks })
     return { ...state, schedule: buildScheduleImpl(state, ctx) }
   }
 

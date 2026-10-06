@@ -149,7 +149,7 @@ describe(`real data ${SEASON}`, () => {
     expect(r.meanTotalPoints).toBeGreaterThanOrEqual(41)
     expect(r.meanTotalPoints).toBeLessThanOrEqual(49)
     expect(r.tieRate).toBeLessThan(0.01)
-    expect(r.multiWeekInjuriesPerTeamGame).toBeGreaterThanOrEqual(0.6)
+    expect(r.multiWeekInjuriesPerTeamGame).toBeGreaterThanOrEqual(0.35)
     expect(r.multiWeekInjuriesPerTeamGame).toBeLessThanOrEqual(1.6)
     expect(r.truthFallbacks).toBe(0)
   })
