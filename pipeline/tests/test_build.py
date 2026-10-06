@@ -271,8 +271,8 @@ def test_resolve_position_uses_fine_label_for_coarse_units() -> None:
     assert resolve_position("DB", "FS") == "S"
     assert resolve_position("DB", "SS") == "S"
     assert resolve_position("DB", "CB") == "CB"
-    assert resolve_position("DB", None) == "CB"
-    assert resolve_position("DB", float("nan")) == "CB"
+    assert resolve_position("DB", None) is None
+    assert resolve_position("DB", float("nan")) is None
     assert resolve_position("OL", "C") == "OL"
     assert resolve_position("LB", "ILB") == "LB"
     assert resolve_position("WR", "CB") == "WR"

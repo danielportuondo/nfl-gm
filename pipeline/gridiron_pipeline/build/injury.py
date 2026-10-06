@@ -20,7 +20,11 @@ import logging
 
 import pandas as pd
 
-from gridiron_pipeline.build.positions import POSITION_GROUPS, map_position_group, resolve_position
+from gridiron_pipeline.build.positions import (
+    POSITION_GROUPS,
+    resolve_player_position,
+    resolve_roster_row_position,
+)
 from gridiron_pipeline.build.rosters import season_roster_stints, season_start_roster
 from gridiron_pipeline.build.teams import ATTRIBUTION
 from gridiron_pipeline.ingest.load import load_injuries, load_weekly_roster
@@ -113,7 +117,7 @@ def _position_by_player(season: int) -> dict[str, str]:
     start = season_start_roster(season_roster_stints(season))
     groups: dict[str, str] = {}
     for row in start.itertuples(index=False):
-        group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
+        group = resolve_roster_row_position(row)
         if group is not None:
             groups[row.gsis_id] = group
     return groups
@@ -131,7 +135,14 @@ def _episodes(season: int, use_res_extension: bool = False) -> list[dict]:
     if out.empty:
         return []
     fine = _position_by_player(season)
-    out["pos_group"] = out["gsis_id"].map(fine).fillna(out["position"].map(map_position_group))
+    reported = pd.Series(
+        [
+            resolve_player_position(pos, None, gid)
+            for pos, gid in zip(out["position"], out["gsis_id"], strict=True)
+        ],
+        index=out.index,
+    )
+    out["pos_group"] = out["gsis_id"].map(fine).fillna(reported)
     out = out[out["pos_group"].notna()]
 
     res_runs_by_player = _res_runs_by_player(season) if use_res_extension else {}

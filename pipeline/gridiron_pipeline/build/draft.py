@@ -6,9 +6,17 @@ import logging
 
 import pandas as pd
 
+from gridiron_pipeline.build.db_career import db_career
 from gridiron_pipeline.build.fullbacks import label_is_fb, season_fullback_ids, tag_fullback
 from gridiron_pipeline.build.players import PlayerMaster, birth_year, make_player_record
-from gridiron_pipeline.build.positions import map_position_group, resolve_position
+from gridiron_pipeline.build.positions import (
+    db_group,
+    fallback_db_group,
+    is_unspecified_db,
+    map_position_group,
+    resolve_position,
+    resolve_roster_row_position,
+)
 from gridiron_pipeline.build.ratings import Ratings
 from gridiron_pipeline.build.teams import ATTRIBUTION, canonical_team_id
 from gridiron_pipeline.ingest.load import load_combine, load_draft_picks
@@ -54,6 +62,38 @@ def _combine_index(master: PlayerMaster) -> dict[str, dict]:
     return out
 
 
+def _combine_db_groups(master: PlayerMaster) -> dict[str, str]:
+    """gsis_id -> "S"/"CB" from the combine's own position label (nflverse draft_picks often only
+    says "DB" for classes 2012-2014 and 2021-2024)."""
+    combine = load_combine()
+    labelled = combine.assign(group=combine["pos"].map(db_group))
+    labelled = labelled[labelled["group"].notna()]
+    out: dict[str, str] = {}
+    for pfr_id, group in zip(labelled["pfr_id"], labelled["group"], strict=True):
+        gsis_id = master.pfr_to_gsis.get(pfr_id)
+        if gsis_id is not None:
+            out[gsis_id] = group
+    return out
+
+
+def _prospect_position(
+    gsis_id: str,
+    pick_position: object,
+    master_position: object,
+    combine_db: dict[str, str],
+    weight_lb: object,
+) -> str | None:
+    """Position group of a draft prospect. Defensive backs resolve, in order, from the draft pick's
+    own label, the combine, the player's later rosters/depth charts, then a weight cut."""
+    pick_group = db_group(pick_position)
+    if pick_group is not None:
+        return pick_group
+    base = master_position if pd.notna(master_position) else pick_position
+    if not (is_unspecified_db(base) or is_unspecified_db(pick_position)):
+        return map_position_group(base)
+    return combine_db.get(gsis_id) or db_career().get(gsis_id) or fallback_db_group(weight_lb)
+
+
 def _resolve_gsis(row, master: PlayerMaster) -> str | None:
     gsis_id = row.gsis_id
     if pd.isna(gsis_id):
@@ -70,6 +110,7 @@ def build_season_draft(
     picks = load_draft_picks()
     picks = picks[picks["season"] == season].sort_values("pick")
     combine_idx = _combine_index(master)
+    combine_db = _combine_db_groups(master)
     fullback_ids = (
         season_fullback_ids(season, season_start_roster)
         if season_start_roster is not None and not season_start_roster.empty
@@ -99,12 +140,11 @@ def build_season_draft(
         master_name = master_row["display_name"] if master_row is not None else None
         name = master_name or row.pfr_player_name
         master_pos = master_row["position"] if master_row is not None else None
-        pos_source = master_pos if master_row is not None and pd.notna(master_pos) else row.position
-        pos_group = map_position_group(pos_source)
         by = birth_year(master_row["birth_date"]) if master_row is not None else None
         college = master_row["college_name"] if master_row is not None else row.college
         height_in = master_row["height"] if master_row is not None else None
         weight_lb = master_row["weight"] if master_row is not None else None
+        pos_group = _prospect_position(gsis_id, row.position, master_pos, combine_db, weight_lb)
 
         rec = make_player_record(
             gsis_id=gsis_id,
@@ -135,7 +175,11 @@ def build_season_draft(
         for row in udfa_rows.itertuples(index=False):
             if row.gsis_id in seen_ids:
                 continue
-            pos_group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
+            pos_group = (
+                resolve_position(row.position, getattr(row, "depth_chart_position", None))
+                or combine_db.get(row.gsis_id)
+                or resolve_roster_row_position(row)
+            )
             rec = make_player_record(
                 gsis_id=row.gsis_id,
                 name=row.full_name,

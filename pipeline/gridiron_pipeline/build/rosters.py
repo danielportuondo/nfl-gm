@@ -17,7 +17,7 @@ from gridiron_pipeline.build.players import (
     make_player_record,
     sane_season,
 )
-from gridiron_pipeline.build.positions import resolve_position
+from gridiron_pipeline.build.positions import resolve_roster_row_position
 from gridiron_pipeline.build.teams import ATTRIBUTION, canonical_team_id
 from gridiron_pipeline.ingest.load import (
     load_contracts,
@@ -135,7 +135,7 @@ def compute_depth_ranks(
 
     by_group: dict[tuple[str, str], list[tuple]] = {}
     for row in start.itertuples(index=False):
-        pos_group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
+        pos_group = resolve_roster_row_position(row)
         if pos_group is None:
             continue
         key = (row.team_canon, pos_group)
@@ -361,7 +361,7 @@ def build_season_rosters_and_players(
     players = []
     pos_group_by_id: dict[str, str] = {}
     for row in start.itertuples(index=False):
-        pos_group = resolve_position(row.position, getattr(row, "depth_chart_position", None))
+        pos_group = resolve_roster_row_position(row)
         draft = master.draft_by_gsis.get(row.gsis_id)
         fallback_rookie = draft["season"] if draft else season
         rookie_season = sane_season(row.rookie_year, fallback_rookie)
