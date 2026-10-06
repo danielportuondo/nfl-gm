@@ -24,16 +24,17 @@ import {
   type TeamId,
 } from '@contracts/index'
 import { faConstants } from './constants'
+import { runAiCutdownsImpl } from './aiCutdown'
 import { suggestCutdown } from './cutdown'
 import {
   capFor,
   capGatedPhase,
-  cutCandidates,
-  deadChargeFor,
+  isExpiringDeal,
   payroll,
   releaseFrom,
   round2,
   rosterLimits,
+  stampOffseasonDeal,
 } from './internal'
 import { logRelease, logResign, logSign } from './transactions'
 
@@ -89,6 +90,13 @@ function marketApy(state: LeagueState, playerId: PlayerId, ctx: EngineContext): 
 function veteranYears(age: number): number {
   for (const band of faConstants.yearsByAge) if (age <= band.maxAge) return band.years
   return faConstants.defaultYears
+}
+
+/** Years a veteran of this age and position can plausibly have left (QB/K/P play longer). */
+function maxYearsForAge(pos: Position, age: number): number {
+  const { default: base, specialist } = faConstants.contractEndAge
+  const endAge = pos === 'QB' || pos === 'K' || pos === 'P' ? specialist : base
+  return Math.max(1, endAge - age)
 }
 
 function clampYears(years: number, max = faConstants.contractYearsSchemaMax): number {
@@ -161,10 +169,12 @@ function synthesizeContract(
   }
   // No signedSeason hint exists yet on RosterEntry; a veteran re-synthesized from a roster snapshot is
   // assumed to have signed this same season (there is no way to recover the real signing year here).
-  const years =
+  const years = Math.min(
+    maxYearsForAge(player.pos, age),
     hint?.years !== undefined
       ? clampYears(hint.years)
-      : clampYears(veteranYears(age), faConstants.maxYears)
+      : clampYears(veteranYears(age), faConstants.maxYears),
+  )
   return {
     years,
     apy: apyHint ?? marketApyVal,
@@ -204,40 +214,6 @@ function findTeamOf(state: LeagueState, playerId: PlayerId): TeamId | undefined 
   return Object.keys(state.teams)
     .sort()
     .find((teamId) => state.teams[teamId]!.roster.some((r) => r.playerId === playerId))
-}
-
-/** Size-driven cuts: prefer players off the real opening-day roster, then lowest consensus value. */
-function cutOrderBySize(
-  state: LeagueState,
-  roster: readonly RosterSlot[],
-  keepSet: Set<PlayerId> | null,
-): PlayerId[] {
-  return cutCandidates(state, roster)
-    .sort((a, b) => {
-      const aKeep = keepSet?.has(a.playerId) ? 1 : 0
-      const bKeep = keepSet?.has(b.playerId) ? 1 : 0
-      if (aKeep !== bKeep) return aKeep - bKeep
-      const diff = (state.scouting[a.playerId]?.ovr ?? 0) - (state.scouting[b.playerId]?.ovr ?? 0)
-      return diff !== 0 ? diff : a.playerId.localeCompare(b.playerId)
-    })
-    .map((s) => s.playerId)
-}
-
-/** Cap-driven cuts: prefer players off the real opening-day roster, then most expensive first. */
-function cutOrderByCap(
-  state: LeagueState,
-  roster: readonly RosterSlot[],
-  keepSet: Set<PlayerId> | null,
-): PlayerId[] {
-  return cutCandidates(state, roster)
-    .sort((a, b) => {
-      const aKeep = keepSet?.has(a.playerId) ? 1 : 0
-      const bKeep = keepSet?.has(b.playerId) ? 1 : 0
-      if (aKeep !== bKeep) return aKeep - bKeep
-      const diff = b.contract.apy - a.contract.apy
-      return diff !== 0 ? diff : a.playerId.localeCompare(b.playerId)
-    })
-    .map((s) => s.playerId)
 }
 
 function realOpeningDayRoster(
@@ -319,7 +295,7 @@ function resign(
   const team = state.teams[teamId]!
   const slot = team.roster.find((r) => r.playerId === playerId)!
   // Matches how the Free Agency screen (and rolloverContracts) treat a contract as expiring.
-  if (slot.contract.years > 1)
+  if (!isExpiringDeal(state, slot.contract))
     throw new Error(
       `fa.resign: player "${playerId}"'s contract has ${slot.contract.years} years remaining, not expiring`,
     )
@@ -330,12 +306,13 @@ function resign(
   const projectedPayroll = payroll(state, teamId) - currentApy + contract.apy
   if (projectedPayroll > capFor(state.season, ctx))
     throw new Error(`fa.resign: contract would exceed the salary cap`)
+  const renewed = stampOffseasonDeal(state, contract)
   let s = ctx.modules.history.markDiverged(state, [playerId])
   const roster = s.teams[teamId]!.roster.map((r) =>
-    r.playerId === playerId ? { ...r, contract } : r,
+    r.playerId === playerId ? { ...r, contract: renewed } : r,
   )
   s = { ...s, teams: { ...s.teams, [teamId]: { ...s.teams[teamId]!, roster } } }
-  return logResign(state, s, playerId, contract)
+  return logResign(state, s, playerId, renewed)
 }
 
 function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState {
@@ -345,7 +322,7 @@ function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueSt
     const team = s.teams[teamId]
     if (!team || team.userControlled) continue
     const expiringIds = team.roster
-      .filter((slot) => slot.contract.years === 1)
+      .filter((slot) => isExpiringDeal(s, slot.contract))
       .map((slot) => slot.playerId)
       .sort()
     for (const playerId of expiringIds) {
@@ -366,7 +343,7 @@ function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueSt
           decide.chance(faConstants.aiResignBaseChance)
       }
       if (keep) {
-        const contract = synthesizeContract(s, playerId, s.season, ctx)
+        const contract = stampOffseasonDeal(s, synthesizeContract(s, playerId, s.season, ctx))
         const roster = s.teams[teamId]!.roster.map((r) =>
           r.playerId === playerId ? { ...r, contract } : r,
         )
@@ -427,13 +404,14 @@ function offer(
   const gatesOk = projectedSize <= limits.max && projectedPayroll <= capFor(state.season, ctx)
   if (!gatesOk || !rng.chance(p)) return { accepted: false, state }
   let s = ctx.modules.history.markDiverged(state, [playerId])
-  const roster = [...s.teams[teamId]!.roster, { playerId, teamId, contract }]
+  const signed = stampOffseasonDeal(state, contract)
+  const roster = [...s.teams[teamId]!.roster, { playerId, teamId, contract: signed }]
   s = {
     ...s,
     teams: { ...s.teams, [teamId]: { ...s.teams[teamId]!, roster } },
     freeAgents: s.freeAgents.filter((id) => id !== playerId),
   }
-  if (teamId === state.userTeam) s = logSign(state, s, playerId, contract)
+  if (teamId === state.userTeam) s = logSign(state, s, playerId, signed)
   return { accepted: true, state: s }
 }
 
@@ -449,8 +427,17 @@ function pickFallbackTeam(
     .sort()
     .filter((id) => {
       const t = state.teams[id]!
+      const atPosition = t.roster.filter(
+        (r) => state.players[r.playerId]?.pos === player.pos,
+      ).length
+      // Need-driven: a team past camp size only adds a position it is short at, so the pool is not
+      // drained to 90-man rosters before the user's own free agency and preseason fill.
+      const wantsBody =
+        t.roster.length < faConstants.aiFallbackRosterTarget ||
+        atPosition < (faConstants.positionMinimums[player.pos] ?? 0)
       return (
         !t.userControlled &&
+        wantsBody &&
         t.roster.length < faConstants.offseasonRosterMax &&
         capSpace(state, id, ctx) >= cost
       )
@@ -482,7 +469,7 @@ function runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): Leag
     if (!targetTeam) continue
     const team = s.teams[targetTeam]
     if (!team || team.roster.length >= faConstants.offseasonRosterMax) continue
-    const contract = synthesizeContract(s, playerId, s.season, ctx)
+    const contract = stampOffseasonDeal(s, synthesizeContract(s, playerId, s.season, ctx))
     if (payroll(s, targetTeam) + contract.apy > capFor(s.season, ctx)) continue
     const roster = [...team.roster, { playerId, teamId: targetTeam, contract }]
     s = {
@@ -499,64 +486,12 @@ function runAiFreeAgency(state: LeagueState, ctx: EngineContext, rng: Rng): Leag
 // -------------------------------------------------------------------------------------------
 
 function runAiCutdowns(state: LeagueState, ctx: EngineContext): LeagueState {
-  let s = state
-  const { min, max } = faConstants.gameRoster
-  for (const teamId of Object.keys(s.teams).sort()) {
-    const team = s.teams[teamId]
-    if (!team || team.userControlled) continue
-    const keepSet = realOpeningDayRoster(s, ctx, teamId)
-
-    let guard = 0
-    while ((s.teams[teamId]?.roster.length ?? 0) > max && guard++ < 200) {
-      const roster = s.teams[teamId]!.roster
-      const cutId = cutOrderBySize(s, roster, keepSet)[0]
-      if (cutId === undefined) break
-      s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
-    }
-
-    guard = 0
-    while (
-      payroll(s, teamId) > capFor(s.season, ctx) &&
-      (s.teams[teamId]?.roster.length ?? 0) > min &&
-      guard++ < 200
-    ) {
-      const roster = s.teams[teamId]!.roster
-      const cutId = cutOrderByCap(s, roster, keepSet)[0]
-      if (cutId === undefined) break
-      s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
-    }
-
-    // Still over the cap at the floor (real salaries past the data leave some teams there): swap the
-    // most expensive cuttable veteran whose release actually saves room for a league-minimum body,
-    // so the team fields 46 under the cap instead of failing validation. Real teams restructure;
-    // the game trades talent for room.
-    guard = 0
-    while (payroll(s, teamId) > capFor(s.season, ctx) && guard++ < 60) {
-      const roster = s.teams[teamId]!.roster
-      const minBody = rookieContract(null, s.season, ctx)
-      const cutId = cutOrderByCap(s, roster, keepSet).find((id) => {
-        const slot = roster.find((r) => r.playerId === id)!
-        return slot.contract.apy - deadChargeFor(slot.contract) > minBody.apy
-      })
-      if (cutId === undefined) break
-      s = releaseFrom(s, teamId, cutId, ctx, { diverge: false })
-      const body = freeAgentPool(s).find((id) => id !== cutId && s.players[id] !== undefined)
-      if (body === undefined) continue
-      const team = s.teams[teamId]!
-      s = {
-        ...s,
-        teams: {
-          ...s.teams,
-          [teamId]: {
-            ...team,
-            roster: [...team.roster, { playerId: body, teamId, contract: minBody }],
-          },
-        },
-        freeAgents: s.freeAgents.filter((id) => id !== body),
-      }
-    }
-  }
-  return s
+  return runAiCutdownsImpl(state, ctx, {
+    rookieContract,
+    synthesizeContract,
+    freeAgentPool,
+    realRoster: realOpeningDayRoster,
+  })
 }
 
 function rolloverContracts(
@@ -571,6 +506,11 @@ function rolloverContracts(
     const kept: RosterSlot[] = []
     const exp: PlayerId[] = []
     for (const slot of team.roster) {
+      // A deal made this offseason starts now: nothing has been played under it yet.
+      if (slot.contract.signedSeason >= state.season) {
+        kept.push(slot)
+        continue
+      }
       const years = slot.contract.years - 1
       if (years <= 0) exp.push(slot.playerId)
       else kept.push({ ...slot, contract: { ...slot.contract, years } })
@@ -585,6 +525,8 @@ function rolloverContracts(
 // -------------------------------------------------------------------------------------------
 // Module
 // -------------------------------------------------------------------------------------------
+
+export { isExpiringDeal, seasonsLeft } from './internal'
 
 export const fa: FaModule = {
   ...faStub,

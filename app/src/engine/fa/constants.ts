@@ -68,6 +68,11 @@ export const faConstants = {
     { maxAge: 33, years: 2 },
   ],
   defaultYears: 1,
+  /**
+   * A veteran contract runs no later than this age (years left = endAge − age, at least 1). Applied to
+   * real-data hints too: the rosters file records total contract length, not years remaining.
+   */
+  contractEndAge: { default: 36, specialist: 39 },
   /** Cap on a default (hint-less) synthesized veteran deal; explicit hints may still reach the schema max. */
   maxYears: 5,
   /** Contract.years schema bound (see contracts/schemas.ts ContractSchema). */
@@ -87,7 +92,34 @@ export const faConstants = {
   /** Re-sign ask = marketApy × (1 ± jitter), seeded per player. */
   resignAskJitter: 0.1,
   gameRoster: { min: 46, max: 53 },
+  /**
+   * AI cutdown floors by position: starters (STARTER_TEMPLATE) plus the key backup. LB/DL counts sit a
+   * little under the 53-man norm because the real rosters file labels edge rushers inconsistently.
+   * K and P are also capped at exactly one each.
+   */
+  positionMinimums: {
+    QB: 2,
+    RB: 2,
+    WR: 4,
+    TE: 2,
+    OL: 7,
+    DL: 6,
+    LB: 4,
+    CB: 4,
+    S: 3,
+    K: 1,
+    P: 1,
+  } as Record<Position, number>,
+  /**
+   * History anchoring in cutdowns, applied only when comparing different positions: size cuts treat a
+   * real-roster player as this many ovr points better; cap cuts scale his savings-per-point by the weight.
+   */
+  realRosterOvrBonus: 8,
+  /** Rookies drafted in rounds 1..N are not cut in their first season (a cap/size cut spares them). */
+  protectedRookieMaxRound: 3,
   offseasonRosterMax: 90,
+  /** Without a history anchor an AI team signs free agents only while below this size (or short at the position). */
+  aiFallbackRosterTarget: 56,
   /** Release: dead money = this share of remaining guaranteed money (apy × years × guaranteedPct). */
   deadMoneyPct: 0.25,
   /**

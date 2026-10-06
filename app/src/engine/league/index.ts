@@ -720,7 +720,22 @@ function reconcileUserDepthChart(state: LeagueState): LeagueState {
   return reconcileDepthChart(state, state.userTeam)
 }
 
-function simWeekImpl(state: LeagueState, ctx: EngineContext): WeekReport {
+/** Before each week's games, AI teams backfill holes a user trade or release left (fa.runAiCutdowns). */
+function refreshAiRosters(state: LeagueState, ctx: EngineContext): LeagueState {
+  const s = ctx.modules.fa.runAiCutdowns(state, ctx)
+  if (s === state) return s
+  const teams = { ...s.teams }
+  for (const teamId of TEAM_IDS) {
+    const team = s.teams[teamId]
+    if (!team || team.userControlled || team.roster === state.teams[teamId]?.roster) continue
+    teams[teamId] = { ...team, depthChart: autoDepthChartImpl(s, teamId) }
+  }
+  return { ...s, teams }
+}
+
+function simWeekImpl(input: LeagueState, ctx: EngineContext): WeekReport {
+  const state =
+    input.phase === 'REGULAR' || input.phase === 'PLAYOFFS' ? refreshAiRosters(input, ctx) : input
   if (state.phase !== 'REGULAR' && state.phase !== 'PLAYOFFS') {
     return {
       state,
@@ -852,14 +867,14 @@ function zeroDeadMoney(teams: Record<TeamId, TeamState>): Record<TeamId, TeamSta
 /**
  * The user's expiring players who were not re-signed during OFFSEASON_RESIGN hit the market with
  * everyone else's, so the AI can sign them in FREE_AGENCY. A contract signed this offseason (fa.resign
- * stamps signedSeason = season) is the re-signing itself and stays. No dead money, no divergence: this
+ * stamps signedSeason = season + 1) is the re-signing itself and stays. No dead money, no divergence: this
  * is the natural end of a deal, same as fa.runAiResign's expireToFreeAgent for AI teams.
  */
 function expireUserContracts(state: LeagueState): LeagueState {
   const team = state.teams[state.userTeam]
   if (!team) return state
   const expiring = team.roster
-    .filter((slot) => slot.contract.years === 1 && slot.contract.signedSeason !== state.season)
+    .filter((slot) => slot.contract.years === 1 && slot.contract.signedSeason <= state.season)
     .map((slot) => slot.playerId)
   if (expiring.length === 0) return state
   const gone = new Set(expiring)

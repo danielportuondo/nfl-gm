@@ -81,7 +81,8 @@ describe('fa.resign', () => {
       phase: state.phase,
       week: state.week,
       playerId: slot.playerId,
-      contract,
+      // An offseason re-sign is stamped with the season it starts.
+      contract: { ...contract, signedSeason: state.season + 1 },
     })
     expect(entry.ovrAtMove).toEqual({ [slot.playerId]: state.scouting[slot.playerId]!.ovr })
     // input state is never mutated

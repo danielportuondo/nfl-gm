@@ -5,6 +5,7 @@
  */
 import {
   STARTER_TEMPLATE,
+  isOpeningOffseason,
   type Contract,
   type EngineContext,
   type LeagueState,
@@ -109,4 +110,44 @@ export function releaseFrom(
   }
   if (opts.diverge) s = ctx.modules.history.markDiverged(s, [playerId])
   return s
+}
+
+/**
+ * Contract-length semantics: `years` is the number of seasons the player will actually play under the
+ * deal. A deal made after a season closes is stamped `signedSeason` = the season it starts (state.season
+ * + 1), which is how the camp rollover (rolloverContracts) knows not to tick it for the season just
+ * played; deals from before the offseason still count that closed season until the rollover.
+ */
+const OFFSEASON_PHASES: ReadonlySet<LeagueState['phase']> = new Set([
+  'OFFSEASON_RESIGN',
+  'DRAFT',
+  'UDFA',
+  'FREE_AGENCY',
+  'TRAINING_CAMP',
+])
+
+export function isOffseasonPhase(state: LeagueState): boolean {
+  return OFFSEASON_PHASES.has(state.phase)
+}
+
+/** A deal signed during the offseason starts next season, so it is stamped with that season. */
+export function stampOffseasonDeal(state: LeagueState, contract: Contract): Contract {
+  return isOffseasonPhase(state) ? { ...contract, signedSeason: state.season + 1 } : contract
+}
+
+/** True while `contract` still counts a season that has already been played (before the camp rollover). */
+function countsClosedSeason(state: LeagueState, contract: Contract): boolean {
+  return (
+    isOffseasonPhase(state) && !isOpeningOffseason(state) && contract.signedSeason <= state.season
+  )
+}
+
+/** Seasons the player will still play under `contract`, as of now. */
+export function seasonsLeft(state: LeagueState, contract: Contract): number {
+  return contract.years - (countsClosedSeason(state, contract) ? 1 : 0)
+}
+
+/** In the re-signing window: the deal's last season has been played and it has not been renewed. */
+export function isExpiringDeal(state: LeagueState, contract: Contract): boolean {
+  return contract.years <= 1 && countsClosedSeason(state, contract)
 }
