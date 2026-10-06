@@ -8,6 +8,7 @@ import {
   TeamBadge as TeamBadgePrimitive,
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { PlayerStats } from './PlayerStats'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 import { teamAbbr } from '@screens/shared/teamLabel'
 
@@ -50,12 +51,6 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
   const age = state.season - player.birthYear
 
   const sprite = <BustSprite pos={player.pos} size={4} status={{ freeAgent: isFreeAgent }} />
-
-  const results = state.results.filter(
-    (r) =>
-      r.box?.home.some((l) => l.playerId === playerId) ||
-      r.box?.away.some((l) => l.playerId === playerId),
-  )
 
   return (
     <>
@@ -142,15 +137,7 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
 
         <div style={{ height: 'var(--sp-4)' }} />
 
-        <Panel title="Season by season" variant="sunken" revealIndex={3}>
-          {results.length === 0 ? (
-            <p style={{ margin: 0, color: 'var(--text-2)' }}>
-              No stats yet. Sim a week to see results here.
-            </p>
-          ) : (
-            <p style={{ margin: 0 }}>{results.length} games played.</p>
-          )}
-        </Panel>
+        <PlayerStats state={state} data={data} player={player} revealIndex={3} />
       </div>
     </>
   )
