@@ -188,10 +188,16 @@ function reclaimEarlyRookies(
   ctx: EngineContext,
   deps: AiCutdownDeps,
 ): LeagueState {
+  // Only the opening cutdown: the snap is what strands them. Later runs would re-sign a rookie the
+  // cutdown just released and book his guarantee as dead money again, every week.
+  if (s.phase !== 'PRESEASON') return s
   let out = s
   for (const id of s.freeAgents) {
     const p = s.players[id]
     if (!p?.draft || p.draft.team !== teamId) continue
+    // A second K or P is trimmed straight away, so a first-round specialist would only cost dead money.
+    if ((p.pos === 'K' || p.pos === 'P') && countByPos(out, roster(out, teamId)).get(p.pos))
+      continue
     if (p.draft.round > faConstants.protectedRookieMaxRound || p.rookieSeason !== s.season) continue
     if (s.divergence.has(id)) continue
     const contract = deps.rookieContract(
