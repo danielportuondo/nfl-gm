@@ -1,2 +1,2 @@
-export { ConnectedDraftRoom as DraftRoom } from './ConnectedDraftRoom'
-export type { ConnectedDraftRoomProps as DraftRoomProps } from './ConnectedDraftRoom'
+export { DraftRoom } from './DraftRoom'
+export type { DraftRoomProps } from './DraftRoom'

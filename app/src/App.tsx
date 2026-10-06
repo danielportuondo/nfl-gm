@@ -234,6 +234,9 @@ export function App() {
           onMakePick={actions.makePick}
           onAutoPick={actions.autoPick}
           onSimToMyPick={actions.simToMyPick}
+          onSimNextPick={actions.simNextPick}
+          onProposeTrade={actions.proposeTrade}
+          onOpenTradeCenter={() => actions.goTo('trade')}
           onFinishDraft={actions.finishDraft}
           onRespondToOffer={actions.respondToOffer}
           onEvaluate={actions.evaluateTrade}

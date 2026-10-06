@@ -517,6 +517,9 @@ describe('DraftRoom', () => {
         onMakePick={vi.fn()}
         onAutoPick={vi.fn()}
         onSimToMyPick={vi.fn()}
+        onSimNextPick={vi.fn()}
+        onProposeTrade={vi.fn()}
+        onOpenTradeCenter={vi.fn()}
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
@@ -544,6 +547,9 @@ describe('DraftRoom', () => {
         onMakePick={vi.fn()}
         onAutoPick={vi.fn()}
         onSimToMyPick={vi.fn()}
+        onSimNextPick={vi.fn()}
+        onProposeTrade={vi.fn()}
+        onOpenTradeCenter={vi.fn()}
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
@@ -563,6 +569,9 @@ describe('DraftRoom', () => {
         onMakePick={vi.fn()}
         onAutoPick={vi.fn()}
         onSimToMyPick={vi.fn()}
+        onSimNextPick={vi.fn()}
+        onProposeTrade={vi.fn()}
+        onOpenTradeCenter={vi.fn()}
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
@@ -773,6 +782,9 @@ describe('DraftRoom', () => {
         onMakePick={vi.fn()}
         onAutoPick={vi.fn()}
         onSimToMyPick={vi.fn()}
+        onSimNextPick={vi.fn()}
+        onProposeTrade={vi.fn()}
+        onOpenTradeCenter={vi.fn()}
         onFinishDraft={vi.fn()}
         onRespondToOffer={vi.fn()}
         onEvaluate={() => FIXTURE_EVALUATION}
