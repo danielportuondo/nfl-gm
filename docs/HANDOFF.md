@@ -326,7 +326,7 @@ Rule enforced by lint/test: nothing under `app/src/screens/` or `app/src/ui/` im
 
 ### 6.4 Draft system (Opus, high)
 
-**Order:** for real seasons, the real order from `draft_picks.csv` (which encodes comp picks and traded picks as they actually happened). Ownership in-game = real ownership **unless** the pick was traded in-game (tracked in `picks[]`). For post-history seasons, generate order from reverse standings with playoff-based ordering; comp picks omitted in v1.
+**Order:** the opening draft (the start-year class of a game that opens at the draft) uses the real order from `draft_picks.csv` (which encodes comp picks and traded picks as they actually happened); ownership = real ownership **unless** the pick was traded in-game (tracked in `picks[]`). Every later draft, in history or not, follows the previous **sim** season: reverse standings with playoff-based ordering, 7 × 32, no comp picks or real-life pick trades, pick numbers unset until the draft starts. *(Amended 2026-10-05: real-season drafts used to copy the real order, so a team's slot ignored its sim record.)*
 
 **Pool:** real drafted players for that season + real UDFAs (players with `rookie_year == season` and no `draft_club` on any roster that season) as the UDFA pool.
 

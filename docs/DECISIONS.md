@@ -400,3 +400,22 @@ The Settings tab and the cutdown helper above, plus the phone-width panel stacki
 - Open: a veteran back from a long absence (Blackmon 2017–20, Bridgewater 2025) still falls to his
   0-game value when the three-season window holds no games; falling back to the last season with
   games would fix it. Late-round picks who sat for years scout at about 52–56.
+
+## 2026-10-05 — Draft order follows the sim season
+
+- Every draft after the opening one is ordered from the previous **sim** season's standings
+  (worst record first, playoff teams after, runner-up then champion last), 7 × 32, in history or
+  not. Pick numbers stay unset until the draft starts. Previously real-season drafts copied the
+  real order two drafts ahead, so a team's slot ignored its sim record.
+- The opening draft (`season === startSeason` in a game that opens at the draft) keeps the real
+  order, comp picks and real ownership: no sim season precedes it.
+- Real-life comp picks and real-life pick trades are dropped for later drafts; ownership moves
+  only through in-game trades.
+- History anchoring follows the slot: the AI at overall #N leans toward the player who really went
+  #N.
+- Old saves: at draft start a non-opening draft is rebuilt as 7 × 32 own-round picks
+  (`draft/order.ts#simOrderPicks`), keeping in-game trade owners and dropping comp/extra picks.
+  `SAVE_SCHEMA_VERSION` stays 1; a draft already in progress finishes on its old order.
+- Known minor gaps: an old-save transaction that names a real pick number may not link to the
+  drafted player in the season recap, and a pending proposal naming an old pick number won't match
+  after renumbering.

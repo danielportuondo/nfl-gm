@@ -102,11 +102,13 @@ describe('user takes Aaron Donald at #1', () => {
     const replacement = slot13.playerId
     expect(replacement).not.toBe(AARON_DONALD)
 
-    // Top-15 of the pre-draft consensus board, at a position the picking team was not saturated at.
+    // A first-round grade (top 32 of the pre-draft consensus board) at a position the picking team was
+    // not saturated at. The opening-draft fixture carries the real 2014 offseason rosters, where STL's
+    // QB room is a need, so the slot can go to a need pick rather than the next-best prospect.
     const board = Object.keys(done.players)
       .filter((id) => done.players[id]!.rookieSeason === CLASS_SEASON)
       .sort((a, b) => done.scouting[b]!.pot - done.scouting[a]!.pot || a.localeCompare(b))
-      .slice(0, 15)
+      .slice(0, 32)
     expect(board).toContain(replacement)
 
     const beforePick = draft.startDraft(stateAtDraft(ctx, 'HOU'), ctx)

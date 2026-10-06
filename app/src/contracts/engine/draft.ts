@@ -23,9 +23,10 @@ import type { Rng } from './rng'
 
 export interface DraftModule {
   /**
-   * Picks for `season`: in history, the real order from the season chunk (comp/traded picks as they
-   * happened), with owner overridden by in-game trades already recorded in state.picks. Post-history:
-   * reverse standings with playoff ordering, 7 rounds × 32, no comp picks.
+   * Picks for `season`. The opening draft (`season === state.startSeason`, in history): the real order
+   * from the season chunk (comp/traded picks as they happened), with owner overridden by in-game trades
+   * already recorded in state.picks. Every later draft: 7 rounds × 32, no comp picks, `pick: null` until
+   * startDraft settles it from the previous sim season's reverse standings with playoff ordering.
    */
   buildDraftOrder(state: LeagueState, season: Season, ctx: EngineContext): DraftPick[]
 

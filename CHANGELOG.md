@@ -11,6 +11,8 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
   star's rating or lets AI teams give him away.
 - Draft picks who sat their first seasons (J.J. McCarthy 2024) keep a draft-based rating instead of
   dropping to about 41.
+- Draft order follows how teams finished the previous sim season, not the real-life order. The
+  opening draft still uses the real order.
 
 ## 1.6.0 — 2026-09-28
 

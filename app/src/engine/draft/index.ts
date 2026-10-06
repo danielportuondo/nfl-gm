@@ -31,7 +31,13 @@ import {
 } from '@contracts/index'
 import { draftConstants } from './constants'
 import { needProfile } from './needs'
-import { buildOrder, historicalOccupants, settleOrder } from './order'
+import {
+  buildOrder,
+  historicalOccupants,
+  isOpeningDraft,
+  settleOrder,
+  simOrderPicks,
+} from './order'
 import { chooseProspect } from './picking'
 import { draftSeasonOf, loadClass, splitBoard } from './prospects'
 import { logUserDraftPick } from './transactions'
@@ -52,16 +58,21 @@ function currentSlot(room: DraftRoomState): DraftPick | undefined {
   return room.order[room.currentPickIndex]
 }
 
-/** Procedural seasons are generated with `pick: null`; once the room settles the order, state.picks learns the numbers. */
-function stampPickNumbers(picks: readonly DraftPick[], order: readonly DraftPick[]): DraftPick[] {
-  const season = order[0]?.season
-  if (season === undefined) return [...picks]
-  const numbered = new Map(order.map((slot) => [`${slot.round}:${slot.originalTeam}`, slot.pick]))
-  return picks.map((p) =>
-    p.season === season && p.pick === null
-      ? { ...p, pick: numbered.get(`${p.round}:${p.originalTeam}`) ?? null }
-      : p,
-  )
+/** The settled order replaces the season's entries in state.picks, so trades and the room agree on numbers. */
+function withSeasonPicks(
+  picks: readonly DraftPick[],
+  season: Season,
+  order: readonly DraftPick[],
+): DraftPick[] {
+  return [...picks.filter((p) => p.season !== season), ...order.map((slot) => ({ ...slot }))]
+}
+
+/** The draft's picks before numbering: the opening draft as built, every later one as 7 × 32 own-round picks. */
+function unsettledPicks(state: LeagueState, season: Season, ctx: EngineContext): DraftPick[] {
+  const stored = state.picks.filter((p) => p.season === season)
+  if (isOpeningDraft(state, season))
+    return stored.length > 0 ? stored : buildOrder(state, season, ctx)
+  return stored.length > 0 ? simOrderPicks(stored, season) : buildOrder(state, season, ctx)
 }
 
 /** A mid-draft trade changes state.picks; unmade slots must follow the new owner. */
@@ -233,9 +244,8 @@ function startDraftImpl(state: LeagueState, ctx: EngineContext): LeagueState {
   if (state.draftRoom && state.draftRoom.season === season) return advanceImpl(state, ctx, {})
 
   let s = loadClass(state, ctx)
-  const seasonPicks = s.picks.filter((p) => p.season === season)
-  const order = settleOrder(seasonPicks.length > 0 ? seasonPicks : buildOrder(s, season, ctx), s)
-  s = { ...s, picks: stampPickNumbers(s.picks, order) }
+  const order = settleOrder(unsettledPicks(s, season, ctx), s)
+  s = { ...s, picks: withSeasonPicks(s.picks, season, order) }
   const { available, udfaPool } = splitBoard(s, ctx, season, order.length)
 
   s = withRoom(s, {

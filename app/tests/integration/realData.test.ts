@@ -106,12 +106,12 @@ describe(`real data ${SEASON}`, () => {
     expect(rostered.size + freeAgents.size).toBe(chunk.players.players.length)
 
     expect(state.schedule.filter((g) => g.type === 'REG')).toHaveLength(256)
-    // Picks for the next two drafts: the 2016 class is real (pick numbers known), owned by the drafting teams.
+    // Picks for the next two drafts: neither is the opening draft, so both wait on the sim standings.
     const seasons = new Set(state.picks.map((p) => p.season))
     expect([...seasons].sort()).toEqual([SEASON + 1, SEASON + 2])
-    expect(state.picks.filter((p) => p.season === SEASON + 1).every((p) => p.pick !== null)).toBe(
-      true,
-    )
+    const nextDraft = state.picks.filter((p) => p.season === SEASON + 1)
+    expect(nextDraft).toHaveLength(224)
+    expect(nextDraft.every((p) => p.pick === null)).toBe(true)
   })
 
   it('a full season completes deterministically with no truth fallbacks', () => {
