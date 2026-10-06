@@ -151,3 +151,65 @@ export function seasonsLeft(state: LeagueState, contract: Contract): number {
 export function isExpiringDeal(state: LeagueState, contract: Contract): boolean {
   return contract.years <= 1 && countsClosedSeason(state, contract)
 }
+
+/**
+ * What a signing is measured against. In season: this season's cap and full payroll. In the offseason:
+ * next season's cap against the deals still on the books when it starts. Expiring deals leave at the
+ * camp rollover and dead money resets there, so neither counts (the same rule as the trade module's
+ * offseason cap book).
+ */
+export interface CapGate {
+  season: Season
+  nextSeason: boolean
+  cap: number
+  payroll: number
+  space: number
+}
+
+export function gateSeason(state: LeagueState): Season {
+  return isOffseasonPhase(state) ? state.season + 1 : state.season
+}
+
+/** Payroll the gate counts: the full payroll in season, only the deals that outlive the rollover in the offseason. */
+export function committedPayroll(state: LeagueState, teamId: TeamId): number {
+  if (!isOffseasonPhase(state)) return payroll(state, teamId)
+  return (state.teams[teamId]?.roster ?? []).reduce(
+    (sum, slot) => sum + (seasonsLeft(state, slot.contract) >= 1 ? slot.contract.apy : 0),
+    0,
+  )
+}
+
+export function capGate(state: LeagueState, teamId: TeamId, ctx: EngineContext): CapGate {
+  const season = gateSeason(state)
+  const cap = capFor(season, ctx)
+  const committed = committedPayroll(state, teamId)
+  return {
+    season,
+    nextSeason: isOffseasonPhase(state),
+    cap,
+    payroll: committed,
+    space: cap - committed,
+  }
+}
+
+const MONEY_EPSILON = 1e-6
+
+/** Rounded up to $0.1M, so a printed ask is never below the real one. */
+export function roundUpTenth(m: number): number {
+  return Math.ceil(m * 10 - MONEY_EPSILON) / 10
+}
+
+function roundDownTenth(m: number): number {
+  return Math.floor(m * 10 + MONEY_EPSILON) / 10
+}
+
+function formatTenths(m: number): string {
+  return m < 0 ? `-$${Math.abs(m).toFixed(1)}M` : `$${m.toFixed(1)}M`
+}
+
+/** Plain-words refusal for a signing that does not fit under the cap, or null when it fits. */
+export function capRefusal(gate: CapGate, apy: number): string | null {
+  if (apy <= gate.space + 1e-9) return null
+  const when = gate.nextSeason ? ' next season' : ''
+  return `Not enough cap room${when}: need ${formatTenths(roundUpTenth(apy))}, have ${formatTenths(roundDownTenth(gate.space))}`
+}

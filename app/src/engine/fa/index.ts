@@ -28,12 +28,15 @@ import { runAiCutdownsImpl } from './aiCutdown'
 import { suggestCutdown } from './cutdown'
 import {
   capFor,
+  capGate,
   capGatedPhase,
+  capRefusal,
   isExpiringDeal,
   seasonsLeft,
   payroll,
   releaseFrom,
   round2,
+  roundUpTenth,
   rosterLimits,
   stampOffseasonDeal,
 } from './internal'
@@ -301,12 +304,11 @@ function resign(
       `fa.resign: player "${playerId}"'s contract has ${slot.contract.years} years remaining, not expiring`,
     )
   const ask = resignAsk(state, playerId, ctx)
-  if (contract.apy < ask)
-    throw new Error(`fa.resign: offer $${contract.apy}M is below the ask $${ask}M`)
-  const currentApy = slot.contract.apy
-  const projectedPayroll = payroll(state, teamId) - currentApy + contract.apy
-  if (projectedPayroll > capFor(state.season, ctx))
-    throw new Error(`fa.resign: contract would exceed the salary cap`)
+  if (contract.apy < ask - faConstants.askTolerance - 1e-9)
+    throw new Error(`fa.resign: That offer is below the ask of $${roundUpTenth(ask).toFixed(1)}M`)
+  // The expiring deal being renewed is not in next season's books, so the whole new apy counts.
+  const refusal = capRefusal(capGate(state, teamId, ctx), contract.apy)
+  if (refusal) throw new Error(`fa.resign: ${refusal}`)
   const renewed = stampOffseasonDeal(state, contract)
   let s = ctx.modules.history.markDiverged(state, [playerId])
   const roster = s.teams[teamId]!.roster.map((r) =>
@@ -394,16 +396,18 @@ function offer(
   contract: Contract,
   ctx: EngineContext,
   rng: Rng,
-): { accepted: boolean; state: LeagueState } {
+): { accepted: boolean; state: LeagueState; reason?: string } {
   assertValidContract(contract)
   const team = state.teams[teamId]
   if (!team) throw new Error(`fa.offer: unknown team "${teamId}"`)
   const p = offerOdds(state, teamId, playerId, contract, ctx)
-  const limits = rosterLimits(state)
-  const projectedSize = team.roster.length + 1
-  const projectedPayroll = payroll(state, teamId) + contract.apy
-  const gatesOk = projectedSize <= limits.max && projectedPayroll <= capFor(state.season, ctx)
-  if (!gatesOk || !rng.chance(p)) return { accepted: false, state }
+  if (team.roster.length + 1 > rosterLimits(state).max) {
+    const reason = `Your roster is full (${team.roster.length} players). Release someone first.`
+    return { accepted: false, state, reason }
+  }
+  const capReason = capRefusal(capGate(state, teamId, ctx), contract.apy)
+  if (capReason) return { accepted: false, state, reason: capReason }
+  if (!rng.chance(p)) return { accepted: false, state }
   let s = ctx.modules.history.markDiverged(state, [playerId])
   const signed = stampOffseasonDeal(state, contract)
   const roster = [...s.teams[teamId]!.roster, { playerId, teamId, contract: signed }]
@@ -527,7 +531,15 @@ function rolloverContracts(
 // Module
 // -------------------------------------------------------------------------------------------
 
-export { isExpiringDeal, seasonsLeft } from './internal'
+export {
+  capGate,
+  committedPayroll,
+  gateSeason,
+  isExpiringDeal,
+  roundUpTenth,
+  seasonsLeft,
+} from './internal'
+export type { CapGate } from './internal'
 
 export const fa: FaModule = {
   ...faStub,

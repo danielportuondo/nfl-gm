@@ -16,13 +16,15 @@ import {
   type Column,
   type SortState,
 } from '@ui/primitives'
+import { committedPayroll, roundUpTenth } from '@engine/fa'
 import { isExpiring } from '../shared/contractStatus'
+import { formatMoney } from '../shared/formatMoney'
 import { isOffseasonPhase } from '../shared/phaseLabel'
 import { useReleaseConfirm, type ReleaseImpact } from '../shared/ReleaseConfirm'
 
 export interface FreeAgencyProps {
   state: LeagueState
-  /** This season's cap in $M, from the store. */
+  /** The cap a signing is measured against, in $M: this season's in season, next season's in the offseason. */
   cap: number
   busy?: boolean
   onOfferContract: (playerId: PlayerId, contract: Contract) => void
@@ -38,8 +40,9 @@ export interface FreeAgencyProps {
 
 const POOL_FILTERS: Array<Position | 'ALL'> = ['ALL', ...POSITIONS]
 
-function formatMoney(m: number): string {
-  return `$${m.toFixed(1)}M`
+/** Asks print rounded up, so typing the printed number always meets the real ask. */
+function formatAsk(m: number): string {
+  return formatMoney(roundUpTenth(m))
 }
 
 interface PoolRow {
@@ -66,8 +69,8 @@ export function FreeAgency({
 }: FreeAgencyProps) {
   const { askToRelease, releaseDialog } = useReleaseConfirm()
   const team = state.teams[state.userTeam]
-  const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
-  const capSpace = cap - payroll - (team?.deadMoney ?? 0)
+  const offseason = isOffseasonPhase(state.phase)
+  const capSpace = cap - committedPayroll(state, state.userTeam)
   const minApy = Math.max(0.5, Math.round(cap * 0.003 * 10) / 10)
 
   const [selected, setSelected] = useState<PlayerId | null>(null)
@@ -184,11 +187,11 @@ export function FreeAgency({
           >
             <StatTile
               value={formatMoney(cap)}
-              label={isOffseasonPhase(state.phase) ? 'Cap now' : 'Cap this season'}
+              label={offseason ? 'Cap next season' : 'Cap this season'}
             />
             <StatTile
               value={formatMoney(capSpace)}
-              label="Cap space"
+              label={offseason ? 'Space next season' : 'Cap space'}
               tone={capSpace < 0 ? 'danger' : 'default'}
             />
             <StatTile value={String((team?.roster ?? []).length)} label="Roster size" />
@@ -209,7 +212,7 @@ export function FreeAgency({
                   const ask = onResignAsk(slot.playerId)
                   const draft = resignDrafts[slot.playerId] ?? {
                     years: 2,
-                    apy: ask ?? slot.contract.apy,
+                    apy: ask === null ? slot.contract.apy : roundUpTenth(ask),
                   }
                   return (
                     <div
@@ -225,7 +228,7 @@ export function FreeAgency({
                         {player.name} <PositionBadge pos={player.pos} />
                       </span>
                       <span style={{ color: 'var(--text-2)' }}>
-                        {ask != null ? `Asking ${formatMoney(ask)}/yr` : 'Ask unavailable'}
+                        {ask != null ? `Asking ${formatAsk(ask)}/yr` : 'Ask unavailable'}
                       </span>
                       <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
                         Years
@@ -421,7 +424,7 @@ export function FreeAgency({
                   return ask === null ? null : (
                     <span style={{ color: 'var(--text-2)' }}>
                       {' '}
-                      · asking about {formatMoney(ask)}/yr
+                      · asking about {formatAsk(ask)}/yr
                     </span>
                   )
                 })()}

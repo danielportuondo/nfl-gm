@@ -137,6 +137,13 @@ export function createGameStore(config: StoreConfig = {}) {
       }))
     }
 
+    /** Engine errors read "fa.resign: <reason>"; players see only the reason. */
+    function withoutEnginePrefix(err: unknown): unknown {
+      if (!(err instanceof Error)) return err
+      const message = err.message.replace(/^[a-z]+\.[A-Za-z]+:\s*/, '')
+      return message === err.message ? err : new Error(message)
+    }
+
     function reportNotBuilt(fallback: string, err: unknown) {
       if (err instanceof NotImplementedError) addToast('Not built yet', 'warn')
       else
@@ -1013,11 +1020,11 @@ export function createGameStore(config: StoreConfig = {}) {
             const result = modules.fa.offer(league, league.userTeam, playerId, contract, ctx, rng)
             set({ state: result.state })
             addToast(
-              result.accepted ? 'Signed' : 'The player passed on the offer',
+              result.accepted ? 'Signed' : (result.reason ?? 'The player passed on the offer'),
               result.accepted ? 'success' : 'warn',
             )
           } catch (err) {
-            reportNotBuilt('Could not make the offer.', err)
+            reportNotBuilt('Could not make the offer.', withoutEnginePrefix(err))
           } finally {
             set((s) => ({ busy: { ...s.busy, fa: false } }))
           }
@@ -1033,7 +1040,7 @@ export function createGameStore(config: StoreConfig = {}) {
             set({ state: next })
             addToast('Re-signed', 'success')
           } catch (err) {
-            reportNotBuilt('Could not re-sign.', err)
+            reportNotBuilt('Could not re-sign.', withoutEnginePrefix(err))
           } finally {
             set((s) => ({ busy: { ...s.busy, fa: false } }))
           }

@@ -17,7 +17,9 @@ import { SeasonRecap } from '@screens/SeasonRecap'
 import { Settings } from '@screens/Settings'
 import { Standings } from '@screens/Standings'
 import { TradeCenter } from '@screens/TradeCenter'
-import { horizonProgress, seasonPhaseLabel } from '@screens/shared/phaseLabel'
+import { committedPayroll, gateSeason } from '@engine/fa'
+import { formatMoney } from '@screens/shared/formatMoney'
+import { horizonProgress, isOffseasonPhase, seasonPhaseLabel } from '@screens/shared/phaseLabel'
 import { teamAbbr } from '@screens/shared/teamLabel'
 
 const NAV_ITEMS: NavItem[] = [
@@ -105,8 +107,10 @@ export function App() {
   const teamInfo = data.teams[state.userTeam]
   const record = team?.record ?? { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
   const cap = actions.capThisSeason() ?? data.cap.bySeason[String(state.season)] ?? 0
-  const payroll =
-    (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0) + (team?.deadMoney ?? 0)
+  // The room signings are checked against: next season's books in the offseason (engine/fa capGate).
+  const offseason = isOffseasonPhase(state.phase)
+  const gateCap = actions.capFor(gateSeason(state)) ?? cap
+  const capRoom = gateCap - committedPayroll(state, state.userTeam)
   const { index: seasonIndex, total: horizonTotal } = horizonProgress(state)
 
   const room = state.draftRoom
@@ -130,7 +134,7 @@ export function App() {
           record.ties > 0
             ? `${record.wins}-${record.losses}-${record.ties}`
             : `${record.wins}-${record.losses}`,
-        capSpaceText: `$${(cap - payroll).toFixed(1)}M free`,
+        capSpaceText: `${formatMoney(capRoom)} free${offseason ? ` for ${state.season + 1}` : ''}`,
         horizonText: `${seasonIndex}/${horizonTotal} seasons`,
         inSeason,
         onClock,
@@ -267,7 +271,7 @@ export function App() {
       {screen === 'free-agency' && (
         <FreeAgency
           state={state}
-          cap={cap}
+          cap={gateCap}
           busy={busy.fa}
           onOfferContract={actions.offerContract}
           onResign={actions.resign}

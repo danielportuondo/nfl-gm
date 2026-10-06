@@ -62,6 +62,9 @@ export interface FaModule {
    * User offer with 1-day simulated bidding: P(accept) rises with offer/ask and team quality.
    * Hard gates: cap, roster ≤ 90 (offseason) / 53 (in-season). Marks the player diverged on success.
    * An accepted offer by the user's team appends a SIGN Transaction to state.transactions.
+   * The cap gate follows the phase: in season, this season's cap against payroll; in the offseason, next
+   * season's cap against deals still on the books at the camp rollover. A hard-gate refusal sets `reason`
+   * (plain words, shown to the user); a player simply declining leaves it unset.
    */
   offer(
     state: LeagueState,
@@ -70,7 +73,7 @@ export interface FaModule {
     contract: Contract,
     ctx: EngineContext,
     rng: Rng,
-  ): { accepted: boolean; state: LeagueState }
+  ): { accepted: boolean; state: LeagueState; reason?: string }
 
   /** P(accept) the offer would face before any hard gate (cap, roster size); pure, for UI previews. */
   offerOdds(

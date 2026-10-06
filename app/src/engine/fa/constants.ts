@@ -91,6 +91,8 @@ export const faConstants = {
   rookieGuaranteedPctByRound: [1, 1, 0.6, 0.35, 0.2, 0.1, 0.1],
   /** Re-sign ask = marketApy × (1 ± jitter), seeded per player. */
   resignAskJitter: 0.1,
+  /** A re-sign this far under the ask ($M) still counts as meeting it, so a rounded-down typed ask works. */
+  askTolerance: 0.05,
   gameRoster: { min: 46, max: 53 },
   /**
    * AI cutdown floors by position: starters (STARTER_TEMPLATE) plus the key backup. LB/DL counts sit a
