@@ -40,6 +40,21 @@ function fallbackTruth(season: Season, ovr: number): TrueTrajectory {
   return { bySeason: { [String(season)]: ovr }, retiresAfter: null }
 }
 
+/**
+ * Draftees whose pick the user traded (either direction) stay with the team that used it: the
+ * history-anchored draft still selects the real player, but he is no longer the real team's. Pick
+ * trades between AI teams are real history and leave their draftees on the historical path.
+ */
+function tradedPickDraftees(state: LeagueState): Set<PlayerId> {
+  const ids = new Set<PlayerId>()
+  for (const pick of state.picks) {
+    const userTraded = pick.originalTeam === state.userTeam || pick.owner === state.userTeam
+    if (pick.playerId !== null && pick.owner !== pick.originalTeam && userTraded)
+      ids.add(pick.playerId)
+  }
+  return ids
+}
+
 interface Placement {
   id: PlayerId
   from: TeamId | null
@@ -65,12 +80,13 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
   for (const [id, p] of Object.entries(state.players)) if (p.real) idsToConsider.add(id)
   for (const sp of sd.players.players) if (!state.players[sp.id]) idsToConsider.add(sp.id)
   const freeAgentSet = new Set(state.freeAgents)
+  const tradedDraftees = tradedPickDraftees(state)
 
   const placements: Placement[] = []
   const divergedKept: PlayerId[] = []
   for (const id of [...idsToConsider].sort()) {
     const currentTeam = currentTeamOf.get(id) ?? null
-    if (state.divergence.has(id)) {
+    if (state.divergence.has(id) || tradedDraftees.has(id)) {
       divergedKept.push(id)
       continue
     }
@@ -84,6 +100,13 @@ function snapToHistoryImpl(state: LeagueState, ctx: EngineContext): LeagueState 
       const active = currentTeam !== null || freeAgentSet.has(id)
       if (active)
         placements.push({ id, from: currentTeam, to: null, reason: 'RETIRED', isNewArrival: false })
+      continue
+    }
+    if (sp.team === state.userTeam) {
+      // History never adds to the user's roster: a real player of the user's team the user never
+      // acquired stays where he is, or (a brand-new arrival) waits in the free-agent pool.
+      if (isNewArrival)
+        placements.push({ id, from: null, to: null, reason: 'NEW_ARRIVAL', isNewArrival })
       continue
     }
     placements.push({
