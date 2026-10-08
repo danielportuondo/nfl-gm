@@ -265,14 +265,49 @@ def load_combine() -> pd.DataFrame:
     return df
 
 
+def _gsis_by_identity(contracts: pd.DataFrame) -> pd.Series:
+    """gsis_id from name + draft year + overall pick, else name + birth date, where unambiguous.
+
+    Retired players' contract rows often carry neither a gsis_id nor an otc_id the players table
+    knows (Joe Thomas's 2011 extension is one), so they would silently read as "no deal".
+    """
+    players = load_players()
+    right = pd.DataFrame(
+        {
+            "name": players["display_name"],
+            "draft_year": pd.to_numeric(players["draft_year"], errors="coerce"),
+            "pick": pd.to_numeric(players["draft_pick"], errors="coerce"),
+            "born": players["birth_date"],
+            "gsis_id": players["gsis_id"],
+        }
+    )
+    left = pd.DataFrame(
+        {
+            "name": contracts["player"],
+            "draft_year": pd.to_numeric(contracts["draft_year"], errors="coerce"),
+            "pick": pd.to_numeric(contracts["draft_overall"], errors="coerce"),
+            "born": pd.to_datetime(contracts["date_of_birth"], errors="coerce", format="mixed"),
+        }
+    )
+    out = pd.Series(pd.NA, index=contracts.index, dtype="object")
+    for key in (["name", "draft_year", "pick"], ["name", "born"]):
+        unique = right.dropna(subset=key).drop_duplicates(key, keep=False)
+        lookup = unique.set_index(key)["gsis_id"]
+        found = lookup.reindex(pd.MultiIndex.from_frame(left[key])).to_numpy()
+        out = out.where(out.notna(), pd.Series(found, index=contracts.index))
+    return out
+
+
 @cache
 def load_contracts() -> pd.DataFrame:
     df = pd.read_parquet(fetch(CONTRACTS_URL))
     via_otc = pd.to_numeric(df["otc_id"], errors="coerce").map(otc_to_gsis())
     direct = df["gsis_id"] if "gsis_id" in df.columns else pd.Series(pd.NA, index=df.index)
     df["gsis_id"] = direct.where(direct.notna(), via_otc)
+    # A handful of rows carry the otc_id in the gsis column; they match no player as they stand.
+    known = df["gsis_id"].astype("string").str.startswith("00-").fillna(False).astype(bool)
+    df["gsis_id"] = df["gsis_id"].where(known, _gsis_by_identity(df))
     df = df.dropna(subset=["gsis_id", "year_signed", "years", "apy_cap_pct"])
-    # A handful of rows carry the otc_id in the gsis column; they match no player.
     df = df[df["gsis_id"].astype(str).str.startswith("00-")]
     df["year_signed"] = df["year_signed"].astype(int)
     df["years"] = df["years"].clip(lower=1).astype(int)

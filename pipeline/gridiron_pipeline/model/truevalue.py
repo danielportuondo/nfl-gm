@@ -3,7 +3,8 @@
 Season S's value is built from season S's evidence: what the player did (box score per game and
 per opportunity), the role he held (snap share), the market price of his current deal, the share
 of the season he was on the field and, where the box score is silent, the measured quality of his
-unit. Nothing is smoothed across seasons. The one exception is the tiny-sample rule the spec
+unit (and, for an offensive lineman's first seasons, a fading draft-slot prior). Nothing is
+smoothed across seasons. The one exception is the tiny-sample rule the spec
 allows: a player with a non-empty sample under four games is pulled toward a prior so an injured
 star is not rated on two games. That prior is his own most recent full season when he has one, the
 position mean otherwise. A player with no sample at all is not shrunk: "did not play" is
@@ -54,6 +55,13 @@ QB_TD_YARDS = 50
 # OTC books an extension as its new years on top of the deal still running, so a contract keeps
 # counting this many seasons past its listed length unless a newer one replaces it.
 CONTRACT_COVERAGE_SLACK = 2
+# Snaps a full-time player takes per game on his side of the ball; stands in for snap counts
+# before 2012.
+TEAM_SNAPS_PER_GAME = 64.0
+# Draft capital ranks an undrafted player behind the last pick of any draft. It counts in full for
+# a rookie and is gone by his fifth season.
+UNDRAFTED_PICK = 300.0
+DRAFT_PRIOR_SEASONS = 4
 
 OFFENSE = {"QB", "RB", "WR", "TE", "OL"}
 DEFENSE = {"DL", "LB", "CB", "S"}
@@ -89,11 +97,20 @@ FG_BUCKETS = ("0_19", "20_29", "30_39", "40_49", "50_59", "60_")
 # Measures standardized as z-scores rather than ranks: they pile up near a ceiling (every full-time
 # starter plays ~100% of snaps), and ranking near-ties turns noise into a full standard deviation.
 LEVEL_MEASURES = frozenset({"role", "avail", "unit"})
+# Context, not production: never shrunk as a small sample.
+CONTEXT_MEASURES = LEVEL_MEASURES | {"line_unit"}
 
 # Relative weight of each standardized measure, by position group (normalized per row). Weights
 # favor what repeats when the player does (per-game yards, first downs, pass rush, tackles, the
 # market's price) over what swings with luck (EPA per play, FG%, picks); team unit quality stays
 # where the box score is silent because it is what ties linemen and defenders to real results.
+#
+# Linemen (QA 2017 L4): pay and the unit used to decide them. DL now rate mostly on their own pass
+# rush, per game and per snap, with the market's price and the unit as small priors. OL have no
+# individual stats in nflverse, so they rate on durable full-time starting (role, avail), the unit
+# shared out by snaps played, penalties, a rookie's fading draft slot, and pay as one prior among
+# these; regressing OL's next deal on these measures ranks pay, role, avail and draft well ahead
+# of unit and penalties.
 # fmt: off
 WEIGHTS: dict[str, dict[str, float]] = {
     "QB": {"qb_epa": .12, "qb_score": .24, "qb_box": .14, "qb_cpoe": .06,
@@ -104,9 +121,10 @@ WEIGHTS: dict[str, dict[str, float]] = {
            "rec_share": .10, "pay": .14, "role": .10, "avail": .10},
     "TE": {"rec_yards": .18, "rec_fd": .08, "rec_td": .06, "rec_epa": .12, "rec_eff": .04,
            "rec_share": .06, "pay": .18, "role": .18, "avail": .10},
-    "OL": {"pay": .48, "role": .18, "unit": .22, "avail": .12},
-    "DL": {"pass_rush": .14, "tackles": .06, "splash": .06,
-           "pay": .26, "role": .24, "unit": .16, "avail": .08},
+    "OL": {"pay": .34, "role": .18, "avail": .16, "line_unit": .18, "penalties": .05,
+           "draft": .09},
+    "DL": {"pass_rush": .25, "pass_rush_rate": .19, "tackles": .10, "splash": .07,
+           "pay": .13, "role": .13, "line_unit": .04, "avail": .09},
     "LB": {"tackles": .14, "pass_rush": .06, "splash": .04,
            "pay": .27, "role": .25, "unit": .16, "avail": .08},
     "CB": {"coverage": .10, "splash": .04, "tackles": .02,
@@ -159,6 +177,7 @@ STAT_COLUMNS = (
     "pt_yards",
     "pt_net_yards",
     "pt_inside_20",
+    "penalties",
 )
 
 
@@ -286,10 +305,12 @@ def _usage_and_games(season: int, roster: pd.DataFrame) -> pd.DataFrame:
         out["off_pct"] = off_pct.reindex(out.index)
         out["def_pct"] = def_pct.reindex(out.index)
         out["st_pct"] = st_pct.reindex(out.index)
+        for side in ("offense_snaps", "defense_snaps"):
+            out[side] = by_player[side].sum().reindex(out.index).fillna(0.0)
     else:
         for col in ("snap_games", "st_games"):
             out[col] = 0.0
-        for col in ("off_pct", "def_pct", "st_pct"):
+        for col in ("off_pct", "def_pct", "st_pct", "offense_snaps", "defense_snaps"):
             out[col] = np.nan
 
     depth = load_depth_charts(season)
@@ -411,6 +432,14 @@ def season_features(season: int) -> pd.DataFrame:
     games = games.clip(upper=team_slots).fillna(0.0)
     avail = (games / team_slots).clip(0.0, 1.0)
 
+    side_snaps = pd.Series(np.nan, index=ids)
+    side_snaps[offense_mask] = usage_frame["offense_snaps"][offense_mask]
+    side_snaps[pos.isin(DEFENSE)] = usage_frame["defense_snaps"][pos.isin(DEFENSE)]
+    snaps = side_snaps.fillna(games * usage * TEAM_SNAPS_PER_GAME)
+    draft_pick = ids.to_series().map(
+        pd.to_numeric(load_players().set_index("gsis_id")["draft_pick"], errors="coerce")
+    )
+
     unit = pd.Series(0.0, index=ids)
     for group, quality in _unit_quality(season).items():
         mask = pos == group
@@ -429,6 +458,8 @@ def season_features(season: int) -> pd.DataFrame:
             "games": games.astype(float),
             "usage": usage,
             "avail": avail,
+            "snaps": snaps,
+            "draft_pick": draft_pick,
             "apy_cap_pct": market_apy_cap_pct(season, ids),
             "unit": unit.fillna(0.0),
         }
@@ -461,12 +492,16 @@ def measures(features: pd.DataFrame) -> pd.DataFrame:
 
     plays = f["attempts"] + f["sacks_suffered"] + f["carries"]
     tackles = f["def_tackles_solo"] + 0.5 * f["def_tackle_assists"]
+    pressure = f["def_sacks"] + 0.5 * f["def_qb_hits"] + 0.5 * f["def_tackles_for_loss"]
     return pd.DataFrame(
         {
             "role": f["usage"],
             "avail": f["avail"],
             "unit": f["unit"],
             "pay": f["apy_cap_pct"],
+            "draft": -f["draft_pick"].fillna(UNDRAFTED_PICK),
+            "penalties": -per_try(f["penalties"], f["snaps"], k=300.0),
+            "pass_rush_rate": per_try(pressure, f["snaps"], k=200.0),
             "qb_epa": per_try(f["passing_epa"] + f["rushing_epa"], plays, k=150.0),
             # Adjusted net yards with the legs counted like the arm: a 1,200-yard rushing season
             # is worth what 1,200 passing yards are.
@@ -504,9 +539,7 @@ def measures(features: pd.DataFrame) -> pd.DataFrame:
             "rec_eff": per_try(f["receiving_epa"], f["targets"], k=40.0),
             "rec_epa": per_game(f["receiving_epa"] + f["rushing_epa"]),
             "rec_share": f["target_share"],
-            "pass_rush": per_game(
-                f["def_sacks"] + 0.5 * f["def_qb_hits"] + 0.5 * f["def_tackles_for_loss"]
-            ),
+            "pass_rush": per_game(pressure),
             "tackles": per_game(tackles),
             "coverage": per_game(f["def_pass_defended"] + 1.5 * f["def_interceptions"]),
             "splash": per_game(
@@ -542,6 +575,13 @@ def _standardized(features: pd.DataFrame, raw: pd.DataFrame) -> pd.DataFrame:
             out.loc[market, name] = _rank_normal(raw.loc[market, name], pay_groups[market])
         else:
             out[name] = _rank_normal(raw[name], groups)
+    # A lineman shares his unit's result in proportion to the snaps he played in it, so a backup
+    # is neither credited for a great line nor blamed for a bad one.
+    participation = (features["usage"] * features["avail"]).clip(0.0, 1.0)
+    out["line_unit"] = out["unit"] * participation
+    # Draft slot is the scouts' pre-NFL guess; it fades as the player's own seasons replace it.
+    fade = (1.0 - features["years_exp"] / DRAFT_PRIOR_SEASONS).clip(0.0, 1.0)
+    out["draft"] = out["draft"] * fade
     return out
 
 
@@ -561,8 +601,8 @@ def _latent(
     tiny = (games > 0) & (games < MIN_GAMES_FOR_FULL_WEIGHT)
     shrink = pd.Series(1.0, index=features.index)
     shrink[tiny] = games[tiny] / MIN_GAMES_FOR_FULL_WEIGHT
-    evidence = [c for c in scores.columns if c != "pay"]
-    produced = [c for c in evidence if c not in {"role", "avail", "unit"}]
+    evidence = [c for c in scores.columns if c not in {"pay", "draft"}]
+    produced = [c for c in evidence if c not in CONTEXT_MEASURES]
     scores[produced] = scores[produced].mul(shrink, axis=0)
 
     # Rookie-scale pay prices what a team expected on draft night, not what the player has done in
