@@ -84,7 +84,8 @@ function assetErrors(state: LeagueState, side: TradeProposal['offer']): string[]
  * In the offseason: next season's cap against the contracts that will still be on the books when it
  * starts — those with a season of control left (`controlSeasons` ≥ 1, the engine's real expiry: the
  * camp rollover drops every older deal on its last year, but a deal signed this offseason carries all
- * its years). Dead money resets at that rollover, so it is left out.
+ * its years). This season's dead money resets at that rollover; dead money from offseason releases is
+ * already booked on next season (`carriedDeadMoney`), so only that counts.
  */
 interface CapBook {
   cap: number
@@ -110,8 +111,11 @@ function capBook(state: LeagueState, ctx: EngineContext): CapBook {
   return {
     cap: ctx.modules.fa.capFor(state.season + 1, ctx),
     salary,
-    payroll: (teamId) =>
-      (state.teams[teamId]?.roster ?? []).reduce((sum, slot) => sum + salary(slot.playerId), 0),
+    payroll: (teamId) => {
+      const team = state.teams[teamId]
+      const contracts = (team?.roster ?? []).reduce((sum, slot) => sum + salary(slot.playerId), 0)
+      return contracts + (team?.carriedDeadMoney ?? 0)
+    },
     label: ' next season',
   }
 }
