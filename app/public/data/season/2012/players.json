@@ -11115,6 +11115,23 @@
       "weightLb": 265.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 9
+        }
+      ],
       "birthYear": 1985,
       "college": "Michigan",
       "draft": {
@@ -15201,7 +15218,7 @@
         {
           "from": 11,
           "reason": "injury",
-          "to": 15
+          "to": 16
         }
       ],
       "birthYear": 1980,
@@ -17058,6 +17075,13 @@
       "weightLb": 185.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
+        }
+      ],
       "birthYear": 1986,
       "college": "USC",
       "draft": {
@@ -20030,6 +20054,13 @@
       "weightLb": 200.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1983,
       "draft": {
         "pick": 92,
@@ -20316,6 +20347,11 @@
           "from": 6,
           "reason": "injury",
           "to": 6
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 22
         }
       ],
       "birthYear": 1982,
@@ -28268,6 +28304,18 @@
       "weightLb": 288.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 3
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1975,
       "college": "Boston College",
       "draft": {
@@ -35949,6 +35997,13 @@
       "weightLb": 234.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1990,
       "college": "Baylor",
       "draft": {
@@ -47600,6 +47655,18 @@
       "weightLb": 291.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 12
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1984,
       "college": "Utah",
       "draft": {

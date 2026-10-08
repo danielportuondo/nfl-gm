@@ -554,9 +554,10 @@
                   "enum": [
                     "injury",
                     "suspension",
-                    "out"
+                    "out",
+                    "benched"
                   ],
-                  "description": "injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad)."
+                  "description": "injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad); benched = a healthy consensus starter who really sat behind a lower-rated teammate (AI teams sit him; the user team ignores it)."
                 }
               },
               "required": [

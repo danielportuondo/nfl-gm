@@ -766,6 +766,18 @@
       "weightLb": 220.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        },
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        }
+      ],
       "birthYear": 1983,
       "draft": {
         "pick": 92,
@@ -1654,7 +1666,7 @@
         "ovr": 66.3,
         "pot": 69.2
       },
-      "team": "WAS",
+      "team": null,
       "trueValue": 53.4,
       "weightLb": 218.0
     },
@@ -3867,6 +3879,16 @@
           "from": 1,
           "reason": "out",
           "to": 8
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1986,
@@ -5486,6 +5508,41 @@
       "team": "NYG",
       "trueValue": 60.3,
       "weightLb": 266.0
+    },
+    {
+      "absences": [
+        {
+          "from": 9,
+          "reason": "out",
+          "to": 9
+        },
+        {
+          "from": 12,
+          "reason": "out",
+          "to": 22
+        }
+      ],
+      "birthYear": 1971,
+      "draft": {
+        "pick": 8,
+        "round": 1,
+        "season": 1995,
+        "team": "SEA"
+      },
+      "heightIn": 71.0,
+      "id": "00-0005720",
+      "name": "Joey Galloway",
+      "pos": "WR",
+      "real": true,
+      "rookieSeason": 1995,
+      "scouting": {
+        "confidence": 0.95,
+        "ovr": 64.4,
+        "pot": 64.4
+      },
+      "team": "WAS",
+      "trueValue": 58.4,
+      "weightLb": 197.0
     },
     {
       "absences": [
@@ -12499,6 +12556,11 @@
           "from": 10,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 13
         }
       ],
       "birthYear": 1984,
@@ -15628,7 +15690,7 @@
         {
           "from": 13,
           "reason": "injury",
-          "to": 14
+          "to": 15
         }
       ],
       "birthYear": 1980,
@@ -17568,6 +17630,13 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 22
+        }
+      ],
       "birthYear": 1982,
       "draft": {
         "pick": 106,
@@ -18034,6 +18103,18 @@
       "weightLb": 300.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        }
+      ],
       "birthYear": 1981,
       "draft": {
         "pick": 25,
@@ -20002,6 +20083,18 @@
       "weightLb": 185.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 16
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1976,
       "draft": {
         "pick": 2,
@@ -21237,6 +21330,18 @@
       "weightLb": 210.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        },
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 22
+        }
+      ],
       "birthYear": 1969,
       "draft": {
         "pick": 33,
@@ -22200,6 +22305,13 @@
       "weightLb": 255.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        }
+      ],
       "birthYear": 1972,
       "draft": {
         "pick": 5,
@@ -31159,6 +31271,11 @@
     {
       "absences": [
         {
+          "from": 7,
+          "reason": "benched",
+          "to": 8
+        },
+        {
           "from": 11,
           "reason": "injury",
           "to": 11
@@ -34102,6 +34219,13 @@
       "weightLb": 221.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
+        }
+      ],
       "birthYear": 1985,
       "college": "Michigan",
       "draft": {
@@ -35251,6 +35375,13 @@
       "weightLb": 249.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        }
+      ],
       "birthYear": 1982,
       "college": "USC",
       "draft": {
@@ -37070,7 +37201,7 @@
         {
           "from": 5,
           "reason": "injury",
-          "to": 5
+          "to": 7
         }
       ],
       "birthYear": 1980,
@@ -39285,6 +39416,13 @@
       "weightLb": 315.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        }
+      ],
       "birthYear": 1987,
       "college": "Northwestern",
       "draft": {
@@ -46929,6 +47067,13 @@
       "weightLb": 256.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1983,
       "college": "California",
       "draft": {
@@ -47257,6 +47402,11 @@
           "from": 1,
           "reason": "injury",
           "to": 2
+        },
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 4
         }
       ],
       "birthYear": 1980,
@@ -48249,6 +48399,13 @@
       "weightLb": 300.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        }
+      ],
       "birthYear": 1974,
       "draft": {
         "pick": 60,

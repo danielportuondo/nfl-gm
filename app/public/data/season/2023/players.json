@@ -179,6 +179,11 @@
           "to": 3
         },
         {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
           "from": 6,
           "reason": "out",
           "to": 22
@@ -308,9 +313,19 @@
     {
       "absences": [
         {
+          "from": 2,
+          "reason": "benched",
+          "to": 6
+        },
+        {
           "from": 8,
           "reason": "out",
           "to": 8
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
         },
         {
           "from": 13,
@@ -369,6 +384,26 @@
     },
     {
       "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 14
+        },
         {
           "from": 15,
           "reason": "out",
@@ -497,6 +532,11 @@
           "from": 1,
           "reason": "out",
           "to": 7
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
         },
         {
           "from": 17,
@@ -912,6 +952,13 @@
       "weightLb": 321.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
+        }
+      ],
       "birthYear": 1995,
       "college": "Valdosta State",
       "draft": null,
@@ -1065,6 +1112,18 @@
       "weightLb": 267.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 16
+        }
+      ],
       "birthYear": 2000,
       "college": "Illinois",
       "draft": {
@@ -1144,6 +1203,28 @@
       "weightLb": 300.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 15
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1995,
       "college": "Auburn",
       "draft": {
@@ -1321,6 +1402,11 @@
     {
       "absences": [
         {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
+        },
+        {
           "from": 16,
           "reason": "injury",
           "to": 22
@@ -1465,6 +1551,18 @@
       "weightLb": 293.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        }
+      ],
       "birthYear": 1999,
       "college": "Iowa State",
       "draft": {
@@ -1530,6 +1628,11 @@
           "from": 10,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
         }
       ],
       "birthYear": 1994,
@@ -1572,9 +1675,14 @@
     {
       "absences": [
         {
+          "from": 1,
+          "reason": "benched",
+          "to": 2
+        },
+        {
           "from": 8,
           "reason": "injury",
-          "to": 13
+          "to": 14
         }
       ],
       "birthYear": 2000,
@@ -1601,6 +1709,13 @@
       "weightLb": 202.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        }
+      ],
       "birthYear": 1995,
       "college": "Colorado",
       "draft": {
@@ -1737,6 +1852,11 @@
     {
       "absences": [
         {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
           "from": 12,
           "reason": "injury",
           "to": 13
@@ -1828,6 +1948,18 @@
       "weightLb": 194.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1994,
       "college": "Duke",
       "draft": null,
@@ -2006,6 +2138,13 @@
       "weightLb": 317.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 13
+        }
+      ],
       "birthYear": 1995,
       "college": "Brigham Young",
       "draft": null,
@@ -2049,6 +2188,11 @@
           "from": 1,
           "reason": "injury",
           "to": 11
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
         }
       ],
       "birthYear": 1992,
@@ -2179,9 +2323,9 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
-          "to": 3
+          "to": 4
         }
       ],
       "birthYear": 1995,
@@ -2203,6 +2347,13 @@
       "weightLb": 200.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 3
+        }
+      ],
       "birthYear": 2001,
       "college": "Brigham Young",
       "draft": {
@@ -2283,6 +2434,11 @@
     },
     {
       "absences": [
+        {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
         {
           "from": 12,
           "reason": "injury",
@@ -2479,10 +2635,15 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 2
+          "to": 3
         },
         {
-          "from": 16,
+          "from": 11,
+          "reason": "injury",
+          "to": 11
+        },
+        {
+          "from": 15,
           "reason": "injury",
           "to": 22
         }
@@ -2535,6 +2696,13 @@
       "weightLb": 280.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        }
+      ],
       "birthYear": 2000,
       "college": "East Carolina",
       "draft": null,
@@ -2556,14 +2724,14 @@
     {
       "absences": [
         {
-          "from": 4,
+          "from": 3,
           "reason": "injury",
           "to": 5
         },
         {
           "from": 7,
           "reason": "injury",
-          "to": 7
+          "to": 8
         }
       ],
       "birthYear": 1993,
@@ -2659,6 +2827,13 @@
       "weightLb": 225.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 22
+        }
+      ],
       "birthYear": 1994,
       "college": "Eastern Michigan",
       "draft": null,
@@ -2706,6 +2881,11 @@
     {
       "absences": [
         {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
           "from": 7,
           "reason": "injury",
           "to": 7
@@ -2739,10 +2919,10 @@
         {
           "from": 6,
           "reason": "injury",
-          "to": 6
+          "to": 7
         },
         {
-          "from": 16,
+          "from": 15,
           "reason": "injury",
           "to": 22
         }
@@ -2826,6 +3006,13 @@
       "weightLb": 246.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        }
+      ],
       "birthYear": 2000,
       "college": "Miami",
       "draft": {
@@ -3005,7 +3192,7 @@
           "to": 7
         },
         {
-          "from": 16,
+          "from": 15,
           "reason": "injury",
           "to": 22
         }
@@ -3034,6 +3221,23 @@
       "weightLb": 314.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 7
+        },
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1993,
       "college": "Old Dominion",
       "draft": null,
@@ -3054,6 +3258,11 @@
     },
     {
       "absences": [
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        },
         {
           "from": 10,
           "reason": "injury",
@@ -3299,7 +3508,7 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
           "to": 6
         }
@@ -3338,6 +3547,11 @@
           "from": 6,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 17
         }
       ],
       "birthYear": 1995,
@@ -3369,6 +3583,11 @@
           "from": 3,
           "reason": "injury",
           "to": 5
+        },
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
         },
         {
           "from": 13,
@@ -3469,6 +3688,11 @@
     {
       "absences": [
         {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        },
+        {
           "from": 11,
           "reason": "injury",
           "to": 11
@@ -3498,6 +3722,13 @@
       "weightLb": 240.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1986,
       "college": "Notre Dame",
       "draft": null,
@@ -3656,6 +3887,23 @@
       "weightLb": 264.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 6
+        },
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 10
+        }
+      ],
       "birthYear": 1994,
       "college": "Indiana",
       "draft": {
@@ -3684,10 +3932,15 @@
         {
           "from": 3,
           "reason": "injury",
-          "to": 11
+          "to": 12
         },
         {
-          "from": 17,
+          "from": 15,
+          "reason": "benched",
+          "to": 15
+        },
+        {
+          "from": 16,
           "reason": "injury",
           "to": 22
         }
@@ -3721,6 +3974,11 @@
           "from": 1,
           "reason": "out",
           "to": 11
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
         }
       ],
       "birthYear": 1993,
@@ -3749,7 +4007,7 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
           "to": 4
         }
@@ -3850,6 +4108,28 @@
       "weightLb": 195.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        },
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1996,
       "college": "Texas",
       "draft": {
@@ -3874,6 +4154,18 @@
       "weightLb": 233.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1995,
       "college": "Central Florida",
       "draft": {
@@ -3922,6 +4214,13 @@
       "weightLb": 280.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1999,
       "college": "Troy",
       "draft": {
@@ -4002,6 +4301,11 @@
     },
     {
       "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
         {
           "from": 10,
           "reason": "injury",
@@ -4211,6 +4515,13 @@
       "weightLb": 330.0
     },
     {
+      "absences": [
+        {
+          "from": 13,
+          "reason": "injury",
+          "to": 13
+        }
+      ],
       "birthYear": 1994,
       "college": "Arkansas",
       "draft": {
@@ -4266,6 +4577,13 @@
       "weightLb": 213.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1995,
       "college": "Tennessee",
       "draft": {
@@ -4381,6 +4699,11 @@
           "from": 5,
           "reason": "out",
           "to": 5
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
         }
       ],
       "birthYear": 1994,
@@ -4590,6 +4913,11 @@
     {
       "absences": [
         {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
           "from": 11,
           "reason": "injury",
           "to": 14
@@ -4624,6 +4952,13 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 12
+        }
+      ],
       "birthYear": 1995,
       "college": "Nebraska",
       "draft": null,
@@ -4910,7 +5245,7 @@
         {
           "from": 15,
           "reason": "injury",
-          "to": 15
+          "to": 16
         },
         {
           "from": 18,
@@ -5225,6 +5560,18 @@
       "weightLb": 335.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 2001,
       "college": "Louisville",
       "draft": {
@@ -6161,6 +6508,13 @@
       "weightLb": 313.0
     },
     {
+      "absences": [
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        }
+      ],
       "birthYear": 1996,
       "college": "Purdue",
       "draft": {
@@ -6185,6 +6539,13 @@
       "weightLb": 255.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 22
+        }
+      ],
       "birthYear": 2001,
       "college": "Maryland",
       "draft": {
@@ -6273,6 +6634,13 @@
       "weightLb": 235.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
+        }
+      ],
       "birthYear": 2002,
       "college": "Oklahoma",
       "draft": {
@@ -6387,7 +6755,7 @@
     {
       "absences": [
         {
-          "from": 18,
+          "from": 16,
           "reason": "injury",
           "to": 22
         }
@@ -7094,6 +7462,13 @@
       "weightLb": 240.0
     },
     {
+      "absences": [
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 9
+        }
+      ],
       "birthYear": 1996,
       "college": "Syracuse",
       "draft": {
@@ -7143,6 +7518,23 @@
       "weightLb": 245.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
+        },
+        {
+          "from": 18,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1995,
       "college": "Iowa State",
       "draft": null,
@@ -7241,6 +7633,13 @@
       "weightLb": 189.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        }
+      ],
       "birthYear": 1996,
       "college": "Southern Methodist",
       "draft": null,
@@ -7417,6 +7816,11 @@
           "from": 1,
           "reason": "out",
           "to": 16
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1996,
@@ -7739,9 +8143,19 @@
     {
       "absences": [
         {
+          "from": 3,
+          "reason": "benched",
+          "to": 4
+        },
+        {
           "from": 10,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
         },
         {
           "from": 16,
@@ -7773,6 +8187,11 @@
           "from": 9,
           "reason": "injury",
           "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1989,
@@ -7926,6 +8345,11 @@
           "from": 12,
           "reason": "out",
           "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1995,
@@ -7984,6 +8408,11 @@
     },
     {
       "absences": [
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 11
+        },
         {
           "from": 14,
           "reason": "injury",
@@ -8057,6 +8486,23 @@
       "weightLb": 320.0
     },
     {
+      "absences": [
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1990,
       "college": "Kentucky",
       "draft": {
@@ -8169,6 +8615,13 @@
       "weightLb": 250.0
     },
     {
+      "absences": [
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1989,
       "college": "Auburn",
       "draft": null,
@@ -8207,6 +8660,13 @@
       "weightLb": 187.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        }
+      ],
       "birthYear": 1993,
       "college": "Southern Methodist",
       "draft": null,
@@ -8250,6 +8710,13 @@
       "weightLb": 345.0
     },
     {
+      "absences": [
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        }
+      ],
       "birthYear": 1993,
       "college": "Texas State",
       "draft": {
@@ -8458,6 +8925,11 @@
           "from": 1,
           "reason": "injury",
           "to": 1
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
         }
       ],
       "birthYear": 1996,
@@ -8601,6 +9073,13 @@
       "weightLb": 230.0
     },
     {
+      "absences": [
+        {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        }
+      ],
       "birthYear": 1996,
       "college": "Florida State",
       "draft": {
@@ -8625,6 +9104,13 @@
       "weightLb": 215.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1986,
       "college": "Tennessee",
       "draft": null,
@@ -9303,6 +9789,23 @@
       "weightLb": 245.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
+          "from": 13,
+          "reason": "injury",
+          "to": 13
+        }
+      ],
       "birthYear": 1997,
       "college": "Central Florida",
       "draft": {
@@ -9407,7 +9910,22 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 1
+          "to": 2
+        },
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 6
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 15
         }
       ],
       "birthYear": 1989,
@@ -9434,6 +9952,23 @@
       "weightLb": 308.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        }
+      ],
       "birthYear": 1997,
       "college": "Virginia Tech",
       "draft": {
@@ -9460,9 +9995,14 @@
     {
       "absences": [
         {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        },
+        {
           "from": 14,
           "reason": "injury",
-          "to": 14
+          "to": 15
         }
       ],
       "birthYear": 1992,
@@ -9676,7 +10216,7 @@
         {
           "from": 3,
           "reason": "injury",
-          "to": 3
+          "to": 5
         }
       ],
       "birthYear": 1997,
@@ -9703,6 +10243,13 @@
       "weightLb": 233.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1988,
       "college": "Wisconsin",
       "draft": {
@@ -9817,9 +10364,14 @@
     {
       "absences": [
         {
-          "from": 4,
+          "from": 3,
           "reason": "injury",
           "to": 4
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 22
         }
       ],
       "birthYear": 1998,
@@ -9980,6 +10532,13 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 4
+        }
+      ],
       "birthYear": 1997,
       "college": "Louisiana State",
       "draft": {
@@ -10128,6 +10687,11 @@
     {
       "absences": [
         {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
           "from": 8,
           "reason": "injury",
           "to": 22
@@ -10162,6 +10726,11 @@
           "from": 6,
           "reason": "out",
           "to": 7
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
         },
         {
           "from": 10,
@@ -10649,6 +11218,11 @@
           "from": 9,
           "reason": "injury",
           "to": 9
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
         }
       ],
       "birthYear": 1995,
@@ -10700,6 +11274,16 @@
     },
     {
       "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        },
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 8
+        },
         {
           "from": 13,
           "reason": "injury",
@@ -10994,7 +11578,12 @@
         {
           "from": 8,
           "reason": "injury",
-          "to": 9
+          "to": 10
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 15
         }
       ],
       "birthYear": 1988,
@@ -11173,7 +11762,7 @@
         {
           "from": 14,
           "reason": "injury",
-          "to": 15
+          "to": 16
         }
       ],
       "birthYear": 1995,
@@ -11375,7 +11964,7 @@
         {
           "from": 3,
           "reason": "injury",
-          "to": 3
+          "to": 4
         }
       ],
       "birthYear": 1993,
@@ -12060,6 +12649,11 @@
           "from": 11,
           "reason": "injury",
           "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 15
         }
       ],
       "birthYear": 1995,
@@ -12201,6 +12795,13 @@
       "weightLb": 327.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        }
+      ],
       "birthYear": 1990,
       "college": "San Diego State",
       "draft": null,
@@ -12340,6 +12941,16 @@
           "from": 2,
           "reason": "injury",
           "to": 8
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
         }
       ],
       "birthYear": 1999,
@@ -12390,6 +13001,18 @@
       "weightLb": 325.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
+        }
+      ],
       "birthYear": 1997,
       "college": "Miami",
       "draft": {
@@ -12466,7 +13089,7 @@
         {
           "from": 3,
           "reason": "injury",
-          "to": 8
+          "to": 9
         },
         {
           "from": 15,
@@ -12575,6 +13198,16 @@
           "from": 1,
           "reason": "injury",
           "to": 5
+        },
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 13
         }
       ],
       "birthYear": 1996,
@@ -12707,7 +13340,7 @@
         {
           "from": 6,
           "reason": "injury",
-          "to": 8
+          "to": 9
         },
         {
           "from": 13,
@@ -12950,6 +13583,11 @@
           "to": 7
         },
         {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        },
+        {
           "from": 16,
           "reason": "out",
           "to": 16
@@ -13134,6 +13772,28 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        }
+      ],
       "birthYear": 1992,
       "college": "West Virginia",
       "draft": {
@@ -13353,6 +14013,11 @@
           "from": 1,
           "reason": "injury",
           "to": 8
+        },
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
         }
       ],
       "birthYear": 1997,
@@ -13524,6 +14189,18 @@
       "weightLb": 290.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 3
+        },
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        }
+      ],
       "birthYear": 1998,
       "college": "Wake Forest",
       "draft": null,
@@ -13861,6 +14538,13 @@
       "weightLb": 208.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1997,
       "college": "Boston College",
       "draft": {
@@ -13889,7 +14573,7 @@
         {
           "from": 2,
           "reason": "injury",
-          "to": 2
+          "to": 4
         }
       ],
       "birthYear": 1995,
@@ -14368,6 +15052,13 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        }
+      ],
       "birthYear": 1997,
       "college": "Mississippi",
       "draft": {
@@ -14504,6 +15195,11 @@
     {
       "absences": [
         {
+          "from": 2,
+          "reason": "injury",
+          "to": 3
+        },
+        {
           "from": 7,
           "reason": "injury",
           "to": 10
@@ -14533,6 +15229,23 @@
       "weightLb": 316.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1992,
       "college": "Kansas State",
       "draft": {
@@ -14768,6 +15481,13 @@
       "weightLb": 191.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1992,
       "college": "William &amp; Mary",
       "draft": null,
@@ -14870,7 +15590,7 @@
     {
       "absences": [
         {
-          "from": 18,
+          "from": 15,
           "reason": "injury",
           "to": 22
         }
@@ -15033,6 +15753,11 @@
           "to": 14
         },
         {
+          "from": 15,
+          "reason": "benched",
+          "to": 16
+        },
+        {
           "from": 17,
           "reason": "out",
           "to": 22
@@ -15062,6 +15787,13 @@
       "weightLb": 210.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        }
+      ],
       "birthYear": 1997,
       "college": "Clemson",
       "draft": {
@@ -15263,6 +15995,11 @@
           "to": 2
         },
         {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        },
+        {
           "from": 6,
           "reason": "out",
           "to": 12
@@ -15292,6 +16029,13 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1990,
       "college": "West Virginia",
       "draft": {
@@ -15582,11 +16326,6 @@
       "absences": [
         {
           "from": 6,
-          "reason": "injury",
-          "to": 6
-        },
-        {
-          "from": 8,
           "reason": "injury",
           "to": 8
         },
@@ -16638,6 +17377,11 @@
           "from": 1,
           "reason": "out",
           "to": 2
+        },
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 5
         }
       ],
       "birthYear": 1994,
@@ -16738,6 +17482,18 @@
       "weightLb": 235.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 11
+        }
+      ],
       "birthYear": 1991,
       "college": "Kansas State",
       "draft": null,
@@ -16762,6 +17518,11 @@
           "from": 1,
           "reason": "out",
           "to": 1
+        },
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
         },
         {
           "from": 3,
@@ -16955,6 +17716,21 @@
     {
       "absences": [
         {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 17
+        },
+        {
           "from": 18,
           "reason": "injury",
           "to": 22
@@ -17105,7 +17881,7 @@
     {
       "absences": [
         {
-          "from": 6,
+          "from": 5,
           "reason": "injury",
           "to": 22
         }
@@ -17182,6 +17958,13 @@
       "weightLb": 220.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1997,
       "college": "Ohio State",
       "draft": null,
@@ -17205,7 +17988,7 @@
         {
           "from": 9,
           "reason": "injury",
-          "to": 9
+          "to": 10
         },
         {
           "from": 12,
@@ -17340,6 +18123,11 @@
           "from": 3,
           "reason": "injury",
           "to": 4
+        },
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
         },
         {
           "from": 9,
@@ -17495,6 +18283,13 @@
       "weightLb": 192.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "injury",
+          "to": 4
+        }
+      ],
       "birthYear": 1993,
       "college": "Auburn",
       "draft": null,
@@ -17784,6 +18579,16 @@
           "from": 5,
           "reason": "out",
           "to": 5
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 7
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
         }
       ],
       "birthYear": 1998,
@@ -18025,6 +18830,13 @@
       "weightLb": 222.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "injury",
+          "to": 3
+        }
+      ],
       "birthYear": 1999,
       "college": "Washington State",
       "draft": {
@@ -18097,6 +18909,18 @@
       "weightLb": 275.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        },
+        {
+          "from": 6,
+          "reason": "injury",
+          "to": 6
+        }
+      ],
       "birthYear": 1997,
       "college": "Michigan",
       "draft": {
@@ -18455,7 +19279,7 @@
         {
           "from": 7,
           "reason": "injury",
-          "to": 8
+          "to": 10
         }
       ],
       "birthYear": 1999,
@@ -18690,6 +19514,18 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        }
+      ],
       "birthYear": 1999,
       "college": "Duke",
       "draft": {
@@ -18898,6 +19734,13 @@
       "weightLb": 185.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
+        }
+      ],
       "birthYear": 1997,
       "college": "Southern California",
       "draft": {
@@ -19129,6 +19972,11 @@
           "from": 1,
           "reason": "injury",
           "to": 7
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
         }
       ],
       "birthYear": 1997,
@@ -19191,6 +20039,28 @@
       "weightLb": 220.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 3
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1991,
       "college": "Clemson",
       "draft": null,
@@ -19291,6 +20161,11 @@
     {
       "absences": [
         {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        },
+        {
           "from": 18,
           "reason": "injury",
           "to": 22
@@ -19320,6 +20195,18 @@
       "weightLb": 175.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 7
+        }
+      ],
       "birthYear": 1990,
       "college": "Iowa",
       "draft": null,
@@ -19551,7 +20438,7 @@
         {
           "from": 7,
           "reason": "injury",
-          "to": 7
+          "to": 8
         }
       ],
       "birthYear": 1998,
@@ -19776,6 +20663,11 @@
     {
       "absences": [
         {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
           "from": 16,
           "reason": "injury",
           "to": 22
@@ -19867,6 +20759,18 @@
       "weightLb": 300.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
+        }
+      ],
       "birthYear": 1993,
       "college": "Oklahoma",
       "draft": {
@@ -20242,6 +21146,11 @@
     {
       "absences": [
         {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
           "from": 10,
           "reason": "injury",
           "to": 12
@@ -20410,6 +21319,13 @@
       "weightLb": 200.0
     },
     {
+      "absences": [
+        {
+          "from": 6,
+          "reason": "injury",
+          "to": 6
+        }
+      ],
       "birthYear": 1997,
       "college": "Louisiana State",
       "draft": {
@@ -20714,6 +21630,13 @@
       "weightLb": 307.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
+        }
+      ],
       "birthYear": 1997,
       "college": "Texas Tech",
       "draft": {
@@ -21009,7 +21932,22 @@
         {
           "from": 7,
           "reason": "injury",
-          "to": 7
+          "to": 8
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1998,
@@ -21036,6 +21974,13 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
+        }
+      ],
       "birthYear": 1998,
       "college": "Memphis",
       "draft": {
@@ -21191,6 +22136,13 @@
       "weightLb": 250.0
     },
     {
+      "absences": [
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        }
+      ],
       "birthYear": 1997,
       "college": "Miami",
       "draft": {
@@ -21311,6 +22263,13 @@
       "weightLb": 305.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        }
+      ],
       "birthYear": 1997,
       "college": "California",
       "draft": {
@@ -21401,7 +22360,7 @@
         {
           "from": 10,
           "reason": "injury",
-          "to": 11
+          "to": 12
         }
       ],
       "birthYear": 1998,
@@ -21601,7 +22560,17 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 1
+          "to": 2
+        },
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1999,
@@ -21714,6 +22683,13 @@
       "weightLb": 319.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        }
+      ],
       "birthYear": 1999,
       "college": "Alabama",
       "draft": {
@@ -21764,7 +22740,12 @@
     {
       "absences": [
         {
-          "from": 7,
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
+          "from": 6,
           "reason": "injury",
           "to": 7
         }
@@ -21831,9 +22812,9 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
-          "to": 7
+          "to": 8
         }
       ],
       "birthYear": 1999,
@@ -22001,6 +22982,38 @@
       "weightLb": 303.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1998,
       "college": "UCLA",
       "draft": {
@@ -22026,6 +23039,11 @@
     },
     {
       "absences": [
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        },
         {
           "from": 16,
           "reason": "injury",
@@ -22097,6 +23115,16 @@
           "from": 1,
           "reason": "out",
           "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1990,
@@ -22418,6 +23446,11 @@
     },
     {
       "absences": [
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
         {
           "from": 17,
           "reason": "injury",
@@ -22878,6 +23911,13 @@
       "weightLb": 242.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 22
+        }
+      ],
       "birthYear": 1998,
       "college": "Oklahoma",
       "draft": {
@@ -23075,6 +24115,11 @@
     },
     {
       "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 3
+        },
         {
           "from": 10,
           "reason": "injury",
@@ -23444,6 +24489,11 @@
     {
       "absences": [
         {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        },
+        {
           "from": 12,
           "reason": "injury",
           "to": 22
@@ -23645,6 +24695,11 @@
     {
       "absences": [
         {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        },
+        {
           "from": 15,
           "reason": "injury",
           "to": 15
@@ -23679,6 +24734,11 @@
           "from": 1,
           "reason": "out",
           "to": 8
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
         },
         {
           "from": 11,
@@ -23889,6 +24949,13 @@
       "weightLb": 207.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 2000,
       "college": "Ohio State",
       "draft": {
@@ -24161,6 +25228,11 @@
           "from": 1,
           "reason": "out",
           "to": 13
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1991,
@@ -24488,7 +25560,7 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
           "to": 3
         }
@@ -24549,6 +25621,11 @@
     },
     {
       "absences": [
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        },
         {
           "from": 18,
           "reason": "injury",
@@ -24687,6 +25764,18 @@
       "weightLb": 355.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 6
+        }
+      ],
       "birthYear": 1993,
       "college": "Stanford",
       "draft": {
@@ -24711,6 +25800,13 @@
       "weightLb": 316.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 2
+        }
+      ],
       "birthYear": 2001,
       "college": "Kentucky",
       "draft": {
@@ -24759,6 +25855,23 @@
       "weightLb": 332.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 2000,
       "college": "Clemson",
       "draft": {
@@ -24783,6 +25896,13 @@
       "weightLb": 200.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        }
+      ],
       "birthYear": 1999,
       "college": "Louisiana State",
       "draft": {
@@ -24936,6 +26056,18 @@
       "weightLb": 207.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "injury",
+          "to": 2
+        },
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 9
+        }
+      ],
       "birthYear": 1999,
       "college": "Virginia Tech",
       "draft": {
@@ -25006,6 +26138,38 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 7
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        },
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
+        },
+        {
+          "from": 18,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 2000,
       "college": "Michigan",
       "draft": {
@@ -25056,9 +26220,19 @@
     {
       "absences": [
         {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
           "from": 7,
           "reason": "injury",
           "to": 7
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1991,
@@ -25109,6 +26283,18 @@
       "weightLb": 312.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1992,
       "college": "Navy",
       "draft": {
@@ -25154,7 +26340,7 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
           "to": 3
         },
@@ -25203,6 +26389,11 @@
           "from": 7,
           "reason": "out",
           "to": 7
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
         },
         {
           "from": 14,
@@ -25724,7 +26915,12 @@
     {
       "absences": [
         {
-          "from": 6,
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        },
+        {
+          "from": 4,
           "reason": "injury",
           "to": 6
         },
@@ -25782,6 +26978,13 @@
       "weightLb": 255.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1999,
       "college": "Louisiana-Lafayette",
       "draft": {
@@ -26014,6 +27217,13 @@
       "weightLb": 178.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        }
+      ],
       "birthYear": 1995,
       "college": "Louisiana State",
       "draft": {
@@ -26093,6 +27303,21 @@
           "from": 10,
           "reason": "out",
           "to": 10
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 2001,
@@ -26282,6 +27507,11 @@
           "from": 1,
           "reason": "out",
           "to": 11
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1991,
@@ -26418,7 +27648,7 @@
     {
       "absences": [
         {
-          "from": 5,
+          "from": 4,
           "reason": "injury",
           "to": 7
         }
@@ -26664,9 +27894,19 @@
     {
       "absences": [
         {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        },
+        {
           "from": 11,
           "reason": "out",
           "to": 16
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1998,
@@ -26795,6 +28035,13 @@
       "weightLb": 170.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 22
+        }
+      ],
       "birthYear": 1999,
       "college": "Boston College",
       "draft": {
@@ -26847,7 +28094,7 @@
         {
           "from": 2,
           "reason": "injury",
-          "to": 3
+          "to": 4
         }
       ],
       "birthYear": 2000,
@@ -26967,6 +28214,18 @@
       "weightLb": 195.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1999,
       "college": "Pittsburgh",
       "draft": {
@@ -26996,6 +28255,11 @@
           "from": 1,
           "reason": "injury",
           "to": 5
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
         }
       ],
       "birthYear": 2000,
@@ -27048,6 +28312,13 @@
       "weightLb": 210.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1993,
       "college": "Kentucky",
       "draft": {
@@ -27794,7 +29065,12 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 1
+          "to": 2
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
         }
       ],
       "birthYear": 2000,
@@ -27907,6 +29183,13 @@
       "weightLb": 300.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1999,
       "college": "Florida",
       "draft": {
@@ -28149,9 +29432,29 @@
     {
       "absences": [
         {
+          "from": 1,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
           "from": 10,
           "reason": "injury",
-          "to": 11
+          "to": 12
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
         }
       ],
       "birthYear": 1991,
@@ -28178,6 +29481,13 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1998,
       "college": "Tulsa",
       "draft": {
@@ -28348,6 +29658,18 @@
       "weightLb": 235.0
     },
     {
+      "absences": [
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1992,
       "college": "Texas",
       "draft": null,
@@ -28476,7 +29798,7 @@
         {
           "from": 13,
           "reason": "injury",
-          "to": 13
+          "to": 14
         }
       ],
       "birthYear": 1998,
@@ -28626,7 +29948,7 @@
         {
           "from": 7,
           "reason": "injury",
-          "to": 7
+          "to": 8
         },
         {
           "from": 11,
@@ -28634,7 +29956,7 @@
           "to": 12
         },
         {
-          "from": 15,
+          "from": 14,
           "reason": "injury",
           "to": 15
         }
@@ -28723,6 +30045,23 @@
       "weightLb": 325.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1998,
       "college": "Georgia Southern",
       "draft": null,
@@ -28897,6 +30236,11 @@
     {
       "absences": [
         {
+          "from": 14,
+          "reason": "injury",
+          "to": 15
+        },
+        {
           "from": 18,
           "reason": "injury",
           "to": 22
@@ -28976,7 +30320,7 @@
     {
       "absences": [
         {
-          "from": 4,
+          "from": 3,
           "reason": "injury",
           "to": 4
         }
@@ -29053,6 +30397,13 @@
       "weightLb": 270.0
     },
     {
+      "absences": [
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1998,
       "college": "Alabama",
       "draft": {
@@ -29327,6 +30678,11 @@
     },
     {
       "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        },
         {
           "from": 9,
           "reason": "injury",
@@ -30141,6 +31497,13 @@
       "weightLb": 202.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 13
+        }
+      ],
       "birthYear": 2000,
       "college": "Michigan State",
       "draft": {
@@ -30387,12 +31750,12 @@
     {
       "absences": [
         {
-          "from": 10,
+          "from": 7,
           "reason": "injury",
-          "to": 14
+          "to": 8
         },
         {
-          "from": 16,
+          "from": 10,
           "reason": "injury",
           "to": 22
         }
@@ -30473,9 +31836,24 @@
     {
       "absences": [
         {
-          "from": 10,
+          "from": 2,
+          "reason": "injury",
+          "to": 2
+        },
+        {
+          "from": 9,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         },
         {
           "from": 18,
@@ -30783,6 +32161,13 @@
       "weightLb": 240.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        }
+      ],
       "birthYear": 1999,
       "college": "Texas-San Antonio",
       "draft": {
@@ -30807,6 +32192,13 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        }
+      ],
       "birthYear": 2000,
       "college": "North Carolina",
       "draft": {
@@ -31092,6 +32484,18 @@
       "weightLb": 320.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1999,
       "college": "Georgia",
       "draft": {
@@ -31147,6 +32551,13 @@
       "weightLb": 228.0
     },
     {
+      "absences": [
+        {
+          "from": 13,
+          "reason": "injury",
+          "to": 13
+        }
+      ],
       "birthYear": 2000,
       "college": "Notre Dame",
       "draft": {
@@ -31373,12 +32784,12 @@
         {
           "from": 9,
           "reason": "injury",
-          "to": 11
+          "to": 12
         },
         {
           "from": 14,
           "reason": "injury",
-          "to": 16
+          "to": 17
         }
       ],
       "birthYear": 1996,
@@ -31445,6 +32856,11 @@
     {
       "absences": [
         {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        },
+        {
           "from": 5,
           "reason": "injury",
           "to": 5
@@ -31452,7 +32868,12 @@
         {
           "from": 11,
           "reason": "injury",
-          "to": 11
+          "to": 12
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1998,
@@ -31627,6 +33048,13 @@
       "weightLb": 208.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        }
+      ],
       "birthYear": 1996,
       "college": "Arkansas",
       "draft": {
@@ -31682,6 +33110,13 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 8
+        }
+      ],
       "birthYear": 1994,
       "college": "Florida",
       "draft": {
@@ -31707,6 +33142,11 @@
     },
     {
       "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        },
         {
           "from": 17,
           "reason": "injury",
@@ -32086,9 +33526,24 @@
     {
       "absences": [
         {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
           "from": 9,
           "reason": "injury",
           "to": 9
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
         }
       ],
       "birthYear": 1998,
@@ -32237,6 +33692,13 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1994,
       "college": "North Carolina",
       "draft": {
@@ -32411,6 +33873,11 @@
     {
       "absences": [
         {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
           "from": 6,
           "reason": "injury",
           "to": 6
@@ -32540,7 +34007,7 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 5
+          "to": 6
         },
         {
           "from": 11,
@@ -32631,7 +34098,7 @@
         {
           "from": 12,
           "reason": "injury",
-          "to": 13
+          "to": 14
         }
       ],
       "birthYear": 1997,
@@ -32721,6 +34188,23 @@
       "weightLb": 242.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1995,
       "college": "Ohio State",
       "draft": {
@@ -32979,6 +34463,23 @@
       "weightLb": 253.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1995,
       "college": "Michigan State",
       "draft": {
@@ -33039,6 +34540,13 @@
       "weightLb": 203.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        }
+      ],
       "birthYear": 1995,
       "college": "Boise State",
       "draft": {
@@ -33276,6 +34784,13 @@
       "weightLb": 193.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 2
+        }
+      ],
       "birthYear": 1995,
       "college": "Texas A&amp;M",
       "draft": {
@@ -33301,6 +34816,16 @@
     },
     {
       "absences": [
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        },
         {
           "from": 18,
           "reason": "injury",
@@ -33362,6 +34887,18 @@
       "weightLb": 219.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 9
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1992,
       "college": "Wisconsin",
       "draft": {
@@ -33386,6 +34923,13 @@
       "weightLb": 328.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1994,
       "college": "West Alabama",
       "draft": {
@@ -33549,6 +35093,28 @@
       "weightLb": 315.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1997,
       "college": "Auburn",
       "draft": {
@@ -33621,6 +35187,13 @@
       "weightLb": 242.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        }
+      ],
       "birthYear": 1997,
       "college": "Wisconsin",
       "draft": {
@@ -33645,6 +35218,13 @@
       "weightLb": 320.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 3
+        }
+      ],
       "birthYear": 1996,
       "college": "Louisiana-Lafayette",
       "draft": {
@@ -33803,6 +35383,13 @@
       "weightLb": 216.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        }
+      ],
       "birthYear": 1995,
       "college": "Michigan",
       "draft": {
@@ -34114,6 +35701,13 @@
       "weightLb": 184.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
+        }
+      ],
       "birthYear": 1999,
       "college": "Southern California",
       "draft": {
@@ -34243,6 +35837,16 @@
           "from": 1,
           "reason": "out",
           "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 22
         }
       ],
       "birthYear": 1994,
@@ -34298,6 +35902,11 @@
           "from": 1,
           "reason": "out",
           "to": 1
+        },
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
         }
       ],
       "birthYear": 1995,
@@ -34321,7 +35930,7 @@
     {
       "absences": [
         {
-          "from": 7,
+          "from": 6,
           "reason": "injury",
           "to": 7
         }
@@ -34374,6 +35983,13 @@
       "weightLb": 308.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        }
+      ],
       "birthYear": 1998,
       "college": "Notre Dame",
       "draft": {
@@ -34648,6 +36264,13 @@
       "weightLb": 340.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        }
+      ],
       "birthYear": 1993,
       "college": "Western Kentucky",
       "draft": {
@@ -34813,6 +36436,13 @@
       "weightLb": 221.0
     },
     {
+      "absences": [
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        }
+      ],
       "birthYear": 1995,
       "college": "Colorado State",
       "draft": null,
@@ -34832,6 +36462,13 @@
       "weightLb": 240.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1998,
       "college": "Alabama",
       "draft": null,
@@ -34939,6 +36576,28 @@
       "weightLb": 228.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        },
+        {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        }
+      ],
       "birthYear": 1995,
       "college": "Boston College",
       "draft": {
@@ -35194,6 +36853,11 @@
     {
       "absences": [
         {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        },
+        {
           "from": 16,
           "reason": "injury",
           "to": 22
@@ -35352,6 +37016,13 @@
       "weightLb": 245.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        }
+      ],
       "birthYear": 1994,
       "college": "Clemson",
       "draft": {
@@ -35460,6 +37131,13 @@
       "weightLb": 228.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 2
+        }
+      ],
       "birthYear": 2001,
       "college": "Tulsa",
       "draft": {
@@ -35618,6 +37296,18 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1997,
       "college": "Louisiana State",
       "draft": {
@@ -35690,6 +37380,18 @@
       "weightLb": 240.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        },
+        {
+          "from": 13,
+          "reason": "injury",
+          "to": 16
+        }
+      ],
       "birthYear": 2000,
       "college": "Oregon",
       "draft": {
@@ -35845,7 +37547,7 @@
         {
           "from": 11,
           "reason": "injury",
-          "to": 12
+          "to": 13
         }
       ],
       "birthYear": 1995,
@@ -35874,9 +37576,14 @@
     {
       "absences": [
         {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
           "from": 6,
           "reason": "injury",
-          "to": 6
+          "to": 8
         },
         {
           "from": 15,
@@ -35909,6 +37616,16 @@
     },
     {
       "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 12
+        },
         {
           "from": 13,
           "reason": "injury",
@@ -36187,7 +37904,7 @@
         {
           "from": 15,
           "reason": "injury",
-          "to": 16
+          "to": 17
         }
       ],
       "birthYear": 1994,
@@ -36300,6 +38017,11 @@
           "to": 11
         },
         {
+          "from": 12,
+          "reason": "benched",
+          "to": 13
+        },
+        {
           "from": 14,
           "reason": "out",
           "to": 22
@@ -36398,6 +38120,13 @@
       "weightLb": 189.0
     },
     {
+      "absences": [
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 9
+        }
+      ],
       "birthYear": 1988,
       "college": "Georgia",
       "draft": {
@@ -36687,9 +38416,19 @@
     {
       "absences": [
         {
-          "from": 4,
+          "from": 3,
           "reason": "injury",
           "to": 4
+        },
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        },
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
         }
       ],
       "birthYear": 1990,
@@ -36771,6 +38510,23 @@
       "weightLb": 215.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        }
+      ],
       "birthYear": 1999,
       "college": "Toledo",
       "draft": {
@@ -36891,6 +38647,13 @@
       "weightLb": 245.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 9
+        }
+      ],
       "birthYear": 2001,
       "college": "Mississippi",
       "draft": {
@@ -37104,6 +38867,13 @@
       "weightLb": 185.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 2000,
       "college": "Alabama",
       "draft": {
@@ -37276,6 +39046,13 @@
       "weightLb": 162.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
+        }
+      ],
       "birthYear": 1998,
       "college": "South Carolina State",
       "draft": {
@@ -37310,6 +39087,11 @@
           "from": 7,
           "reason": "injury",
           "to": 9
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1992,
@@ -37376,7 +39158,12 @@
         {
           "from": 14,
           "reason": "injury",
-          "to": 16
+          "to": 17
+        },
+        {
+          "from": 18,
+          "reason": "benched",
+          "to": 22
         }
       ],
       "birthYear": 1998,
@@ -37597,6 +39384,11 @@
           "from": 1,
           "reason": "out",
           "to": 4
+        },
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 7
         },
         {
           "from": 10,
@@ -37948,6 +39740,11 @@
     {
       "absences": [
         {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
           "from": 13,
           "reason": "injury",
           "to": 13
@@ -38117,7 +39914,7 @@
     {
       "absences": [
         {
-          "from": 18,
+          "from": 17,
           "reason": "injury",
           "to": 18
         }
@@ -38548,6 +40345,13 @@
       "weightLb": 325.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1990,
       "college": "Central Florida",
       "draft": null,
@@ -38571,12 +40375,17 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 1
+          "to": 2
         },
         {
           "from": 5,
           "reason": "injury",
           "to": 8
+        },
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
         }
       ],
       "birthYear": 1991,
@@ -39087,6 +40896,13 @@
       "weightLb": 292.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
+        }
+      ],
       "birthYear": 1995,
       "college": "Notre Dame",
       "draft": {
@@ -39135,6 +40951,18 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1997,
       "college": "Western Michigan",
       "draft": {
@@ -39240,6 +41068,13 @@
       "weightLb": 212.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 1999,
       "college": "Louisville",
       "draft": {
@@ -39488,6 +41323,11 @@
           "to": 11
         },
         {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
+        },
+        {
           "from": 15,
           "reason": "injury",
           "to": 16
@@ -39522,6 +41362,13 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        }
+      ],
       "birthYear": 1995,
       "college": "Alabama",
       "draft": null,
@@ -39541,6 +41388,13 @@
       "weightLb": 179.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 8
+        }
+      ],
       "birthYear": 1994,
       "college": "Delaware",
       "draft": null,
@@ -39993,6 +41847,33 @@
       "weightLb": 258.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 8
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1996,
       "college": "San Diego State",
       "draft": {
@@ -40072,6 +41953,13 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        }
+      ],
       "birthYear": 1990,
       "college": "Oklahoma",
       "draft": {
@@ -40622,6 +42510,13 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        }
+      ],
       "birthYear": 1990,
       "college": "Notre Dame",
       "draft": {
@@ -41022,6 +42917,13 @@
       "weightLb": 195.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 18
+        }
+      ],
       "birthYear": 1992,
       "college": "Purdue",
       "draft": null,
@@ -41041,6 +42943,13 @@
       "weightLb": 197.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "injury",
+          "to": 2
+        }
+      ],
       "birthYear": 1993,
       "college": "Oregon State",
       "draft": {
@@ -41414,7 +43323,12 @@
         {
           "from": 8,
           "reason": "injury",
-          "to": 9
+          "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 22
         }
       ],
       "birthYear": 1992,
@@ -41515,6 +43429,11 @@
           "from": 10,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
         }
       ],
       "birthYear": 1999,
@@ -41596,6 +43515,18 @@
       "weightLb": 195.0
     },
     {
+      "absences": [
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 10
+        },
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        }
+      ],
       "birthYear": 2000,
       "college": "Georgia",
       "draft": {
@@ -41784,12 +43715,12 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 1
+          "to": 3
         },
         {
           "from": 14,
           "reason": "injury",
-          "to": 14
+          "to": 18
         }
       ],
       "birthYear": 1999,
@@ -42000,6 +43931,13 @@
       "weightLb": 190.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 13
+        }
+      ],
       "birthYear": 1997,
       "college": "Cincinnati",
       "draft": {
@@ -42055,6 +43993,13 @@
       "weightLb": 195.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 14
+        }
+      ],
       "birthYear": 1995,
       "college": "Washington",
       "draft": {
@@ -42291,6 +44236,11 @@
     {
       "absences": [
         {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
           "from": 5,
           "reason": "injury",
           "to": 22
@@ -42356,6 +44306,11 @@
           "from": 3,
           "reason": "injury",
           "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
         },
         {
           "from": 11,
@@ -42679,6 +44634,13 @@
       "weightLb": 305.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        }
+      ],
       "birthYear": 2000,
       "college": "Miami",
       "draft": {
@@ -42751,7 +44713,7 @@
         {
           "from": 5,
           "reason": "injury",
-          "to": 5
+          "to": 6
         },
         {
           "from": 15,
@@ -42785,9 +44747,29 @@
           "to": 5
         },
         {
+          "from": 6,
+          "reason": "benched",
+          "to": 7
+        },
+        {
           "from": 8,
           "reason": "injury",
           "to": 9
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1998,
@@ -42816,9 +44798,29 @@
     {
       "absences": [
         {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 6,
+          "reason": "injury",
+          "to": 6
+        },
+        {
           "from": 12,
           "reason": "injury",
           "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1996,
@@ -42933,6 +44935,28 @@
       "weightLb": 239.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1993,
       "college": "Marshall",
       "draft": null,
@@ -42978,9 +45002,19 @@
           "to": 5
         },
         {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        },
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        },
+        {
           "from": 16,
           "reason": "injury",
-          "to": 16
+          "to": 17
         }
       ],
       "birthYear": 1993,
@@ -43007,6 +45041,13 @@
       "weightLb": 232.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 9
+        }
+      ],
       "birthYear": 1997,
       "college": "Rice",
       "draft": null,
@@ -43026,6 +45067,23 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
+        }
+      ],
       "birthYear": 2001,
       "college": "Tulane",
       "draft": {
@@ -43105,6 +45163,18 @@
       "weightLb": 215.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1997,
       "college": "Mississippi",
       "draft": {
@@ -43134,6 +45204,11 @@
           "from": 2,
           "reason": "injury",
           "to": 2
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
         },
         {
           "from": 15,
@@ -43435,6 +45510,11 @@
     {
       "absences": [
         {
+          "from": 7,
+          "reason": "benched",
+          "to": 8
+        },
+        {
           "from": 9,
           "reason": "injury",
           "to": 16
@@ -43665,6 +45745,13 @@
       "weightLb": 305.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1998,
       "college": "Penn State",
       "draft": {
@@ -43689,6 +45776,23 @@
       "weightLb": 212.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 10
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1992,
       "college": "Temple",
       "draft": {
@@ -43866,7 +45970,7 @@
     {
       "absences": [
         {
-          "from": 4,
+          "from": 2,
           "reason": "injury",
           "to": 4
         }
@@ -43957,7 +46061,7 @@
           "to": 5
         },
         {
-          "from": 8,
+          "from": 7,
           "reason": "injury",
           "to": 14
         },
@@ -44423,6 +46527,16 @@
     {
       "absences": [
         {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
+        },
+        {
           "from": 13,
           "reason": "out",
           "to": 13
@@ -44655,9 +46769,29 @@
     {
       "absences": [
         {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
+        },
+        {
           "from": 13,
           "reason": "out",
           "to": 13
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 17
         },
         {
           "from": 18,
@@ -44770,6 +46904,18 @@
       "weightLb": 210.0
     },
     {
+      "absences": [
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
+        }
+      ],
       "birthYear": 1992,
       "college": "Western Kentucky",
       "draft": null,
@@ -44824,7 +46970,7 @@
         {
           "from": 15,
           "reason": "injury",
-          "to": 15
+          "to": 16
         }
       ],
       "birthYear": 1991,
@@ -45133,6 +47279,13 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1986,
       "college": "Baylor",
       "draft": null,
@@ -45152,6 +47305,13 @@
       "weightLb": 242.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        }
+      ],
       "birthYear": 1994,
       "college": "Clemson",
       "draft": {
@@ -45396,7 +47556,7 @@
         {
           "from": 13,
           "reason": "injury",
-          "to": 14
+          "to": 15
         }
       ],
       "birthYear": 1998,
@@ -45602,7 +47762,7 @@
     {
       "absences": [
         {
-          "from": 4,
+          "from": 2,
           "reason": "injury",
           "to": 22
         }
@@ -45936,6 +48096,18 @@
       "weightLb": 183.0
     },
     {
+      "absences": [
+        {
+          "from": 4,
+          "reason": "injury",
+          "to": 4
+        },
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 6
+        }
+      ],
       "birthYear": 1996,
       "college": "Wisconsin",
       "draft": {
@@ -45960,6 +48132,18 @@
       "weightLb": 310.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 10
+        }
+      ],
       "birthYear": 1997,
       "college": "Wisconsin",
       "draft": {
@@ -46192,9 +48376,24 @@
     {
       "absences": [
         {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        },
+        {
           "from": 10,
           "reason": "injury",
           "to": 10
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
         }
       ],
       "birthYear": 1999,
@@ -46336,6 +48535,13 @@
       "weightLb": 287.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        }
+      ],
       "birthYear": 1997,
       "college": "Assumption",
       "draft": null,
@@ -46356,6 +48562,11 @@
     },
     {
       "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 4
+        },
         {
           "from": 5,
           "reason": "out",
@@ -46424,6 +48635,13 @@
       "weightLb": 245.0
     },
     {
+      "absences": [
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        }
+      ],
       "birthYear": 1996,
       "college": "Virginia Tech",
       "draft": null,
@@ -46694,6 +48912,11 @@
           "from": 11,
           "reason": "injury",
           "to": 11
+        },
+        {
+          "from": 15,
+          "reason": "injury",
+          "to": 15
         }
       ],
       "birthYear": 1995,
@@ -46741,6 +48964,11 @@
           "to": 4
         },
         {
+          "from": 5,
+          "reason": "benched",
+          "to": 5
+        },
+        {
           "from": 15,
           "reason": "injury",
           "to": 22
@@ -46784,6 +49012,13 @@
       "weightLb": 219.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 3
+        }
+      ],
       "birthYear": 1995,
       "college": "Missouri Western",
       "draft": null,
@@ -46839,6 +49074,11 @@
           "from": 1,
           "reason": "injury",
           "to": 4
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
         }
       ],
       "birthYear": 1989,
@@ -46891,7 +49131,7 @@
           "to": 12
         },
         {
-          "from": 16,
+          "from": 15,
           "reason": "injury",
           "to": 16
         }
@@ -47030,7 +49270,7 @@
           "to": 5
         },
         {
-          "from": 12,
+          "from": 11,
           "reason": "injury",
           "to": 12
         },
@@ -47195,6 +49435,11 @@
     {
       "absences": [
         {
+          "from": 2,
+          "reason": "benched",
+          "to": 2
+        },
+        {
           "from": 7,
           "reason": "out",
           "to": 11
@@ -47274,7 +49519,7 @@
     {
       "absences": [
         {
-          "from": 16,
+          "from": 15,
           "reason": "injury",
           "to": 16
         }
@@ -47355,9 +49600,19 @@
     {
       "absences": [
         {
+          "from": 2,
+          "reason": "injury",
+          "to": 3
+        },
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
           "from": 12,
           "reason": "injury",
-          "to": 13
+          "to": 14
         }
       ],
       "birthYear": 1994,
@@ -47385,6 +49640,21 @@
     },
     {
       "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 4
+        },
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 7
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 15
+        },
         {
           "from": 17,
           "reason": "injury",
@@ -47491,6 +49761,13 @@
       "weightLb": 194.0
     },
     {
+      "absences": [
+        {
+          "from": 16,
+          "reason": "injury",
+          "to": 16
+        }
+      ],
       "birthYear": 2000,
       "college": "Michigan State",
       "draft": {
@@ -47855,6 +50132,13 @@
       "weightLb": 205.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
+        }
+      ],
       "birthYear": 1995,
       "college": "Nebraska",
       "draft": {
@@ -47880,6 +50164,16 @@
     },
     {
       "absences": [
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 9
+        },
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 12
+        },
         {
           "from": 18,
           "reason": "injury",
@@ -48120,7 +50414,7 @@
     {
       "absences": [
         {
-          "from": 3,
+          "from": 2,
           "reason": "injury",
           "to": 3
         }
@@ -48342,6 +50636,18 @@
       "weightLb": 170.0
     },
     {
+      "absences": [
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 10,
+          "reason": "injury",
+          "to": 10
+        }
+      ],
       "birthYear": 1999,
       "college": "Michigan",
       "draft": {
@@ -48416,6 +50722,18 @@
       "weightLb": 253.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        },
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 10
+        }
+      ],
       "birthYear": 1991,
       "college": "Virginia",
       "draft": {
@@ -48642,7 +50960,7 @@
         {
           "from": 2,
           "reason": "injury",
-          "to": 3
+          "to": 4
         },
         {
           "from": 11,
@@ -48705,6 +51023,23 @@
       "weightLb": 250.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 8
+        },
+        {
+          "from": 9,
+          "reason": "injury",
+          "to": 9
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1996,
       "college": "Temple",
       "draft": {
@@ -48784,6 +51119,13 @@
       "weightLb": 218.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        }
+      ],
       "birthYear": 1995,
       "college": "Notre Dame",
       "draft": null,
@@ -48965,7 +51307,7 @@
     {
       "absences": [
         {
-          "from": 18,
+          "from": 17,
           "reason": "injury",
           "to": 18
         }
@@ -49048,7 +51390,17 @@
         {
           "from": 3,
           "reason": "injury",
-          "to": 4
+          "to": 5
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        },
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
         },
         {
           "from": 10,
@@ -49192,6 +51544,13 @@
       "weightLb": 182.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
+        }
+      ],
       "birthYear": 2000,
       "college": "William &amp; Mary",
       "draft": {
@@ -49483,6 +51842,13 @@
       "weightLb": 300.0
     },
     {
+      "absences": [
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 6
+        }
+      ],
       "birthYear": 1997,
       "college": "California",
       "draft": null,
@@ -49564,6 +51930,13 @@
       "weightLb": 250.0
     },
     {
+      "absences": [
+        {
+          "from": 11,
+          "reason": "benched",
+          "to": 11
+        }
+      ],
       "birthYear": 1996,
       "college": "Texas Tech",
       "draft": {
@@ -49709,7 +52082,7 @@
         {
           "from": 1,
           "reason": "injury",
-          "to": 3
+          "to": 4
         },
         {
           "from": 6,
@@ -49810,6 +52183,18 @@
       "weightLb": 209.0
     },
     {
+      "absences": [
+        {
+          "from": 8,
+          "reason": "benched",
+          "to": 9
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1994,
       "college": "Florida State",
       "draft": {
@@ -49865,6 +52250,13 @@
       "weightLb": 290.0
     },
     {
+      "absences": [
+        {
+          "from": 13,
+          "reason": "injury",
+          "to": 13
+        }
+      ],
       "birthYear": 1994,
       "college": "Florida",
       "draft": {
@@ -49984,6 +52376,11 @@
     {
       "absences": [
         {
+          "from": 15,
+          "reason": "benched",
+          "to": 15
+        },
+        {
           "from": 16,
           "reason": "injury",
           "to": 16
@@ -50015,6 +52412,11 @@
           "to": 15
         },
         {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
+        },
+        {
           "from": 18,
           "reason": "out",
           "to": 18
@@ -50040,6 +52442,11 @@
     },
     {
       "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        },
         {
           "from": 12,
           "reason": "injury",
@@ -50096,6 +52503,18 @@
       "weightLb": 255.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        },
+        {
+          "from": 17,
+          "reason": "benched",
+          "to": 17
+        }
+      ],
       "birthYear": 1995,
       "college": "Louisiana-Lafayette",
       "draft": {
@@ -50177,6 +52596,13 @@
       "weightLb": 180.0
     },
     {
+      "absences": [
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 18
+        }
+      ],
       "birthYear": 2001,
       "college": "Notre Dame",
       "draft": {
@@ -50448,6 +52874,13 @@
       "weightLb": 311.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "benched",
+          "to": 6
+        }
+      ],
       "birthYear": 1999,
       "college": "Oklahoma State",
       "draft": {
@@ -50500,12 +52933,12 @@
         {
           "from": 2,
           "reason": "injury",
-          "to": 3
+          "to": 4
         },
         {
           "from": 7,
           "reason": "injury",
-          "to": 8
+          "to": 9
         }
       ],
       "birthYear": 1996,
@@ -50611,6 +53044,18 @@
       "weightLb": 325.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 15
+        }
+      ],
       "birthYear": 1995,
       "college": "Missouri",
       "draft": {
@@ -50953,6 +53398,11 @@
     {
       "absences": [
         {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        },
+        {
           "from": 7,
           "reason": "injury",
           "to": 8
@@ -51155,6 +53605,13 @@
       "weightLb": 293.0
     },
     {
+      "absences": [
+        {
+          "from": 5,
+          "reason": "injury",
+          "to": 5
+        }
+      ],
       "birthYear": 1999,
       "college": "Southern California",
       "draft": {
@@ -51238,7 +53695,7 @@
         {
           "from": 3,
           "reason": "injury",
-          "to": 3
+          "to": 4
         }
       ],
       "birthYear": 2000,
@@ -51296,6 +53753,13 @@
       "weightLb": 304.0
     },
     {
+      "absences": [
+        {
+          "from": 2,
+          "reason": "benched",
+          "to": 3
+        }
+      ],
       "birthYear": 1998,
       "college": "Georgia",
       "draft": {
@@ -51381,6 +53845,11 @@
     },
     {
       "absences": [
+        {
+          "from": 8,
+          "reason": "injury",
+          "to": 8
+        },
         {
           "from": 14,
           "reason": "injury",
@@ -51585,6 +54054,11 @@
     {
       "absences": [
         {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
+        {
           "from": 12,
           "reason": "injury",
           "to": 16
@@ -51694,6 +54168,16 @@
     },
     {
       "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        },
+        {
+          "from": 7,
+          "reason": "benched",
+          "to": 7
+        },
         {
           "from": 18,
           "reason": "injury",
@@ -51864,7 +54348,17 @@
         {
           "from": 2,
           "reason": "injury",
-          "to": 11
+          "to": 12
+        },
+        {
+          "from": 13,
+          "reason": "benched",
+          "to": 13
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
         }
       ],
       "birthYear": 1999,
@@ -51891,6 +54385,18 @@
       "weightLb": 187.0
     },
     {
+      "absences": [
+        {
+          "from": 12,
+          "reason": "injury",
+          "to": 12
+        },
+        {
+          "from": 14,
+          "reason": "injury",
+          "to": 15
+        }
+      ],
       "birthYear": 2000,
       "college": "Texas-San Antonio",
       "draft": {
@@ -52193,6 +54699,11 @@
           "from": 3,
           "reason": "injury",
           "to": 9
+        },
+        {
+          "from": 11,
+          "reason": "injury",
+          "to": 11
         }
       ],
       "birthYear": 1995,
@@ -52268,6 +54779,11 @@
     },
     {
       "absences": [
+        {
+          "from": 10,
+          "reason": "benched",
+          "to": 11
+        },
         {
           "from": 16,
           "reason": "out",
@@ -52422,6 +54938,11 @@
     },
     {
       "absences": [
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 12
+        },
         {
           "from": 13,
           "reason": "injury",
@@ -52950,6 +55471,18 @@
       "weightLb": 252.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        },
+        {
+          "from": 9,
+          "reason": "benched",
+          "to": 9
+        }
+      ],
       "birthYear": 1999,
       "college": "Ohio State",
       "draft": {
@@ -53048,6 +55581,13 @@
       "weightLb": 171.0
     },
     {
+      "absences": [
+        {
+          "from": 7,
+          "reason": "injury",
+          "to": 8
+        }
+      ],
       "birthYear": 1988,
       "college": "Oklahoma",
       "draft": {
@@ -53108,6 +55648,16 @@
           "from": 1,
           "reason": "out",
           "to": 13
+        },
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 14
+        },
+        {
+          "from": 16,
+          "reason": "benched",
+          "to": 16
         }
       ],
       "birthYear": 1991,
@@ -53203,6 +55753,13 @@
       "weightLb": 299.0
     },
     {
+      "absences": [
+        {
+          "from": 14,
+          "reason": "benched",
+          "to": 22
+        }
+      ],
       "birthYear": 1989,
       "college": "Oklahoma",
       "draft": null,
@@ -53683,6 +56240,13 @@
       "weightLb": 308.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "injury",
+          "to": 1
+        }
+      ],
       "birthYear": 1989,
       "college": "Cincinnati",
       "draft": {
@@ -53709,9 +56273,19 @@
     {
       "absences": [
         {
+          "from": 5,
+          "reason": "benched",
+          "to": 8
+        },
+        {
           "from": 10,
           "reason": "out",
           "to": 11
+        },
+        {
+          "from": 12,
+          "reason": "benched",
+          "to": 14
         }
       ],
       "birthYear": 1998,
@@ -53793,6 +56367,13 @@
       "weightLb": 214.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "injury",
+          "to": 3
+        }
+      ],
       "birthYear": 1998,
       "college": "Arizona State",
       "draft": {
@@ -53899,6 +56480,11 @@
     },
     {
       "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 1
+        },
         {
           "from": 4,
           "reason": "injury",
@@ -54236,6 +56822,13 @@
       "weightLb": 195.0
     },
     {
+      "absences": [
+        {
+          "from": 6,
+          "reason": "injury",
+          "to": 6
+        }
+      ],
       "birthYear": 1997,
       "college": "Arkansas",
       "draft": {
@@ -54265,6 +56858,11 @@
           "from": 10,
           "reason": "injury",
           "to": 11
+        },
+        {
+          "from": 17,
+          "reason": "injury",
+          "to": 17
         }
       ],
       "birthYear": 1997,
@@ -54291,6 +56889,23 @@
       "weightLb": 330.0
     },
     {
+      "absences": [
+        {
+          "from": 1,
+          "reason": "benched",
+          "to": 2
+        },
+        {
+          "from": 4,
+          "reason": "benched",
+          "to": 4
+        },
+        {
+          "from": 6,
+          "reason": "benched",
+          "to": 8
+        }
+      ],
       "birthYear": 1992,
       "college": "Miami",
       "draft": {
@@ -54339,6 +56954,13 @@
       "weightLb": 197.0
     },
     {
+      "absences": [
+        {
+          "from": 3,
+          "reason": "benched",
+          "to": 3
+        }
+      ],
       "birthYear": 1996,
       "college": "Arizona",
       "draft": null,
