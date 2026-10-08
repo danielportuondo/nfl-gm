@@ -175,6 +175,16 @@ function autoDepthChartIgnoringInjuries(state: LeagueState, teamId: TeamId): Dep
   )
 }
 
+function autoDepthChartFor(
+  state: LeagueState,
+  teamId: TeamId,
+  opts?: { ignoreInjuries?: boolean },
+): DepthChart {
+  return opts?.ignoreInjuries
+    ? autoDepthChartIgnoringInjuries(state, teamId)
+    : autoDepthChartImpl(state, teamId)
+}
+
 // -------------------------------------------------------------------------------------------
 // Cap fit
 // -------------------------------------------------------------------------------------------
@@ -1128,7 +1138,7 @@ export const league: LeagueModule = {
   },
   seedPlayoffs: buildBracketImpl,
   buildSchedule: buildScheduleImpl,
-  autoDepthChart: autoDepthChartImpl,
+  autoDepthChart: autoDepthChartFor,
   teamStrength: (state: LeagueState, teamId: TeamId, ctx: EngineContext): TeamStrength =>
     ctx.modules.sim.teamStrength(state, teamId, ctx),
   summarizeSeason: summarizeSeasonImpl,

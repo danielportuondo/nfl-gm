@@ -179,7 +179,7 @@ describe('compensatory picks', () => {
 
 /**
  * QA 2019 M2: an offseason trade re-sorted MIA's QBs by pre-camp consensus (Lamar 68.6 over Mahomes
- * 66.0), and reconcileDepthChart kept that order into the season. The user's chart is theirs.
+ * 66.0). Only the newcomer is placed by consensus; the players already on the chart keep their order.
  */
 describe('trade.execute — depth charts', () => {
   function withChart(state: LeagueState, teamId: TeamId, pos: Position, ids: PlayerId[]) {
@@ -188,7 +188,7 @@ describe('trade.execute — depth charts', () => {
     return { ...state, teams: { ...state.teams, [teamId]: { ...team, depthChart } } }
   }
 
-  it("appends a newcomer to the user's chart and keeps the user's order", () => {
+  it("slots a newcomer into the user's chart by consensus and keeps the user's order", () => {
     const base = scenario()
     let state = putKept(base.state, USER, { id: 'mahomes', pos: 'QB', ovr: 66 })
     state = putKept(state, USER, { id: 'backup', pos: 'QB', ovr: 70 })
@@ -199,7 +199,12 @@ describe('trade.execute — depth charts', () => {
     const proposal = userProposal(state, { players: ['mine'] }, { players: ['newcomer'] })
     const after = trade.execute(state, proposal, base.ctx)
 
-    expect(after.teams[USER]!.depthChart.QB).toEqual(['mahomes', 'backup', 'newcomer'])
+    const qbs = after.teams[USER]!.depthChart.QB!
+    expect(qbs.filter((id) => id !== 'newcomer' && ['mahomes', 'backup'].includes(id))).toEqual([
+      'mahomes',
+      'backup',
+    ])
+    expect(qbs.indexOf('newcomer')).toBeLessThan(qbs.indexOf('mahomes'))
   })
 
   it('an AI team still slots the newcomer by consensus', () => {

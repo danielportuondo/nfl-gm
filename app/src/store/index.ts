@@ -34,6 +34,7 @@ import { applyTheme, loadTheme, persistTheme, type Theme } from '../ui/frame'
 import type { ToastItem } from '../ui/primitives'
 import { defaultEngineModules, defaultPersistence } from './engineDefaults'
 import { teamAbbr } from '@screens/shared/teamLabel'
+import { depthChartNotices } from './depthChartNotice'
 import { injurySummary, isInjuryEventText, userInjuries } from './injurySummary'
 import { pruneStaleOffers } from './offers'
 import { buildHash, currentRoute, type ScreenId } from './router'
@@ -125,10 +126,18 @@ export function createGameStore(config: StoreConfig = {}) {
         const reconciled = modules.league.reconcileDepthChart(next, next.userTeam)
         const offers = patch.tradeOffers ?? s.tradeOffers
         const live = pruneStaleOffers(reconciled, offers)
+        const placed = depthChartNotices(s.state, reconciled).map((text): ToastItem => ({
+          id: makeToastId(),
+          text,
+          tone: 'info',
+        }))
         return {
           ...patch,
           state: reconciled,
           ...(live === offers ? {} : { tradeOffers: live }),
+          ...(placed.length === 0
+            ? {}
+            : { toasts: [...(patch.toasts ?? s.toasts), ...placed].slice(-MAX_QUEUED_TOASTS) }),
         }
       })) as typeof rawSet
 
@@ -545,7 +554,9 @@ export function createGameStore(config: StoreConfig = {}) {
           const team = league.teams[league.userTeam]
           if (!team) return
           try {
-            const depthChart = modules.league.autoDepthChart(league, league.userTeam)
+            const depthChart = modules.league.autoDepthChart(league, league.userTeam, {
+              ignoreInjuries: true,
+            })
             set({
               state: {
                 ...league,

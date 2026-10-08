@@ -38,8 +38,8 @@ function withoutFromChart(chart: DepthChart, pos: Position, playerId: PlayerId):
 }
 
 /**
- * The user's chart is hand-ordered, so a newcomer joins at the back (league.reconcileDepthChart's
- * rule); re-sorting would also apply stale pre-camp consensus to the players already there.
+ * The user's chart is hand-ordered, so a newcomer is left out here and league.reconcileDepthChart
+ * slots him in by consensus without re-sorting the players already there.
  */
 function withInChart(
   chart: DepthChart,
@@ -48,8 +48,10 @@ function withInChart(
   ovrOf: (id: PlayerId) => number,
   handOrdered: boolean,
 ): DepthChart {
-  const ids = [...(chart[pos] ?? []).filter((id) => id !== playerId), playerId]
-  if (!handOrdered) ids.sort((a, b) => ovrOf(b) - ovrOf(a) || a.localeCompare(b))
+  const ids = (chart[pos] ?? []).filter((id) => id !== playerId)
+  if (handOrdered) return { ...chart, [pos]: ids }
+  ids.push(playerId)
+  ids.sort((a, b) => ovrOf(b) - ovrOf(a) || a.localeCompare(b))
   return { ...chart, [pos]: ids }
 }
 
@@ -105,6 +107,7 @@ function executeImpl(state: LeagueState, proposal: TradeProposal, ctx: EngineCon
 
   const involved = [...proposal.offer.players, ...proposal.request.players].sort()
   if (involved.length > 0) next = ctx.modules.history.markDiverged(next, involved)
+  next = ctx.modules.league.reconcileDepthChart(next, next.userTeam)
   return logUserTrade(state, next, proposal)
 }
 

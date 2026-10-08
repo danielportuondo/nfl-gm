@@ -35,7 +35,7 @@ export interface RosterProps {
   data: StaticData
   onSelectPlayer: (id: PlayerId) => void
   onReorderDepthChart: (pos: Position, order: PlayerId[]) => void
-  /** Rebuilds the whole chart by current consensus, injured players last. */
+  /** Rebuilds the whole chart by consensus; injured players keep their slot. */
   onResetDepthChart?: () => void
   /** Cut a player (dead money applies); the store gates who can be released. */
   onRelease?: (id: PlayerId) => void
@@ -510,7 +510,13 @@ export function Roster({
                           name={player.name}
                           pos={player.pos}
                           compact
-                          meta={`${scouting.ovr} ovr`}
+                          meta={[
+                            `${pos}${i + 1}`,
+                            `${scouting.ovr} ovr`,
+                            injuredWeeksLabel(team?.roster.find((r) => r.playerId === id)?.injured),
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')}
                           onMoveUp={
                             i > 0
                               ? () => {

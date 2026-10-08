@@ -106,12 +106,21 @@ export interface LeagueModule {
    */
   buildSchedule(state: LeagueState, ctx: EngineContext): Game[]
 
-  /** Best-available depth chart by consensus ovr per STARTER_TEMPLATE; healthy players first. */
-  autoDepthChart(state: LeagueState, teamId: TeamId): DepthChart
+  /**
+   * Best-available depth chart by consensus ovr per STARTER_TEMPLATE; healthy players first unless
+   * `ignoreInjuries` is set, which orders by consensus alone (the user's "Reset to consensus": an
+   * injured starter keeps his slot and the sim plays the next healthy man while he is out).
+   */
+  autoDepthChart(
+    state: LeagueState,
+    teamId: TeamId,
+    opts?: { ignoreInjuries?: boolean },
+  ): DepthChart
 
   /**
    * Bring `teamId`'s depth chart in line with its roster without reordering it: players no longer
-   * rostered drop out, new ones are appended at their position by consensus ovr. Pure; returns
+   * rostered drop out, new ones are slotted in at the place their consensus ovr earns (the others
+   * shift down, never re-sorted against each other). Pure; returns
    * `state` unchanged when the chart already matches. The store runs it on the user's team after
    * every move so the hand-ordered chart never goes stale.
    */

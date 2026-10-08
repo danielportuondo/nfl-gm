@@ -78,6 +78,7 @@ export function NewGame({
   const [horizonSeasons, setHorizonSeasons] = useState(3)
   const [settings, setSettings] = useState<GameSettings>(DEFAULT_SETTINGS)
   const [pendingImport, setPendingImport] = useState<string | null>(null)
+  const [confirmingStart, setConfirmingStart] = useState(false)
 
   function handleFile(json: string) {
     if (savedGame) setPendingImport(json)
@@ -89,6 +90,16 @@ export function NewGame({
     const json = pendingImport
     setPendingImport(null)
     if (json !== null) onImportSave?.(json)
+  }
+
+  function handleStart() {
+    if (savedGame) setConfirmingStart(true)
+    else onStart({ startSeason, userTeam, horizonSeasons, settings })
+  }
+
+  function confirmStart() {
+    setConfirmingStart(false)
+    onStart({ startSeason, userTeam, horizonSeasons, settings })
   }
 
   const team = data.teams[userTeam]
@@ -166,7 +177,7 @@ export function NewGame({
                     variant="primary"
                     busy={busy}
                     busyLabel="Starting…"
-                    onClick={() => onStart({ startSeason, userTeam, horizonSeasons, settings })}
+                    onClick={handleStart}
                   >
                     Start
                   </Button>
@@ -275,6 +286,28 @@ export function NewGame({
           </div>
         </Panel>
       </div>
+
+      {confirmingStart && (
+        <Modal
+          title="Replace saved game?"
+          onClose={() => setConfirmingStart(false)}
+          footer={
+            <>
+              <Button type="button" variant="ghost" onClick={() => setConfirmingStart(false)}>
+                Keep saved game
+              </Button>
+              <Button type="button" variant="danger" onClick={confirmStart}>
+                Replace
+              </Button>
+            </>
+          }
+        >
+          <p style={{ margin: 0 }}>
+            Starting a new game replaces the saved game and its autosave. Export first if you want
+            to keep it.
+          </p>
+        </Modal>
+      )}
 
       {pendingImport !== null && (
         <Modal

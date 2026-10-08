@@ -12,7 +12,7 @@ afterEach(() => {
   cleanup()
 })
 
-/** WRs worst-first by consensus, with the best one hurt: wrong in both ways the auto chart fixes. */
+/** WRs worst-first by consensus, with the best one hurt: Reset must put the hurt man back on top. */
 function staleChart(): { league: LeagueState; expected: PlayerId[] } {
   const base = mockLeague()
   const team = base.teams[base.userTeam]!
@@ -39,11 +39,11 @@ function staleChart(): { league: LeagueState; expected: PlayerId[] } {
       },
     },
   }
-  return { league, expected: [...healthy, hurt!] }
+  return { league, expected: [hurt!, ...healthy] }
 }
 
 describe('Roster: reset depth chart to consensus', () => {
-  it('rebuilds the chart by consensus through the store, injured players last', async () => {
+  it('rebuilds the chart by consensus through the store, injured players keep their slot', async () => {
     const { league, expected } = staleChart()
     const store = createGameStore({ mode: 'mock' })
     store.setState({ state: league })
@@ -69,7 +69,7 @@ describe('Roster: reset depth chart to consensus', () => {
         .getAllByRole('listitem')
         .map((el) => el.textContent ?? '')
     const nameOf = (id: PlayerId) => league.players[id]!.name
-    expect(names()[0]).toContain(nameOf(expected.at(-2)!))
+    expect(names()[0]).toContain(nameOf(expected.at(-1)!))
 
     await userEvent.click(screen.getByRole('button', { name: 'Reset to consensus' }))
 

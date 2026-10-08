@@ -1,7 +1,17 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import { mockLeague } from '@fixtures/mockLeague'
+import { league as leagueModule } from '@engine/league'
 import { reconcileDepthChart } from '@engine/league/depthChart'
-import type { EngineContext, LeagueState, PlayerId, Position } from '@contracts/index'
+import { availableByPosition } from '@engine/sim/strength'
+import { depthChartNotices } from '@store/depthChartNotice'
+import type {
+  EngineContext,
+  Injury,
+  LeagueState,
+  PlayerId,
+  Position,
+  RosterSlot,
+} from '@contracts/index'
 import { loadRealContext, readManifest, seasonsForNewGame } from '../../../scripts/lib/publicData'
 import { emptyLog, userCutdowns, userDraft, userFreeAgency } from '../../../scripts/lib/scriptedGm'
 
@@ -88,31 +98,116 @@ describe('user depth chart at opening day', () => {
   })
 })
 
+/** The user's three WRs at 80 / 59 / 58 in that order: the shape of the QA 2017 safety room. */
+function threeDeep(): { state: LeagueState; chart: [PlayerId, PlayerId, PlayerId] } {
+  const base = mockLeague()
+  const team = base.teams[base.userTeam]!
+  const wrs = team.roster.map((r) => r.playerId).filter((id) => base.players[id]!.pos === 'WR')
+  expect(wrs.length).toBeGreaterThanOrEqual(3)
+  const chart = wrs.slice(0, 3) as [PlayerId, PlayerId, PlayerId]
+  const scouting = { ...base.scouting }
+  chart.forEach((id, i) => {
+    scouting[id] = { ...scouting[id]!, ovr: [80, 59, 58][i]! }
+  })
+  const kept = new Set(chart)
+  const roster = team.roster.filter(
+    (r) => base.players[r.playerId]!.pos !== 'WR' || kept.has(r.playerId),
+  )
+  const depthChart = { ...team.depthChart, WR: chart }
+  const state = {
+    ...base,
+    scouting,
+    teams: { ...base.teams, [base.userTeam]: { ...team, roster, depthChart } },
+  }
+  return { state, chart }
+}
+
+function withChart(state: LeagueState, pos: Position, order: PlayerId[]): LeagueState {
+  const team = state.teams[state.userTeam]!
+  const depthChart = { ...team.depthChart, [pos]: order }
+  return { ...state, teams: { ...state.teams, [state.userTeam]: { ...team, depthChart } } }
+}
+
+function withInjury(state: LeagueState, id: PlayerId, injured: Injury | undefined): LeagueState {
+  const team = state.teams[state.userTeam]!
+  const roster = team.roster.map((slot): RosterSlot => {
+    if (slot.playerId !== id) return slot
+    const next: RosterSlot = { ...slot }
+    if (injured) next.injured = injured
+    else delete next.injured
+    return next
+  })
+  return { ...state, teams: { ...state.teams, [state.userTeam]: { ...team, roster } } }
+}
+
+/** Adds a WR the user just signed (roster slot copied from an existing WR) with the given consensus. */
+function withSigned(state: LeagueState, id: PlayerId, ovr: number): LeagueState {
+  const team = state.teams[state.userTeam]!
+  const model = team.roster.find((r) => state.players[r.playerId]!.pos === 'WR')!
+  return {
+    ...state,
+    players: { ...state.players, [id]: { ...state.players[model.playerId]!, id, name: id } },
+    scouting: { ...state.scouting, [id]: { ovr, pot: ovr, confidence: 0.8 } },
+    teams: {
+      ...state.teams,
+      [state.userTeam]: { ...team, roster: [...team.roster, { ...model, playerId: id }] },
+    },
+  }
+}
+
+const OUT_FOUR: Injury = { weeksOut: 4, kind: 'knee', season: 2015, week: 3 }
+
+describe('an injured starter on the user chart', () => {
+  it('keeps his slot, the sim plays the next healthy man, and he is back when he heals', () => {
+    const { state, chart } = threeDeep()
+    const [starter, second] = chart
+    const hurt = withInjury(state, starter, OUT_FOUR)
+
+    expect(reconcileDepthChart(hurt, hurt.userTeam)).toBe(hurt)
+    expect(hurt.teams[hurt.userTeam]!.depthChart.WR).toEqual(chart)
+    expect(availableByPosition(hurt, hurt.userTeam).WR.slice(0, 2)).toEqual([second, chart[2]])
+
+    const healed = withInjury(hurt, starter, undefined)
+    expect(availableByPosition(healed, healed.userTeam).WR[0]).toBe(starter)
+  })
+
+  it('Reset orders by consensus and leaves him at his slot', () => {
+    const { state, chart } = threeDeep()
+    const hurt = withInjury(state, chart[0], OUT_FOUR)
+    const scrambled = withChart(hurt, 'WR', [chart[2], chart[1], chart[0]])
+
+    const reset = leagueModule.autoDepthChart(scrambled, scrambled.userTeam, {
+      ignoreInjuries: true,
+    })
+    expect(reset.WR).toEqual(chart)
+    expect(leagueModule.autoDepthChart(scrambled, scrambled.userTeam).WR![2]).toBe(chart[0])
+  })
+})
+
 describe('reconcileDepthChart', () => {
-  it('drops departed players, appends new ones by ovr, and never reorders the rest', () => {
-    const base = mockLeague()
-    const team = base.teams[base.userTeam]!
-    const qbs = team.roster.map((r) => r.playerId).filter((id) => base.players[id]!.pos === 'QB')
-    expect(qbs.length).toBeGreaterThanOrEqual(2)
-    const [first, second] = qbs as [string, string]
-    const chosen = { ...team.depthChart, QB: [second, 'gone-player', first] }
-    const missingOnPurpose = qbs.slice(2)
-    const state = {
-      ...base,
-      teams: {
-        ...base.teams,
-        [base.userTeam]: {
-          ...team,
-          depthChart: { ...chosen, QB: chosen.QB.filter((id) => !missingOnPurpose.includes(id)) },
-        },
-      },
-    }
-    const next = reconcileDepthChart(state, base.userTeam).teams[base.userTeam]!.depthChart.QB!
-    expect(next.slice(0, 2)).toEqual([second, first])
-    expect(next).not.toContain('gone-player')
-    expect(new Set(next)).toEqual(new Set(qbs))
-    const appended = next.slice(2)
-    const ovr = (id: string) => base.scouting[id]!.ovr
-    expect([...appended].sort((a, b) => ovr(b) - ovr(a) || a.localeCompare(b))).toEqual(appended)
+  it('slots a signed 77 between the 80 and the 59/58, not behind them', () => {
+    const { state, chart } = threeDeep()
+    const next = reconcileDepthChart(withSigned(state, 'adams', 77), state.userTeam)
+    expect(next.teams[state.userTeam]!.depthChart.WR).toEqual([
+      chart[0],
+      'adams',
+      chart[1],
+      chart[2],
+    ])
+  })
+
+  it('never re-sorts the players already there, and drops the departed', () => {
+    const { state, chart } = threeDeep()
+    const edited = withChart(state, 'WR', [chart[1], 'gone-player', chart[0], chart[2]])
+    const next = reconcileDepthChart(withSigned(edited, 'low', 40), state.userTeam)
+    expect(next.teams[state.userTeam]!.depthChart.WR).toEqual([chart[1], chart[0], chart[2], 'low'])
+  })
+
+  it('the notice names the slot the newcomer earned', () => {
+    const { state, chart } = threeDeep()
+    const signed = withSigned(state, 'adams', 77)
+    const next = reconcileDepthChart(signed, state.userTeam)
+    expect(chart).toHaveLength(3)
+    expect(depthChartNotices(state, next)).toEqual(['adams placed at WR2'])
   })
 })

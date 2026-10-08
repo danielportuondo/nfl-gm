@@ -212,6 +212,33 @@ describe('NewGame', () => {
     fireEvent.click(within(dialog2).getByRole('button', { name: 'Replace' }))
     expect(onImportSave).toHaveBeenCalledWith('{"a":1}')
   })
+
+  it('starts at once with no saved game, and confirms before overwriting one', () => {
+    const fresh = vi.fn()
+    const { unmount } = render(<NewGame data={mockStatic()} onStart={fresh} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }))
+    expect(fresh).toHaveBeenCalledTimes(1)
+    unmount()
+
+    const onStart = vi.fn()
+    render(
+      <NewGame data={mockStatic()} onStart={onStart} savedGame={SAVED_GAME} onContinue={vi.fn()} />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }))
+    const dialog = screen.getByRole('dialog', { name: 'Replace saved game?' })
+    expect(onStart).not.toHaveBeenCalled()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Keep saved game' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(onStart).not.toHaveBeenCalled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }))
+    fireEvent.click(
+      within(screen.getByRole('dialog', { name: 'Replace saved game?' })).getByRole('button', {
+        name: 'Replace',
+      }),
+    )
+    expect(onStart).toHaveBeenCalledTimes(1)
+  })
 })
 
 describe('Settings', () => {
