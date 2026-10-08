@@ -205,6 +205,19 @@ export interface TradeEvaluation {
   p: number
   valid: boolean
   reasons: string[]
+  /** Set by trade.evaluate on a valid deal with p < 0.5: roughly what it would take to get to 0.5. */
+  priceHint?: TradePriceHint
+}
+
+/** What the counterparty would want added to a deal, by consensus value. */
+export interface TradePriceHint {
+  /** Value the proposer's side falls short of an even read (p = 0.5), in trade-value points. */
+  shortBy: number
+  /**
+   * Latest draft round (1–7) whose pick, in the coming draft at the proposer's projected slot, covers
+   * `shortBy`. null when even a first does not.
+   */
+  round: number | null
 }
 
 export interface RosterValidation {

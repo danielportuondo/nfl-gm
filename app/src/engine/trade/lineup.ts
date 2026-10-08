@@ -123,6 +123,8 @@ export function valueSides(
   for (const id of receives.players) incoming.set(id, incomingValue(state, id, ctx, lineupAware))
   const starterLoss = new Map<Position, number>()
   const fillers: PlayerId[] = []
+  const sumOutgoing = (ids: PlayerId[]) =>
+    ids.reduce((total, id) => total + outgoingValue(state, id, ctx), 0)
 
   if (lineupAware) {
     const posOf = (id: PlayerId) => state.players[id]?.pos
@@ -146,17 +148,20 @@ export function valueSides(
       const drop = lineupTalent(state, pos, before, slots) - lineupTalent(state, pos, after, slots)
       // A starter whose deal is about to run out was leaving anyway: the hole is only the seasons left.
       const control = Math.max(...leavingHere.map((id) => controlOf(state, id, ctx)))
-      if (drop > 0) starterLoss.set(pos, lineupConstants.starterLossShare * drop * control)
+      const charge = lineupConstants.starterLossShare * drop * control
+      const capped = lineupConstants.starterLossUncappedPositions.includes(pos)
+        ? charge
+        : Math.min(charge, lineupConstants.starterLossMaxShare * sumOutgoing(leavingHere))
+      if (capped > 0) starterLoss.set(pos, capped)
     }
   }
 
   const sum = (xs: number[]) => xs.reduce((total, x) => total + x, 0)
   const picksIn = sum(receives.picks.map((ref) => pickValueImpl(state, ref, ctx)))
   const picksOut = sum(gives.picks.map((ref) => pickValueImpl(state, ref, ctx)))
-  const playersOut = sum(gives.players.map((id) => outgoingValue(state, id, ctx)))
   return {
     valueIn: sum([...incoming.values()]) + picksIn,
-    valueOut: playersOut + sum([...starterLoss.values()]) + picksOut,
+    valueOut: sumOutgoing(gives.players) + sum([...starterLoss.values()]) + picksOut,
     incoming,
     starterLoss,
     fillers,

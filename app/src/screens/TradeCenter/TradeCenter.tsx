@@ -391,7 +391,12 @@ export function TradeCenter({
       <div className="gg-col-12">
         <Panel title="Deal" revealIndex={2}>
           {evaluation ? (
-            <AcceptanceBar p={evaluation.p} valid={evaluation.valid} />
+            <AcceptanceBar
+              p={evaluation.p}
+              valid={evaluation.valid}
+              priceHint={evaluation.priceHint}
+              adding={proposal.offer.players.length + proposal.offer.picks.length > 0}
+            />
           ) : (
             <p style={{ margin: 0, color: 'var(--text-2)' }}>
               Add players or picks on both sides to see how they'd respond.

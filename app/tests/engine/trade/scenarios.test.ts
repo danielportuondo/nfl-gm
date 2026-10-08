@@ -87,13 +87,15 @@ describe('trade.evaluate — scenario bands at balanced', () => {
     expect(evaluation.p).toBeLessThan(0.8)
   })
 
-  // Re-banded 2026-10-05 (was 0.25–0.8 with no backup): the 78 is DAL's WR3 and its WR4 is a 66, so
-  // the starter-loss charge prices the 12-point hole and a late first alone now falls short.
-  it('a late first for a good starter with a hole behind him is usually declined', () => {
+  // Re-banded 2026-10-05 and again 2026-10-08 (QA 2017 M1): the 78 is DAL's WR3 and its WR4 is a 66,
+  // so the starter-loss charge prices the hole, now capped at a quarter of his value. A 78 on a $1M
+  // deal is worth about a late first, so the hole makes it a coin flip rather than a likely yes.
+  it('a late first for a good starter with a hole behind him is a coin flip at best', () => {
     const evaluation = lateFirstForStarter(null)
     expect(evaluation.valid).toBe(true)
-    expect(evaluation.p).toBeGreaterThan(0.05)
-    expect(evaluation.p).toBeLessThan(0.4)
+    expect(evaluation.p).toBeGreaterThan(0.2)
+    expect(evaluation.p).toBeLessThan(0.6)
+    expect(evaluation.p).toBeLessThan(lateFirstForStarter(77).p)
     expect(evaluation.reasons.join(' ')).toMatch(/lose a starter at WR/)
   })
 })

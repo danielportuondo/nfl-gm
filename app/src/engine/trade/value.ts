@@ -423,6 +423,13 @@ function projectedOverall(state: LeagueState, originalTeam: TeamId, round: numbe
   return (round - 1) * pickConstants.picksPerRound + projectedOrderRank(state, originalTeam)
 }
 
+/** A pick in `round` of the coming draft at `teamId`'s projected slot, undiscounted. */
+export function projectedRoundValue(state: LeagueState, teamId: TeamId, round: number): number {
+  return (
+    chartPoints(projectedOverall(state, teamId, round)) * (pickConstants.scalePerThousand / 1000)
+  )
+}
+
 /**
  * Chart value, discounted 0.85 per year out. Draft-year convention (§ DECISIONS Phase 2): the draft
  * held during season S is the S+1 class, so an S+1 pick is this year's and costs no discount.

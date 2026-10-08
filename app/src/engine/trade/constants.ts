@@ -134,6 +134,7 @@ export const pickConstants = {
   tailDecayPerPick: 0.97,
   minChartPoints: 2,
   picksPerRound: 32,
+  rounds: 7,
   /** Rating-points equivalent of a full season of winning, when projecting an unsettled slot. */
   recordWeight: 12,
   recordRampGames: 8,
@@ -152,6 +153,17 @@ export const lineupConstants = {
    * for elite starters and barely registers for average ones or when a comparable starter comes back.
    */
   starterLossShare: 0.5,
+  /**
+   * Ceiling on that charge, as a share of what the departing starters are worth (QA 2017 M1). The
+   * talent drop is measured before age and salary, so uncapped it nearly doubled a 79-ovr guard's
+   * price (14.7 + 12.4) and a typical 72–80 starter cost a first instead of about a second.
+   */
+  starterLossMaxShare: 0.25,
+  /**
+   * The starting quarterback stays uncapped: losing him sinks a season, and a 40-year-old Brady on a
+   * one-year deal is worth less than a second on his own, which is how MIA got him in 2017.
+   */
+  starterLossUncappedPositions: ['QB'] as readonly Position[],
   /** Share of his value an incoming player keeps when he would not crack the AI's lineup. */
   fillerShare: 0.5,
   /** Charges below this many value points are too small to mention in the evaluation's reasons. */

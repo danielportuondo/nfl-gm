@@ -124,7 +124,12 @@ export function TradeUpPanel({
       )}
       {evaluation && (
         <div style={{ marginBottom: 'var(--sp-3)' }}>
-          <AcceptanceBar p={evaluation.p} valid={evaluation.valid} />
+          <AcceptanceBar
+            p={evaluation.p}
+            valid={evaluation.valid}
+            priceHint={evaluation.priceHint}
+            adding
+          />
         </div>
       )}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-3)' }}>

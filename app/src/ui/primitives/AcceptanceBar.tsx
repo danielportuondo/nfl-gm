@@ -1,3 +1,5 @@
+import type { TradePriceHint } from '@contracts/index'
+
 const SEGMENTS = 20
 
 export interface AcceptanceBarProps {
@@ -12,6 +14,19 @@ export interface AcceptanceBarProps {
    * already stands behind — the bar says how good the deal is for the user, not whether it goes through.
    */
   mode?: 'acceptance' | 'fairness'
+  /** TradeEvaluation.priceHint: shown under an acceptance read below even. */
+  priceHint?: TradePriceHint
+  /** Whether the user already has something on the table, so the hint reads as "more". */
+  adding?: boolean
+}
+
+const ORDINALS = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
+
+function priceHintText(hint: TradePriceHint, adding: boolean): string {
+  if (hint.round === null)
+    return adding ? "They'd want more than a 1st on top." : "They'd want more than a 1st."
+  const pick = ORDINALS[hint.round - 1] ?? `round ${hint.round} pick`
+  return adding ? `They'd want about a ${pick} more.` : `They'd want about a ${pick}.`
 }
 
 function band(p: number, mode: 'acceptance' | 'fairness'): string {
@@ -50,6 +65,8 @@ export function AcceptanceBar({
   p,
   valid,
   mode = 'acceptance',
+  priceHint,
+  adding = false,
   label = mode === 'fairness' ? 'Deal value for you' : 'Acceptance likelihood',
 }: AcceptanceBarProps) {
   const clamped = Math.min(1, Math.max(0, p))
@@ -81,6 +98,9 @@ export function AcceptanceBar({
       <span className="gg-acceptance-band" style={!valid ? { color: 'var(--danger)' } : undefined}>
         {valid ? band(clamped, mode) : 'Invalid'}
       </span>
+      {valid && mode === 'acceptance' && clamped < 0.5 && priceHint && (
+        <span className="gg-acceptance-band">{priceHintText(priceHint, adding)}</span>
+      )}
       <span className="gg-vh">{label}</span>
     </div>
   )

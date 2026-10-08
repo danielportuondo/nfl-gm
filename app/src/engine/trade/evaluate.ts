@@ -10,9 +10,16 @@ import type {
   PlayerId,
   TeamId,
   TradeEvaluation,
+  TradePriceHint,
   TradeProposal,
 } from '@contracts/index'
-import { acceptanceConstants, lineupConstants, needConstants, tradeConstants } from './constants'
+import {
+  acceptanceConstants,
+  lineupConstants,
+  needConstants,
+  pickConstants,
+  tradeConstants,
+} from './constants'
 import { valueSides, type SideValuation } from './lineup'
 import { tradeLockReason } from './lock'
 import {
@@ -21,6 +28,7 @@ import {
   injuryWeeks,
   needsFor,
   outgoingValue,
+  projectedRoundValue,
   refKey,
   rosterIndex,
 } from './value'
@@ -267,7 +275,26 @@ export function evaluateImpl(
   const margin = (strictnessPct + annoyancePct) * valueOut
 
   const p = sigmoid((valueIn - valueOut - needAdj - margin) / sigmoidScale(valueIn, valueOut))
-  return { valueIn, valueOut, needAdj, margin, p, valid: true, reasons }
+  const shortBy = valueOut + needAdj + margin - valueIn
+  const evaluation: TradeEvaluation = {
+    valueIn,
+    valueOut,
+    needAdj,
+    margin,
+    p,
+    valid: true,
+    reasons,
+  }
+  if (shortBy > 0) evaluation.priceHint = priceHint(state, proposer, shortBy)
+  return evaluation
+}
+
+/** p = 0.5 exactly where nothing is short, so the round that covers `shortBy` is the price. */
+function priceHint(state: LeagueState, proposer: TeamId, shortBy: number): TradePriceHint {
+  for (let round = pickConstants.rounds; round >= 1; round--) {
+    if (projectedRoundValue(state, proposer, round) >= shortBy) return { shortBy, round }
+  }
+  return { shortBy, round: null }
 }
 
 /** The same deal seen from the other side — how the proposer rates its own offer. */

@@ -148,3 +148,16 @@ describe('TradeCenter pick labels', () => {
     }
   })
 })
+
+describe('TradeCenter price hint (QA 2017 M1)', () => {
+  it('says roughly what they want instead of only "Unlikely"', () => {
+    const state = mockLeague()
+    const unlikely: TradeEvaluation = { ...VALID, p: 0.08, priceHint: { shortBy: 18, round: 2 } }
+    const { mine, theirs } = renderTradeCenter(state, () => unlikely)
+    fireEvent.click(theirs.getAllByRole('checkbox')[0]!)
+    expect(screen.getByText("They'd want about a 2nd.")).toBeInTheDocument()
+
+    fireEvent.click(mine.getAllByRole('checkbox')[0]!)
+    expect(screen.getByText("They'd want about a 2nd more.")).toBeInTheDocument()
+  })
+})
