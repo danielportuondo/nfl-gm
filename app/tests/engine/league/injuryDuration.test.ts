@@ -23,6 +23,8 @@ interface SeasonLog {
   outBefore: Map<number, Map<string, Set<string>>>
   teamWeeks: Map<string, Set<number>>
   lastRegWeek: number
+  /** Announced real absences: a rolled injury that runs into one is served longer, by design. */
+  realRanges: NonNullable<LeagueState['absences']>['byPlayer']
 }
 
 function playRegularSeason(ctx: EngineContext): SeasonLog {
@@ -43,6 +45,7 @@ function playRegularSeason(ctx: EngineContext): SeasonLog {
     injuries: [],
     outBefore: new Map(),
     teamWeeks: new Map(),
+    realRanges: s.absences?.byPlayer ?? {},
     lastRegWeek: Math.max(
       ...s.schedule.filter((g) => g.season === SEASON && g.type === 'REG').map((g) => g.week),
     ),
@@ -87,6 +90,9 @@ describe('injury durations on a real season', () => {
     for (const inj of log.injuries) {
       if (inj.week + inj.weeksOut + 1 > log.lastRegWeek) continue
       if (log.outBefore.get(inj.week)?.get(inj.teamId)?.has(inj.playerId)) continue
+      const windowEnd = inj.week + inj.weeksOut + 1
+      if (log.realRanges[inj.playerId]?.some((a) => a.from <= windowEnd && a.to > inj.week))
+        continue
       const teamWeeks = log.teamWeeks.get(inj.teamId)!
       let expected = 0
       let missed = 0

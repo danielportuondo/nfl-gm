@@ -10,6 +10,7 @@ import {
 import { BustSprite, TeamScope } from '@ui/sprites'
 import { PlayerStats } from './PlayerStats'
 import { seasonsLeft } from '@screens/shared/contractStatus'
+import { absenceLabel } from '@screens/shared/absences'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 import { teamAbbr } from '@screens/shared/teamLabel'
 
@@ -56,6 +57,7 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
   const slot = team?.roster.find((r) => r.playerId === playerId)
   const isFreeAgent = !team
   const age = state.season - player.birthYear
+  const absence = absenceLabel(state, playerId)
 
   const sprite = <BustSprite pos={player.pos} size={4} status={{ freeAgent: isFreeAgent }} />
 
@@ -95,6 +97,7 @@ export function PlayerCard({ state, data, playerId, onBack }: PlayerCardProps) {
                 <span style={{ color: 'var(--text-2)' }}>{injuredWeeksLabel(slot.injured)}</span>
               )}
             </div>
+            {absence && <p style={{ margin: 0, color: 'var(--danger)' }}>{absence}</p>}
             <p style={{ margin: 0, color: 'var(--text-2)' }}>Age {age}</p>
             <Button type="button" variant="ghost" onClick={onBack}>
               Back

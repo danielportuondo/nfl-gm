@@ -69,11 +69,20 @@ export interface LifecycleModule {
   age(state: LeagueState, playerId: PlayerId, season?: number): number
 
   /**
-   * Before a season: a consensus starter whose real availability this season was very low (Luck 2017)
-   * is announced injured for the share of the season he really missed, so depth charts skip him through
-   * the normal injured path. Idempotent; a no-op for seasons without real availability.
+   * Announce the real weeks every player missed in the season being prepared or played: `season + 1`
+   * in the offseason phases, `season` from PRESEASON on. Writes `state.absences` (public) from the
+   * season chunk, which lifecycle may read; a no-op, returning the same state, when the board already
+   * covers that season or the season is past real data. Idempotent.
    */
-  applyHistoricalAbsences(state: LeagueState): LeagueState
+  announceAbsences(state: LeagueState, ctx: EngineContext): LeagueState
+
+  /**
+   * Before a week is played: every rostered player whose announced absence covers `state.week` is
+   * marked injured through the ordinary injury path, for exactly the weeks left in the range, so he
+   * comes back when it ends. Applies to every team, starter or bench, and to players signed or
+   * traded for mid-season. Never shortens an injury a player already has. Idempotent.
+   */
+  applyWeekAbsences(state: LeagueState): LeagueState
 }
 
 export const lifecycleStub: LifecycleModule = {
@@ -85,5 +94,6 @@ export const lifecycleStub: LifecycleModule = {
   applyInjuryEvents: () => notImplemented('lifecycle.applyInjuryEvents'),
   generateDraftClass: () => notImplemented('lifecycle.generateDraftClass'),
   age: () => notImplemented('lifecycle.age'),
-  applyHistoricalAbsences: () => notImplemented('lifecycle.applyHistoricalAbsences'),
+  announceAbsences: () => notImplemented('lifecycle.announceAbsences'),
+  applyWeekAbsences: () => notImplemented('lifecycle.applyWeekAbsences'),
 }

@@ -57,6 +57,28 @@ function countByPos(s: LeagueState, slots: readonly RosterSlot[]): Map<Position,
   return counts
 }
 
+const inSeason = (s: LeagueState): boolean => s.phase === 'REGULAR' || s.phase === 'PLAYOFFS'
+
+/** Bodies at `pos` who can play this week; in season a hurt or announced-out player does not count. */
+function healthyCount(s: LeagueState, slots: readonly RosterSlot[], pos: Position): number {
+  return slots.filter((slot) => posOf(s, slot.playerId) === pos && !slot.injured).length
+}
+
+/** Bodies at `pos` not out on a real absence this week; ordinary injuries do not count against a team. */
+function presentCount(s: LeagueState, slots: readonly RosterSlot[], pos: Position): number {
+  return slots.filter(
+    (slot) => posOf(s, slot.playerId) === pos && !isAbsentThisWeek(s, slot.playerId),
+  ).length
+}
+
+/** Announced out for the week being played (a real absence), so no use as a stand-in. */
+function isAbsentThisWeek(s: LeagueState, id: PlayerId): boolean {
+  return Boolean(
+    s.absences?.season === s.season &&
+    s.absences.byPlayer[id]?.some((a) => a.from <= s.week && s.week <= a.to),
+  )
+}
+
 function isProtectedRookie(s: LeagueState, id: PlayerId): boolean {
   const p = s.players[id]
   return (
@@ -114,9 +136,13 @@ function pickSizeCut(
   s: LeagueState,
   teamId: TeamId,
   keep: Set<PlayerId> | null,
+  notAt?: Position,
 ): PlayerId | undefined {
   for (const relax of RELAX_LEVELS) {
-    const cands = cuttableSlots(s, teamId, relax)
+    // Making room for a stand-in never releases somebody who is out: he is coming back.
+    const cands = cuttableSlots(s, teamId, relax).filter(
+      (slot) => posOf(s, slot.playerId) !== notAt && !(notAt && slot.injured),
+    )
     if (cands.length === 0) continue
     const ordered = nonDominated(s, cands).sort(
       (a, b) =>
@@ -221,6 +247,8 @@ function trimSpecialists(
     for (let guard = 0; guard < 4; guard++) {
       const slots = roster(out, teamId).filter((slot) => posOf(out, slot.playerId) === pos)
       if (slots.length <= 1) break
+      // A stand-in signed while the lone K or P is out stays until he is back.
+      if (inSeason(out) && slots.some((slot) => slot.injured)) break
       const worst = [...slots].sort(byOvrThenRealThenId(out, keep))[0]!
       out = release(out, teamId, worst.playerId, ctx)
     }
@@ -303,15 +331,30 @@ function fillPositionGaps(
   const positions = (Object.keys(faConstants.positionMinimums) as Position[]).sort()
   for (const pos of positions) {
     for (let guard = 0; guard < 6; guard++) {
-      const have = countByPos(out, roster(out, teamId)).get(pos) ?? 0
-      if (have >= faConstants.positionMinimums[pos]) break
+      const slots = roster(out, teamId)
+      const have = countByPos(out, slots).get(pos) ?? 0
+      // In season an absence that empties a position group, or leaves it short of starters (every
+      // QB out, say), is a hole the same as a release is. Ordinary injuries only count when they
+      // leave nobody healthy.
+      const short =
+        have < faConstants.positionMinimums[pos] ||
+        (inSeason(out) &&
+          (healthyCount(out, slots, pos) === 0 ||
+            presentCount(out, slots, pos) < (STARTER_TEMPLATE[pos] ?? 1)))
+      if (!short) break
       const candidates = deps
         .freeAgentPool(out)
-        .filter((id) => posOf(out, id) === pos && !avoid.has(id))
+        .filter(
+          (id) =>
+            posOf(out, id) === pos &&
+            !avoid.has(id) &&
+            !(inSeason(out) && isAbsentThisWeek(out, id)),
+        )
       let working = out
       if (roster(working, teamId).length >= max) {
-        const shed = pickSizeCut(working, teamId, keep)
-        if (shed === undefined || posOf(working, shed) === pos) break
+        // Another body at the short position is no use to make room, whoever is out there.
+        const shed = pickSizeCut(working, teamId, keep, pos)
+        if (shed === undefined) break
         working = release(working, teamId, shed, ctx)
       }
       const signed = signAffordable(working, teamId, ctx, deps, candidates, false)
@@ -398,6 +441,14 @@ export function runAiCutdownsImpl(
     s = swapForCapRoom(s, teamId, ctx, deps, keep)
     s = fillPositionGaps(s, teamId, ctx, deps, keep, released)
     s = fillToSize(s, teamId, ctx, deps, released)
+  }
+  // A stand-in a later team released this pass (the kicker who is back from injury) can fill an
+  // earlier team's hole, so in season every team gets a second look at its position groups.
+  if (inSeason(s)) {
+    for (const teamId of Object.keys(s.teams).sort()) {
+      if (!s.teams[teamId] || s.teams[teamId]!.userControlled) continue
+      s = fillPositionGaps(s, teamId, ctx, deps, deps.realRoster(s, ctx, teamId), new Set())
+    }
   }
   return s
 }

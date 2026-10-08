@@ -22,6 +22,7 @@ import { BustSprite, TeamScope } from '@ui/sprites'
 import { committedPayroll } from '@engine/fa'
 import { isExpiring, seasonsLeft } from '@screens/shared/contractStatus'
 import { formatMoney } from '@screens/shared/formatMoney'
+import { absenceLabel, thinPositions, thinPositionText } from '@screens/shared/absences'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
 import { useReleaseConfirm, type ReleaseImpact } from '@screens/shared/ReleaseConfirm'
 
@@ -63,6 +64,7 @@ interface Row {
   rookie: boolean
   injured: boolean
   injuredWeeks: string | null
+  absence: string | null
   expiring: boolean
 }
 
@@ -122,6 +124,7 @@ export function Roster({
         rookie: isRookie(player, state),
         injured: Boolean(slot.injured),
         injuredWeeks: injuredWeeksLabel(slot.injured),
+        absence: absenceLabel(state, slot.playerId),
         expiring: isExpiring(state, slot.contract),
       }
     })
@@ -216,6 +219,9 @@ export function Roster({
                 </span>
               )}
             </>
+          )}
+          {r.absence && (
+            <span style={{ color: 'var(--danger)', fontSize: 'var(--fs-1)' }}>{r.absence}</span>
           )}
           {r.expiring && <StatusBadge status="expiring" />}
         </span>
@@ -377,6 +383,7 @@ export function Roster({
     },
   ]
 
+  const thin = thinPositions(state, state.userTeam)
   const revealBase = showCutdown ? 1 : 0
 
   return (
@@ -418,6 +425,17 @@ export function Roster({
             >
               {releaseLabel}
             </Button>
+          </Panel>
+        </div>
+      )}
+
+      {thin.length > 0 && (
+        <div className="gg-col-12">
+          <Panel title="Short at a position" variant="attention" revealIndex={revealBase}>
+            <p style={{ margin: '0 0 var(--sp-2)' }}>
+              {thin.map(thinPositionText).join(' ')} A street free agent fills in until you sign
+              someone.
+            </p>
           </Panel>
         </div>
       )}

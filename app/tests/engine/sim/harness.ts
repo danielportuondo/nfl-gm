@@ -98,7 +98,8 @@ export function runSeason(
   const weeks = [...new Set(regular.map((g) => g.week))].sort((a, b) => a - b)
   let current = state
   for (const week of weeks) {
-    current = { ...current, week }
+    // The week's real absences (announced on the state) go in before the games, as simWeek does.
+    current = lifecycle.applyWeekAbsences({ ...current, week, phase: 'REGULAR' })
     const results = regular
       .filter((g) => g.week === week)
       .map((game) => tally(current, game, ctx, onResult, totals))

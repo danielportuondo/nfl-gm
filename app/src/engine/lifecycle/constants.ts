@@ -78,9 +78,12 @@ export const BUST_MAX_CAREER_YEARS = 4
  * treated as long regardless of the calendar gap. */
 export const CROSS_SEASON_INJURY_IS_LONG = true
 
-// --- applyHistoricalAbsences (QA M6) ------------------------------------------------------------
+// --- real absences (QA 2017 H1/M6, 2018 M5) -----------------------------------------------------
 
-/** A starter whose real availability for the season was below this misses the matching share of it. */
-export const HISTORICAL_ABSENCE_MAX_AVAIL = 0.5
-/** Shown as the injury kind; the real cause (surgery recovery, suspension, release) is not in the data. */
-export const HISTORICAL_ABSENCE_KIND = 'Offseason recovery'
+/** The injury `kind` a real absence carries, by reason. tickInjuries does not roll permanent loss for
+ * these: the real career already holds whatever the injury cost. */
+export const REAL_ABSENCE_KINDS = {
+  injury: 'Injury',
+  suspension: 'Suspension',
+  out: 'Out of football',
+} as const

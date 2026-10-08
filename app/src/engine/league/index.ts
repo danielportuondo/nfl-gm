@@ -674,9 +674,18 @@ function refreshAiRosters(state: LeagueState, ctx: EngineContext): LeagueState {
   return { ...s, teams }
 }
 
+/**
+ * Real absences, by real week: every rostered player whose announced range covers this week is out,
+ * including one signed or traded for since the last tick. Runs before the AI backfills its roster so
+ * a team whose whole position group is out signs a healthy free agent there.
+ */
+function applyWeekAbsences(state: LeagueState, ctx: EngineContext): LeagueState {
+  return ctx.modules.lifecycle.applyWeekAbsences(ctx.modules.lifecycle.announceAbsences(state, ctx))
+}
+
 function simWeekImpl(input: LeagueState, ctx: EngineContext): WeekReport {
-  const state =
-    input.phase === 'REGULAR' || input.phase === 'PLAYOFFS' ? refreshAiRosters(input, ctx) : input
+  const inSeason = input.phase === 'REGULAR' || input.phase === 'PLAYOFFS'
+  const state = inSeason ? refreshAiRosters(applyWeekAbsences(input, ctx), ctx) : input
   if (state.phase !== 'REGULAR' && state.phase !== 'PLAYOFFS') {
     return {
       state,
@@ -729,6 +738,7 @@ function simWeekImpl(input: LeagueState, ctx: EngineContext): WeekReport {
       // The year's one consensus refresh: the Recap, re-signing, the draft and free agency price on
       // what the season showed. The camp roll does not repeat it.
       newState = ctx.modules.lifecycle.refreshScouting(newState, ctx, newState.season + 1)
+      newState = ctx.modules.lifecycle.announceAbsences(newState, ctx)
       if (summary.champion === newState.userTeam) newState = { ...newState, outcome: 'CHAMPION' }
       else if (newState.season >= newState.horizonEnd)
         newState = { ...newState, outcome: 'HORIZON_EXPIRED' }
@@ -765,7 +775,7 @@ function simWeekImpl(input: LeagueState, ctx: EngineContext): WeekReport {
     }
   }
 
-  return { state: newState, gamesPlayed: gamesThisWeek.length, events }
+  return { state: applyWeekAbsences(newState, ctx), gamesPlayed: gamesThisWeek.length, events }
 }
 
 // -------------------------------------------------------------------------------------------
@@ -905,7 +915,6 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       }
       s = { ...s, teams: healOffseasonInjuries(resetSeasonCounters(s.teams)) }
       s = ensureFuturePicks(s, ctx)
-      s = ctx.modules.lifecycle.applyHistoricalAbsences(s)
       const newGames = buildScheduleImpl(s, ctx)
       s = { ...s, schedule: [...s.schedule, ...newGames], phase: 'PRESEASON' }
       return s
@@ -914,10 +923,6 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
     case 'PRESEASON': {
       // Fill first so the cap pass in runAiCutdowns sees the floor bodies and can swap salary for them.
       let s = ctx.modules.fa.runAiCutdowns(fillAiRosters(state, ctx), ctx)
-      // The refill signs players the real roster left out for missing the season (Jacquies Smith,
-      // 2016 GB), after the camp pass already ran; mark them now. Once only: applying it in-season
-      // would re-injure a healed starter every week.
-      s = ctx.modules.lifecycle.applyHistoricalAbsences(s)
       const updatedTeams: Record<TeamId, TeamState> = { ...s.teams }
       for (const teamId of Object.keys(updatedTeams)) {
         if (teamId === s.userTeam) continue
@@ -933,7 +938,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
         if (!v.ok) problems.push(`${teamId}: ${v.errors.join(', ') || 'invalid roster'}`)
       }
       if (problems.length) throw new Error(`advancePhase: invalid rosters — ${problems.join('; ')}`)
-      return { ...s, phase: 'REGULAR', week: 1 }
+      return applyWeekAbsences({ ...s, phase: 'REGULAR', week: 1 }, ctx)
     }
 
     default: {
@@ -1043,7 +1048,7 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
       ...ctx.modules.draft.buildDraftOrder(state, S + 1, ctx),
       ...ctx.modules.draft.buildDraftOrder(state, S + 2, ctx),
     ]
-    state = ctx.modules.lifecycle.applyHistoricalAbsences({ ...state, picks })
+    state = ctx.modules.lifecycle.announceAbsences({ ...state, picks }, ctx)
     return { ...state, schedule: buildScheduleImpl(state, ctx) }
   }
 
@@ -1055,7 +1060,7 @@ function newGameImpl(opts: NewGameOptions, ctx: EngineContext): LeagueState {
     ctx.modules.draft.buildDraftOrder(state, season, ctx),
   )
   state = { ...state, picks, season: S - 1, phase: 'DRAFT' }
-  return state
+  return ctx.modules.lifecycle.announceAbsences(state, ctx)
 }
 
 // -------------------------------------------------------------------------------------------

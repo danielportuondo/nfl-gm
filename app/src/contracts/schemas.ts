@@ -124,6 +124,33 @@ export const RosterSlotSchema = z.object({
   injured: InjurySchema.optional(),
 })
 
+export const ABSENCE_REASONS = ['injury', 'suspension', 'out'] as const
+export const AbsenceReasonSchema = z.enum(ABSENCE_REASONS)
+
+export const AbsenceSchema = z.object({
+  from: z.number().int().min(1).max(30).describe('First regular-season week missed.'),
+  to: z
+    .number()
+    .int()
+    .min(1)
+    .max(30)
+    .describe(
+      'Last week missed. A value past the regular season means out through the playoffs too.',
+    ),
+  reason: AbsenceReasonSchema.describe(
+    'injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad).',
+  ),
+})
+
+export const AbsenceBoardSchema = z
+  .object({
+    season: SeasonSchema,
+    byPlayer: z.record(PlayerIdSchema, z.array(AbsenceSchema)),
+  })
+  .describe(
+    "PUBLIC. The real weeks every player missed in `season`, announced ahead of time. Written by lifecycle from the season chunk (which is truth) when a season's offseason or opening begins; the UI and the week tick both read it.",
+  )
+
 export const TeamRecordSchema = z.object({
   wins: z.number().int().min(0),
   losses: z.number().int().min(0),
@@ -466,6 +493,7 @@ export const SavedLeagueSchema = z.object({
   truth: z
     .record(PlayerIdSchema, TrueTrajectorySchema)
     .describe('HIDDEN. Present in state; nothing under screens/ or ui/ may read it.'),
+  absences: AbsenceBoardSchema.optional(),
   picks: z.array(DraftPickSchema),
   schedule: z.array(GameSchema),
   results: z.array(GameResultSchema),
@@ -643,6 +671,12 @@ export const SeasonPlayerSchema = PlayerSchema.extend({
     'True value for THIS season only. Loaded into truth by the engine; never shown.',
   ),
   team: TeamIdSchema.nullable().describe('Team at season start; null if unsigned.'),
+  absences: z
+    .array(AbsenceSchema)
+    .optional()
+    .describe(
+      'HIDDEN until lifecycle announces it: the regular-season weeks this player really missed in THIS season. Omitted when he missed none.',
+    ),
 })
 
 export const SeasonPlayersFileSchema = z.object({

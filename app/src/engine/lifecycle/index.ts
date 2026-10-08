@@ -41,7 +41,7 @@ import {
   projectedCeiling,
   retireProbability,
 } from './curves'
-import { applyHistoricalAbsences } from './absences'
+import { announceAbsences, applyWeekAbsences, isRealAbsenceKind } from './absences'
 import { generateDraftClass as generateDraftClassImpl } from './draftClass'
 
 // -------------------------------------------------------------------------------------------
@@ -331,7 +331,11 @@ function tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueS
         // between counts as long — no weekly ticks run over the offseason), roll for permanent loss.
         const elapsed =
           slot.injured.season === state.season ? state.week - slot.injured.week : Infinity
-        if (elapsed >= model.minWeeks && rng.fork(slot.playerId).chance(model.p)) {
+        if (
+          !isRealAbsenceKind(slot.injured.kind) &&
+          elapsed >= model.minWeeks &&
+          rng.fork(slot.playerId).chance(model.p)
+        ) {
           const traj = truth[slot.playerId]
           const key = String(state.season)
           const currentValue = traj?.bySeason[key]
@@ -364,7 +368,8 @@ function tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueS
 
 export const lifecycle: LifecycleModule = {
   ...lifecycleStub,
-  applyHistoricalAbsences,
+  announceAbsences,
+  applyWeekAbsences,
   progressSeason,
   retirements,
   refreshScouting,

@@ -422,7 +422,8 @@ function offer(
     freeAgents: s.freeAgents.filter((id) => id !== playerId),
   }
   if (teamId === state.userTeam) s = logSign(state, s, playerId, signed)
-  return { accepted: true, state: s }
+  // A real absentee signed in season is out for the weeks he really missed, from the signing on.
+  return { accepted: true, state: ctx.modules.lifecycle.applyWeekAbsences(s) }
 }
 
 function pickFallbackTeam(

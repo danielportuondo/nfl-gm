@@ -19,6 +19,7 @@ import {
 import { committedPayroll, roundUpTenth } from '@engine/fa'
 import { isExpiring } from '../shared/contractStatus'
 import { formatMoney } from '../shared/formatMoney'
+import { absenceLabel } from '../shared/absences'
 import { isOffseasonPhase } from '../shared/phaseLabel'
 import { useReleaseConfirm, type ReleaseImpact } from '../shared/ReleaseConfirm'
 
@@ -54,6 +55,7 @@ interface PoolRow {
   age: number
   ovr: number
   pot: number
+  absence: string | null
 }
 
 /** Pool table with asks, your offers, re-sign list, UDFA list (docs/DESIGN.md §11). */
@@ -99,6 +101,7 @@ export function FreeAgency({
         age: state.season - player.birthYear,
         ovr: scouting.ovr,
         pot: scouting.pot,
+        absence: absenceLabel(state, id),
       }
     })
     .filter((r): r is PoolRow => r !== null)
@@ -157,6 +160,13 @@ export function FreeAgency({
       rating: true,
       sortValue: (r) => r.pot,
       render: (r) => r.pot,
+    },
+    {
+      key: 'absence',
+      header: 'Real absence',
+      sortValue: (r) => r.absence ?? '',
+      render: (r) =>
+        r.absence ? <span style={{ color: 'var(--danger)' }}>{r.absence}</span> : null,
     },
   ]
 
@@ -438,6 +448,14 @@ export function FreeAgency({
                   )
                 })()}
               </p>
+              {(() => {
+                const absence = absenceLabel(state, selected)
+                return absence ? (
+                  <p role="alert" style={{ margin: 0, color: 'var(--danger)' }}>
+                    {absence}. He misses those weeks for your team too.
+                  </p>
+                ) : null
+              })()}
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
                 Years
                 <input

@@ -7,6 +7,7 @@ import logging
 from datetime import UTC, datetime
 
 from gridiron_pipeline import DATA_OUT_DIR
+from gridiron_pipeline.build.absences import attach_absences
 from gridiron_pipeline.build.cap import build_cap
 from gridiron_pipeline.build.draft import build_season_draft
 from gridiron_pipeline.build.injury import build_injury_model
@@ -52,6 +53,9 @@ def run(seasons: list[int], allow_placeholder_ratings: bool) -> dict[str, int]:
         log.info("season %d: rosters + players", season)
         start = season_start_roster(season_roster_stints(season))
         rosters_obj, players_obj = build_season_rosters_and_players(season, master, ratings)
+
+        log.info("season %d: real absences", season)
+        attach_absences(players_obj, season, games)
 
         log.info("season %d: draft", season)
         draft_obj = build_season_draft(season, master, ratings, start)

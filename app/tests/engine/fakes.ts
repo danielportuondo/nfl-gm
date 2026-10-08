@@ -228,7 +228,8 @@ export const fakeLifecycle: LifecycleModule = {
   generateDraftClass: () => ({ prospects: [], truth: {}, order: [], draftedCount: 0 }),
   age: (state, playerId, season) =>
     (season ?? state.season) - (state.players[playerId]?.birthYear ?? 0),
-  applyHistoricalAbsences: (state) => state,
+  announceAbsences: (state) => state,
+  applyWeekAbsences: (state) => state,
 }
 
 // --- history: no anchoring ---------------------------------------------------------------------

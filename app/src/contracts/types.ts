@@ -26,6 +26,9 @@ import type {
   GameSchema,
   GameSettingsSchema,
   GameTypeSchema,
+  AbsenceBoardSchema,
+  AbsenceReasonSchema,
+  AbsenceSchema,
   InjuryEventSchema,
   InjuryModelFileSchema,
   InjurySchema,
@@ -88,6 +91,9 @@ export type ScoutingView = z.infer<typeof ScoutingViewSchema>
 export type TrueTrajectory = z.infer<typeof TrueTrajectorySchema>
 export type Contract = z.infer<typeof ContractSchema>
 export type Injury = z.infer<typeof InjurySchema>
+export type Absence = z.infer<typeof AbsenceSchema>
+export type AbsenceReason = z.infer<typeof AbsenceReasonSchema>
+export type AbsenceBoard = z.infer<typeof AbsenceBoardSchema>
 export type RosterSlot = z.infer<typeof RosterSlotSchema>
 export type TeamRecord = z.infer<typeof TeamRecordSchema>
 export type DepthChart = z.infer<typeof DepthChartSchema>
