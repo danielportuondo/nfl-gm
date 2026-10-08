@@ -151,14 +151,18 @@ export const boxConstants = {
   pdMax: 12,
   /** Log-normal σ of the per-player usage noise. */
   usageNoiseSd: 0.32,
-  /** How strongly true value tilts usage inside a position group. */
-  valueTilt: 0.03,
+  /**
+   * How strongly true value tilts usage inside a position group. 0.03 → 0.04 once history seasons
+   * stopped rolling random injuries on top of real absences and benched starters sat: stars now miss
+   * their real weeks only, which left 2019 at ~16 thousand-yard receivers; 0.04 restores ~18–21.
+   */
+  valueTilt: 0.04,
   /**
    * The same tilt for tailback carries: a star back takes the workload, a committee splits it. With
    * QBs at real rushing volume (~14 % of carries) it lifts the rushing leader to real levels
    * (2015–2019: 1,327–1,631) while keeping ~10 thousand-yard rushers a season.
    */
-  rushValueTilt: 0.048,
+  rushValueTilt: 0.055,
   /**
    * RB weights go to tailbacks in depth order; fullbacks (`role: 'FB'`) get the FB weights, which
    * land them at real fullback usage: ~10–35 carries and ~15–40 targets a season.
@@ -191,10 +195,18 @@ export const injuryConstants = {
    * `injuryModel.ratePerPlayerGame` is fit from injuries_2012–2025 and already describes real spells:
    * unscaled it gives 1.02 injuries per team-game. §6.3's target is the calibration band: 0.6–1.6 total
    * and 0.35–0.8 multi-week per team-game. Durations follow players onto reserve (weekly roster `RES`
-   * status), so about 53 % of injuries last 2+ weeks and 12 % run to season end. 1.1 lands 2015 at
-   * ≈ 1.12 total and ≈ 0.59 multi-week (≈ 10 multi-week injuries per team-season, what NFL IR usage
-   * looks like).
+   * status), so about 53 % of injuries last 2+ weeks and 12 % run to season end. 1.1 lands a season
+   * at ≈ 1.1 total and ≈ 0.58 multi-week (≈ 10 multi-week injuries per team-season, what NFL IR usage
+   * looks like). Applies to procedural seasons, which have no real absences; retune together with
+   * the pipeline's `use_res_extension`.
    */
   rateScale: 1.1,
+  /**
+   * The same scale in a season whose real absences are announced (every history season). Those carry
+   * each rostered player's real injuries week by week, so a random roll on top double-counts: at 1.1
+   * the players the sim carries missed 1.37x their real weeks (2015/2017/2019). 0.15 leaves ~2 random
+   * injuries per team-season, keeping their missed player-weeks within ~5 % of real.
+   */
+  realSeasonRateScale: 0.15,
   maxWeeksOut: 22,
 }

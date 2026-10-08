@@ -149,8 +149,10 @@ describe(`real data ${SEASON}`, () => {
     expect(r.meanTotalPoints).toBeGreaterThanOrEqual(41)
     expect(r.meanTotalPoints).toBeLessThanOrEqual(49)
     expect(r.tieRate).toBeLessThan(0.01)
-    expect(r.multiWeekInjuriesPerTeamGame).toBeGreaterThanOrEqual(0.55)
-    expect(r.multiWeekInjuriesPerTeamGame).toBeLessThanOrEqual(1.6)
+    // Real injuries are scheduled from the absence board; the sim rolls only a few on top.
+    const missed = r.missedRealPerTeamSeason + r.missedRolledPerTeamSeason
+    expect(missed / r.missedRealPerTeamSeason).toBeGreaterThanOrEqual(1)
+    expect(missed / r.missedRealPerTeamSeason).toBeLessThanOrEqual(1.1)
     expect(r.truthFallbacks).toBe(0)
   })
 

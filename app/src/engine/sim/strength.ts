@@ -33,9 +33,30 @@ export function trueValue(state: LeagueState, playerId: PlayerId): number {
 const emptyByPos = (): Record<Position, PlayerId[]> =>
   Object.fromEntries(POSITIONS.map((p) => [p, [] as PlayerId[]])) as Record<Position, PlayerId[]>
 
+const NONE: ReadonlySet<PlayerId> = new Set()
+
 /**
- * Healthy players per position in depth-chart order. Anyone on the roster the chart forgot is appended
- * by true value, so a missing or stale chart degrades gracefully instead of fielding nobody.
+ * A consensus starter who really sat this week while healthy (`benched` on the public absence board).
+ * Only AI teams honour it: the user picks his own lineup.
+ */
+export function benchedThisWeek(state: LeagueState, teamId: TeamId): ReadonlySet<PlayerId> {
+  const board = state.absences
+  const team = state.teams[teamId]
+  if (!board || board.season !== state.season || !team || team.userControlled) return NONE
+  let benched: Set<PlayerId> | undefined
+  for (const slot of team.roster) {
+    const sat = board.byPlayer[slot.playerId]?.some(
+      (a) => a.reason === 'benched' && a.from <= state.week && state.week <= a.to,
+    )
+    if (sat) (benched ??= new Set()).add(slot.playerId)
+  }
+  return benched ?? NONE
+}
+
+/**
+ * Healthy players per position in depth-chart order, with an AI team's benched starters moved behind
+ * everyone else at their position. Anyone on the roster the chart forgot is appended by true value,
+ * so a missing or stale chart degrades gracefully instead of fielding nobody.
  */
 export function availableByPosition(
   state: LeagueState,
@@ -45,6 +66,7 @@ export function availableByPosition(
   const team = state.teams[teamId]
   if (!team) return byPos
 
+  const benched = benchedThisWeek(state, teamId)
   const healthy = new Set<PlayerId>()
   const rosterByPos = emptyByPos()
   for (const slot of team.roster) {
@@ -65,7 +87,10 @@ export function availableByPosition(
     }
     const missing = rosterByPos[pos].filter((id) => !listed.has(id))
     missing.sort((a, b) => trueValue(state, b) - trueValue(state, a) || (a < b ? -1 : 1))
-    byPos[pos] = ordered.concat(missing)
+    const all = ordered.concat(missing)
+    byPos[pos] = benched.size
+      ? all.filter((id) => !benched.has(id)).concat(all.filter((id) => benched.has(id)))
+      : all
   }
   return byPos
 }

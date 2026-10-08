@@ -9,6 +9,7 @@
  * totals spread, home-field edge, scoring, and ties. Nothing is written; the league state is never mutated.
  */
 import type { EngineContext, LeagueState, TeamId } from '../src/contracts/index'
+import { hasRealAbsences } from '../src/engine/sim/injuries'
 import { mockLeague } from '../tests/fixtures/mockLeague'
 import {
   calibrate,
@@ -73,7 +74,8 @@ async function loadRealLeague(
   return { state, ctx, realWins: realWinTotals(ctx.seasonData(season)!.schedule) }
 }
 
-function report(r: CalibrationReport, label: string): void {
+function report(r: CalibrationReport, label: string, realAbsences: boolean): void {
+  const missed = r.missedRealPerTeamSeason + r.missedRolledPerTeamSeason
   const rows: [string, string, string][] = [
     ['win corr (rating)', r.winCorrelation.toFixed(3), '>= 0.50'],
     [
@@ -87,8 +89,25 @@ function report(r: CalibrationReport, label: string): void {
     ['tie rate %', (100 * r.tieRate).toFixed(2), '< 1.0'],
     ['overtime rate %', (100 * r.overtimeRate).toFixed(2), '~ 6'],
     ['1-point games %', (100 * r.oneMarginRate).toFixed(2), '~ 2'],
-    ['injuries / team-game', r.injuriesPerTeamGame.toFixed(2), '0.6 - 1.6'],
-    ['multi-week / team-game', r.multiWeekInjuriesPerTeamGame.toFixed(2), '0.35 - 0.8'],
+    // A history season schedules its real injuries; the sim rolls only a few on top.
+    [
+      'injuries / team-game',
+      r.injuriesPerTeamGame.toFixed(2),
+      realAbsences ? '~ 0.15' : '0.6 - 1.6',
+    ],
+    [
+      'multi-week / team-game',
+      r.multiWeekInjuriesPerTeamGame.toFixed(2),
+      realAbsences ? '~ 0.08' : '0.35 - 0.8',
+    ],
+    ['missed wks / team', missed.toFixed(1), realAbsences ? 'real + rolled' : 'rolled'],
+    [
+      'missed vs real',
+      realAbsences && r.missedRealPerTeamSeason > 0
+        ? (missed / r.missedRealPerTeamSeason).toFixed(2)
+        : 'n/a',
+      '0.9 - 1.1',
+    ],
     ['truth fallbacks', String(r.truthFallbacks), '0'],
   ]
   console.log(`\n${label}: ${r.sims} seasons x ${r.teams} teams x ${r.gamesPerTeam} games`)
@@ -131,6 +150,7 @@ async function main(): Promise<void> {
       report(
         calibrate({ sims: args.sims, seed: args.seed, state, ctx: makeCtx() }),
         `mock league ${args.season}`,
+        hasRealAbsences(state),
       )
       return
     }
@@ -145,6 +165,7 @@ async function main(): Promise<void> {
         boxSims: BOX_SIMS,
       }),
       `real league ${args.season}`,
+      hasRealAbsences(state),
     )
   } catch (error) {
     console.error(`calibrate: ${error instanceof Error ? error.message : String(error)}`)

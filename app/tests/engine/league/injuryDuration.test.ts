@@ -41,6 +41,9 @@ function playRegularSeason(ctx: EngineContext): SeasonLog {
     ctx,
   )
   s = league.advancePhase(s, ctx)
+  // History seasons schedule their real injuries and roll few; an empty board keeps the procedural
+  // rate, so the season rolls enough injuries to test durations on.
+  s = { ...s, absences: { season: SEASON, byPlayer: {} } }
   const log: SeasonLog = {
     injuries: [],
     outBefore: new Map(),

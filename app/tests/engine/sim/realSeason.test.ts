@@ -52,11 +52,20 @@ describe(`seeded ${SEASON} seasons on the shipped data`, () => {
     expect(count('defTd')).toBeGreaterThan(count('retTd'))
   })
 
-  it('injuries per team-game sit inside the §6.3 calibration bands', () => {
-    const report = calibrate({ sims: 20, state, ctx })
+  it('without real absences (a procedural season), rolled injuries sit inside the §6.3 bands', () => {
+    const procedural = { ...state, absences: { season: SEASON, byPlayer: {} } }
+    const report = calibrate({ sims: 20, state: procedural, ctx })
     expect(report.injuriesPerTeamGame).toBeGreaterThan(0.6)
     expect(report.injuriesPerTeamGame).toBeLessThan(1.6)
     expect(report.multiWeekInjuriesPerTeamGame).toBeGreaterThan(0.35)
     expect(report.multiWeekInjuriesPerTeamGame).toBeLessThan(0.8)
+  })
+
+  it('with real absences, rostered players miss within 10 % of their real weeks (no double count)', () => {
+    const report = calibrate({ sims: 20, state, ctx })
+    const missed = report.missedRealPerTeamSeason + report.missedRolledPerTeamSeason
+    expect(report.missedRealPerTeamSeason).toBeGreaterThan(50)
+    expect(missed / report.missedRealPerTeamSeason).toBeLessThan(1.1)
+    expect(report.injuriesPerTeamGame).toBeGreaterThan(0.05)
   })
 })

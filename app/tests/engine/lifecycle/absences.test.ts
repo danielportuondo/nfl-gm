@@ -56,6 +56,20 @@ describe('applyWeekAbsences (unit)', () => {
     expect(applyWeekAbsences(once)).toEqual(once)
   })
 
+  it('a benched range is not an injury: the player stays healthy', () => {
+    const base = mockLeague({ season: 2017 })
+    const id = base.teams.IND!.roster[0]!.playerId
+    const state = withBoard(base, id, 1, 22)
+    const benched = {
+      ...state,
+      absences: {
+        ...state.absences,
+        byPlayer: { [id]: [{ from: 1, to: 22, reason: 'benched' as const }] },
+      },
+    }
+    expect(applyWeekAbsences(benched)).toBe(benched)
+  })
+
   it('does not touch a range that has not started, has ended, or the wrong season', () => {
     const base = mockLeague({ season: 2017 })
     const id = base.teams.IND!.roster[0]!.playerId
@@ -255,7 +269,7 @@ describe('real absences by real week', () => {
     expect(slot.injured).toMatchObject({ kind: 'Injury', weeksOut: 22 - 8 + 1 })
     let after = signed!
     while (after.phase === 'REGULAR') after = ctx.modules.league.simWeek(after, ctx).state
-    expect(weeksPlayed(after, MERCILUS)).toEqual([])
+    expect(weeksPlayed(after, MERCILUS).filter((w) => w >= 8)).toEqual([])
   }, 120_000)
 
   it('a bench player on an AI team is covered, and misses exactly his announced weeks', () => {
@@ -273,7 +287,8 @@ describe('real absences by real week', () => {
     const candidates = TEAM_IDS.filter((t) => t !== 'IND').flatMap((teamId) =>
       opened.teams[teamId]!.roster.filter((r) => {
         const range = opened.absences?.byPlayer[r.playerId]?.[0]
-        return range && range.from >= 2 && range.to <= 17 && isBench(teamId, r.playerId)
+        if (!range || range.reason === 'benched') return false
+        return range.from >= 2 && range.to <= 17 && isBench(teamId, r.playerId)
       }).map((r) => ({ teamId, id: r.playerId })),
     )
     const pick = candidates.sort(
@@ -315,9 +330,11 @@ describe('real absences by real week', () => {
   it('a suspension shows as a suspension for exactly its weeks', () => {
     const ctx = ctxBySeason.get(2017)!
     const opened = openSeason(ctx, 2017, 'IND', 'abs-sus')
-    expect(opened.absences?.byPlayer[SEANTREL_HENDERSON]).toEqual([
-      { from: 1, to: 5, reason: 'suspension' },
-    ])
+    expect(opened.absences?.byPlayer[SEANTREL_HENDERSON]?.[0]).toEqual({
+      from: 1,
+      to: 5,
+      reason: 'suspension',
+    })
     const regular = startRegular(ctx, addToRoster(opened, 'IND', SEANTREL_HENDERSON))
     const played = playSeason(ctx, regular, SEANTREL_HENDERSON)
     expect(played.slotByWeek.get(1)?.injured).toMatchObject({ kind: 'Suspension', weeksOut: 5 })

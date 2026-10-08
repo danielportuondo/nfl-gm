@@ -46,6 +46,14 @@ export function activePlayers(
   return active
 }
 
+/** This season's real absences are on the public board, so real injuries are already scheduled. */
+export function hasRealAbsences(state: Pick<LeagueState, 'absences' | 'season'>): boolean {
+  const board = state.absences
+  if (!board || board.season !== state.season) return false
+  for (const _ in board.byPlayer) return true
+  return false
+}
+
 export function sampleInjuries(
   state: LeagueState,
   ctx: EngineContext,
@@ -55,9 +63,12 @@ export function sampleInjuries(
 ): InjuryEvent[] {
   if (!state.settings.injuries) return []
   const model = ctx.data.injuryModel
+  const scale = hasRealAbsences(state)
+    ? injuryConstants.realSeasonRateScale
+    : injuryConstants.rateScale
   const events: InjuryEvent[] = []
   for (const { id, pos } of activePlayers(byPos)) {
-    const rate = (model.ratePerPlayerGame[pos] ?? 0) * injuryConstants.rateScale
+    const rate = (model.ratePerPlayerGame[pos] ?? 0) * scale
     if (!rng.chance(rate)) continue
     const weeksOut = pickWeighted(model.duration, rng, (i) => model.duration[i]?.weeks ?? 1)
     const kind = pickWeighted(model.kinds, rng, (i) => model.kinds[i]?.kind ?? 'undisclosed')

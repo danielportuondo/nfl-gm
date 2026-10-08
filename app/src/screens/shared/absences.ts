@@ -1,6 +1,6 @@
 /**
- * Labels for the real absences lifecycle announces in `state.absences` ("Out wk 6–17 · injury").
- * Reads only that public board, never truth. Pure functions.
+ * Labels for the real absences lifecycle announces in `state.absences` ("Out wk 6–17 · injury",
+ * "Benched wk 2–17"). Reads only that public board, never truth. Pure functions.
  */
 import {
   STARTER_TEMPLATE,
@@ -16,6 +16,7 @@ const REASON_TEXT: Record<AbsenceReason, string> = {
   injury: 'injury',
   suspension: 'suspension',
   out: 'out of football',
+  benched: 'benched',
 }
 
 const MAX_RANGES_SHOWN = 2
@@ -25,17 +26,25 @@ function regularWeeks(season: Season): number {
   return leagueFormat(season).regularSeasonGames + 1
 }
 
+type BoardView = Pick<LeagueState, 'absences' | 'season' | 'phase' | 'week' | 'teams'>
+
+/** Only an AI team sits a benched starter; the user, and whoever signs a free agent, picks freely. */
+function onAiTeam(state: BoardView, playerId: PlayerId): boolean {
+  return Object.values(state.teams).some(
+    (team) => !team.userControlled && team.roster.some((slot) => slot.playerId === playerId),
+  )
+}
+
 /** Announced ranges for the player that are not over yet. In the offseason every range is ahead. */
-export function upcomingAbsences(
-  state: Pick<LeagueState, 'absences' | 'season' | 'phase' | 'week'>,
-  playerId: PlayerId,
-): Absence[] {
+export function upcomingAbsences(state: BoardView, playerId: PlayerId): Absence[] {
   const board = state.absences
   const ranges = board?.byPlayer[playerId]
   if (!board || !ranges) return []
   const underway =
     board.season === state.season && (state.phase === 'REGULAR' || state.phase === 'PLAYOFFS')
-  return underway ? ranges.filter((a) => a.to >= state.week) : ranges
+  const ahead = underway ? ranges.filter((a) => a.to >= state.week) : ranges
+  if (!ahead.some((a) => a.reason === 'benched') || onAiTeam(state, playerId)) return ahead
+  return ahead.filter((a) => a.reason !== 'benched')
 }
 
 function rangeLabel(absence: Absence, season: Season): string {
@@ -44,14 +53,12 @@ function rangeLabel(absence: Absence, season: Season): string {
     return `Out of football in ${season}`
   const to = Math.min(absence.to, last)
   const weeks = absence.from >= to ? `wk ${absence.from}` : `wk ${absence.from}–${to}`
+  if (absence.reason === 'benched') return `Benched ${weeks}`
   return `Out ${weeks} · ${REASON_TEXT[absence.reason]}`
 }
 
-/** "Out wk 6–17 · injury", or null when nothing is announced ahead for him. */
-export function absenceLabel(
-  state: Pick<LeagueState, 'absences' | 'season' | 'phase' | 'week'>,
-  playerId: PlayerId,
-): string | null {
+/** "Out wk 6–17 · injury" or "Benched wk 2–17", or null when nothing is announced ahead for him. */
+export function absenceLabel(state: BoardView, playerId: PlayerId): string | null {
   const ranges = upcomingAbsences(state, playerId)
   if (ranges.length === 0 || !state.absences) return null
   const season = state.absences.season

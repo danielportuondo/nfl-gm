@@ -21,16 +21,28 @@ included, and no row means no roster.
 A run that is still open in the last regular-season week, for a player with no active postseason
 row, is extended to `PLAYOFF_END_WEEK`: the engine reads `to > regular-season weeks` as "through the
 playoffs" (an injured-reserve player does not come back for January in the sim either).
+
+`benched` marks a healthy consensus starter who really sat (RG3 behind Cousins in 2015). Per team
+and game week, the available players at a position are ranked by preseason consensus; one of the
+top `STARTER_TEMPLATE[pos]` is benched when he took no snap on offense or defense (a starter hurt
+early in a game took some, and is not benched) while a teammate at his position ranked below him by
+consensus took at least
+`BENCH_STARTER_MIN_SHARE`, i.e. the real starter sat behind him on paper. Ordinary backups never
+rank in the top slots, so they are never flagged. A starter on that week's injury report who sat is
+an injury week instead, and resting in the final regular-season week alone is not a benching. Snap
+counts start in 2012; before that only quarterbacks are judged, by share of team pass attempts.
 """
 
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass, field
 
 import pandas as pd
 
 from gridiron_pipeline.ingest.load import load_injuries, load_weekly_roster
 from gridiron_pipeline.model.data import load_snaps, load_stats_week
+from gridiron_pipeline.model.validate import STARTER_TEMPLATE
 
 log = logging.getLogger(__name__)
 
@@ -40,6 +52,7 @@ PRESENT = "present"
 INJURY = "injury"
 SUSPENSION = "suspension"
 OUT = "out"
+BENCHED = "benched"
 _NEUTRAL = "neutral"
 _UNKNOWN = "unknown"
 
@@ -47,6 +60,20 @@ _UNKNOWN = "unknown"
 FULL_SNAPSHOT_MIN_ACTIVE = 50
 FULL_SNAPSHOT_MIN_SHARE = 0.9
 SCRATCH_MAX_WEEKS_AT_EDGE = 1
+
+BENCH_STARTER_MIN_SHARE = 0.40
+BENCH_POSITIONS = tuple(p for p in STARTER_TEMPLATE if p not in ("K", "P"))
+
+
+@dataclass(frozen=True)
+class BenchInputs:
+    """What the benched rule needs: who the consensus starters were and who really played."""
+
+    consensus: dict[str, tuple[str, float]]  # gsis_id -> (position, preseason consensus ovr)
+    share: dict[tuple[str, int], float]  # (gsis_id, week) -> share of his unit's snaps
+    reported: frozenset[tuple[str, int]] = field(default_factory=frozenset)  # on the injury report
+    positions: tuple[str, ...] = BENCH_POSITIONS
+
 
 _STATUS_KIND: dict[str, str] = {
     "ACT": PRESENT,
@@ -169,6 +196,7 @@ def derive_absences(
     player_ids: set[str],
     complete_snapshot: bool = True,
     played: frozenset[tuple[str, int]] = frozenset(),
+    bench: BenchInputs | None = None,
 ) -> dict[str, list[dict]]:
     """gsis_id -> absence ranges `{from, to, reason}` for the ids that missed at least one week."""
     weeks = range(1, regular_weeks + 1)
@@ -193,22 +221,25 @@ def derive_absences(
             if gid in player_ids and not pd.isna(week):
                 ruled_out.setdefault(gid, set()).add(int(week))
 
-    result: dict[str, list[dict]] = {}
+    resolved_by_player: dict[str, dict[int, str]] = {}
+    team_at: dict[str, dict[int, str | None]] = {}
     for gid in sorted(player_ids):
         by_week = kinds.get(gid, {})
         team_by_week = teams.get(gid, {})
+        known = sorted(team_by_week)
         raw: dict[int, str | None] = {}
+        team_at[gid] = {}
         for w in weeks:
+            before = [k for k in known if k <= w]
+            nearest = before[-1] if before else (known[0] if known else None)
+            team = team_by_week[nearest] if nearest is not None else None
+            team_at[gid][w] = team
             if w in by_week:
                 kind = _best_kind(by_week[w])
                 if kind == PRESENT and w in ruled_out.get(gid, ()):
                     kind = INJURY
                 raw[w] = kind
                 continue
-            known = sorted(team_by_week)
-            before = [k for k in known if k < w]
-            nearest = before[-1] if before else (known[0] if known else None)
-            team = team_by_week[nearest] if nearest is not None else None
             on_bye = team is not None and w not in game_weeks.get(team, set())
             if w in ruled_out.get(gid, ()):
                 raw[w] = INJURY
@@ -218,12 +249,77 @@ def derive_absences(
         for w in weeks:
             if (gid, w) in played:
                 resolved[w] = PRESENT
-        ranges = _to_ranges(resolved, weeks)
-        if ranges and ranges[-1]["to"] == regular_weeks and gid not in active_post:
-            ranges[-1]["to"] = PLAYOFF_END_WEEK
+        resolved_by_player[gid] = resolved
+
+    if bench is not None:
+        _mark_benched(resolved_by_player, team_at, game_weeks, regular_weeks, bench)
+
+    result: dict[str, list[dict]] = {}
+    for gid in sorted(player_ids):
+        ranges = _to_ranges(resolved_by_player[gid], weeks)
+        # A benched starter is usually dressed in January too, so his active row says nothing.
+        last = ranges[-1] if ranges else None
+        if last and last["to"] == regular_weeks:
+            if gid not in active_post or last["reason"] == BENCHED:
+                last["to"] = PLAYOFF_END_WEEK
         if ranges:
             result[gid] = ranges
     return result
+
+
+def _mark_benched(
+    resolved: dict[str, dict[int, str]],
+    team_at: dict[str, dict[int, str | None]],
+    game_weeks: dict[str, set[int]],
+    regular_weeks: int,
+    bench: BenchInputs,
+) -> None:
+    """Present weeks a healthy consensus starter really sat become `benched` (see module doc)."""
+    sat: dict[str, set[int]] = {}
+    for week in range(1, regular_weeks + 1):
+        groups: dict[tuple[str, str], list[str]] = {}
+        for gid in sorted(resolved):
+            team = team_at[gid][week]
+            info = bench.consensus.get(gid)
+            if team is None or info is None or resolved[gid][week] != PRESENT:
+                continue
+            if week not in game_weeks.get(team, set()) or info[0] not in bench.positions:
+                continue
+            groups.setdefault((team, info[0]), []).append(gid)
+        for (_, pos), ids in sorted(groups.items()):
+            ranked = sorted(ids, key=lambda g: (-bench.consensus[g][1], g))
+            slots = STARTER_TEMPLATE[pos]
+            starters, below = ranked[:slots], ranked[slots:]
+            if not any(bench.share.get((g, week), 0.0) >= BENCH_STARTER_MIN_SHARE for g in below):
+                continue
+            for gid in starters:
+                if bench.share.get((gid, week), 0.0) <= 0.0:
+                    sat.setdefault(gid, set()).add(week)
+
+    for gid, weeks_sat in sorted(sat.items()):
+        final_team = team_at[gid][regular_weeks] or ""
+        team_games = sorted(w for w in game_weeks.get(final_team, set()) if w <= regular_weeks)
+        if len(team_games) >= 2:
+            last, before_last = team_games[-1], team_games[-2]
+            if last in weeks_sat and before_last not in weeks_sat:
+                weeks_sat = weeks_sat - {last}
+        for week in sorted(weeks_sat):
+            resolved[gid][week] = INJURY if (gid, week) in bench.reported else BENCHED
+        _bridge_byes(resolved[gid], team_at[gid], game_weeks, regular_weeks)
+
+
+def _bridge_byes(
+    resolved: dict[int, str],
+    team_at: dict[int, str | None],
+    game_weeks: dict[str, set[int]],
+    regular_weeks: int,
+) -> None:
+    """A bye between two benched weeks is benched too, so one benching reads as one range."""
+    for week in range(2, regular_weeks):
+        team = team_at[week]
+        on_bye = team is not None and week not in game_weeks.get(team, set())
+        if on_bye and resolved[week - 1] == BENCHED == resolved[week + 1]:
+            resolved[week] = BENCHED
 
 
 def _to_ranges(resolved: dict[int, str], weeks: range) -> list[dict]:
@@ -252,6 +348,48 @@ def played_weeks(season: int) -> frozenset[tuple[str, int]]:
     return frozenset(pairs)
 
 
+def unit_snap_share(season: int) -> dict[tuple[str, int], float]:
+    """(gsis_id, week) -> share of his unit's snaps; before snap counts, QB share of attempts."""
+    snaps = load_snaps(season)
+    if not snaps.empty:
+        pct = snaps[["offense_pct", "defense_pct"]].fillna(0).max(axis=1)
+        return {
+            (gid, int(week)): float(p)
+            for gid, week, p in zip(snaps["gsis_id"], snaps["week"], pct, strict=True)
+        }
+    stats = load_stats_week(season)
+    qbs = stats[stats["position"] == "QB"]
+    team_attempts = qbs.groupby(["team", "week"])["attempts"].transform("sum")
+    share = (qbs["attempts"] / team_attempts.where(team_attempts > 0)).fillna(0)
+    return {
+        (gid, int(week)): float(s)
+        for gid, week, s in zip(qbs["gsis_id"], qbs["week"], share, strict=True)
+    }
+
+
+def bench_inputs(players_obj: dict, season: int, injuries: pd.DataFrame | None) -> BenchInputs:
+    consensus = {
+        p["id"]: (p["pos"], float(p["scouting"]["ovr"]))
+        for p in players_obj["players"]
+        if p.get("scouting")
+    }
+    reported: frozenset[tuple[str, int]] = frozenset()
+    if injuries is not None:
+        listed = injuries[(injuries["game_type"] == "REG") & injuries["report_status"].notna()]
+        reported = frozenset(
+            (gid, int(week))
+            for gid, week in zip(listed["gsis_id"], listed["week"], strict=True)
+            if not pd.isna(week)
+        )
+    has_snaps = not load_snaps(season).empty
+    return BenchInputs(
+        consensus=consensus,
+        share=unit_snap_share(season),
+        reported=reported,
+        positions=BENCH_POSITIONS if has_snaps else ("QB",),
+    )
+
+
 def attach_absences(players_obj: dict, season: int, games: pd.DataFrame) -> None:
     """Add `absences` to every player of a season chunk who really missed regular-season weeks."""
     roster = load_weekly_roster(season)
@@ -261,14 +399,16 @@ def attach_absences(players_obj: dict, season: int, games: pd.DataFrame) -> None
         return
     regular_weeks = int(reg["week"].max())
     ids = {p["id"] for p in players_obj["players"]}
+    injuries = load_injuries(season)
     found = derive_absences(
         roster,
-        load_injuries(season),
+        injuries,
         team_game_weeks(games, season),
         regular_weeks,
         ids,
         complete_snapshot=snapshot_is_complete(roster),
         played=played_weeks(season),
+        bench=bench_inputs(players_obj, season, injuries),
     )
     for player in players_obj["players"]:
         ranges = found.get(player["id"])

@@ -42,6 +42,26 @@ describe('real absences are shown ahead of time', () => {
     expect(absenceLabel({ ...state, week: 7 }, 'nobody')).toBeNull()
   })
 
+  it('a benched starter reads "Benched" on an AI team, and nothing on the user team or in the pool', () => {
+    const { state, poolId } = announced()
+    const aiTeam = Object.keys(state.teams)
+      .sort()
+      .find((id) => id !== state.userTeam)!
+    const aiStarter = state.teams[aiTeam]!.roster[0]!.playerId
+    const userStarter = state.teams[state.userTeam]!.roster[0]!.playerId
+    const benched = { from: 2, to: 22, reason: 'benched' as const }
+    const board: LeagueState = {
+      ...state,
+      absences: {
+        season: 2017,
+        byPlayer: { [aiStarter]: [benched], [userStarter]: [benched], [poolId]: [benched] },
+      },
+    }
+    expect(absenceLabel(board, aiStarter)).toBe('Benched wk 2–17')
+    expect(absenceLabel(board, userStarter)).toBeNull()
+    expect(absenceLabel(board, poolId)).toBeNull()
+  })
+
   it('the free-agent pool row and the offer panel carry the label', async () => {
     const { state, poolId } = announced()
     const name = state.players[poolId]!.name

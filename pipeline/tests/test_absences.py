@@ -1,10 +1,10 @@
-"""Real absences by week: reasons, byes, scratches and the playoff extension."""
+"""Real absences by week: reasons, byes, scratches, benched starters and the playoff extension."""
 
 from __future__ import annotations
 
 import pandas as pd
 
-from gridiron_pipeline.build.absences import PLAYOFF_END_WEEK, derive_absences
+from gridiron_pipeline.build.absences import PLAYOFF_END_WEEK, BenchInputs, derive_absences
 
 WEEKS = 10
 BYE = 5
@@ -123,3 +123,53 @@ def test_a_week_with_a_stat_line_or_snaps_is_never_an_absence():
         {"from": 5, "to": 5, "reason": "injury"},
         {"from": 7, "to": 10, "reason": "injury"},
     ]
+
+
+def qb_room(star_share: float, starter_share: float = 1.0, reported=frozenset()):
+    """A 72 who sits behind a 65, with a 50 third-stringer who never plays."""
+    present = {w: "ACT" for w in range(1, WEEKS + 1) if w != BYE}
+    rows = [
+        row for gid in ("star", "real", "third") for row in roster_rows(gid, present, post="ACT")
+    ]
+    consensus = {"star": ("QB", 72.0), "real": ("QB", 65.0), "third": ("QB", 50.0)}
+    share = {
+        (gid, w): s for w in present for gid, s in (("star", star_share), ("real", starter_share))
+    }
+    return rows, BenchInputs(consensus=consensus, share=share, reported=reported)
+
+
+def with_bench(rows: list[dict], bench: BenchInputs):
+    return derive_absences(
+        pd.DataFrame(rows, columns=["gsis_id", "week", "status", "team", "game_type"]),
+        None,
+        GAME_WEEKS,
+        WEEKS,
+        {r["gsis_id"] for r in rows},
+        bench=bench,
+    )
+
+
+def test_a_healthy_consensus_starter_who_sat_behind_the_real_starter_is_benched():
+    out = with_bench(*qb_room(star_share=0.0))
+    # Dressed for the playoffs says nothing about playing, so the benching runs through January.
+    assert out == {"star": [{"from": 1, "to": PLAYOFF_END_WEEK, "reason": "benched"}]}
+
+
+def test_ordinary_backups_are_never_benched():
+    assert with_bench(*qb_room(star_share=1.0, starter_share=0.0)) == {}
+
+
+def test_a_starter_on_the_injury_report_who_sat_is_hurt_not_benched():
+    out = with_bench(*qb_room(star_share=0.0, reported=frozenset({("star", 3)})))
+    assert out["star"] == [
+        {"from": 1, "to": 2, "reason": "benched"},
+        {"from": 3, "to": 3, "reason": "injury"},
+        {"from": 4, "to": PLAYOFF_END_WEEK, "reason": "benched"},
+    ]
+
+
+def test_resting_in_the_final_week_alone_is_not_a_benching():
+    rows, bench = qb_room(star_share=1.0)
+    share = bench.share | {("star", WEEKS): 0.0}
+    rested = BenchInputs(consensus=bench.consensus, share=share)
+    assert with_bench(rows, rested) == {}

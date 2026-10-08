@@ -6,6 +6,8 @@
  * reads it, so the decision uses truth, and publishes it as `state.absences` ahead of the season. The
  * UI and the week tick both read only that public board. A rostered player whose range covers the
  * week is marked injured through the usual path, for exactly the weeks left, whoever he plays for.
+ * A `benched` range (a healthy consensus starter who really sat) is not an absence here: the player
+ * stays healthy and the sim plays him behind the real starter on AI teams only.
  */
 import {
   isInHistory,
@@ -83,7 +85,8 @@ export function applyWeekAbsences(state: LeagueState): LeagueState {
     let changed = false
     const roster: RosterSlot[] = team.roster.map((slot) => {
       const absence = absenceAt(state, slot.playerId, state.season, state.week)
-      if (!absence) return slot
+      // A benched starter is healthy: the sim plays him behind the real starter on AI teams only.
+      if (!absence || absence.reason === 'benched') return slot
       const weeksOut = absence.to - state.week + 1
       if ((slot.injured?.weeksOut ?? 0) >= weeksOut) return slot
       changed = true

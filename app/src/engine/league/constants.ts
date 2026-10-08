@@ -98,7 +98,10 @@ export const OROY_POSITION_WEIGHT = { QB: 1, RB: 0.85, WR: 1, TE: 0.8 }
 /** DPOY / DROY: position-adjusted score x position weight. Pass rushers (DL, and edge LBs) decide
  * the real vote about 4 years in 5; coverage players win it rarely. */
 export const DPOY_POSITION_WEIGHT = { DL: 1, LB: 0.82, CB: 0.85, S: 0.78 }
-export const DROY_POSITION_WEIGHT = { DL: 1, LB: 0.9, CB: 0.85, S: 0.82 }
+/** Fit on real 2012–2024 box scores: the old CB 0.85 / S 0.82 picked a DB in 38 % of real seasons
+ * against the voters' 23 % (Peters, Lattimore, Gardner); these pick 7 of 13 real winners either way
+ * and DBs in 23 %. */
+export const DROY_POSITION_WEIGHT = { DL: 1, LB: 0.95, CB: 0.8, S: 0.75 }
 
 /** Award notes split rushing and receiving yards when the smaller part is at least this many yards. */
 export const NOTE_MIN_SECONDARY_YARDS = 100

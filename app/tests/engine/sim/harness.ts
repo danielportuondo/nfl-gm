@@ -20,6 +20,7 @@ import {
 } from '@contracts/index'
 import { mockLeague, mockStatic } from '@fixtures/mockLeague'
 import { lifecycle } from '@engine/lifecycle/index'
+import { REAL_ABSENCE_KINDS } from '@engine/lifecycle/constants'
 import { sim } from '@engine/sim/index'
 import {
   computeTeamStrength,
@@ -68,6 +69,9 @@ export interface SeasonTotals {
   injuries: number
   multiWeekInjuries: number
   teamGames: number
+  /** Player-weeks missed by rostered players to real injuries and suspensions, and to rolled ones. */
+  missedReal: number
+  missedRolled: number
 }
 
 /**
@@ -91,6 +95,8 @@ export function runSeason(
     injuries: 0,
     multiWeekInjuries: 0,
     teamGames: 0,
+    missedReal: 0,
+    missedRolled: 0,
   }
   for (const teamId of Object.keys(state.teams).sort()) totals.wins[teamId] = 0
 
@@ -100,9 +106,9 @@ export function runSeason(
   for (const week of weeks) {
     // The week's real absences (announced on the state) go in before the games, as simWeek does.
     current = lifecycle.applyWeekAbsences({ ...current, week, phase: 'REGULAR' })
-    const results = regular
-      .filter((g) => g.week === week)
-      .map((game) => tally(current, game, ctx, onResult, totals))
+    const games = regular.filter((g) => g.week === week)
+    countMissed(current, new Set(games.flatMap((g) => [g.home, g.away])), totals)
+    const results = games.map((game) => tally(current, game, ctx, onResult, totals))
     current = lifecycle.tickInjuries(
       current,
       ctx,
@@ -114,6 +120,22 @@ export function runSeason(
     )
   }
   return totals
+}
+
+/**
+ * Player-weeks lost at kickoff: rostered players out with a real injury or suspension (scheduled from
+ * the absence board) or a rolled injury. Out-of-football weeks are not injuries and are left out.
+ */
+function countMissed(state: LeagueState, playing: ReadonlySet<TeamId>, totals: SeasonTotals): void {
+  for (const teamId of [...playing].sort()) {
+    for (const slot of state.teams[teamId]?.roster ?? []) {
+      const kind = slot.injured && slot.injured.weeksOut > 0 ? slot.injured.kind : undefined
+      if (kind === undefined || kind === REAL_ABSENCE_KINDS.out) continue
+      if (kind === REAL_ABSENCE_KINDS.injury || kind === REAL_ABSENCE_KINDS.suspension)
+        totals.missedReal++
+      else totals.missedRolled++
+    }
+  }
 }
 
 function tally(
@@ -160,8 +182,12 @@ export interface CalibrationReport {
   tieRate: number
   overtimeRate: number
   oneMarginRate: number
+  /** Injuries the sim rolled (real absences are scheduled, not rolled). */
   injuriesPerTeamGame: number
   multiWeekInjuriesPerTeamGame: number
+  /** Player-weeks rostered players missed per team-season: real injuries/suspensions, then rolled. */
+  missedRealPerTeamSeason: number
+  missedRolledPerTeamSeason: number
   truthFallbacks: number
   box: BoxSeasonStats | null
   seconds: number
@@ -226,6 +252,8 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
   let injuries = 0
   let multiWeek = 0
   let teamGames = 0
+  let missedReal = 0
+  let missedRolled = 0
 
   const boxSims = Math.min(sims, opts.boxSims ?? 0)
   const box = boxSims > 0 ? boxStatsCollector(base) : null
@@ -250,6 +278,8 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
     injuries += totals.injuries
     multiWeek += totals.multiWeekInjuries
     teamGames += totals.teamGames
+    missedReal += totals.missedReal
+    missedRolled += totals.missedRolled
   }
 
   const regularGames = base.schedule.filter((g) => g.type === 'REG').length
@@ -272,6 +302,8 @@ export function calibrate(opts: CalibrationOptions = {}): CalibrationReport {
     oneMarginRate: oneMargin / games,
     injuriesPerTeamGame: injuries / teamGames,
     multiWeekInjuriesPerTeamGame: multiWeek / teamGames,
+    missedRealPerTeamSeason: missedReal / (sims * teamIds.length),
+    missedRolledPerTeamSeason: missedRolled / (sims * teamIds.length),
     truthFallbacks: truthFallbackCount(),
     box: box ? box.summary() : null,
     seconds: (performance.now() - started) / 1000,

@@ -124,7 +124,7 @@ export const RosterSlotSchema = z.object({
   injured: InjurySchema.optional(),
 })
 
-export const ABSENCE_REASONS = ['injury', 'suspension', 'out'] as const
+export const ABSENCE_REASONS = ['injury', 'suspension', 'out', 'benched'] as const
 export const AbsenceReasonSchema = z.enum(ABSENCE_REASONS)
 
 export const AbsenceSchema = z.object({
@@ -138,7 +138,7 @@ export const AbsenceSchema = z.object({
       'Last week missed. A value past the regular season means out through the playoffs too.',
     ),
   reason: AbsenceReasonSchema.describe(
-    'injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad).',
+    'injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad); benched = a healthy consensus starter who really sat behind a lower-rated teammate (AI teams sit him; the user team ignores it).',
   ),
 })
 
