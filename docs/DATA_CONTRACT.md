@@ -90,6 +90,11 @@ the free-agent pool holds only players who could really play. `Player` fields (`
 - `trueValue` — this season's real value. The engine copies it into `state.truth`; the UI never sees it.
 - `team` — the team whose opening-day roster in `rosters.json` lists the player, or `null`. The engine
   starts `null` players in the free-agent pool (`LeagueState.freeAgents`).
+- `absences?` — the regular-season weeks the player really missed, as `{from, to, reason}` ranges
+  (`build/absences.py`). `reason` is `injury` (reserve/PUP/NFI or ruled out), `suspension`,
+  `out` (out of football: on no roster that week; practice squad counts here) or `benched` (a healthy
+  consensus starter who took no snaps while a lower-rated teammate did). A week with a stat line or
+  snaps is never an absence; healthy scratches are not absences; `to = 22` runs through the playoffs.
 
 ### `rosters.json` — schema `seasonRosters`
 `rosters[TeamId][]` of `{playerId, apy?, years?, depth?}` — the **opening-day roster**: at most 53 players
@@ -104,7 +109,8 @@ stranded 1,814 real contributors (Mack and Foreman 2017) as team-less across 201
 Status and rating come before depth so a starter who spent the season on injured reserve stays on the
 team that held his contract instead of surfacing as a day-one free agent. A team exports fewer than 53
 only when the source has fewer. Everyone else that season appears in `players.json` with `team: null`.
-`apy`/`years` are hints from the contracts data when matched (~2011+); the engine synthesizes a contract
+`apy`/`years` are hints from the contracts data when matched (~2011+), with `years` the seasons left
+including this one (`year_signed + years − season`); the engine synthesizes a contract
 when absent. `depth` is the depth-chart order at the player's position group (1 = starter), from
 `depth_charts` (all seasons) and snap share (2012+).
 

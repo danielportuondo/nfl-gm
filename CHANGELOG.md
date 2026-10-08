@@ -43,6 +43,19 @@ All notable changes to Gridiron GM. Dates are build dates; the project was built
 - Player ratings are steadier from year to year: each season carries a little of the one before, and running quarterbacks and backs get credit for their rushing.
 - A week your team doesn't play says why, for example the 2017 Dolphins' week-1 game moved by Hurricane Irma, or the canceled 2022 Bills-Bengals game.
 
+- Players miss the weeks they really missed, for injury, suspension or being out of football, wherever they play, including bench players and mid-season signings. Free agents, rosters and player cards show it ahead of time ("Out wk 6–17 · injury").
+- AI teams sit starters who were really benched (Washington starts Cousins over Griffin in 2015), and fill a position when everyone there is out.
+- Your depth chart keeps your order: injured players get their slot back when they heal, Reset ignores injuries, and new arrivals slot in by rating with a note saying where.
+- Prying a starter loose costs about a 2nd-round pick, not a 1st, and an unlikely offer tells you roughly what the other team wants.
+- Ratings catch up right after the Super Bowl, so the Season Recap and the whole offseason see how your moves really turned out.
+- Players who are leaving football can't be re-signed, and you're told who left at the rollover.
+- Players released in the offseason leave dead money on next season's cap, and the Dashboard's cap figure matches the free agency screen.
+- Ties in the standings follow the NFL tiebreak rules.
+- Starting a new game asks before replacing your saved game.
+- Offensive and defensive linemen are rated on their own play rather than their salary (Joe Thomas, Aaron Donald).
+- Real contracts that were missing now load (Joe Thomas, Kyle Long), and contracts show the years left, not the original length.
+- Defensive Rookie of the Year goes to front-seven players about as often as it really does.
+
 ### Added
 - A Reset to consensus button for the depth chart.
 - The Draft Room pauses on every pick. "Sim next pick" advances one pick, and you can trade for the pick on the clock.

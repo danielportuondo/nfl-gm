@@ -484,3 +484,57 @@ A playthrough agent played MIA from the 2017 draft (titles in 2018 and 2019). A 
   - 2022 BUF/CIN, week 17 (canceled after Damar Hamlin's cardiac arrest)
 
   Any other week off reads as a bye. A test scans every shipped schedule.
+
+## 2026-10-08 — Jets playthrough QA fix round
+
+A normal-fan playthrough of the 2017–2018 Jets and a QA review of each season (findings in that session's
+scratchpad, `qa/findings-2017.md`, `qa/findings-2018.md`). Daniel picked the fixes and made the calls below.
+
+- **Real absences by real week (2017 H1/M6, 2018 M5).** Each season chunk carries each player's missed regular-season weeks as
+  `{from, to, reason}`: injury, suspension, out of football, or benched (`build/absences.py`). Lifecycle publishes the
+  coming season's board as `state.absences` at new game, at the Super Bowl and each week. It marks every rostered player
+  injured for exactly those weeks: bench players, in-season signings and trades included. This replaces the
+  starter-only availability threshold.
+  - The UI shows "Out wk 6–17 · injury" / "Out of football in 2017" on FA rows, the offer panel, Roster and the player
+    card. Daniel accepted that this reveals future injuries.
+  - Out-of-football players count as absent (Daniel's call). Healthy scratches don't count; practice squad counts as out.
+  - Benched (a healthy consensus starter who took no snaps while a lower-rated teammate played; RG3 2015) applies to AI
+    teams only and shows "Benched wk 2–17". The user's team may play anyone.
+  - AI teams sign a healthy free agent when a position group has no healthy player. AI FA valuation is unchanged, so the AI
+    can still sign a whole-year absentee.
+  - Real seasons roll random injuries at `realSeasonRateScale` 0.15 (procedural seasons keep 1.1), since real absences
+    already carry rostered players' injuries. Missed weeks match the real weeks of the players the sim rosters within
+    about 6%.
+- **The user's depth chart order sticks (2017 H2, 2018 M7/L1).** This replaces the 2026-10-06 "a trade appends" rule.
+  - Injured players keep their slot, and the sim plays the next healthy man.
+  - Reset to consensus ignores injuries.
+  - Draft, UDFA, FA, trade and waiver arrivals land at the slot their consensus earns, without re-sorting anyone else,
+    and a toast names the slot ("Adams placed at S1"). An arrival can land ahead of a hand-placed lower-rated player
+    (Daniel: keep).
+  - AI charts are unchanged.
+- **Starter trades cost about a 2nd (2017 M1).** The starter-loss charge is capped at 25% of the departing players' value.
+  QBs stay uncapped (Daniel: keep), so a starting QB still costs well over a 2nd.
+  - `trade.evaluate` returns `priceHint`, and the acceptance bar reads "They'd want about a 2nd."
+  - Cheapest pick that lands a 72–80 starter (2017): R1 37% → 22%, R2 34% → 39%, R3 14% → 24%.
+- **Consensus refreshes when the Super Bowl ends (2017 M4)**, for season + 1, instead of at the camp roll. The Recap,
+  re-signing, FA, trades and the draft all price on it.
+- **Departures at the roll (2018 M3).** Real players with no later season show "Leaving football" and can't be re-signed by
+  the user or the AI. The user's departures file a `LEFT_LEAGUE` move and a notice.
+- **Offseason dead money (2018 H1/M1).** A release after the Super Bowl books its dead money on the next league year
+  (`TeamState.carriedDeadMoney`), which survives the roll, so offseason cuts are no longer free. The Dashboard, the
+  Roster cutdown panel, Finances and the trade AI's offseason cap book read next season's books. The over-cap alert only
+  claims a block where the engine blocks.
+- **NFL tiebreaks (2018 M2)** (`league/tiebreak.ts`): division and wild-card procedures through strength of schedule,
+  then point differential and team id. Real 2017 and 2018 seeds replay exactly.
+- **New Game asks before replacing a save (2017 L1).**
+- **Lineman true values (2017 L4).** DL rate mostly on their own pass rush. OL rate on full-time starting, the line unit
+  shared by snaps, penalties, a fading draft-slot prior, and pay at .34 instead of .48. Nose tackles lose 5–8 points.
+  Solder and Kelce 2018 can't be read from nflverse.
+- **Contracts with no usable id** now match by name plus draft slot or birth date (`build/contract_ids.py`, shared by the
+  roster build and the model). This affects about 186 roster-seasons, mostly OL (Joe Thomas 2017: $0.5M → $11.5M).
+- **Real contract hints carry years left** (`year_signed + years − season`), not total length. Before, 59% of hinted
+  opening-roster contracts reset to full length every year. AI re-sign volume rose about 50%.
+- **DROY weights** were refit to real voting (LB .95, CB .8, S .75). Real box scores now pick DBs 23% of the time, matching
+  the voters.
+- **Calibration after all of it:** win correlation vs real 0.812 / 0.835 / 0.806 (2015 / 2017 / 2019). All stat bands are in
+  range except the 2015 rushing leader (1282, unchanged from before). 2014 redraft 94.5%.
