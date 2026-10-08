@@ -1,9 +1,11 @@
 /**
  * QA regression: compareTeams() used to be a pairwise comparator fed straight into Array.sort, which is
  * non-transitive when 3+ teams are tied on win pct with a head-to-head cycle (A beat B, B beat C, C beat
- * A). The fix (engine/league/index.ts#orderTeamsByTiebreak) buckets the tied group by each criterion in
- * turn (pct -> group head-to-head pct -> point diff -> team id) and recurses into ties only, so a cycle
- * can never produce a contradictory order — it just falls through to point diff, then team id.
+ * A). The tiebreak (engine/league/tiebreak.ts) narrows a tied group step by step and always takes one
+ * club at a time, so a cycle can never produce a contradictory order — it just falls through every
+ * NFL step to point diff, then team id. Division record, conference record, common games and strengths
+ * would split these clubs on the real season games, so equalizeRecords() clears those games first.
+ * The NFL procedure itself is covered in tiebreakNfl.test.ts.
  */
 import { describe, expect, it } from 'vitest'
 import type { Game, GameResult, LeagueState, TeamId } from '@contracts/index'
@@ -70,13 +72,21 @@ function forceWin(state: LeagueState, winner: TeamId, loser: TeamId): LeagueStat
   return { ...state, schedule: [...state.schedule, game], results: [...state.results, result] }
 }
 
-/** Force A, B, C (and, so it never contends, D) to identical records and point differentials so
- * win pct and point diff both say "tied" and only head-to-head can separate them. */
+/** Force the teams to identical records and point differentials, and drop their real games, so win
+ * pct, point diff and every record-based step say "tied" and only head-to-head can separate them. */
 function equalizeRecords(state: LeagueState, teams: TeamId[]): LeagueState {
   const record = { wins: 9, losses: 8, ties: 0, pointsFor: 300, pointsAgainst: 290 }
   const updated = { ...state.teams }
   for (const t of teams) updated[t] = { ...updated[t]!, record: { ...record } }
-  return { ...state, teams: updated }
+  const involved = new Set(
+    state.schedule.filter((g) => teams.includes(g.home) || teams.includes(g.away)).map((g) => g.id),
+  )
+  return {
+    ...state,
+    teams: updated,
+    schedule: state.schedule.filter((g) => !involved.has(g.id)),
+    results: state.results.filter((r) => !involved.has(r.gameId)),
+  }
 }
 
 const A: TeamId = 'IND'
@@ -92,7 +102,7 @@ function southDivRanks(state: LeagueState, ctx: ReturnType<typeof makeFakeContex
 }
 
 describe('league standings tiebreak: 3+ way head-to-head cycle', () => {
-  it('resolves a strict A>B>C>A cycle to a transitive, deterministic order (falls through to team id)', () => {
+  it('resolves a strict A>B>C>A cycle to a transitive, deterministic order (team id, then restart)', () => {
     const { state: base, ctx } = playRegularSeason('cycle-1')
     let state = equalizeRecords(base, [A, B, C])
     state = forceWin(state, A, B)
@@ -100,30 +110,33 @@ describe('league standings tiebreak: 3+ way head-to-head cycle', () => {
     state = forceWin(state, C, A)
 
     const ranks = southDivRanks(state, ctx)
-    // Head-to-head among {A,B,C} is 0.5/0.5/0.5 (each 1-1 within the group) and point diff is tied too,
-    // so the only thing left to break the tie is team id: HOU < IND < TEN alphabetically.
-    expect(ranks[B]).toBeLessThan(ranks[A]!) // HOU before IND
-    expect(ranks[A]).toBeLessThan(ranks[C]!) // IND before TEN
-    expect(ranks[D]).toBeGreaterThan(ranks[C]!) // JAX (worse record) stays last
+    // Head-to-head among {A,B,C} is 1-1 for each and every other step is level, so the first seed goes
+    // to the lowest team id (HOU). The NFL restart rule then re-runs the tiebreak for the two clubs
+    // left, and TEN beat IND head-to-head.
+    expect(ranks[B]).toBe(1)
+    expect(ranks[C]).toBe(2)
+    expect(ranks[A]).toBe(3)
+    expect(ranks[D]).toBe(4) // JAX (worse record) stays last
 
-    // Re-derive the same scenario with the cycle built in the opposite rotational direction — the
-    // group head-to-head pct is still 0.5/0.5/0.5, so the result must be identical regardless of which
-    // direction the cyclic wins were assigned in.
+    // The cycle built in the opposite direction: HOU still first on team id, but now IND beat TEN.
     let reverseState = equalizeRecords(base, [A, B, C])
     reverseState = forceWin(reverseState, A, C)
     reverseState = forceWin(reverseState, C, B)
     reverseState = forceWin(reverseState, B, A)
     const reverseRanks = southDivRanks(reverseState, ctx)
-    expect(reverseRanks).toEqual(ranks)
+    expect(reverseRanks[B]).toBe(1)
+    expect(reverseRanks[A]).toBe(2)
+    expect(reverseRanks[C]).toBe(3)
 
-    // seedPlayoffs() shares the same tiebreak function (a second call site) — its conference ordering
-    // of A/B/C must not contradict standings()'s divRank ordering.
-    const afcSeeds = league
-      .seedPlayoffs(state, ctx)
-      .seeds.filter((s) => [A, B, C].includes(s.teamId))
-    const seedOf = new Map(afcSeeds.map((s) => [s.teamId, s.seed]))
+    // seedPlayoffs() shares the same tiebreak (a second call site) and must agree with divRank.
+    const seedOf = new Map(
+      league
+        .seedPlayoffs(state, ctx)
+        .seeds.filter((s) => [A, B, C].includes(s.teamId))
+        .map((s) => [s.teamId, s.seed]),
+    )
     if (seedOf.has(A) && seedOf.has(B)) expect(seedOf.get(B)!).toBeLessThan(seedOf.get(A)!)
-    if (seedOf.has(A) && seedOf.has(C)) expect(seedOf.get(A)!).toBeLessThan(seedOf.get(C)!)
+    if (seedOf.has(A) && seedOf.has(C)) expect(seedOf.get(C)!).toBeLessThan(seedOf.get(A)!)
   })
 
   it('a team that swept the other two in a 3-way tie ranks first', () => {
