@@ -331,6 +331,22 @@ describe('league opening rollover', () => {
     expect(progress).toHaveBeenCalledTimes(1)
   })
 
+  it('refreshes consensus once a year, for the next season, when the Super Bowl ends', () => {
+    const refresh = vi.fn(fakeLifecycle.refreshScouting)
+    const ctx = makeFakeContext(mockBundle({ season: 2015 }), {
+      lifecycle: { ...fakeLifecycle, refreshScouting: refresh },
+    })
+    let s = playOpeningOffseason(league.newGame(newGameOpts(), ctx), ctx)
+    s = league.advancePhase(s, ctx) // PRESEASON -> REGULAR
+    s = playSeason(s, ctx)
+    expect(s.phase).toBe('OFFSEASON_RESIGN')
+    expect(refresh).toHaveBeenCalledTimes(1)
+    expect(refresh.mock.calls[0]![2]).toBe(2016)
+    s = playOffseason(s, ctx)
+    expect(s.season).toBe(2016)
+    expect(refresh).toHaveBeenCalledTimes(1)
+  })
+
   it('is deterministic through the opening offseason', () => {
     const run = () => {
       const ctx = makeFakeContext(mockBundle({ season: 2015 }))

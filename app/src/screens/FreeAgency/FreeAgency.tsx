@@ -34,6 +34,8 @@ export interface FreeAgencyProps {
   releaseImpact?: (ids: PlayerId[]) => ReleaseImpact | null
   onSignUdfa: (playerIds: PlayerId[]) => void
   onResignAsk: (playerId: PlayerId) => number | null
+  /** A player with no real season left: shown as "Leaving football", no re-sign. Defaults to nobody. */
+  isLeavingFootball?: (playerId: PlayerId) => boolean
   /** Acceptance odds before the offer is made (docs/DECISIONS.md Phase 5 follow-ups). Null when not built yet. */
   onOfferOdds?: (playerId: PlayerId, contract: Contract) => number | null
 }
@@ -65,6 +67,7 @@ export function FreeAgency({
   releaseImpact,
   onSignUdfa,
   onResignAsk,
+  isLeavingFootball,
   onOfferOdds,
 }: FreeAgencyProps) {
   const { askToRelease, releaseDialog } = useReleaseConfirm()
@@ -209,6 +212,7 @@ export function FreeAgency({
                 {expiring.map((slot) => {
                   const player = state.players[slot.playerId]
                   if (!player) return null
+                  const leaving = isLeavingFootball?.(slot.playerId) ?? false
                   const ask = onResignAsk(slot.playerId)
                   const draft = resignDrafts[slot.playerId] ?? {
                     years: 2,
@@ -228,7 +232,11 @@ export function FreeAgency({
                         {player.name} <PositionBadge pos={player.pos} />
                       </span>
                       <span style={{ color: 'var(--text-2)' }}>
-                        {ask != null ? `Asking ${formatAsk(ask)}/yr` : 'Ask unavailable'}
+                        {leaving
+                          ? 'Leaving football'
+                          : ask != null
+                            ? `Asking ${formatAsk(ask)}/yr`
+                            : 'Ask unavailable'}
                       </span>
                       <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
                         Years
@@ -267,6 +275,7 @@ export function FreeAgency({
                         variant="primary"
                         busy={busy}
                         busyLabel="Working…"
+                        disabled={leaving}
                         onClick={() =>
                           onResign(slot.playerId, {
                             years: draft.years,

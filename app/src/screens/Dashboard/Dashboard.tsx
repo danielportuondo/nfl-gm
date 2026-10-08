@@ -2,6 +2,7 @@ import type { Game, LeagueState, StaticData } from '@contracts/index'
 import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { isExpiring } from '@screens/shared/contractStatus'
+import { departedNames } from '@screens/shared/departures'
 import { formatMoney } from '@screens/shared/formatMoney'
 import { horizonProgress, isOffseasonPhase } from '@screens/shared/phaseLabel'
 import { injuredWeeksLabel } from '@screens/shared/playerStatus'
@@ -22,6 +23,8 @@ export interface DashboardProps {
   onNavigate?: (screen: ScreenId) => void
   /** AI trade offers waiting for an answer; shown as an alert that leads to the Trades screen. */
   tradeOfferCount?: number
+  /** Players with no real season left; they are not counted as contracts to re-sign. */
+  isLeavingFootball?: (playerId: string) => boolean
 }
 
 interface Alert {
@@ -71,6 +74,7 @@ export function Dashboard({
   advanceBusy,
   onNavigate,
   tradeOfferCount = 0,
+  isLeavingFootball,
 }: DashboardProps) {
   const team = state.teams[state.userTeam]
   const teamInfo = data.teams[state.userTeam]
@@ -119,7 +123,9 @@ export function Dashboard({
   }
 
   const injuredSlots = (team?.roster ?? []).filter((slot) => slot.injured)
-  const expiring = (team?.roster ?? []).filter((slot) => isExpiring(state, slot.contract)).length
+  const expiring = (team?.roster ?? []).filter(
+    (slot) => isExpiring(state, slot.contract) && !isLeavingFootball?.(slot.playerId),
+  ).length
   if (injuredSlots.length > 0) {
     const worst = injuredSlots
       .map((slot) => ({
@@ -130,6 +136,14 @@ export function Dashboard({
     alerts.push({
       text: `${injuredSlots.length} player${injuredSlots.length === 1 ? '' : 's'} injured.`,
       detail: worst.label ? `${worst.name}: ${worst.label}` : worst.name,
+      screen: 'roster',
+    })
+  }
+  const departed = state.phase === 'PRESEASON' ? departedNames(state, state.season - 1) : []
+  if (departed.length > 0) {
+    alerts.push({
+      text: `${departed.length} player${departed.length === 1 ? '' : 's'} left the league.`,
+      detail: departed.join(', '),
       screen: 'roster',
     })
   }

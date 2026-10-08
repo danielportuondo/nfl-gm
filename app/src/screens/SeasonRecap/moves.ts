@@ -66,6 +66,7 @@ const COUNT_GROUPS: {
   { match: (k) => k === 'DRAFT', singular: 'pick', plural: 'picks' },
   { match: isSigningKind, singular: 'signing', plural: 'signings' },
   { match: (k) => k === 'RELEASE', singular: 'release', plural: 'releases' },
+  { match: (k) => k === 'LEFT_LEAGUE', singular: 'departure', plural: 'departures' },
 ]
 
 /** "2 trades · 8 picks · 3 signings · 1 release"; a kind with zero entries is left out. */

@@ -211,6 +211,7 @@ export function App() {
           advanceBusy={busy.advancePhase}
           onNavigate={actions.goTo}
           tradeOfferCount={tradeOffers.length}
+          isLeavingFootball={actions.isLeavingFootball}
         />
       )}
       {screen === 'end-game' && (
@@ -279,6 +280,7 @@ export function App() {
           releaseImpact={actions.releaseImpact}
           onSignUdfa={actions.signUdfa}
           onResignAsk={actions.resignAsk}
+          isLeavingFootball={actions.isLeavingFootball}
           onOfferOdds={actions.offerOdds}
         />
       )}

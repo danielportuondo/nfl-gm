@@ -154,6 +154,8 @@ export interface GameStoreState {
     signUdfa: (playerIds: PlayerId[]) => Promise<void>
     /** The expiring player's ask for the re-sign phase. Null when not built yet. */
     resignAsk: (playerId: PlayerId) => number | null
+    /** True for a real player with no season left to play; the re-sign list marks him and blocks the deal. */
+    isLeavingFootball: (playerId: PlayerId) => boolean
     /** This season's cap in $M, including the post-data growth rule; null while data is loading. */
     capThisSeason: () => number | null
     /** P(accept) before any offer is made, for the offer form's live acceptance odds. Null when not built yet. */

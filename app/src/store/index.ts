@@ -40,6 +40,7 @@ import { pruneStaleOffers } from './offers'
 import { buildHash, currentRoute, type ScreenId } from './router'
 import type { GameStoreState, NewGameInput, StoreConfig } from './types'
 import { noGameNote } from '@screens/shared/scheduleNotes'
+import { departedNames, nameList } from '@screens/shared/departures'
 
 export type { GameStoreState, NewGameInput, StoreConfig, Mode, DataStatus } from './types'
 export type { ScreenId } from './router'
@@ -188,6 +189,12 @@ export function createGameStore(config: StoreConfig = {}) {
         after,
       )
       if (summary) addToast(summary, 'warn')
+    }
+
+    /** The camp roll retires players with no real season left; the user's own are named once, here. */
+    function toastDepartures(before: LeagueState, after: LeagueState) {
+      const names = departedNames(after, before.season)
+      if (names.length > 0) addToast(`Left the league: ${nameList(names)}.`, 'warn')
     }
 
     /** A simmed week the user's team sat out says why: a bye, or a real-life schedule disruption. */
@@ -511,6 +518,7 @@ export function createGameStore(config: StoreConfig = {}) {
             const ctx = buildCtx()
             const next = modules.league.advancePhase(league, ctx)
             set({ state: next, suggestedTrades: [], tradeOffers: [] })
+            toastDepartures(league, next)
             void autosave(next)
           } catch (err) {
             reportNotBuilt('Could not advance the phase.', err)
@@ -1164,6 +1172,17 @@ export function createGameStore(config: StoreConfig = {}) {
           } catch (err) {
             reportSelectorError(err)
             return null
+          }
+        },
+
+        isLeavingFootball(playerId: PlayerId): boolean {
+          const league = get().state
+          if (!league) return false
+          try {
+            return modules.lifecycle.leavesAfterSeason(league, playerId)
+          } catch (err) {
+            reportSelectorError(err)
+            return false
           }
         },
 

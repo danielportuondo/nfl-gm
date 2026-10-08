@@ -67,6 +67,7 @@ const KIND_LABEL: Record<Transaction['kind'], string> = {
   SIGN: 'Signed',
   RESIGN: 'Re-signed',
   RELEASE: 'Released',
+  LEFT_LEAGUE: 'Left the league',
 }
 
 const KIND_TAG_STYLE: Record<Transaction['kind'], CSSProperties> = {
@@ -84,6 +85,11 @@ const KIND_TAG_STYLE: Record<Transaction['kind'], CSSProperties> = {
     border: '2px solid var(--positive)',
   },
   RELEASE: { background: 'var(--danger)', color: 'var(--on-danger)' },
+  LEFT_LEAGUE: {
+    background: 'transparent',
+    color: 'var(--text-2)',
+    border: '2px solid var(--text-2)',
+  },
 }
 
 function KindTag({ kind }: { kind: Transaction['kind'] }) {
@@ -210,6 +216,17 @@ function EntryLine({ t, state, data }: { t: Transaction; state: LeagueState; dat
         <Row kind={t.kind}>
           <span>
             {name} {pos} · dead {formatMoney(t.deadMoney)}
+          </span>
+          <Rating state={state} id={t.playerId} ovrAtMove={t.ovrAtMove} />
+        </Row>
+      )
+    }
+    case 'LEFT_LEAGUE': {
+      const { name, pos } = playerLabel(state, t.playerId)
+      return (
+        <Row kind={t.kind}>
+          <span>
+            {name} {pos}
           </span>
           <Rating state={state} id={t.playerId} ovrAtMove={t.ovrAtMove} />
         </Row>

@@ -222,6 +222,7 @@ export const fakeLifecycle: LifecycleModule = {
   progressSeason: (state) => state,
   retirements: (state) => ({ state, retired: [] }),
   refreshScouting: (state) => state,
+  leavesAfterSeason: () => false,
   tickInjuries: (state) => state,
   applyInjuryEvents: (state) => state,
   generateDraftClass: () => ({ prospects: [], truth: {}, order: [], draftedCount: 0 }),

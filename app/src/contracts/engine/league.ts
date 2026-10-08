@@ -70,7 +70,8 @@ export interface LeagueModule {
    * Simulate the current week (REGULAR or PLAYOFFS) for every scheduled game, apply results to
    * records, apply injuries, tick injuries (lifecycle), generate AI-initiated trade offers (trade),
    * then advance `week`. When the regular season ends, seeds playoffs; when the Super Bowl is played,
-   * writes a SeasonSummary and moves to OFFSEASON_RESIGN. Sets `outcome` when the user wins the
+   * writes a SeasonSummary, refreshes consensus for the next season (lifecycle.refreshScouting) and
+   * moves to OFFSEASON_RESIGN. Sets `outcome` when the user wins the
    * Super Bowl or the horizon expires. No-op with a warning event if phase is not REGULAR/PLAYOFFS.
    */
   simWeek(state: LeagueState, ctx: EngineContext): WeekReport
@@ -79,7 +80,8 @@ export interface LeagueModule {
    * Move to the next phase in PHASES order, running the AI side of the phase being left:
    *  OFFSEASON_RESIGN → fa.runAiResign; DRAFT → requires draftRoom.status === 'COMPLETE';
    *  UDFA → draft.runUdfa for AI teams; FREE_AGENCY → fa.runAiFreeAgency;
-   *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements + refreshScouting,
+   *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements (a user player who leaves is
+   *  logged as a LEFT_LEAGUE transaction; consensus was already refreshed when the Super Bowl ended),
    *  history.snapToHistory (if in history), schedule for the new season, phase PRESEASON — except in
    *  the opening offseason (`isOpeningOffseason`), where contracts, progression, retirements and the
    *  consensus refresh are skipped because the state already describes the new season; dead money is

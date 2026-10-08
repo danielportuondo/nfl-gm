@@ -427,9 +427,14 @@ export const TransactionSchema = z
       playerId: PlayerIdSchema,
       deadMoney: z.number().min(0).describe('Dead money charged by the release, $M.'),
     }),
+    z.object({
+      ...transactionBase,
+      kind: z.literal('LEFT_LEAGUE'),
+      playerId: PlayerIdSchema,
+    }),
   ])
   .describe(
-    "One move by the user's team: a trade it was part of, a pick it made (auto-picks included), a UDFA or free-agent signing, a re-signing or a release. AI-only moves are never logged.",
+    "One move by the user's team: a trade it was part of, a pick it made (auto-picks included), a UDFA or free-agent signing, a re-signing, a release, or a player who left the league at the camp roll. AI-only moves are never logged.",
   )
 
 // ---------------------------------------------------------------------------------------------

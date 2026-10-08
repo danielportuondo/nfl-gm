@@ -60,6 +60,7 @@ import {
   type TiebreakContext,
   type TiebreakGame,
 } from './tiebreak'
+import { withDepartures } from './departures'
 
 const EPOCH = '1970-01-01T00:00:00.000Z'
 const ZERO_RECORD = { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 }
@@ -725,6 +726,9 @@ function simWeekImpl(input: LeagueState, ctx: EngineContext): WeekReport {
     if (roundType === 'SB') {
       const summary = summarizeSeasonImpl(newState, ctx)
       newState = { ...newState, history: [...newState.history, summary], phase: 'OFFSEASON_RESIGN' }
+      // The year's one consensus refresh: the Recap, re-signing, the draft and free agency price on
+      // what the season showed. The camp roll does not repeat it.
+      newState = ctx.modules.lifecycle.refreshScouting(newState, ctx, newState.season + 1)
       if (summary.champion === newState.userTeam) newState = { ...newState, outcome: 'CHAMPION' }
       else if (newState.season >= newState.horizonEnd)
         newState = { ...newState, outcome: 'HORIZON_EXPIRED' }
@@ -884,8 +888,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
         s = ctx.modules.lifecycle.progressSeason(s, ctx, progressRng)
         const retireRng = ctx.modules.rng.fromSeed(s.seed, newSeason, 'retirements')
         const retired = ctx.modules.lifecycle.retirements(s, ctx, retireRng)
-        s = retired.state
-        s = ctx.modules.lifecycle.refreshScouting(s, ctx)
+        s = withDepartures(state, s, retired.state, retired.retired)
       }
       if (isInHistory(ctx, newSeason)) {
         s = ctx.modules.history.snapToHistory(s, ctx)

@@ -303,6 +303,8 @@ function resign(
     throw new Error(
       `fa.resign: player "${playerId}"'s contract has ${slot.contract.years} years remaining, not expiring`,
     )
+  if (ctx.modules.lifecycle.leavesAfterSeason(state, playerId))
+    throw new Error('fa.resign: He is leaving football and has no season left to sign for')
   const ask = resignAsk(state, playerId, ctx)
   if (contract.apy < ask - faConstants.askTolerance - 1e-9)
     throw new Error(`fa.resign: That offer is below the ask of $${roundUpTenth(ask).toFixed(1)}M`)
@@ -333,7 +335,9 @@ function runAiResign(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueSt
       const slot = s.teams[teamId]!.roster.find((r) => r.playerId === playerId)
       if (!player || !slot) continue
       let keep: boolean
-      if (realTeams && player.real) {
+      if (ctx.modules.lifecycle.leavesAfterSeason(s, playerId)) {
+        keep = false
+      } else if (realTeams && player.real) {
         keep = realTeams.get(playerId) === teamId
       } else {
         const ovr = s.scouting[playerId]?.ovr ?? 40

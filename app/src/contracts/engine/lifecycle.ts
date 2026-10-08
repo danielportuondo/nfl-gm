@@ -2,7 +2,7 @@
  * engine/lifecycle — progression, aging, retirement, injuries, procedural generation (§6.7).
  * Owned by lifecycle (3D).
  */
-import type { InjuryEvent, LeagueState, PlayerId, Prospect } from '../types'
+import type { InjuryEvent, LeagueState, PlayerId, Prospect, Season } from '../types'
 import type { EngineContext } from './context'
 import { notImplemented } from './context'
 import type { Rng } from './rng'
@@ -36,11 +36,21 @@ export interface LifecycleModule {
   ): { state: LeagueState; retired: PlayerId[] }
 
   /**
-   * Recompute consensus at season start: veterans ovr = last completed season's true value, pot from
-   * age/position curve + draft-pedigree bump, confidence up with seasons played; rookies keep their
-   * pre-draft view. Also refreshes in-season after a completed season for the SeasonRecap.
+   * Recompute consensus for `forSeason` (default `state.season`): veterans ovr = a blend of the seasons
+   * completed before it, pot from age/position curve + draft-pedigree bump, confidence up with seasons
+   * played; rookies keep their pre-draft view. league.simWeek calls it once per year, when the Super Bowl
+   * ends, with `forSeason = season + 1`, so the offseason and the Season Recap run on the new view.
+   * Deterministic per (seed, forSeason, player), so a repeat call is a no-op.
    */
-  refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState
+  refreshScouting(state: LeagueState, ctx: EngineContext, forSeason?: Season): LeagueState
+
+  /**
+   * True when a real player has no game left after `state.season` (truth.retiresAfter ≤ season): the
+   * camp roll will retire him whatever his contract says. The only public face of that fact; the re-sign
+   * screen reads it so the user is not offered a re-sign for a player with no future. Never true for
+   * procedural players, whose end is still a draw.
+   */
+  leavesAfterSeason(state: LeagueState, playerId: PlayerId): boolean
 
   /** Weekly: decrement weeksOut, clear healed injuries, apply small permanent loss after long injuries. */
   tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
@@ -70,6 +80,7 @@ export const lifecycleStub: LifecycleModule = {
   progressSeason: () => notImplemented('lifecycle.progressSeason'),
   retirements: () => notImplemented('lifecycle.retirements'),
   refreshScouting: () => notImplemented('lifecycle.refreshScouting'),
+  leavesAfterSeason: () => notImplemented('lifecycle.leavesAfterSeason'),
   tickInjuries: () => notImplemented('lifecycle.tickInjuries'),
   applyInjuryEvents: () => notImplemented('lifecycle.applyInjuryEvents'),
   generateDraftClass: () => notImplemented('lifecycle.generateDraftClass'),

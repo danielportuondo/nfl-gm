@@ -174,6 +174,18 @@ function retirements(
   return { state: { ...state, teams, freeAgents, truth }, retired }
 }
 
+/**
+ * A real player whose last game was `state.season` or earlier: the camp roll retires him whatever his
+ * contract says. Public so the re-sign screen can say so; procedural players are never flagged because
+ * their end is a draw nobody has made yet.
+ */
+function leavesAfterSeason(state: LeagueState, playerId: PlayerId): boolean {
+  const retiresAfter = state.truth[playerId]?.retiresAfter
+  return (
+    state.players[playerId]?.real === true && retiresAfter != null && retiresAfter <= state.season
+  )
+}
+
 // -------------------------------------------------------------------------------------------
 // refreshScouting
 // -------------------------------------------------------------------------------------------
@@ -219,8 +231,12 @@ function hasNotPlayedYet(traj: TrueTrajectory, season: Season): boolean {
   return priorSeasons.every((s) => traj.availBySeason?.[s] === 0)
 }
 
-function refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState {
-  const season = state.season
+function refreshScouting(
+  state: LeagueState,
+  ctx: EngineContext,
+  forSeason: Season = state.season,
+): LeagueState {
+  const season = forSeason
   const curves = ctx.data.curves
   const inHistory = isInHistory(ctx, season)
   const chunk = inHistory ? ctx.seasonData(season) : undefined
@@ -352,6 +368,7 @@ export const lifecycle: LifecycleModule = {
   progressSeason,
   retirements,
   refreshScouting,
+  leavesAfterSeason,
   applyInjuryEvents,
   tickInjuries,
   generateDraftClass: (state, ctx, rng) => generateDraftClassImpl(state, ctx.data.curves, rng),

@@ -47,7 +47,12 @@ describe('offseason cap gate', () => {
     )
     const team = s0.teams[USER]!
     const asked = [...team.roster]
-      .filter((r) => (s0.scouting[r.playerId]?.ovr ?? 0) >= 60 && r.contract.years > 1)
+      .filter(
+        (r) =>
+          (s0.scouting[r.playerId]?.ovr ?? 0) >= 60 &&
+          r.contract.years > 1 &&
+          !ctx.modules.lifecycle.leavesAfterSeason(s0, r.playerId),
+      )
       .map((r) => ({
         id: r.playerId,
         ask: fa.resignAsk({ ...s0, phase: 'OFFSEASON_RESIGN' }, r.playerId, ctx),

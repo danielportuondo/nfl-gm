@@ -119,6 +119,55 @@ describe('contract years in the offseason', () => {
     expect(within(panel).queryByText(state.players[fresh]!.name)).toBeNull()
   })
 
+  it('FreeAgency marks a player with no season left and disables his re-sign', () => {
+    const { state, lastYear } = resignWindow()
+    render(
+      <FreeAgency
+        state={state}
+        cap={150}
+        onOfferContract={vi.fn()}
+        onResign={vi.fn()}
+        onRelease={vi.fn()}
+        onSignUdfa={vi.fn()}
+        onResignAsk={() => 1}
+        isLeavingFootball={(id) => id === lastYear}
+      />,
+    )
+    const panel = screen.getByText('Re-sign your own').closest('section')!
+    expect(within(panel).getByText('Leaving football')).toBeInTheDocument()
+    expect(within(panel).getByRole('button', { name: 'Re-sign' })).toBeDisabled()
+  })
+
+  it('Dashboard lists the players who left the league at the roll', () => {
+    const { state, lastYear } = resignWindow()
+    const preseason: LeagueState = {
+      ...state,
+      season: state.season + 1,
+      phase: 'PRESEASON',
+      transactions: [
+        {
+          kind: 'LEFT_LEAGUE',
+          season: state.season,
+          phase: 'TRAINING_CAMP',
+          week: 0,
+          ovrAtMove: {},
+          playerId: lastYear,
+        },
+      ],
+    }
+    render(
+      <Dashboard
+        state={preseason}
+        data={mockStatic()}
+        cap={250}
+        onSimWeek={vi.fn()}
+        onAdvancePhase={vi.fn()}
+      />,
+    )
+    expect(screen.getByText('1 player left the league.')).toBeInTheDocument()
+    expect(screen.getByText(state.players[lastYear]!.name)).toBeInTheDocument()
+  })
+
   it('Finances keeps the fresh 1-year deal on next season’s books', () => {
     const { state, fresh, lastYear } = resignWindow()
     render(
