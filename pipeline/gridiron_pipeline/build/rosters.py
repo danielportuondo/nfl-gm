@@ -9,6 +9,7 @@ import pandas as pd
 
 from gridiron_pipeline import CACHE_DIR
 from gridiron_pipeline.build.cap import CAP_BY_SEASON
+from gridiron_pipeline.build.contract_ids import fill_gsis_by_identity
 from gridiron_pipeline.build.fullbacks import season_fullback_ids, tag_fullback
 from gridiron_pipeline.build.players import (
     PlayerMaster,
@@ -237,7 +238,8 @@ def _contract_index(master: PlayerMaster) -> dict[str, list[tuple[int, int, floa
     """gsis_id -> sorted [(year_signed, years, apy)] contracts.
 
     The current contracts release carries a direct `gsis_id` column; fall back to the otc_id
-    crosswalk for older rows (or a release without it) so matching degrades gracefully.
+    crosswalk, then to name + draft slot / birth date (`fill_gsis_by_identity`), so a deal with no
+    usable id still reaches its player instead of reading as "no contract".
     """
     try:
         contracts = load_contracts()
@@ -245,17 +247,26 @@ def _contract_index(master: PlayerMaster) -> dict[str, list[tuple[int, int, floa
         log.warning("contracts data unavailable; apy/years hints will be omitted")
         return {}
     contracts = contracts[contracts["year_signed"].notna()]
-    has_direct_gsis = "gsis_id" in contracts.columns
+    direct = (
+        contracts["gsis_id"]
+        if "gsis_id" in contracts.columns
+        else pd.Series(pd.NA, index=contracts.index)
+    )
+    via_otc = (
+        contracts["otc_id"].map(master.otc_to_gsis) if "otc_id" in contracts.columns else direct
+    )
+    gsis = fill_gsis_by_identity(
+        direct.where(direct.notna(), via_otc), contracts, master.players.reset_index()
+    )
     idx: dict[str, list[tuple[int, int, float]]] = {}
-    for row in contracts.itertuples(index=False):
-        gsis_id = getattr(row, "gsis_id", None) if has_direct_gsis else None
-        if gsis_id is None or (isinstance(gsis_id, float) and pd.isna(gsis_id)):
-            otc_id = getattr(row, "otc_id", None)
-            gsis_id = master.otc_to_gsis.get(otc_id) if otc_id is not None else None
-        if gsis_id is None or pd.isna(row.apy):
+    for gsis_id, year_signed, years, apy in zip(
+        gsis, contracts["year_signed"], contracts["years"], contracts["apy"], strict=True
+    ):
+        if pd.isna(gsis_id) or pd.isna(apy):
             continue
-        years = int(row.years) if not pd.isna(row.years) else 1
-        idx.setdefault(gsis_id, []).append((int(row.year_signed), max(years, 1), float(row.apy)))
+        idx.setdefault(gsis_id, []).append(
+            (int(year_signed), max(int(years) if not pd.isna(years) else 1, 1), float(apy))
+        )
     for v in idx.values():
         v.sort()
     return idx
