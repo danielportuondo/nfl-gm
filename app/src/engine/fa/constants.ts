@@ -70,7 +70,7 @@ export const faConstants = {
   defaultYears: 1,
   /**
    * A veteran contract runs no later than this age (years left = endAge − age, at least 1). Applied to
-   * real-data hints too: the rosters file records total contract length, not years remaining.
+   * real-data hints too, so a player near retirement carries no phantom years.
    */
   contractEndAge: { default: 36, specialist: 39 },
   /** Cap on a default (hint-less) synthesized veteran deal; explicit hints may still reach the schema max. */

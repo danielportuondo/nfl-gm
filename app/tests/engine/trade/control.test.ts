@@ -152,8 +152,16 @@ describe('trade — remaining control and the just-signed lock (real 2017 → 20
     const vet = state.teams['NE']!.roster.map((r) => r.playerId)
       .filter((id) => !state.players[id]!.draft || state.players[id]!.draft!.season < 2015)
       .sort((a, b) => state.scouting[b]!.ovr - state.scouting[a]!.ovr)[0]!
-    const expiring = trade.playerValue(withContract(state, 'NE', vet, { years: 1 }), vet, ctx)
-    const controlled = trade.playerValue(withContract(state, 'NE', vet, { years: 4 }), vet, ctx)
+    const expiring = trade.playerValue(
+      withContract(state, 'NE', vet, { years: 1, signedSeason: state.season }),
+      vet,
+      ctx,
+    )
+    const controlled = trade.playerValue(
+      withContract(state, 'NE', vet, { years: 4, signedSeason: state.season }),
+      vet,
+      ctx,
+    )
     expect(controlled).toBeGreaterThan(5)
     expect(expiring).toBeLessThan(0.25 * controlled)
   })

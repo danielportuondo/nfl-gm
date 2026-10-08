@@ -277,7 +277,7 @@ def _contract_hint(idx: dict[str, list[tuple[int, int, float]]], gsis_id: str, s
     for year_signed, years, apy in idx.get(gsis_id, []):
         if year_signed <= season < year_signed + years:
             hints["apy"] = round(_apy_millions(apy), 3)
-            hints["years"] = years
+            hints["years"] = year_signed + years - season
             break
     return hints
 

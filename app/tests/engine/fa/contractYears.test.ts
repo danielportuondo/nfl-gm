@@ -67,7 +67,7 @@ describe('veteran contract length on the real 2017 opening', () => {
     expect(Math.max(...yearsIn(34, 60, false))).toBeLessThanOrEqual(2)
     expect(Math.max(...yearsIn(36, 60))).toBeLessThanOrEqual(3)
     expect(mean(old)).toBeLessThan(1.8)
-    expect(mean(yearsIn(26, 29))).toBeGreaterThan(2.2)
+    expect(mean(yearsIn(26, 29))).toBeGreaterThan(1.8)
     expect(mean(yearsIn(30, 33))).toBeLessThan(mean(yearsIn(26, 29)) + 0.6)
   })
 })

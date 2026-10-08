@@ -31,10 +31,11 @@ def _gsis(master, name: str, position: str) -> str:
     return hit.index[0]
 
 
-def test_joe_thomas_gets_his_real_extension_in_2016_and_2017(master, contract_idx):
+def test_joe_thomas_gets_his_real_extension_with_the_years_left(master, contract_idx):
+    """The 2011 deal runs seven seasons, 2011–2017: two left in 2016, the last one in 2017."""
     thomas = _gsis(master, "Joe Thomas", "OT")
-    for season in (2016, 2017):
-        assert _contract_hint(contract_idx, thomas, season) == {"apy": 11.5, "years": 7}
+    assert _contract_hint(contract_idx, thomas, 2016) == {"apy": 11.5, "years": 2}
+    assert _contract_hint(contract_idx, thomas, 2017) == {"apy": 11.5, "years": 1}
 
 
 def test_kyle_long_and_justin_britt_get_their_second_deals(master, contract_idx):

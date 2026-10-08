@@ -104,9 +104,9 @@ describe('trade — starters and filler (real 2017 offseason, user MIA)', () => 
       'NE',
     )
     const evaluation = trade.evaluate(state, proposal, ctx)
-    // On value alone NE wants twice what it gets (the starter-loss charge plus three discounted
+    // On value alone NE wants well over what it gets (the starter-loss charge plus three discounted
     // fillers); since H3 the extra $24M of salary would not fit under its 2017 cap either.
-    expect(evaluation.valueIn).toBeLessThan(0.5 * evaluation.valueOut)
+    expect(evaluation.valueIn).toBeLessThan(0.7 * evaluation.valueOut)
     expect(evaluation.valid).toBe(false)
     expect(evaluation.reasons.join(' ')).toMatch(/NE cannot absorb .* next season/)
   })

@@ -232,9 +232,24 @@ def test_contract_hint_accepts_dollars_and_millions() -> None:
     from gridiron_pipeline.build.rosters import _contract_hint
 
     idx = {"a": [(2007, 6, 9_666_667.0)], "b": [(2007, 6, 9.666667)]}
-    assert _contract_hint(idx, "a", 2010) == {"apy": 9.667, "years": 6}
-    assert _contract_hint(idx, "b", 2010) == {"apy": 9.667, "years": 6}
+    assert _contract_hint(idx, "a", 2010) == {"apy": 9.667, "years": 3}
+    assert _contract_hint(idx, "b", 2010) == {"apy": 9.667, "years": 3}
     assert _contract_hint(idx, "b", 2013) == {}
+
+
+def test_contract_hint_counts_years_left_not_total_length() -> None:
+    """A four-year deal signed in 2010 has 4 years left in 2010, 3 in 2011, 1 in 2013."""
+    from gridiron_pipeline.build.rosters import _contract_hint
+
+    idx = {"a": [(2010, 4, 8.0)]}
+    assert [_contract_hint(idx, "a", s).get("years") for s in range(2009, 2015)] == [
+        None,
+        4,
+        3,
+        2,
+        1,
+        None,
+    ]
 
 
 def test_select_rosters_keeps_high_consensus_reserve_over_healthy_backup() -> None:

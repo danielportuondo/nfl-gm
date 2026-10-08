@@ -692,7 +692,12 @@ export const RosterEntrySchema = z.object({
     .min(0)
     .optional()
     .describe('Real APY hint in $M when known (contracts data ~2011+).'),
-  years: z.number().int().min(1).optional(),
+  years: z
+    .number()
+    .int()
+    .min(1)
+    .optional()
+    .describe('Years left on the real contract in this season, counting this one (1 = last year).'),
   depth: z.number().int().min(1).optional().describe('Depth-chart order at position, 1 = starter.'),
 })
 
