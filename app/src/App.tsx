@@ -166,7 +166,7 @@ export function App() {
         <Roster
           state={state}
           data={data}
-          cap={cap}
+          cap={gateCap}
           onSelectPlayer={actions.selectPlayer}
           onReorderDepthChart={actions.setDepthChart}
           onResetDepthChart={actions.resetDepthChart}
@@ -204,7 +204,7 @@ export function App() {
         <Dashboard
           state={state}
           data={data}
-          cap={cap}
+          cap={gateCap}
           onSimWeek={actions.simWeek}
           onAdvancePhase={actions.advancePhase}
           simBusy={busy.simWeek}

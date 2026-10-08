@@ -86,9 +86,9 @@ export function Finances({
   const payroll = allRows.reduce((sum, r) => sum + r.apy, 0)
   const deadMoney = team?.deadMoney ?? 0
   const capSpace = cap - payroll - deadMoney
-  const payrollNextSeason = allRows
-    .filter((r) => r.staysNextSeason)
-    .reduce((sum, r) => sum + r.apy, 0)
+  const carriedDeadMoney = team?.carriedDeadMoney ?? 0
+  const payrollNextSeason =
+    allRows.filter((r) => r.staysNextSeason).reduce((sum, r) => sum + r.apy, 0) + carriedDeadMoney
   const capSpaceNext = capNextSeason == null ? null : capNextSeason - payrollNextSeason
   const expiring = allRows.filter((r) => r.expiring)
 
@@ -170,6 +170,13 @@ export function Finances({
               label="Dead money"
               tone={deadMoney > 0 ? 'danger' : 'default'}
             />
+            {carriedDeadMoney > 0 && (
+              <StatTile
+                value={formatMoney(carriedDeadMoney)}
+                label={`Dead money ${state.season + 1}`}
+                tone="danger"
+              />
+            )}
             <StatTile
               value={capSpaceNext == null ? '—' : formatMoney(capSpaceNext)}
               label={offseason ? `Cap space ${state.season + 1}` : 'Cap space next season'}

@@ -142,6 +142,13 @@ export const TeamStateSchema = z.object({
   depthChart: DepthChartSchema,
   record: TeamRecordSchema,
   deadMoney: z.number().min(0).describe("$M charged against this season's cap from releases."),
+  carriedDeadMoney: z
+    .number()
+    .min(0)
+    .optional()
+    .describe(
+      'Dead money from releases made after the season ended: lands on the next league year and becomes deadMoney at the camp rollover. Absent means 0.',
+    ),
   tradeAnnoyance: z
     .number()
     .min(0)

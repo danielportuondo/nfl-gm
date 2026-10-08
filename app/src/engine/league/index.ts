@@ -803,9 +803,17 @@ function healOffseasonInjuries(teams: Record<TeamId, TeamState>): Record<TeamId,
   )
 }
 
-/** The opening rollover skips fa.rolloverContracts, which is where dead money normally resets. */
-function zeroDeadMoney(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
-  return Object.fromEntries(Object.entries(teams).map(([id, t]) => [id, { ...t, deadMoney: 0 }]))
+/**
+ * The opening rollover skips fa.rolloverContracts, which is where dead money normally rolls: the old
+ * year's clears and what offseason releases carried becomes the new year's.
+ */
+function rollDeadMoney(teams: Record<TeamId, TeamState>): Record<TeamId, TeamState> {
+  return Object.fromEntries(
+    Object.entries(teams).map(([id, t]) => [
+      id,
+      { ...t, deadMoney: t.carriedDeadMoney ?? 0, carriedDeadMoney: 0 },
+    ]),
+  )
 }
 
 /**
@@ -880,7 +888,7 @@ function advancePhaseImpl(state: LeagueState, ctx: EngineContext): LeagueState {
       if (isOpeningOffseason(state)) {
         // newGame(startAt 'DRAFT') built rosters, contracts, consensus and truth from the newSeason
         // chunk already; ticking or progressing them here would move everyone a year too far.
-        s = { ...s, teams: zeroDeadMoney(s.teams) }
+        s = { ...s, teams: rollDeadMoney(s.teams) }
       } else {
         const rolled = ctx.modules.fa.rolloverContracts(s, ctx)
         s = rolled.state

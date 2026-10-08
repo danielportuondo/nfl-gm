@@ -1,4 +1,5 @@
 import type { Game, LeagueState, StaticData } from '@contracts/index'
+import { committedPayroll } from '@engine/fa'
 import { Button, Meter, Panel, StatTile } from '@ui/primitives'
 import { HelmetSprite, TeamScope } from '@ui/sprites'
 import { isExpiring } from '@screens/shared/contractStatus'
@@ -13,7 +14,10 @@ import { noGameNote } from '../shared/scheduleNotes'
 export interface DashboardProps {
   state: LeagueState
   data: StaticData
-  /** This season's cap in $M (the store knows the post-data growth rule; the raw table does not). */
+  /**
+   * The cap the books are measured against, in $M: this season's in season, next season's in the
+   * offseason (the store knows the post-data growth rule; the raw table does not).
+   */
   cap: number
   onSimWeek: () => void
   onAdvancePhase: () => void
@@ -97,8 +101,9 @@ export function Dashboard({
 
   const { index: seasonIndex, total: horizonTotal } = horizonProgress(state)
 
-  const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
-  const capSpace = cap - payroll - (team?.deadMoney ?? 0)
+  const offseason = isOffseasonPhase(state.phase)
+  // Same books as the strip and the free agency screen (engine/fa capGate).
+  const capSpace = cap - committedPayroll(state, state.userTeam)
 
   const inSeason = state.phase === 'REGULAR' || state.phase === 'PLAYOFFS'
   const draftPending = state.phase === 'DRAFT' && state.draftRoom?.status !== 'COMPLETE'
@@ -166,11 +171,22 @@ export function Dashboard({
     })
   }
   if (capSpace < 0) {
-    alerts.push({
-      text: `Over the cap by ${formatMoney(-capSpace)}.`,
-      detail: 'Release or trade a contract to continue.',
-      screen: 'finances',
-    })
+    alerts.push(
+      offseason
+        ? {
+            text: `Over the ${state.season + 1} cap by ${formatMoney(-capSpace)}.`,
+            detail: 'Nothing blocks you yet. You must be under it to start the season.',
+            screen: 'finances',
+          }
+        : {
+            text: `Over the cap by ${formatMoney(-capSpace)}.`,
+            detail:
+              state.phase === 'PRESEASON'
+                ? 'You must be under it to start the season.'
+                : "You can't sign players until you're back under it.",
+            screen: 'finances',
+          },
+    )
   }
   const rosterSize = team?.roster.length ?? 0
   if ((state.phase === 'PRESEASON' || inSeason) && rosterSize > 53) {
@@ -269,10 +285,13 @@ export function Dashboard({
       <div className="gg-col-4">
         <Panel title="Cap" variant="default" revealIndex={1}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-4)' }}>
-            <StatTile value={formatMoney(cap)} label="Cap this season" />
+            <StatTile
+              value={formatMoney(cap)}
+              label={offseason ? 'Cap next season' : 'Cap this season'}
+            />
             <StatTile
               value={formatMoney(capSpace)}
-              label="Cap space"
+              label={offseason ? 'Space next season' : 'Cap space'}
               tone={capSpace < 0 ? 'danger' : 'default'}
             />
           </div>

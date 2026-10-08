@@ -16,9 +16,10 @@ import type {
 } from '@contracts/index'
 import {
   capFor,
+  committedPayroll,
   cutCandidates,
-  deadChargeFor,
-  payroll,
+  gateSeason,
+  releaseCharge,
   releaseFrom,
   rosterLimits,
 } from './internal'
@@ -56,7 +57,7 @@ function bestCapCandidate(
 ): PlayerId | undefined {
   let best: { playerId: PlayerId; ratio: number } | undefined
   for (const slot of eligible(state, roster, excluded)) {
-    const netSavings = slot.contract.apy - deadChargeFor(slot.contract)
+    const netSavings = slot.contract.apy - releaseCharge(state, slot.contract)
     if (netSavings <= 0) continue
     const ovr = state.scouting[slot.playerId]?.ovr ?? 40
     const ratio = netSavings / Math.max(1, ovr - 40)
@@ -79,7 +80,7 @@ function cutOne(
   reason: CutdownSuggestion['reason'],
 ): { state: LeagueState; suggestion: CutdownSuggestion } {
   const slot = working.teams[teamId]!.roster.find((r) => r.playerId === playerId)!
-  const deadMoney = deadChargeFor(slot.contract)
+  const deadMoney = releaseCharge(working, slot.contract)
   const netSavings = slot.contract.apy - deadMoney
   const state = releaseFrom(working, teamId, playerId, ctx, { diverge: false })
   return { state, suggestion: { playerId, reason, deadMoney, netSavings } }
@@ -95,7 +96,7 @@ export function suggestCutdown(
   if (!team) throw new Error(`fa.suggestCutdown: unknown team "${teamId}"`)
   const protectSet = new Set(protect)
   const { min, max } = rosterLimits(state)
-  const cap = capFor(state.season, ctx)
+  const cap = capFor(gateSeason(state), ctx)
 
   let working = state
   const cuts: CutdownSuggestion[] = []
@@ -111,7 +112,7 @@ export function suggestCutdown(
 
   guard = 0
   while (
-    payroll(working, teamId) > cap &&
+    committedPayroll(working, teamId) > cap &&
     (working.teams[teamId]?.roster.length ?? 0) > min &&
     guard++ < 1000
   ) {
@@ -123,7 +124,7 @@ export function suggestCutdown(
   }
 
   const sizeAfter = working.teams[teamId]?.roster.length ?? 0
-  const payrollAfter = payroll(working, teamId)
+  const payrollAfter = committedPayroll(working, teamId)
   return {
     cuts,
     sizeAfter,

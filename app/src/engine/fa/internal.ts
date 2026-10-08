@@ -77,9 +77,17 @@ export function cutCandidates(state: LeagueState, roster: readonly RosterSlot[])
   })
 }
 
-/** Dead money a release books this season: the guaranteed remainder, scaled by `deadMoneyPct`. */
-export function deadChargeFor(contract: Contract): number {
-  return round2(contract.apy * contract.years * contract.guaranteedPct * faConstants.deadMoneyPct)
+/** Dead money for `seasons` seasons left on a deal: the guaranteed remainder, scaled by `deadMoneyPct`. */
+export function deadChargeFor(contract: Contract, seasons: number = contract.years): number {
+  return round2(contract.apy * seasons * contract.guaranteedPct * faConstants.deadMoneyPct)
+}
+
+/**
+ * What releasing `contract` costs right now. After the season closes the closed season is already
+ * paid, so only the seasons still to play count (a deal that expires at the camp roll costs nothing).
+ */
+export function releaseCharge(state: LeagueState, contract: Contract): number {
+  return deadChargeFor(contract, Math.max(0, seasonsLeft(state, contract)))
 }
 
 /**
@@ -98,13 +106,18 @@ export function releaseFrom(
   if (!team) throw new Error(`fa.release: unknown team "${teamId}"`)
   const slot = team.roster.find((r) => r.playerId === playerId)
   if (!slot) throw new Error(`fa.release: player "${playerId}" is not on team "${teamId}"`)
-  const deadCharge = deadChargeFor(slot.contract)
+  const deadCharge = releaseCharge(state, slot.contract)
   const roster = team.roster.filter((r) => r.playerId !== playerId)
+  // Cut after the season closes, the charge belongs to the next league year: it must outlive the camp
+  // roll, which only clears the season just played.
+  const books = isOffseasonPhase(state)
+    ? { carriedDeadMoney: round2((team.carriedDeadMoney ?? 0) + deadCharge) }
+    : { deadMoney: round2(team.deadMoney + deadCharge) }
   let s: LeagueState = {
     ...state,
     teams: {
       ...state.teams,
-      [teamId]: { ...team, roster, deadMoney: round2(team.deadMoney + deadCharge) },
+      [teamId]: { ...team, roster, ...books },
     },
     freeAgents: [...state.freeAgents, playerId].sort(),
   }
@@ -155,8 +168,8 @@ export function isExpiringDeal(state: LeagueState, contract: Contract): boolean 
 /**
  * What a signing is measured against. In season: this season's cap and full payroll. In the offseason:
  * next season's cap against the deals still on the books when it starts. Expiring deals leave at the
- * camp rollover and dead money resets there, so neither counts (the same rule as the trade module's
- * offseason cap book).
+ * camp rollover and this season's dead money resets there, so neither counts; dead money carried from
+ * offseason releases does.
  */
 export interface CapGate {
   season: Season
@@ -170,13 +183,18 @@ export function gateSeason(state: LeagueState): Season {
   return isOffseasonPhase(state) ? state.season + 1 : state.season
 }
 
-/** Payroll the gate counts: the full payroll in season, only the deals that outlive the rollover in the offseason. */
+/**
+ * Payroll the gate counts: the full payroll in season; in the offseason the deals that outlive the
+ * rollover plus the dead money already carried onto next season's books.
+ */
 export function committedPayroll(state: LeagueState, teamId: TeamId): number {
   if (!isOffseasonPhase(state)) return payroll(state, teamId)
-  return (state.teams[teamId]?.roster ?? []).reduce(
+  const team = state.teams[teamId]
+  const deals = (team?.roster ?? []).reduce(
     (sum, slot) => sum + (seasonsLeft(state, slot.contract) >= 1 ? slot.contract.apy : 0),
     0,
   )
+  return deals + (team?.carriedDeadMoney ?? 0)
 }
 
 export function capGate(state: LeagueState, teamId: TeamId, ctx: EngineContext): CapGate {

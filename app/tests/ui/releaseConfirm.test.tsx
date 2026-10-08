@@ -49,6 +49,25 @@ describe('Release confirm', () => {
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 
+  it('says which league year an offseason release hits', async () => {
+    const state = { ...mockLeague(), phase: 'TRAINING_CAMP' as const }
+    const name = state.players[state.teams[state.userTeam]!.roster[0]!.playerId]!.name
+    render(
+      <Roster
+        state={state}
+        data={mockStatic()}
+        onSelectPlayer={vi.fn()}
+        onReorderDepthChart={vi.fn()}
+        onRelease={vi.fn()}
+        releaseImpact={() => ({ ...IMPACT, season: 2016 })}
+      />,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: `Release ${name}` }))
+
+    expect(screen.getByRole('dialog')).toHaveTextContent('Dead money $8.1M on the 2016 cap')
+  })
+
   it('does nothing when the user cancels', async () => {
     const { name, onRelease } = renderRoster()
 

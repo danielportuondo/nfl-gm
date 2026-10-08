@@ -28,6 +28,7 @@ import {
   type TradeProposal,
   type TrajectoryTable,
 } from '@contracts/index'
+import { committedPayroll, gateSeason } from '@engine/fa'
 import { HttpDataSource } from '@data/index'
 import { mockLeague, mockStatic } from '@fixtures/mockLeague'
 import { applyTheme, loadTheme, persistTheme, type Theme } from '../ui/frame'
@@ -1082,12 +1083,13 @@ export function createGameStore(config: StoreConfig = {}) {
             const team = league.teams[league.userTeam]
             let after = league
             for (const id of playerIds) after = modules.fa.release(after, league.userTeam, id, ctx)
-            const deadMoney =
-              (after.teams[league.userTeam]?.deadMoney ?? 0) - (team?.deadMoney ?? 0)
-            const apy = (team?.roster ?? [])
-              .filter((slot) => playerIds.includes(slot.playerId))
-              .reduce((sum, slot) => sum + slot.contract.apy, 0)
-            return { deadMoney, frees: apy - deadMoney }
+            const booked = (t: typeof team) => (t?.deadMoney ?? 0) + (t?.carriedDeadMoney ?? 0)
+            const deadMoney = booked(after.teams[league.userTeam]) - booked(team)
+            // Measured on the books the cap gate uses: next season's in the offseason.
+            const frees =
+              committedPayroll(league, league.userTeam) - committedPayroll(after, league.userTeam)
+            const season = gateSeason(league)
+            return season > league.season ? { deadMoney, frees, season } : { deadMoney, frees }
           } catch (err) {
             reportSelectorError(err)
             return null

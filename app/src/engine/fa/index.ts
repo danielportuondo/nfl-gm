@@ -256,10 +256,11 @@ function release(
   playerId: PlayerId,
   ctx: EngineContext,
 ): LeagueState {
-  const beforeDead = state.teams[teamId]?.deadMoney ?? 0
   const s = releaseFrom(state, teamId, playerId, ctx, { diverge: true })
   if (teamId !== state.userTeam) return s
-  const deadMoney = round2((s.teams[teamId]?.deadMoney ?? beforeDead) - beforeDead)
+  const booked = (t: LeagueState['teams'][TeamId] | undefined) =>
+    (t?.deadMoney ?? 0) + (t?.carriedDeadMoney ?? 0)
+  const deadMoney = round2(booked(s.teams[teamId]) - booked(state.teams[teamId]))
   return logRelease(state, s, playerId, deadMoney)
 }
 
@@ -525,7 +526,16 @@ function rolloverContracts(
       else kept.push({ ...slot, contract: { ...slot.contract, years } })
     }
     if (exp.length) expiring[teamId] = exp.sort()
-    teams = { ...teams, [teamId]: { ...team, roster: kept, deadMoney: 0 } }
+    // Season S's dead money clears; what offseason releases booked becomes the new year's.
+    teams = {
+      ...teams,
+      [teamId]: {
+        ...team,
+        roster: kept,
+        deadMoney: team.carriedDeadMoney ?? 0,
+        carriedDeadMoney: 0,
+      },
+    }
     freeAgents = [...freeAgents, ...exp]
   }
   return { state: { ...state, teams, freeAgents: [...new Set(freeAgents)].sort() }, expiring }

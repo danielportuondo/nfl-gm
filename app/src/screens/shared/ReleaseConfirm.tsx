@@ -2,10 +2,12 @@ import { useState, type ReactNode } from 'react'
 import { Button, Modal } from '@ui/primitives'
 import { formatMoney } from './formatMoney'
 
-/** What a release does to the cap this season; computed by the engine, never by the screen. */
+/** What a release does to the cap; computed by the engine, never by the screen. */
 export interface ReleaseImpact {
   deadMoney: number
   frees: number
+  /** Set when the dead money lands on a later league year (an offseason release); absent means this season. */
+  season?: number
 }
 
 interface PendingRelease {
@@ -49,7 +51,7 @@ export function useReleaseConfirm(): {
     >
       <p style={{ margin: 0 }}>
         {pending.impact
-          ? `Dead money ${formatMoney(pending.impact.deadMoney)} this season, frees ${formatMoney(pending.impact.frees)}. `
+          ? `Dead money ${formatMoney(pending.impact.deadMoney)} ${pending.impact.season ? `on the ${pending.impact.season} cap` : 'this season'}, frees ${formatMoney(pending.impact.frees)}. `
           : ''}
         You can't undo a release.
       </p>

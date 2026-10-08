@@ -19,6 +19,7 @@ import {
   type SortState,
 } from '@ui/primitives'
 import { BustSprite, TeamScope } from '@ui/sprites'
+import { committedPayroll } from '@engine/fa'
 import { isExpiring, seasonsLeft } from '@screens/shared/contractStatus'
 import { formatMoney } from '@screens/shared/formatMoney'
 import { injuredWeeksLabel, isRookie } from '@screens/shared/playerStatus'
@@ -40,7 +41,7 @@ export interface RosterProps {
   /** Cut a player (dead money applies); the store gates who can be released. */
   onRelease?: (id: PlayerId) => void
   releaseBusy?: boolean
-  /** This season's cap in $M; omitted while data is loading (cutdown panel's cap clause is dropped). */
+  /** The cap the books are measured against in $M (next season's in the offseason); omitted while data is loading (cutdown panel's cap clause is dropped). */
   cap?: number
   /** Pure suggested-cutdown preview, re-run locally as the user keeps/un-keeps players. */
   cutdownPlan?: (protect: readonly PlayerId[]) => CutdownPlan | null
@@ -261,8 +262,7 @@ export function Roster({
   const currentSize = team?.roster.length ?? 0
   const rosterLimit = sizeCuts.length > 0 ? currentSize - sizeCuts.length : ROSTER_LIMIT_FALLBACK
   const oversized = currentSize > rosterLimit
-  const payroll = (team?.roster ?? []).reduce((sum, slot) => sum + slot.contract.apy, 0)
-  const capSpace = cap == null || !team ? null : cap - payroll - team.deadMoney
+  const capSpace = cap == null || !team ? null : cap - committedPayroll(state, state.userTeam)
   const overCap = capSpace != null && capSpace < 0
 
   const cutdownTitle =
