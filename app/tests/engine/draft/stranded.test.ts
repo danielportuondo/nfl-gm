@@ -109,4 +109,4 @@ describe('opening draft unchanged', () => {
 
 // Re-recorded after the S/CB split and true-value rework (95.3% historical), then again after
 // PRIOR_SEASON_GAMES = 2 shifted consensus on the 2014 board (94.9% historical).
-const OPENING_FINGERPRINTS = ['20294524', '56d0ce82']
+const OPENING_FINGERPRINTS = ['18d0c9c2', '58fae248']

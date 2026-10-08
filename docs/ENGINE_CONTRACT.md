@@ -53,6 +53,9 @@ import type {
   GameSchema,
   GameSettingsSchema,
   GameTypeSchema,
+  AbsenceBoardSchema,
+  AbsenceReasonSchema,
+  AbsenceSchema,
   InjuryEventSchema,
   InjuryModelFileSchema,
   InjurySchema,
@@ -115,6 +118,9 @@ export type ScoutingView = z.infer<typeof ScoutingViewSchema>
 export type TrueTrajectory = z.infer<typeof TrueTrajectorySchema>
 export type Contract = z.infer<typeof ContractSchema>
 export type Injury = z.infer<typeof InjurySchema>
+export type Absence = z.infer<typeof AbsenceSchema>
+export type AbsenceReason = z.infer<typeof AbsenceReasonSchema>
+export type AbsenceBoard = z.infer<typeof AbsenceBoardSchema>
 export type RosterSlot = z.infer<typeof RosterSlotSchema>
 export type TeamRecord = z.infer<typeof TeamRecordSchema>
 export type DepthChart = z.infer<typeof DepthChartSchema>
@@ -232,6 +238,19 @@ export interface TradeEvaluation {
   p: number
   valid: boolean
   reasons: string[]
+  /** Set by trade.evaluate on a valid deal with p < 0.5: roughly what it would take to get to 0.5. */
+  priceHint?: TradePriceHint
+}
+
+/** What the counterparty would want added to a deal, by consensus value. */
+export interface TradePriceHint {
+  /** Value the proposer's side falls short of an even read (p = 0.5), in trade-value points. */
+  shortBy: number
+  /**
+   * Latest draft round (1–7) whose pick, in the coming draft at the proposer's projected slot, covers
+   * `shortBy`. null when even a first does not.
+   */
+  round: number | null
 }
 
 export interface RosterValidation {
@@ -647,7 +666,8 @@ export interface LeagueModule {
    * Simulate the current week (REGULAR or PLAYOFFS) for every scheduled game, apply results to
    * records, apply injuries, tick injuries (lifecycle), generate AI-initiated trade offers (trade),
    * then advance `week`. When the regular season ends, seeds playoffs; when the Super Bowl is played,
-   * writes a SeasonSummary and moves to OFFSEASON_RESIGN. Sets `outcome` when the user wins the
+   * writes a SeasonSummary, refreshes consensus for the next season (lifecycle.refreshScouting) and
+   * moves to OFFSEASON_RESIGN. Sets `outcome` when the user wins the
    * Super Bowl or the horizon expires. No-op with a warning event if phase is not REGULAR/PLAYOFFS.
    */
   simWeek(state: LeagueState, ctx: EngineContext): WeekReport
@@ -656,7 +676,8 @@ export interface LeagueModule {
    * Move to the next phase in PHASES order, running the AI side of the phase being left:
    *  OFFSEASON_RESIGN → fa.runAiResign; DRAFT → requires draftRoom.status === 'COMPLETE';
    *  UDFA → draft.runUdfa for AI teams; FREE_AGENCY → fa.runAiFreeAgency;
-   *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements + refreshScouting,
+   *  TRAINING_CAMP → season += 1, lifecycle.progressSeason + retirements (a user player who leaves is
+   *  logged as a LEFT_LEAGUE transaction; consensus was already refreshed when the Super Bowl ended),
    *  history.snapToHistory (if in history), schedule for the new season, phase PRESEASON — except in
    *  the opening offseason (`isOpeningOffseason`), where contracts, progression, retirements and the
    *  consensus refresh are skipped because the state already describes the new season; dead money is
@@ -683,12 +704,21 @@ export interface LeagueModule {
    */
   buildSchedule(state: LeagueState, ctx: EngineContext): Game[]
 
-  /** Best-available depth chart by consensus ovr per STARTER_TEMPLATE; healthy players first. */
-  autoDepthChart(state: LeagueState, teamId: TeamId): DepthChart
+  /**
+   * Best-available depth chart by consensus ovr per STARTER_TEMPLATE; healthy players first unless
+   * `ignoreInjuries` is set, which orders by consensus alone (the user's "Reset to consensus": an
+   * injured starter keeps his slot and the sim plays the next healthy man while he is out).
+   */
+  autoDepthChart(
+    state: LeagueState,
+    teamId: TeamId,
+    opts?: { ignoreInjuries?: boolean },
+  ): DepthChart
 
   /**
    * Bring `teamId`'s depth chart in line with its roster without reordering it: players no longer
-   * rostered drop out, new ones are appended at their position by consensus ovr. Pure; returns
+   * rostered drop out, new ones are slotted in at the place their consensus ovr earns (the others
+   * shift down, never re-sorted against each other). Pure; returns
    * `state` unchanged when the chart already matches. The store runs it on the user's team after
    * every move so the hand-ordered chart never goes stale.
    */
@@ -1198,7 +1228,7 @@ export const faStub: FaModule = {
  * engine/lifecycle — progression, aging, retirement, injuries, procedural generation (§6.7).
  * Owned by lifecycle (3D).
  */
-import type { InjuryEvent, LeagueState, PlayerId, Prospect } from '../types'
+import type { InjuryEvent, LeagueState, PlayerId, Prospect, Season } from '../types'
 import type { EngineContext } from './context'
 import { notImplemented } from './context'
 import type { Rng } from './rng'
@@ -1232,11 +1262,21 @@ export interface LifecycleModule {
   ): { state: LeagueState; retired: PlayerId[] }
 
   /**
-   * Recompute consensus at season start: veterans ovr = last completed season's true value, pot from
-   * age/position curve + draft-pedigree bump, confidence up with seasons played; rookies keep their
-   * pre-draft view. Also refreshes in-season after a completed season for the SeasonRecap.
+   * Recompute consensus for `forSeason` (default `state.season`): veterans ovr = a blend of the seasons
+   * completed before it, pot from age/position curve + draft-pedigree bump, confidence up with seasons
+   * played; rookies keep their pre-draft view. league.simWeek calls it once per year, when the Super Bowl
+   * ends, with `forSeason = season + 1`, so the offseason and the Season Recap run on the new view.
+   * Deterministic per (seed, forSeason, player), so a repeat call is a no-op.
    */
-  refreshScouting(state: LeagueState, ctx: EngineContext): LeagueState
+  refreshScouting(state: LeagueState, ctx: EngineContext, forSeason?: Season): LeagueState
+
+  /**
+   * True when a real player has no game left after `state.season` (truth.retiresAfter ≤ season): the
+   * camp roll will retire him whatever his contract says. The only public face of that fact; the re-sign
+   * screen reads it so the user is not offered a re-sign for a player with no future. Never true for
+   * procedural players, whose end is still a draw.
+   */
+  leavesAfterSeason(state: LeagueState, playerId: PlayerId): boolean
 
   /** Weekly: decrement weeksOut, clear healed injuries, apply small permanent loss after long injuries. */
   tickInjuries(state: LeagueState, ctx: EngineContext, rng: Rng): LeagueState
@@ -1255,22 +1295,33 @@ export interface LifecycleModule {
   age(state: LeagueState, playerId: PlayerId, season?: number): number
 
   /**
-   * Before a season: a consensus starter whose real availability this season was very low (Luck 2017)
-   * is announced injured for the share of the season he really missed, so depth charts skip him through
-   * the normal injured path. Idempotent; a no-op for seasons without real availability.
+   * Announce the real weeks every player missed in the season being prepared or played: `season + 1`
+   * in the offseason phases, `season` from PRESEASON on. Writes `state.absences` (public) from the
+   * season chunk, which lifecycle may read; a no-op, returning the same state, when the board already
+   * covers that season or the season is past real data. Idempotent.
    */
-  applyHistoricalAbsences(state: LeagueState): LeagueState
+  announceAbsences(state: LeagueState, ctx: EngineContext): LeagueState
+
+  /**
+   * Before a week is played: every rostered player whose announced absence covers `state.week` is
+   * marked injured through the ordinary injury path, for exactly the weeks left in the range, so he
+   * comes back when it ends. Applies to every team, starter or bench, and to players signed or
+   * traded for mid-season. Never shortens an injury a player already has. Idempotent.
+   */
+  applyWeekAbsences(state: LeagueState): LeagueState
 }
 
 export const lifecycleStub: LifecycleModule = {
   progressSeason: () => notImplemented('lifecycle.progressSeason'),
   retirements: () => notImplemented('lifecycle.retirements'),
   refreshScouting: () => notImplemented('lifecycle.refreshScouting'),
+  leavesAfterSeason: () => notImplemented('lifecycle.leavesAfterSeason'),
   tickInjuries: () => notImplemented('lifecycle.tickInjuries'),
   applyInjuryEvents: () => notImplemented('lifecycle.applyInjuryEvents'),
   generateDraftClass: () => notImplemented('lifecycle.generateDraftClass'),
   age: () => notImplemented('lifecycle.age'),
-  applyHistoricalAbsences: () => notImplemented('lifecycle.applyHistoricalAbsences'),
+  announceAbsences: () => notImplemented('lifecycle.announceAbsences'),
+  applyWeekAbsences: () => notImplemented('lifecycle.applyWeekAbsences'),
 }
 ```
 

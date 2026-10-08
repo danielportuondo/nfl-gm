@@ -67,7 +67,7 @@ export function userResign(state: LeagueState, ctx: EngineContext, log: Offseaso
     .map((slot) => slot.playerId)
     .sort((a, b) => ovrOf(s, b) - ovrOf(s, a) || a.localeCompare(b))
   for (const id of expiring) {
-    if (ovrOf(s, id) < policy.resignMinOvr) {
+    if (ovrOf(s, id) < policy.resignMinOvr || ctx.modules.lifecycle.leavesAfterSeason(s, id)) {
       log.expired.push(id)
       continue
     }

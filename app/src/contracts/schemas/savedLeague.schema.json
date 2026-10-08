@@ -274,6 +274,11 @@
             "minimum": 0,
             "description": "$M charged against this season's cap from releases."
           },
+          "carriedDeadMoney": {
+            "description": "Dead money from releases made after the season ended: lands on the next league year and becomes deadMoney at the camp rollover. Absent means 0.",
+            "type": "number",
+            "minimum": 0
+          },
           "tradeAnnoyance": {
             "type": "number",
             "minimum": 0,
@@ -510,6 +515,66 @@
         "additionalProperties": false
       },
       "description": "HIDDEN. Present in state; nothing under screens/ or ui/ may read it."
+    },
+    "absences": {
+      "type": "object",
+      "properties": {
+        "season": {
+          "type": "integer",
+          "minimum": 1920,
+          "maximum": 2200,
+          "description": "NFL season year, e.g. 2015."
+        },
+        "byPlayer": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 30,
+                  "description": "First regular-season week missed."
+                },
+                "to": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 30,
+                  "description": "Last week missed. A value past the regular season means out through the playoffs too."
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "injury",
+                    "suspension",
+                    "out"
+                  ],
+                  "description": "injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad)."
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "required": [
+        "season",
+        "byPlayer"
+      ],
+      "additionalProperties": false,
+      "description": "PUBLIC. The real weeks every player missed in `season`, announced ahead of time. Written by lifecycle from the season chunk (which is truth) when a season's offseason or opening begins; the UI and the week tick both read it."
     },
     "picks": {
       "type": "array",
@@ -2361,9 +2426,69 @@
               "deadMoney"
             ],
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "season": {
+                "type": "integer",
+                "minimum": 1920,
+                "maximum": 2200,
+                "description": "state.season when the move happened. Offseason phases belong to the next league year (season + 1), as the header reads them."
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "PRESEASON",
+                  "REGULAR",
+                  "PLAYOFFS",
+                  "OFFSEASON_RESIGN",
+                  "DRAFT",
+                  "UDFA",
+                  "FREE_AGENCY",
+                  "TRAINING_CAMP"
+                ],
+                "description": "Season phases in order. After TRAINING_CAMP the season increments and PRESEASON begins."
+              },
+              "week": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              },
+              "ovrAtMove": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+                },
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "description": "Consensus ovr (state.scouting) of each player in the move at that moment. Empty on entries backfilled from saves made before the log existed."
+              },
+              "kind": {
+                "type": "string",
+                "const": "LEFT_LEAGUE"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "gsis_id for real players; \"gen-<seed>-<n>\" for procedural players."
+              }
+            },
+            "required": [
+              "season",
+              "phase",
+              "week",
+              "ovrAtMove",
+              "kind",
+              "playerId"
+            ],
+            "additionalProperties": false
           }
         ],
-        "description": "One move by the user's team: a trade it was part of, a pick it made (auto-picks included), a UDFA or free-agent signing, a re-signing or a release. AI-only moves are never logged."
+        "description": "One move by the user's team: a trade it was part of, a pick it made (auto-picks included), a UDFA or free-agent signing, a re-signing, a release, or a player who left the league at the camp roll. AI-only moves are never logged."
       }
     },
     "outcome": {

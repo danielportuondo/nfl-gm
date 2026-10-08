@@ -168,6 +168,42 @@
               }
             ],
             "description": "Team at season start; null if unsigned."
+          },
+          "absences": {
+            "description": "HIDDEN until lifecycle announces it: the regular-season weeks this player really missed in THIS season. Omitted when he missed none.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 30,
+                  "description": "First regular-season week missed."
+                },
+                "to": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 30,
+                  "description": "Last week missed. A value past the regular season means out through the playoffs too."
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "injury",
+                    "suspension",
+                    "out"
+                  ],
+                  "description": "injury = IR/PUP/NFI or ruled out; suspension; out = on no NFL roster (or the practice squad)."
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "required": [
